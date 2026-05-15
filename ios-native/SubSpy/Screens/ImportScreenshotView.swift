@@ -135,13 +135,23 @@ struct ImportScreenshotView: View {
     }
 
     private var reviewStep: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        let confirmed = RecurrenceDetector.detect(in: parsedTxs + existingTxs())
+        let confirmedIds = Set(confirmed.map { $0.id })
+        let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
+            .filter { !confirmedIds.contains($0.id) }
+        let totalSubs = confirmed.count + likely.count
+
+        return VStack(alignment: .leading, spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("FOUND \(parsedTxs.count) CHARGES").font(AppFont.smallB).foregroundStyle(Palette.success)
-                    let recurring = RecurrenceDetector.detect(in: parsedTxs + existingTxs())
-                    Text("\(recurring.count) look like subscriptions")
+                    Text("\(totalSubs) look like subscriptions")
                         .font(AppFont.h2).foregroundStyle(Palette.ink)
+                    if !likely.isEmpty {
+                        Text("\(confirmed.count) confirmed (repeat charges) · \(likely.count) likely (1 sighting — upload next month to confirm)")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 Spacer()
             }
@@ -225,8 +235,11 @@ struct ImportScreenshotView: View {
     }
 
     private func commit() {
-        let detected = RecurrenceDetector.detect(in: parsedTxs + existingTxs())
-        store.mergeImported(subs: detected, transactions: parsedTxs)
+        let confirmed = RecurrenceDetector.detect(in: parsedTxs + existingTxs())
+        let confirmedIds = Set(confirmed.map { $0.id })
+        let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
+            .filter { !confirmedIds.contains($0.id) }
+        store.mergeImported(subs: confirmed + likely, transactions: parsedTxs)
         dismiss()
     }
 }

@@ -66,14 +66,56 @@ enum RecurrenceDetector {
         return String(format: "%02X%02X%02X", r, g, b)
     }
 
+    /// Single-screenshot mode: surface charges that LOOK subscription-shaped
+    /// (known brand OR common price pattern) even with only 1 occurrence.
+    /// Useful when the user uploaded just one statement.
+    static func detectLikelyFromSingle(_ txs: [ParsedTransaction]) -> [Subscription] {
+        var grouped: [String: ParsedTransaction] = [:]
+        for t in txs where t.amount > 0 {
+            let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
+            if let existing = grouped[key],
+               (existing.date ?? .distantPast) > (t.date ?? .distantPast) {
+                continue
+            }
+            grouped[key] = t
+        }
+        var out: [Subscription] = []
+        for (key, t) in grouped {
+            guard MerchantNormalizer.looksLikeSubscription(name: t.merchant, amount: t.amount) else { continue }
+            let nextBilling = (t.date ?? Date()).addingTimeInterval(30 * 86_400)
+            out.append(
+                Subscription(
+                    id: key,
+                    name: t.merchant,
+                    vendor: t.merchant,
+                    brandHex: brandColor(for: key),
+                    category: .other,
+                    amount: t.amount,
+                    cycle: .monthly,
+                    nextBilling: nextBilling,
+                    startedAt: t.date ?? Date(),
+                    lastUsedAt: nil,
+                    sessionsLast30d: 0,
+                    userRating: nil,
+                    marketAverage: t.amount,
+                    trialEndsAt: nil,
+                    hasPriceHike: nil,
+                    hasOverlapWith: [],
+                    notes: "Detected from a single charge — upload next month to confirm."
+                )
+            )
+        }
+        return out.sorted { $0.amount > $1.amount }
+    }
+
     /// Detect recurring subscriptions in a list of parsed transactions.
     /// - Parameter txs: All transactions known to the app (current OCR + previous imports).
     /// - Returns: One subscription per detected merchant whose charges look periodic.
     static func detect(in txs: [ParsedTransaction]) -> [Subscription] {
-        // Group by normalized merchant
+        // Group by brand id (so "POS DEBIT NETFLIX", "SP*NETFLIX", "NETFLIX.COM" all collapse)
         var groups: [String: [ParsedTransaction]] = [:]
         for t in txs where t.amount > 0 && t.date != nil {
-            let key = normalize(t.merchant)
+            let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
             guard !key.isEmpty else { continue }
             groups[key, default: []].append(t)
         }

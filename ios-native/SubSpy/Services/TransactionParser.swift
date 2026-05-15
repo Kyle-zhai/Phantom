@@ -97,10 +97,9 @@ enum TransactionParser {
             let merchantRaw = combined
                 .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-            let merchant = cleanMerchant(merchantRaw)
-            if merchant.isEmpty || merchant.count < 2 { continue }
-            // Skip rows that look like totals / page headers
-            if isSummary(merchant) { continue }
+            // Use the full normalizer (handles POS/SP*/AMZN/PAYPAL prefixes + bank junk)
+            guard let merchant = MerchantNormalizer.normalize(merchantRaw),
+                  !isSummary(merchant) else { continue }
             let date = extractDates(from: combined)
             transactions.append(ParsedTransaction(merchant: merchant, amount: amount, date: date))
         }

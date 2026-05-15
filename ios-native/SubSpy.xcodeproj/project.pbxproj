@@ -73,6 +73,7 @@
 		BFE67017A42D2CF2C142CC8B /* google-one.svg in Resources */ = {isa = PBXBuildFile; fileRef = 120CC28E00D705BC27C997EF /* google-one.svg */; };
 		C065DFFA90B3DDC19FFB2994 /* ImportScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D67D7FC4DE50D925BD80C8B /* ImportScreenshotView.swift */; };
 		C2F6393C19E3790BD60424C9 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029AFF9DA688808DEC8AEA08 /* Section.swift */; };
+		CAD4D50748F6F13790572B86 /* MerchantNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BAD22FC383F2A5B6317C1F /* MerchantNormalizer.swift */; };
 		CBF65C3382201AB50CEE1794 /* SubscriptionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8910E322022EC92CFAAEC20A /* SubscriptionDetailView.swift */; };
 		CF4ADA07EA8DA9DAB67DEE40 /* nordvpn.svg in Resources */ = {isa = PBXBuildFile; fileRef = A547EE8F409F612BF228BEB0 /* nordvpn.svg */; };
 		D040A51977832D6C41C9D285 /* RecurrenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEA8BBDBE6B72A7063F2D29 /* RecurrenceDetector.swift */; };
@@ -106,6 +107,7 @@
 		32E6AE3F349A55D84627A75E /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		348DCBE22DC2E9E221EFEF01 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		37792B57404BD47412F3AFE8 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		40BAD22FC383F2A5B6317C1F /* MerchantNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantNormalizer.swift; sourceTree = "<group>"; };
 		44F510132E959FFD8E762990 /* netflix.svg */ = {isa = PBXFileReference; path = netflix.svg; sourceTree = "<group>"; };
 		45D242D29210E421BB705A66 /* Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
 		496FB542500875380615DCAA /* lastpass.svg */ = {isa = PBXFileReference; path = lastpass.svg; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				7B976FA3D44285BB1DAA884D /* Entitlements.swift */,
 				348DCBE22DC2E9E221EFEF01 /* Keychain.swift */,
 				6D55CE827CE2B95DF0E04346 /* MailComposer.swift */,
+				40BAD22FC383F2A5B6317C1F /* MerchantNormalizer.swift */,
 				EB73A73B56288677714F72A2 /* MockData.swift */,
 				EF66D1EF46314F049801B374 /* Negotiation.swift */,
 				126FA35A5CB991341CBC6D4C /* NotificationCenter.swift */,
@@ -515,6 +518,7 @@
 				A1009BC07DF6EC8F385968E0 /* Keychain.swift in Sources */,
 				E427C980ECD7ACBBA044A9A4 /* MailComposer.swift in Sources */,
 				2AD7DFD95F9DDBD7DB580612 /* ManualAddSubscriptionView.swift in Sources */,
+				CAD4D50748F6F13790572B86 /* MerchantNormalizer.swift in Sources */,
 				4380C99E4574BE6562B6A1D5 /* MockData.swift in Sources */,
 				2F9352B5EC80E80A12AB65F2 /* Models.swift in Sources */,
 				24A891F05E10148907F8FA71 /* NegotiateDetailView.swift in Sources */,
