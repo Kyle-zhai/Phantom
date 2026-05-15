@@ -33,6 +33,7 @@
 		44D4F7325057699A58AF96AD /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F6D47F898CF1ADF00FBEF /* AppStore.swift */; };
 		47A3134460EF9766CE633E4B /* hbo-max.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5CA3D5A63BF7B9D8FEFAF9FF /* hbo-max.svg */; };
 		51311719A0E2AFD55AD7D8AD /* apple-tv.svg in Resources */ = {isa = PBXBuildFile; fileRef = E7E1627BB2E03477FACDAC35 /* apple-tv.svg */; };
+		583216D5A4939EEB51201EBB /* CancellationRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47B63227AD9A147D13CC135 /* CancellationRegistry.swift */; };
 		5D7AC72B8FD619E61AF2FB3D /* expressvpn.svg in Resources */ = {isa = PBXBuildFile; fileRef = BFE079C5AD6ED243E421A932 /* expressvpn.svg */; };
 		5DF30FF5554958A19AB760AE /* icloud.svg in Resources */ = {isa = PBXBuildFile; fileRef = ED09AAF7EC68BE39750F1B9D /* icloud.svg */; };
 		5E8B74D1AFF9626931085EBB /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF66D1EF46314F049801B374 /* Negotiation.swift */; };
@@ -145,6 +146,7 @@
 		94C3292773B5A07DD97F72C2 /* youtube-premium.svg */ = {isa = PBXFileReference; path = "youtube-premium.svg"; sourceTree = "<group>"; };
 		9FEA8BBDBE6B72A7063F2D29 /* RecurrenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceDetector.swift; sourceTree = "<group>"; };
 		A3FFB7CDE6A1D3B06F19989F /* 1password.svg */ = {isa = PBXFileReference; path = 1password.svg; sourceTree = "<group>"; };
+		A47B63227AD9A147D13CC135 /* CancellationRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationRegistry.swift; sourceTree = "<group>"; };
 		A547EE8F409F612BF228BEB0 /* nordvpn.svg */ = {isa = PBXFileReference; path = nordvpn.svg; sourceTree = "<group>"; };
 		AFA685059C4B513C1D2D6761 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
 		B45EA84D5DADE5624330E02C /* ProLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProLock.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				5BFD63A04267BB7BB5EA1D52 /* APIClient.swift */,
 				791CF6240A65B4DD98C5363A /* AppConfig.swift */,
 				B73C657249C268465B15FD36 /* BrandRegistry.swift */,
+				A47B63227AD9A147D13CC135 /* CancellationRegistry.swift */,
 				E06EFB7295280C56D90D1D59 /* DisputeLetter.swift */,
 				7B976FA3D44285BB1DAA884D /* Entitlements.swift */,
 				348DCBE22DC2E9E221EFEF01 /* Keychain.swift */,
@@ -510,6 +513,7 @@
 				E8F05C375A63691DDAE54ACA /* Badge.swift in Sources */,
 				F9CBB79D19AFF050713DD8CB /* BrandRegistry.swift in Sources */,
 				6892E33EC2E599F584F8F10C /* Button.swift in Sources */,
+				583216D5A4939EEB51201EBB /* CancellationRegistry.swift in Sources */,
 				6289DE5241419ECAD02EE3E4 /* Card.swift in Sources */,
 				EECEA5C8CAD981A9A0B4148E /* DisputeLetter.swift in Sources */,
 				4397138247BD774354D85EB7 /* DisputeLetterView.swift in Sources */,

@@ -69,7 +69,8 @@ struct ImportScreenshotView: View {
 
     private var pickStep: some View {
         VStack(alignment: .leading, spacing: 16) {
-            tipsBox.padding(.top, 24)
+            bestResultsCard.padding(.top, 24)
+            tipsBox.padding(.top, 4)
 
             PhotosPicker(
                 selection: $pickedItems,
@@ -99,6 +100,30 @@ struct ImportScreenshotView: View {
                 Text(err).font(AppFont.small).foregroundStyle(Palette.danger).padding(.top, 12)
             }
         }
+    }
+
+    private var bestResultsCard: some View {
+        HStack(alignment: .top, spacing: 14) {
+            ZStack {
+                Circle().fill(Palette.warn).frame(width: 38, height: 38)
+                Image(systemName: "lightbulb.fill")
+                    .foregroundStyle(Palette.white)
+                    .font(.system(size: 16, weight: .bold))
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Tip: upload last 3 months for best results")
+                    .font(AppFont.bodyB)
+                    .foregroundStyle(Palette.ink)
+                Text("A single statement finds likely subscriptions; 3+ months lets SubSpy confirm recurrence and catch yearly bills.")
+                    .font(AppFont.small)
+                    .foregroundStyle(Palette.mute)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.md))
     }
 
     private var tipsBox: some View {

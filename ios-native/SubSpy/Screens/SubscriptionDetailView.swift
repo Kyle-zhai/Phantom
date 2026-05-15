@@ -35,14 +35,29 @@ struct SubscriptionDetailView: View {
                 .environment(store)
         }
         .confirmationDialog("Cancel \(sub?.name ?? "this subscription")?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
-            Button("Cancel subscription", role: .destructive) {
-                store.cancel(subId)
-                dismiss()
+            if let sub {
+                let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
+                Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Go to cancel page", role: .destructive) {
+                    openCancelPath(path)
+                    store.cancel(subId)
+                    dismiss()
+                }
+                Button("Just mark as cancelled (no redirect)") {
+                    store.cancel(subId)
+                    dismiss()
+                }
+                Button("Keep it", role: .cancel) {}
             }
-            Button("Keep it", role: .cancel) {}
         } message: {
-            if let sub { Text("Saves \(fmtUSD(sub.monthlyAmount)) per month.") }
+            if let sub {
+                let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
+                Text("Saves \(fmtUSD(sub.monthlyAmount)) per month.\n\n\(path.hint ?? "We'll open the vendor's cancel page in Safari.")")
+            }
         }
+    }
+
+    private func openCancelPath(_ path: CancellationRegistry.CancelPath) {
+        UIApplication.shared.open(path.url, options: [:]) { _ in }
     }
 
     @ViewBuilder
