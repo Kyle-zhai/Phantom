@@ -262,21 +262,40 @@ enum MerchantNormalizer {
         return false
     }
 
-    /// Returns true if `amount` matches a common subscription price tier.
-    /// Covers the standard $X.99 streaming pricing, round-dollar AI tools
-    /// ($20 ChatGPT/Claude), and rounded annual prices ($99.99 / $119.99
-    /// Amazon Prime). Used as a positive secondary signal in
-    /// `looksLikeSubscription` — never on its own (food / retail / rideshare
-    /// also hit $X.99 frequently).
+    /// Returns true if `amount` looks like a common subscription price tier,
+    /// **including up to ~10.5% US sales tax**. Most US states tax digital
+    /// subscriptions (CA, NY, WA, TX, IL, OH, PA…), so the bank-statement
+    /// amount is almost never the clean advertised price:
+    ///   - Spotify $9.99  + NY  8.875% → $10.87
+    ///   - Netflix $15.49 + CA  7.25%  → $16.61
+    ///   - ChatGPT $20.00 + WA 10.5%   → $22.10
+    ///
+    /// This is intentionally permissive — it's only used as an auxiliary
+    /// signal in `looksLikeSubscription` (paired with mid-confidence ML).
+    /// The transactional blacklist and the ML classifier do the actual
+    /// rejection work; a $10.87 Starbucks still gets rejected by the
+    /// "starbucks" keyword, regardless of what this returns.
     static func isLikelySubscriptionAmount(_ amount: Double) -> Bool {
         let cents = Int((amount * 100).rounded())
         guard cents > 0 else { return false }
         let dollars = Double(cents) / 100
+
+        // 1. Exact match against known base prices
         if commonSubscriptionAmounts.contains(dollars) { return true }
-        // Generic ".99 under $250" pattern — captures regional / student / family tier pricing
+
+        // 2. Base price + up to 10.5% sales tax (covers Seattle/Chicago — highest combined US rates)
+        for base in commonSubscriptionAmounts where amount > base {
+            if amount <= base * 1.105 { return true }
+        }
+
+        // 3. Generic ".99 under $250" — catches regional / student / family pricing
+        //    we didn't enumerate, plus pre-tax displays in no-tax states (OR, NH, DE, MT, AK)
         if cents % 100 == 99 && dollars <= 250 { return true }
-        // Round-dollar prices under $250 (Claude Pro $20, ChatGPT $20, Apple One $19.95 family etc.)
+
+        // 4. Round-dollar prices $5-$250 (Claude / ChatGPT $20, ChatGPT Team $25,
+        //    yearly Hulu, etc.) — only when ML already thinks it's a subscription
         if cents % 100 == 0 && dollars >= 5 && dollars <= 250 { return true }
+
         return false
     }
 
