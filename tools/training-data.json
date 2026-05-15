@@ -1,360 +1,1658 @@
 [
-  {"text":"NETFLIX.COM","label":"subscription"},
-  {"text":"NETFLIX","label":"subscription"},
-  {"text":"SP*NETFLIX","label":"subscription"},
-  {"text":"POS DEBIT NETFLIX.COM SAN FRAN CA 4218","label":"subscription"},
-  {"text":"NFLX*MEMBERSHIP","label":"subscription"},
-  {"text":"HULU","label":"subscription"},
-  {"text":"HULU.COM","label":"subscription"},
-  {"text":"SP*HULU","label":"subscription"},
-  {"text":"HULU PLUS","label":"subscription"},
-  {"text":"SPOTIFY","label":"subscription"},
-  {"text":"SPOTIFY USA","label":"subscription"},
-  {"text":"SP*SPOTIFY","label":"subscription"},
-  {"text":"PAYPAL *SPOTIFY","label":"subscription"},
-  {"text":"DISNEY PLUS","label":"subscription"},
-  {"text":"DISNEY+","label":"subscription"},
-  {"text":"DISNEYPLUS.COM","label":"subscription"},
-  {"text":"PEACOCK PREMIUM","label":"subscription"},
-  {"text":"PEACOCK TV","label":"subscription"},
-  {"text":"PARAMOUNT PLUS","label":"subscription"},
-  {"text":"PARAMOUNT+","label":"subscription"},
-  {"text":"PARAMOUNTPLUS.COM","label":"subscription"},
-  {"text":"HBO MAX","label":"subscription"},
-  {"text":"MAX.COM","label":"subscription"},
-  {"text":"HBONOW","label":"subscription"},
-  {"text":"APPLE.COM/BILL","label":"subscription"},
-  {"text":"ITUNES.COM/BILL","label":"subscription"},
-  {"text":"APPLE TV+","label":"subscription"},
-  {"text":"APPLE MUSIC","label":"subscription"},
-  {"text":"ICLOUD+","label":"subscription"},
-  {"text":"APPLE ARCADE","label":"subscription"},
-  {"text":"APPLE ONE","label":"subscription"},
-  {"text":"YOUTUBE PREMIUM","label":"subscription"},
-  {"text":"YOUTUBE TV","label":"subscription"},
-  {"text":"GOOGLE *YOUTUBEPREMIUM","label":"subscription"},
-  {"text":"GOOGLE *YOUTUBETV","label":"subscription"},
-  {"text":"GOOGLE ONE","label":"subscription"},
-  {"text":"GOOGLE STORAGE","label":"subscription"},
-  {"text":"GEMINI ADVANCED","label":"subscription"},
-  {"text":"AMAZON PRIME","label":"subscription"},
-  {"text":"AMAZON PRIME*RT4LM","label":"subscription"},
-  {"text":"PRIME VIDEO","label":"subscription"},
-  {"text":"AMZN PRIME *","label":"subscription"},
-  {"text":"AUDIBLE.COM","label":"subscription"},
-  {"text":"AUDIBLE","label":"subscription"},
-  {"text":"AUDIBLE*KQDQT","label":"subscription"},
-  {"text":"TIDAL","label":"subscription"},
-  {"text":"TIDAL MUSIC","label":"subscription"},
-  {"text":"SIRIUSXM.COM","label":"subscription"},
-  {"text":"SIRIUS XM","label":"subscription"},
-  {"text":"SIRIUSXM RADIO","label":"subscription"},
-  {"text":"PANDORA*","label":"subscription"},
-  {"text":"PANDORA PREMIUM","label":"subscription"},
-  {"text":"ADOBE *CREATIVE CLOUD","label":"subscription"},
-  {"text":"ADOBE INC","label":"subscription"},
-  {"text":"ADOBE *PHOTOGRAPHY","label":"subscription"},
-  {"text":"ADOBE *CC ALL APPS","label":"subscription"},
-  {"text":"MICROSOFT*365","label":"subscription"},
-  {"text":"MSFT *MICROSOFT 365","label":"subscription"},
-  {"text":"MICROSOFT *OFFICE","label":"subscription"},
-  {"text":"DROPBOX*PLUS","label":"subscription"},
-  {"text":"DROPBOX.COM","label":"subscription"},
-  {"text":"GITHUB INC","label":"subscription"},
-  {"text":"GITHUB.COM","label":"subscription"},
-  {"text":"GITHUB COPILOT","label":"subscription"},
-  {"text":"OPENAI *CHATGPT","label":"subscription"},
-  {"text":"CHATGPT SUBSCRIPTION","label":"subscription"},
-  {"text":"OPENAI*PLUS","label":"subscription"},
-  {"text":"ANTHROPIC*","label":"subscription"},
-  {"text":"CLAUDE.AI","label":"subscription"},
-  {"text":"NOTION LABS","label":"subscription"},
-  {"text":"NOTION*","label":"subscription"},
-  {"text":"DUOLINGO*","label":"subscription"},
-  {"text":"DUOLINGO PLUS","label":"subscription"},
-  {"text":"MASTERCLASS","label":"subscription"},
-  {"text":"MASTERCLASS.COM","label":"subscription"},
-  {"text":"COURSERA *","label":"subscription"},
-  {"text":"UDEMY*","label":"subscription"},
-  {"text":"SKILLSHARE","label":"subscription"},
-  {"text":"LASTPASS","label":"subscription"},
-  {"text":"1PASSWORD","label":"subscription"},
-  {"text":"AGILEBITS*1PASSWORD","label":"subscription"},
-  {"text":"BITWARDEN","label":"subscription"},
-  {"text":"EXPRESSVPN","label":"subscription"},
-  {"text":"NORDVPN","label":"subscription"},
-  {"text":"NORD ACCOUNT","label":"subscription"},
-  {"text":"SURFSHARK","label":"subscription"},
-  {"text":"PROTONMAIL","label":"subscription"},
-  {"text":"PROTONVPN","label":"subscription"},
-  {"text":"NYT*NEW YORK TIMES","label":"subscription"},
-  {"text":"NYTIMES.COM","label":"subscription"},
-  {"text":"NEW YORK TIMES","label":"subscription"},
-  {"text":"WSJ.COM SUBSCRIBE","label":"subscription"},
-  {"text":"WALL STREET JOURNAL","label":"subscription"},
-  {"text":"WASHINGTON POST","label":"subscription"},
-  {"text":"BLOOMBERG","label":"subscription"},
-  {"text":"THE ECONOMIST","label":"subscription"},
-  {"text":"MEDIUM*","label":"subscription"},
-  {"text":"SUBSTACK*","label":"subscription"},
-  {"text":"PLANETFITNESS.COM","label":"subscription"},
-  {"text":"PLANET FITNESS","label":"subscription"},
-  {"text":"PLANET FITNESS #2034","label":"subscription"},
-  {"text":"EQUINOX","label":"subscription"},
-  {"text":"24 HOUR FITNESS","label":"subscription"},
-  {"text":"LA FITNESS","label":"subscription"},
-  {"text":"BLINK FITNESS","label":"subscription"},
-  {"text":"CRUNCH FITNESS","label":"subscription"},
-  {"text":"PELOTON*","label":"subscription"},
-  {"text":"ONEPELOTON.COM","label":"subscription"},
-  {"text":"PELOTON DIGITAL","label":"subscription"},
-  {"text":"HEADSPACE","label":"subscription"},
-  {"text":"CALM.COM","label":"subscription"},
-  {"text":"CALM*MEMBERSHIP","label":"subscription"},
-  {"text":"NOOM*","label":"subscription"},
-  {"text":"NOOM HEALTH","label":"subscription"},
-  {"text":"WW INTERNATIONAL","label":"subscription"},
-  {"text":"WEIGHT WATCHERS","label":"subscription"},
-  {"text":"MYFITNESSPAL*","label":"subscription"},
-  {"text":"STRAVA*","label":"subscription"},
-  {"text":"CLASSPASS","label":"subscription"},
-  {"text":"PATREON*","label":"subscription"},
-  {"text":"PATREON.COM","label":"subscription"},
-  {"text":"ONLYFANS*","label":"subscription"},
-  {"text":"TWITCH*","label":"subscription"},
-  {"text":"DISCORD NITRO","label":"subscription"},
-  {"text":"REDDIT PREMIUM","label":"subscription"},
-  {"text":"LINKEDIN PREMIUM","label":"subscription"},
-  {"text":"CANVA*","label":"subscription"},
-  {"text":"FIGMA*","label":"subscription"},
-  {"text":"GRAMMARLY","label":"subscription"},
-  {"text":"GRAMMARLY PREMIUM","label":"subscription"},
-  {"text":"EVERNOTE*","label":"subscription"},
-  {"text":"BEAR APP","label":"subscription"},
-  {"text":"ULYSSES","label":"subscription"},
-  {"text":"FANTASTICAL","label":"subscription"},
-  {"text":"PRIME LENDING","label":"subscription"},
-  {"text":"BACKBLAZE*","label":"subscription"},
-  {"text":"BACKBLAZE.COM","label":"subscription"},
-  {"text":"DASHLANE","label":"subscription"},
-  {"text":"CLOUDFLARE*","label":"subscription"},
-  {"text":"VERCEL*","label":"subscription"},
-  {"text":"DIGITALOCEAN*","label":"subscription"},
-  {"text":"LINODE.COM","label":"subscription"},
-  {"text":"AWS *AMAZON","label":"subscription"},
-  {"text":"NAMECHEAP*RENEWAL","label":"subscription"},
-  {"text":"GODADDY*","label":"subscription"},
-  {"text":"SQUARESPACE","label":"subscription"},
-  {"text":"SHOPIFY*","label":"subscription"},
-  {"text":"MAILCHIMP*","label":"subscription"},
-  {"text":"ZOOM.US","label":"subscription"},
-  {"text":"ZOOM VIDEO COMM","label":"subscription"},
-  {"text":"WALMART+","label":"subscription"},
-  {"text":"WALMART PLUS","label":"subscription"},
-  {"text":"COSTCO MEMBERSHIP","label":"subscription"},
-  {"text":"COSTCO GOLD STAR","label":"subscription"},
-  {"text":"BJSWHOLESALE*","label":"subscription"},
-  {"text":"INSTACART+","label":"subscription"},
-  {"text":"DOORDASH DASHPASS","label":"subscription"},
-  {"text":"UBER ONE","label":"subscription"},
-  {"text":"NINTENDO ONLINE","label":"subscription"},
-  {"text":"XBOX GAME PASS","label":"subscription"},
-  {"text":"PLAYSTATION PLUS","label":"subscription"},
-  {"text":"PSN*","label":"subscription"},
-  {"text":"EA PLAY","label":"subscription"},
-  {"text":"STEAM PURCHASE","label":"subscription"},
-  {"text":"ROBLOX*","label":"subscription"},
-  {"text":"BLIZZARD*","label":"subscription"},
-  {"text":"BIRCHBOX*","label":"subscription"},
-  {"text":"BARK BOX","label":"subscription"},
-  {"text":"DOLLAR SHAVE CLUB","label":"subscription"},
-  {"text":"HARRY'S RAZORS","label":"subscription"},
-
-  {"text":"UBER *TRIP","label":"transactional"},
-  {"text":"UBER TRIP HELP.UBER.COM","label":"transactional"},
-  {"text":"UBER EATS","label":"transactional"},
-  {"text":"UBER *EATS","label":"transactional"},
-  {"text":"UBEREATS","label":"transactional"},
-  {"text":"LYFT *RIDE","label":"transactional"},
-  {"text":"LYFT","label":"transactional"},
-  {"text":"NYC TAXI","label":"transactional"},
-  {"text":"YELLOW CAB","label":"transactional"},
-  {"text":"VIA RIDESHARE","label":"transactional"},
-  {"text":"AMTRAK","label":"transactional"},
-  {"text":"GREYHOUND","label":"transactional"},
-  {"text":"MTA*NYCT","label":"transactional"},
-  {"text":"MTA SUBWAY","label":"transactional"},
-  {"text":"BART *FARE","label":"transactional"},
-  {"text":"WMATA*METRO","label":"transactional"},
-  {"text":"SEPTA*KEY","label":"transactional"},
-  {"text":"METRO CARD","label":"transactional"},
-  {"text":"PARKING METER","label":"transactional"},
-  {"text":"PARKMOBILE*","label":"transactional"},
-  {"text":"SP+ PARKING","label":"transactional"},
-  {"text":"SPOTHERO*","label":"transactional"},
-  {"text":"E-ZPASS","label":"transactional"},
-  {"text":"SHELL OIL 12345","label":"transactional"},
-  {"text":"SHELL SERVICE STATION","label":"transactional"},
-  {"text":"EXXONMOBIL","label":"transactional"},
-  {"text":"EXXON MOBIL #4567","label":"transactional"},
-  {"text":"CHEVRON 0098","label":"transactional"},
-  {"text":"BP*GAS","label":"transactional"},
-  {"text":"MOBIL ON THE RUN","label":"transactional"},
-  {"text":"76 STATION","label":"transactional"},
-  {"text":"SUNOCO 0083","label":"transactional"},
-  {"text":"VALERO #2210","label":"transactional"},
-  {"text":"CITGO 67854","label":"transactional"},
-  {"text":"MARATHON #341","label":"transactional"},
-  {"text":"SPEEDWAY 8821","label":"transactional"},
-  {"text":"WAWA 877","label":"transactional"},
-  {"text":"7-ELEVEN 39812","label":"transactional"},
-  {"text":"STARBUCKS #1234","label":"transactional"},
-  {"text":"STARBUCKS STORE 6128","label":"transactional"},
-  {"text":"DUNKIN #314059","label":"transactional"},
-  {"text":"DUNKIN DONUTS","label":"transactional"},
-  {"text":"PEET'S COFFEE #98","label":"transactional"},
-  {"text":"MCDONALD'S #4521","label":"transactional"},
-  {"text":"MCDONALDS","label":"transactional"},
-  {"text":"BURGER KING #883","label":"transactional"},
-  {"text":"WENDY'S #11234","label":"transactional"},
-  {"text":"CHIPOTLE 2987","label":"transactional"},
-  {"text":"PANERA BREAD #1928","label":"transactional"},
-  {"text":"CHICK-FIL-A #02871","label":"transactional"},
-  {"text":"CHICK FIL A","label":"transactional"},
-  {"text":"TACO BELL #4421","label":"transactional"},
-  {"text":"KFC #3211","label":"transactional"},
-  {"text":"POPEYES #4421","label":"transactional"},
-  {"text":"SUBWAY 49281","label":"transactional"},
-  {"text":"DOMINO'S PIZZA","label":"transactional"},
-  {"text":"PIZZA HUT #2103","label":"transactional"},
-  {"text":"PAPA JOHN'S","label":"transactional"},
-  {"text":"IN-N-OUT BURGER","label":"transactional"},
-  {"text":"SHAKE SHACK 0098","label":"transactional"},
-  {"text":"FIVE GUYS 4421","label":"transactional"},
-  {"text":"SWEETGREEN 0123","label":"transactional"},
-  {"text":"CAVA 2876","label":"transactional"},
-  {"text":"JAMBA JUICE","label":"transactional"},
-  {"text":"SMOOTHIE KING","label":"transactional"},
-  {"text":"AUNTIE ANNE'S","label":"transactional"},
-  {"text":"PANDA EXPRESS","label":"transactional"},
-  {"text":"QDOBA","label":"transactional"},
-  {"text":"MOE'S SOUTHWEST","label":"transactional"},
-  {"text":"TST*JOE'S DINER","label":"transactional"},
-  {"text":"TST*BLUE STONE LANE","label":"transactional"},
-  {"text":"TST*MAMOUNS","label":"transactional"},
-  {"text":"SQ *RESTAURANT","label":"transactional"},
-  {"text":"SQ *FOOD CART","label":"transactional"},
-  {"text":"SQ *COFFEE STAND","label":"transactional"},
-  {"text":"DOORDASH","label":"transactional"},
-  {"text":"DOORDASH*RESTAURANTS","label":"transactional"},
-  {"text":"GRUBHUB","label":"transactional"},
-  {"text":"GRUBHUB*ORDER","label":"transactional"},
-  {"text":"POSTMATES","label":"transactional"},
-  {"text":"SEAMLESS NEW YORK","label":"transactional"},
-  {"text":"INSTACART*GROCERIES","label":"transactional"},
-  {"text":"INSTACART","label":"transactional"},
-  {"text":"GOPUFF","label":"transactional"},
-  {"text":"FAVOR DELIVERY","label":"transactional"},
-  {"text":"TRADER JOE'S #042","label":"transactional"},
-  {"text":"WHOLE FOODS MKT","label":"transactional"},
-  {"text":"WHOLEFDS","label":"transactional"},
-  {"text":"SAFEWAY #2034","label":"transactional"},
-  {"text":"KROGER #2210","label":"transactional"},
-  {"text":"PUBLIX #421","label":"transactional"},
-  {"text":"WEGMANS #34","label":"transactional"},
-  {"text":"H-E-B #098","label":"transactional"},
-  {"text":"STOP & SHOP","label":"transactional"},
-  {"text":"SHOPRITE","label":"transactional"},
-  {"text":"ALBERTSONS","label":"transactional"},
-  {"text":"FOOD LION","label":"transactional"},
-  {"text":"ALDI 098272","label":"transactional"},
-  {"text":"SPROUTS FARMERS","label":"transactional"},
-  {"text":"CVS/PHARMACY","label":"transactional"},
-  {"text":"CVS PHARMACY #0098","label":"transactional"},
-  {"text":"WALGREENS #2210","label":"transactional"},
-  {"text":"WALGREENS.COM","label":"transactional"},
-  {"text":"RITE AID #4421","label":"transactional"},
-  {"text":"DUANE READE 8821","label":"transactional"},
-  {"text":"TARGET 00021341","label":"transactional"},
-  {"text":"TARGET STORE T-0021","label":"transactional"},
-  {"text":"WALMART STORE 0021","label":"transactional"},
-  {"text":"WAL-MART #1234","label":"transactional"},
-  {"text":"WMT*WALMART.COM","label":"transactional"},
-  {"text":"BEST BUY #0871","label":"transactional"},
-  {"text":"HOME DEPOT #4421","label":"transactional"},
-  {"text":"LOWE'S #2210","label":"transactional"},
-  {"text":"MARSHALLS #0098","label":"transactional"},
-  {"text":"T.J. MAXX #4421","label":"transactional"},
-  {"text":"TJMAXX 0089","label":"transactional"},
-  {"text":"ROSS STORES #229","label":"transactional"},
-  {"text":"BURLINGTON STORES","label":"transactional"},
-  {"text":"IKEA US","label":"transactional"},
-  {"text":"MACY'S #002","label":"transactional"},
-  {"text":"NORDSTROM #042","label":"transactional"},
-  {"text":"KOHL'S #221","label":"transactional"},
-  {"text":"BLOOMINGDALE'S","label":"transactional"},
-  {"text":"UNIQLO #0098","label":"transactional"},
-  {"text":"H & M #0021","label":"transactional"},
-  {"text":"ZARA USA","label":"transactional"},
-  {"text":"GAP STORE 4221","label":"transactional"},
-  {"text":"OLD NAVY #1234","label":"transactional"},
-  {"text":"URBAN OUTFITTERS","label":"transactional"},
-  {"text":"LULULEMON #002","label":"transactional"},
-  {"text":"ATHLETA","label":"transactional"},
-  {"text":"BANANA REPUBLIC","label":"transactional"},
-  {"text":"SEPHORA #0021","label":"transactional"},
-  {"text":"ULTA BEAUTY #03","label":"transactional"},
-  {"text":"AMZN MKTP US","label":"transactional"},
-  {"text":"AMAZON MKTPL*RT3JK","label":"transactional"},
-  {"text":"AMZN.COM/BILL","label":"transactional"},
-  {"text":"AMZN MKTPL US*RT4LM","label":"transactional"},
-  {"text":"ATM WITHDRAWAL","label":"transactional"},
-  {"text":"CASH WITHDRAWAL","label":"transactional"},
-  {"text":"WIRE TRANSFER FEE","label":"transactional"},
-  {"text":"OVERDRAFT FEE","label":"transactional"},
-  {"text":"ANNUAL FEE","label":"transactional"},
-  {"text":"FOREIGN TRANSACTION FEE","label":"transactional"},
-  {"text":"INTEREST CHARGE","label":"transactional"},
-  {"text":"NON-SUFFICIENT FUNDS","label":"transactional"},
-  {"text":"SERVICE CHARGE","label":"transactional"},
-  {"text":"MONTHLY MAINTENANCE FEE","label":"transactional"},
-  {"text":"VENMO *PAYMENT","label":"transactional"},
-  {"text":"VENMO *JOHN DOE","label":"transactional"},
-  {"text":"ZELLE TO JOHN","label":"transactional"},
-  {"text":"ZELLE FROM JANE","label":"transactional"},
-  {"text":"CASH APP *PAYMENT","label":"transactional"},
-  {"text":"POPMONEY*PAYMENT","label":"transactional"},
-  {"text":"AMERICAN AIRLINES","label":"transactional"},
-  {"text":"UNITED AIRLINES","label":"transactional"},
-  {"text":"DELTA AIR LINES","label":"transactional"},
-  {"text":"JETBLUE","label":"transactional"},
-  {"text":"SOUTHWEST AIRLINES","label":"transactional"},
-  {"text":"SPIRIT AIRLINES","label":"transactional"},
-  {"text":"EXPEDIA INC","label":"transactional"},
-  {"text":"BOOKING.COM","label":"transactional"},
-  {"text":"KAYAK*FLIGHTS","label":"transactional"},
-  {"text":"PRICELINE.COM","label":"transactional"},
-  {"text":"AIRBNB*HMQYP","label":"transactional"},
-  {"text":"AIRBNB INC","label":"transactional"},
-  {"text":"MARRIOTT INTL","label":"transactional"},
-  {"text":"HILTON HOTELS","label":"transactional"},
-  {"text":"HYATT HOTELS","label":"transactional"},
-  {"text":"IHG*HOTELS","label":"transactional"},
-  {"text":"HERTZ #2034","label":"transactional"},
-  {"text":"ENTERPRISE RENT-A-CAR","label":"transactional"},
-  {"text":"BUDGET RENT A CAR","label":"transactional"},
-  {"text":"AVIS RENT A CAR","label":"transactional"},
-  {"text":"ALAMO RENT A CAR","label":"transactional"},
-  {"text":"DOLLAR RENT A CAR","label":"transactional"},
-  {"text":"TKT*MOVIE TICKETS","label":"transactional"},
-  {"text":"AMC THEATRES","label":"transactional"},
-  {"text":"REGAL CINEMAS","label":"transactional"},
-  {"text":"TICKETMASTER","label":"transactional"},
-  {"text":"EVENTBRITE","label":"transactional"},
-  {"text":"STUBHUB","label":"transactional"},
-  {"text":"SEATGEEK","label":"transactional"},
-  {"text":"ETSY*PURCHASE","label":"transactional"},
-  {"text":"EBAY *PURCHASE","label":"transactional"},
-  {"text":"WIX.COM*","label":"transactional"},
-  {"text":"FANDANGO*MOVIES","label":"transactional"}
+  {
+    "text": "NETFLIX.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "NETFLIX",
+    "label": "subscription"
+  },
+  {
+    "text": "SP*NETFLIX",
+    "label": "subscription"
+  },
+  {
+    "text": "POS DEBIT NETFLIX.COM SAN FRAN CA 4218",
+    "label": "subscription"
+  },
+  {
+    "text": "NFLX*MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "HULU",
+    "label": "subscription"
+  },
+  {
+    "text": "HULU.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "SP*HULU",
+    "label": "subscription"
+  },
+  {
+    "text": "HULU PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "SPOTIFY",
+    "label": "subscription"
+  },
+  {
+    "text": "SPOTIFY USA",
+    "label": "subscription"
+  },
+  {
+    "text": "SP*SPOTIFY",
+    "label": "subscription"
+  },
+  {
+    "text": "PAYPAL *SPOTIFY",
+    "label": "subscription"
+  },
+  {
+    "text": "DISNEY PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "DISNEY+",
+    "label": "subscription"
+  },
+  {
+    "text": "DISNEYPLUS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "PEACOCK PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "PEACOCK TV",
+    "label": "subscription"
+  },
+  {
+    "text": "PARAMOUNT PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "PARAMOUNT+",
+    "label": "subscription"
+  },
+  {
+    "text": "PARAMOUNTPLUS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "HBO MAX",
+    "label": "subscription"
+  },
+  {
+    "text": "MAX.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "HBONOW",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE.COM/BILL",
+    "label": "subscription"
+  },
+  {
+    "text": "ITUNES.COM/BILL",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE TV+",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE MUSIC",
+    "label": "subscription"
+  },
+  {
+    "text": "ICLOUD+",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE ARCADE",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "YOUTUBE PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "YOUTUBE TV",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *YOUTUBEPREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *YOUTUBETV",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE STORAGE",
+    "label": "subscription"
+  },
+  {
+    "text": "GEMINI ADVANCED",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON PRIME",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON PRIME*RT4LM",
+    "label": "subscription"
+  },
+  {
+    "text": "PRIME VIDEO",
+    "label": "subscription"
+  },
+  {
+    "text": "AMZN PRIME *",
+    "label": "subscription"
+  },
+  {
+    "text": "AUDIBLE.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "AUDIBLE",
+    "label": "subscription"
+  },
+  {
+    "text": "AUDIBLE*KQDQT",
+    "label": "subscription"
+  },
+  {
+    "text": "TIDAL",
+    "label": "subscription"
+  },
+  {
+    "text": "TIDAL MUSIC",
+    "label": "subscription"
+  },
+  {
+    "text": "SIRIUSXM.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "SIRIUS XM",
+    "label": "subscription"
+  },
+  {
+    "text": "SIRIUSXM RADIO",
+    "label": "subscription"
+  },
+  {
+    "text": "PANDORA*",
+    "label": "subscription"
+  },
+  {
+    "text": "PANDORA PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE *CREATIVE CLOUD",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE INC",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE *PHOTOGRAPHY",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE *CC ALL APPS",
+    "label": "subscription"
+  },
+  {
+    "text": "MICROSOFT*365",
+    "label": "subscription"
+  },
+  {
+    "text": "MSFT *MICROSOFT 365",
+    "label": "subscription"
+  },
+  {
+    "text": "MICROSOFT *OFFICE",
+    "label": "subscription"
+  },
+  {
+    "text": "DROPBOX*PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "DROPBOX.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB INC",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB COPILOT",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI *CHATGPT",
+    "label": "subscription"
+  },
+  {
+    "text": "CHATGPT SUBSCRIPTION",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI*PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC*",
+    "label": "subscription"
+  },
+  {
+    "text": "CLAUDE.AI",
+    "label": "subscription"
+  },
+  {
+    "text": "NOTION LABS",
+    "label": "subscription"
+  },
+  {
+    "text": "NOTION*",
+    "label": "subscription"
+  },
+  {
+    "text": "DUOLINGO*",
+    "label": "subscription"
+  },
+  {
+    "text": "DUOLINGO PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "MASTERCLASS",
+    "label": "subscription"
+  },
+  {
+    "text": "MASTERCLASS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "COURSERA *",
+    "label": "subscription"
+  },
+  {
+    "text": "UDEMY*",
+    "label": "subscription"
+  },
+  {
+    "text": "SKILLSHARE",
+    "label": "subscription"
+  },
+  {
+    "text": "LASTPASS",
+    "label": "subscription"
+  },
+  {
+    "text": "1PASSWORD",
+    "label": "subscription"
+  },
+  {
+    "text": "AGILEBITS*1PASSWORD",
+    "label": "subscription"
+  },
+  {
+    "text": "BITWARDEN",
+    "label": "subscription"
+  },
+  {
+    "text": "EXPRESSVPN",
+    "label": "subscription"
+  },
+  {
+    "text": "NORDVPN",
+    "label": "subscription"
+  },
+  {
+    "text": "NORD ACCOUNT",
+    "label": "subscription"
+  },
+  {
+    "text": "SURFSHARK",
+    "label": "subscription"
+  },
+  {
+    "text": "PROTONMAIL",
+    "label": "subscription"
+  },
+  {
+    "text": "PROTONVPN",
+    "label": "subscription"
+  },
+  {
+    "text": "NYT*NEW YORK TIMES",
+    "label": "subscription"
+  },
+  {
+    "text": "NYTIMES.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "NEW YORK TIMES",
+    "label": "subscription"
+  },
+  {
+    "text": "WSJ.COM SUBSCRIBE",
+    "label": "subscription"
+  },
+  {
+    "text": "WALL STREET JOURNAL",
+    "label": "subscription"
+  },
+  {
+    "text": "WASHINGTON POST",
+    "label": "subscription"
+  },
+  {
+    "text": "BLOOMBERG",
+    "label": "subscription"
+  },
+  {
+    "text": "THE ECONOMIST",
+    "label": "subscription"
+  },
+  {
+    "text": "MEDIUM*",
+    "label": "subscription"
+  },
+  {
+    "text": "SUBSTACK*",
+    "label": "subscription"
+  },
+  {
+    "text": "PLANETFITNESS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "PLANET FITNESS",
+    "label": "subscription"
+  },
+  {
+    "text": "PLANET FITNESS #2034",
+    "label": "subscription"
+  },
+  {
+    "text": "EQUINOX",
+    "label": "subscription"
+  },
+  {
+    "text": "24 HOUR FITNESS",
+    "label": "subscription"
+  },
+  {
+    "text": "LA FITNESS",
+    "label": "subscription"
+  },
+  {
+    "text": "BLINK FITNESS",
+    "label": "subscription"
+  },
+  {
+    "text": "CRUNCH FITNESS",
+    "label": "subscription"
+  },
+  {
+    "text": "PELOTON*",
+    "label": "subscription"
+  },
+  {
+    "text": "ONEPELOTON.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "PELOTON DIGITAL",
+    "label": "subscription"
+  },
+  {
+    "text": "HEADSPACE",
+    "label": "subscription"
+  },
+  {
+    "text": "CALM.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "CALM*MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "NOOM*",
+    "label": "subscription"
+  },
+  {
+    "text": "NOOM HEALTH",
+    "label": "subscription"
+  },
+  {
+    "text": "WW INTERNATIONAL",
+    "label": "subscription"
+  },
+  {
+    "text": "WEIGHT WATCHERS",
+    "label": "subscription"
+  },
+  {
+    "text": "MYFITNESSPAL*",
+    "label": "subscription"
+  },
+  {
+    "text": "STRAVA*",
+    "label": "subscription"
+  },
+  {
+    "text": "CLASSPASS",
+    "label": "subscription"
+  },
+  {
+    "text": "PATREON*",
+    "label": "subscription"
+  },
+  {
+    "text": "PATREON.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "ONLYFANS*",
+    "label": "subscription"
+  },
+  {
+    "text": "TWITCH*",
+    "label": "subscription"
+  },
+  {
+    "text": "DISCORD NITRO",
+    "label": "subscription"
+  },
+  {
+    "text": "REDDIT PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "LINKEDIN PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "CANVA*",
+    "label": "subscription"
+  },
+  {
+    "text": "FIGMA*",
+    "label": "subscription"
+  },
+  {
+    "text": "GRAMMARLY",
+    "label": "subscription"
+  },
+  {
+    "text": "GRAMMARLY PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "EVERNOTE*",
+    "label": "subscription"
+  },
+  {
+    "text": "BEAR APP",
+    "label": "subscription"
+  },
+  {
+    "text": "ULYSSES",
+    "label": "subscription"
+  },
+  {
+    "text": "FANTASTICAL",
+    "label": "subscription"
+  },
+  {
+    "text": "PRIME LENDING",
+    "label": "subscription"
+  },
+  {
+    "text": "BACKBLAZE*",
+    "label": "subscription"
+  },
+  {
+    "text": "BACKBLAZE.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "DASHLANE",
+    "label": "subscription"
+  },
+  {
+    "text": "CLOUDFLARE*",
+    "label": "subscription"
+  },
+  {
+    "text": "VERCEL*",
+    "label": "subscription"
+  },
+  {
+    "text": "DIGITALOCEAN*",
+    "label": "subscription"
+  },
+  {
+    "text": "LINODE.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "AWS *AMAZON",
+    "label": "subscription"
+  },
+  {
+    "text": "NAMECHEAP*RENEWAL",
+    "label": "subscription"
+  },
+  {
+    "text": "GODADDY*",
+    "label": "subscription"
+  },
+  {
+    "text": "SQUARESPACE",
+    "label": "subscription"
+  },
+  {
+    "text": "SHOPIFY*",
+    "label": "subscription"
+  },
+  {
+    "text": "MAILCHIMP*",
+    "label": "subscription"
+  },
+  {
+    "text": "ZOOM.US",
+    "label": "subscription"
+  },
+  {
+    "text": "ZOOM VIDEO COMM",
+    "label": "subscription"
+  },
+  {
+    "text": "WALMART+",
+    "label": "subscription"
+  },
+  {
+    "text": "WALMART PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "COSTCO MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "COSTCO GOLD STAR",
+    "label": "subscription"
+  },
+  {
+    "text": "BJSWHOLESALE*",
+    "label": "subscription"
+  },
+  {
+    "text": "INSTACART+",
+    "label": "subscription"
+  },
+  {
+    "text": "DOORDASH DASHPASS",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "NINTENDO ONLINE",
+    "label": "subscription"
+  },
+  {
+    "text": "XBOX GAME PASS",
+    "label": "subscription"
+  },
+  {
+    "text": "PLAYSTATION PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "PSN*",
+    "label": "subscription"
+  },
+  {
+    "text": "EA PLAY",
+    "label": "subscription"
+  },
+  {
+    "text": "STEAM PURCHASE",
+    "label": "subscription"
+  },
+  {
+    "text": "ROBLOX*",
+    "label": "subscription"
+  },
+  {
+    "text": "BLIZZARD*",
+    "label": "subscription"
+  },
+  {
+    "text": "BIRCHBOX*",
+    "label": "subscription"
+  },
+  {
+    "text": "BARK BOX",
+    "label": "subscription"
+  },
+  {
+    "text": "DOLLAR SHAVE CLUB",
+    "label": "subscription"
+  },
+  {
+    "text": "HARRY'S RAZORS",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER *TRIP",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER TRIP HELP.UBER.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER EATS",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER *EATS",
+    "label": "transactional"
+  },
+  {
+    "text": "UBEREATS",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT *RIDE",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT",
+    "label": "transactional"
+  },
+  {
+    "text": "NYC TAXI",
+    "label": "transactional"
+  },
+  {
+    "text": "YELLOW CAB",
+    "label": "transactional"
+  },
+  {
+    "text": "VIA RIDESHARE",
+    "label": "transactional"
+  },
+  {
+    "text": "AMTRAK",
+    "label": "transactional"
+  },
+  {
+    "text": "GREYHOUND",
+    "label": "transactional"
+  },
+  {
+    "text": "MTA*NYCT",
+    "label": "transactional"
+  },
+  {
+    "text": "MTA SUBWAY",
+    "label": "transactional"
+  },
+  {
+    "text": "BART *FARE",
+    "label": "transactional"
+  },
+  {
+    "text": "WMATA*METRO",
+    "label": "transactional"
+  },
+  {
+    "text": "SEPTA*KEY",
+    "label": "transactional"
+  },
+  {
+    "text": "METRO CARD",
+    "label": "transactional"
+  },
+  {
+    "text": "PARKING METER",
+    "label": "transactional"
+  },
+  {
+    "text": "PARKMOBILE*",
+    "label": "transactional"
+  },
+  {
+    "text": "SP+ PARKING",
+    "label": "transactional"
+  },
+  {
+    "text": "SPOTHERO*",
+    "label": "transactional"
+  },
+  {
+    "text": "E-ZPASS",
+    "label": "transactional"
+  },
+  {
+    "text": "SHELL OIL 12345",
+    "label": "transactional"
+  },
+  {
+    "text": "SHELL SERVICE STATION",
+    "label": "transactional"
+  },
+  {
+    "text": "EXXONMOBIL",
+    "label": "transactional"
+  },
+  {
+    "text": "EXXON MOBIL #4567",
+    "label": "transactional"
+  },
+  {
+    "text": "CHEVRON 0098",
+    "label": "transactional"
+  },
+  {
+    "text": "BP*GAS",
+    "label": "transactional"
+  },
+  {
+    "text": "MOBIL ON THE RUN",
+    "label": "transactional"
+  },
+  {
+    "text": "76 STATION",
+    "label": "transactional"
+  },
+  {
+    "text": "SUNOCO 0083",
+    "label": "transactional"
+  },
+  {
+    "text": "VALERO #2210",
+    "label": "transactional"
+  },
+  {
+    "text": "CITGO 67854",
+    "label": "transactional"
+  },
+  {
+    "text": "MARATHON #341",
+    "label": "transactional"
+  },
+  {
+    "text": "SPEEDWAY 8821",
+    "label": "transactional"
+  },
+  {
+    "text": "WAWA 877",
+    "label": "transactional"
+  },
+  {
+    "text": "7-ELEVEN 39812",
+    "label": "transactional"
+  },
+  {
+    "text": "STARBUCKS #1234",
+    "label": "transactional"
+  },
+  {
+    "text": "STARBUCKS STORE 6128",
+    "label": "transactional"
+  },
+  {
+    "text": "DUNKIN #314059",
+    "label": "transactional"
+  },
+  {
+    "text": "DUNKIN DONUTS",
+    "label": "transactional"
+  },
+  {
+    "text": "PEET'S COFFEE #98",
+    "label": "transactional"
+  },
+  {
+    "text": "MCDONALD'S #4521",
+    "label": "transactional"
+  },
+  {
+    "text": "MCDONALDS",
+    "label": "transactional"
+  },
+  {
+    "text": "BURGER KING #883",
+    "label": "transactional"
+  },
+  {
+    "text": "WENDY'S #11234",
+    "label": "transactional"
+  },
+  {
+    "text": "CHIPOTLE 2987",
+    "label": "transactional"
+  },
+  {
+    "text": "PANERA BREAD #1928",
+    "label": "transactional"
+  },
+  {
+    "text": "CHICK-FIL-A #02871",
+    "label": "transactional"
+  },
+  {
+    "text": "CHICK FIL A",
+    "label": "transactional"
+  },
+  {
+    "text": "TACO BELL #4421",
+    "label": "transactional"
+  },
+  {
+    "text": "KFC #3211",
+    "label": "transactional"
+  },
+  {
+    "text": "POPEYES #4421",
+    "label": "transactional"
+  },
+  {
+    "text": "SUBWAY 49281",
+    "label": "transactional"
+  },
+  {
+    "text": "DOMINO'S PIZZA",
+    "label": "transactional"
+  },
+  {
+    "text": "PIZZA HUT #2103",
+    "label": "transactional"
+  },
+  {
+    "text": "PAPA JOHN'S",
+    "label": "transactional"
+  },
+  {
+    "text": "IN-N-OUT BURGER",
+    "label": "transactional"
+  },
+  {
+    "text": "SHAKE SHACK 0098",
+    "label": "transactional"
+  },
+  {
+    "text": "FIVE GUYS 4421",
+    "label": "transactional"
+  },
+  {
+    "text": "SWEETGREEN 0123",
+    "label": "transactional"
+  },
+  {
+    "text": "CAVA 2876",
+    "label": "transactional"
+  },
+  {
+    "text": "JAMBA JUICE",
+    "label": "transactional"
+  },
+  {
+    "text": "SMOOTHIE KING",
+    "label": "transactional"
+  },
+  {
+    "text": "AUNTIE ANNE'S",
+    "label": "transactional"
+  },
+  {
+    "text": "PANDA EXPRESS",
+    "label": "transactional"
+  },
+  {
+    "text": "QDOBA",
+    "label": "transactional"
+  },
+  {
+    "text": "MOE'S SOUTHWEST",
+    "label": "transactional"
+  },
+  {
+    "text": "TST*JOE'S DINER",
+    "label": "transactional"
+  },
+  {
+    "text": "TST*BLUE STONE LANE",
+    "label": "transactional"
+  },
+  {
+    "text": "TST*MAMOUNS",
+    "label": "transactional"
+  },
+  {
+    "text": "SQ *RESTAURANT",
+    "label": "transactional"
+  },
+  {
+    "text": "SQ *FOOD CART",
+    "label": "transactional"
+  },
+  {
+    "text": "SQ *COFFEE STAND",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH*RESTAURANTS",
+    "label": "transactional"
+  },
+  {
+    "text": "GRUBHUB",
+    "label": "transactional"
+  },
+  {
+    "text": "GRUBHUB*ORDER",
+    "label": "transactional"
+  },
+  {
+    "text": "POSTMATES",
+    "label": "transactional"
+  },
+  {
+    "text": "SEAMLESS NEW YORK",
+    "label": "transactional"
+  },
+  {
+    "text": "INSTACART*GROCERIES",
+    "label": "transactional"
+  },
+  {
+    "text": "INSTACART",
+    "label": "transactional"
+  },
+  {
+    "text": "GOPUFF",
+    "label": "transactional"
+  },
+  {
+    "text": "FAVOR DELIVERY",
+    "label": "transactional"
+  },
+  {
+    "text": "TRADER JOE'S #042",
+    "label": "transactional"
+  },
+  {
+    "text": "WHOLE FOODS MKT",
+    "label": "transactional"
+  },
+  {
+    "text": "WHOLEFDS",
+    "label": "transactional"
+  },
+  {
+    "text": "SAFEWAY #2034",
+    "label": "transactional"
+  },
+  {
+    "text": "KROGER #2210",
+    "label": "transactional"
+  },
+  {
+    "text": "PUBLIX #421",
+    "label": "transactional"
+  },
+  {
+    "text": "WEGMANS #34",
+    "label": "transactional"
+  },
+  {
+    "text": "H-E-B #098",
+    "label": "transactional"
+  },
+  {
+    "text": "STOP & SHOP",
+    "label": "transactional"
+  },
+  {
+    "text": "SHOPRITE",
+    "label": "transactional"
+  },
+  {
+    "text": "ALBERTSONS",
+    "label": "transactional"
+  },
+  {
+    "text": "FOOD LION",
+    "label": "transactional"
+  },
+  {
+    "text": "ALDI 098272",
+    "label": "transactional"
+  },
+  {
+    "text": "SPROUTS FARMERS",
+    "label": "transactional"
+  },
+  {
+    "text": "CVS/PHARMACY",
+    "label": "transactional"
+  },
+  {
+    "text": "CVS PHARMACY #0098",
+    "label": "transactional"
+  },
+  {
+    "text": "WALGREENS #2210",
+    "label": "transactional"
+  },
+  {
+    "text": "WALGREENS.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "RITE AID #4421",
+    "label": "transactional"
+  },
+  {
+    "text": "DUANE READE 8821",
+    "label": "transactional"
+  },
+  {
+    "text": "TARGET 00021341",
+    "label": "transactional"
+  },
+  {
+    "text": "TARGET STORE T-0021",
+    "label": "transactional"
+  },
+  {
+    "text": "WALMART STORE 0021",
+    "label": "transactional"
+  },
+  {
+    "text": "WAL-MART #1234",
+    "label": "transactional"
+  },
+  {
+    "text": "WMT*WALMART.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "BEST BUY #0871",
+    "label": "transactional"
+  },
+  {
+    "text": "HOME DEPOT #4421",
+    "label": "transactional"
+  },
+  {
+    "text": "LOWE'S #2210",
+    "label": "transactional"
+  },
+  {
+    "text": "MARSHALLS #0098",
+    "label": "transactional"
+  },
+  {
+    "text": "T.J. MAXX #4421",
+    "label": "transactional"
+  },
+  {
+    "text": "TJMAXX 0089",
+    "label": "transactional"
+  },
+  {
+    "text": "ROSS STORES #229",
+    "label": "transactional"
+  },
+  {
+    "text": "BURLINGTON STORES",
+    "label": "transactional"
+  },
+  {
+    "text": "IKEA US",
+    "label": "transactional"
+  },
+  {
+    "text": "MACY'S #002",
+    "label": "transactional"
+  },
+  {
+    "text": "NORDSTROM #042",
+    "label": "transactional"
+  },
+  {
+    "text": "KOHL'S #221",
+    "label": "transactional"
+  },
+  {
+    "text": "BLOOMINGDALE'S",
+    "label": "transactional"
+  },
+  {
+    "text": "UNIQLO #0098",
+    "label": "transactional"
+  },
+  {
+    "text": "H & M #0021",
+    "label": "transactional"
+  },
+  {
+    "text": "ZARA USA",
+    "label": "transactional"
+  },
+  {
+    "text": "GAP STORE 4221",
+    "label": "transactional"
+  },
+  {
+    "text": "OLD NAVY #1234",
+    "label": "transactional"
+  },
+  {
+    "text": "URBAN OUTFITTERS",
+    "label": "transactional"
+  },
+  {
+    "text": "LULULEMON #002",
+    "label": "transactional"
+  },
+  {
+    "text": "ATHLETA",
+    "label": "transactional"
+  },
+  {
+    "text": "BANANA REPUBLIC",
+    "label": "transactional"
+  },
+  {
+    "text": "SEPHORA #0021",
+    "label": "transactional"
+  },
+  {
+    "text": "ULTA BEAUTY #03",
+    "label": "transactional"
+  },
+  {
+    "text": "AMZN MKTP US",
+    "label": "transactional"
+  },
+  {
+    "text": "AMAZON MKTPL*RT3JK",
+    "label": "transactional"
+  },
+  {
+    "text": "AMZN.COM/BILL",
+    "label": "transactional"
+  },
+  {
+    "text": "AMZN MKTPL US*RT4LM",
+    "label": "transactional"
+  },
+  {
+    "text": "ATM WITHDRAWAL",
+    "label": "transactional"
+  },
+  {
+    "text": "CASH WITHDRAWAL",
+    "label": "transactional"
+  },
+  {
+    "text": "WIRE TRANSFER FEE",
+    "label": "transactional"
+  },
+  {
+    "text": "OVERDRAFT FEE",
+    "label": "transactional"
+  },
+  {
+    "text": "ANNUAL FEE",
+    "label": "transactional"
+  },
+  {
+    "text": "FOREIGN TRANSACTION FEE",
+    "label": "transactional"
+  },
+  {
+    "text": "INTEREST CHARGE",
+    "label": "transactional"
+  },
+  {
+    "text": "NON-SUFFICIENT FUNDS",
+    "label": "transactional"
+  },
+  {
+    "text": "SERVICE CHARGE",
+    "label": "transactional"
+  },
+  {
+    "text": "MONTHLY MAINTENANCE FEE",
+    "label": "transactional"
+  },
+  {
+    "text": "VENMO *PAYMENT",
+    "label": "transactional"
+  },
+  {
+    "text": "VENMO *JOHN DOE",
+    "label": "transactional"
+  },
+  {
+    "text": "ZELLE TO JOHN",
+    "label": "transactional"
+  },
+  {
+    "text": "ZELLE FROM JANE",
+    "label": "transactional"
+  },
+  {
+    "text": "CASH APP *PAYMENT",
+    "label": "transactional"
+  },
+  {
+    "text": "POPMONEY*PAYMENT",
+    "label": "transactional"
+  },
+  {
+    "text": "AMERICAN AIRLINES",
+    "label": "transactional"
+  },
+  {
+    "text": "UNITED AIRLINES",
+    "label": "transactional"
+  },
+  {
+    "text": "DELTA AIR LINES",
+    "label": "transactional"
+  },
+  {
+    "text": "JETBLUE",
+    "label": "transactional"
+  },
+  {
+    "text": "SOUTHWEST AIRLINES",
+    "label": "transactional"
+  },
+  {
+    "text": "SPIRIT AIRLINES",
+    "label": "transactional"
+  },
+  {
+    "text": "EXPEDIA INC",
+    "label": "transactional"
+  },
+  {
+    "text": "BOOKING.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "KAYAK*FLIGHTS",
+    "label": "transactional"
+  },
+  {
+    "text": "PRICELINE.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "AIRBNB*HMQYP",
+    "label": "transactional"
+  },
+  {
+    "text": "AIRBNB INC",
+    "label": "transactional"
+  },
+  {
+    "text": "MARRIOTT INTL",
+    "label": "transactional"
+  },
+  {
+    "text": "HILTON HOTELS",
+    "label": "transactional"
+  },
+  {
+    "text": "HYATT HOTELS",
+    "label": "transactional"
+  },
+  {
+    "text": "IHG*HOTELS",
+    "label": "transactional"
+  },
+  {
+    "text": "HERTZ #2034",
+    "label": "transactional"
+  },
+  {
+    "text": "ENTERPRISE RENT-A-CAR",
+    "label": "transactional"
+  },
+  {
+    "text": "BUDGET RENT A CAR",
+    "label": "transactional"
+  },
+  {
+    "text": "AVIS RENT A CAR",
+    "label": "transactional"
+  },
+  {
+    "text": "ALAMO RENT A CAR",
+    "label": "transactional"
+  },
+  {
+    "text": "DOLLAR RENT A CAR",
+    "label": "transactional"
+  },
+  {
+    "text": "TKT*MOVIE TICKETS",
+    "label": "transactional"
+  },
+  {
+    "text": "AMC THEATRES",
+    "label": "transactional"
+  },
+  {
+    "text": "REGAL CINEMAS",
+    "label": "transactional"
+  },
+  {
+    "text": "TICKETMASTER",
+    "label": "transactional"
+  },
+  {
+    "text": "EVENTBRITE",
+    "label": "transactional"
+  },
+  {
+    "text": "STUBHUB",
+    "label": "transactional"
+  },
+  {
+    "text": "SEATGEEK",
+    "label": "transactional"
+  },
+  {
+    "text": "ETSY*PURCHASE",
+    "label": "transactional"
+  },
+  {
+    "text": "EBAY *PURCHASE",
+    "label": "transactional"
+  },
+  {
+    "text": "WIX.COM*",
+    "label": "transactional"
+  },
+  {
+    "text": "FANDANGO*MOVIES",
+    "label": "transactional"
+  },
+  {
+    "text": "OPENAI *CHATGPT PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI *PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI",
+    "label": "subscription"
+  },
+  {
+    "text": "CHATGPT PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "CHATGPT.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "CHATGPT PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "CHATGPT TEAM",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI *TEAM",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI*API",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC*CLAUDE PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC PBC",
+    "label": "subscription"
+  },
+  {
+    "text": "CLAUDE PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "CLAUDE MAX",
+    "label": "subscription"
+  },
+  {
+    "text": "CLAUDE TEAM",
+    "label": "subscription"
+  },
+  {
+    "text": "CLAUDE.AI *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC*API",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *GEMINI ADVANCED",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE AI PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *AI PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY.AI",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY AI INC",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR.SO",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR AI",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "ANYSPHERE INC",
+    "label": "subscription"
+  },
+  {
+    "text": "REPLIT*",
+    "label": "subscription"
+  },
+  {
+    "text": "REPLIT.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "REPLIT CORE",
+    "label": "subscription"
+  },
+  {
+    "text": "VERCEL INC",
+    "label": "subscription"
+  },
+  {
+    "text": "VERCEL.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "V0.DEV",
+    "label": "subscription"
+  },
+  {
+    "text": "VERCEL PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "BOLT.NEW",
+    "label": "subscription"
+  },
+  {
+    "text": "STACKBLITZ*BOLT",
+    "label": "subscription"
+  },
+  {
+    "text": "LOVABLE.DEV",
+    "label": "subscription"
+  },
+  {
+    "text": "LOVABLE *AI",
+    "label": "subscription"
+  },
+  {
+    "text": "MIDJOURNEY *",
+    "label": "subscription"
+  },
+  {
+    "text": "MIDJOURNEY.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "MIDJOURNEY INC",
+    "label": "subscription"
+  },
+  {
+    "text": "RUNWAYML*",
+    "label": "subscription"
+  },
+  {
+    "text": "RUNWAY AI",
+    "label": "subscription"
+  },
+  {
+    "text": "SUNO.AI",
+    "label": "subscription"
+  },
+  {
+    "text": "SUNO*",
+    "label": "subscription"
+  },
+  {
+    "text": "ELEVENLABS *",
+    "label": "subscription"
+  },
+  {
+    "text": "ELEVEN LABS",
+    "label": "subscription"
+  },
+  {
+    "text": "HUGGINGFACE*",
+    "label": "subscription"
+  },
+  {
+    "text": "HUGGING FACE INC",
+    "label": "subscription"
+  },
+  {
+    "text": "GROQ INC",
+    "label": "subscription"
+  },
+  {
+    "text": "GROQ.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "DEEPSEEK *",
+    "label": "subscription"
+  },
+  {
+    "text": "TOGETHER AI",
+    "label": "subscription"
+  },
+  {
+    "text": "COHERE.AI",
+    "label": "subscription"
+  },
+  {
+    "text": "MISTRAL AI",
+    "label": "subscription"
+  },
+  {
+    "text": "LINEAR.APP",
+    "label": "subscription"
+  },
+  {
+    "text": "LINEAR ORBIT",
+    "label": "subscription"
+  }
 ]
