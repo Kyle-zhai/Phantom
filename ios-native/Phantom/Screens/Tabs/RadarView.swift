@@ -10,6 +10,9 @@ struct RadarView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 header
+                if store.isSampleMode {
+                    sampleBanner.padding(.top, 14)
+                }
                 heroPanel.padding(.top, 20)
                 if store.subscriptions.isEmpty {
                     emptyStateCard.padding(.top, 16)
@@ -165,6 +168,42 @@ struct RadarView: View {
 
     private var divider: some View {
         Rectangle().fill(Color(red: 0.16, green: 0.16, blue: 0.16)).frame(width: 1, height: 36).padding(.horizontal, 8)
+    }
+
+    private var sampleBanner: some View {
+        HStack(alignment: .top, spacing: 12) {
+            ZStack {
+                Circle().fill(Palette.warn).frame(width: 36, height: 36)
+                Image(systemName: "info.circle.fill")
+                    .foregroundStyle(Palette.white)
+                    .font(.system(size: 16, weight: .bold))
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("These aren't your subscriptions").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                Text("You're in sample mode — 14 example subscriptions Phantom uses to demo the app. Tap Clear to start fresh, or scan your real bank screenshots.")
+                    .font(AppFont.small).foregroundStyle(Palette.mute)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 8) {
+                    Button { store.clearSampleData() } label: {
+                        Text("Clear sample").font(AppFont.smallB)
+                            .foregroundStyle(Palette.white)
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .background(Palette.ink, in: Capsule())
+                    }
+                    Button { showImport = true } label: {
+                        Text("Scan real bank").font(AppFont.smallB)
+                            .foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 14).padding(.vertical, 8)
+                            .background(Palette.white, in: Capsule())
+                            .overlay(Capsule().stroke(Palette.border, lineWidth: 1))
+                    }
+                }
+                .padding(.top, 4)
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.md))
     }
 
     private var emptyStateCard: some View {

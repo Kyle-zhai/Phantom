@@ -59,16 +59,16 @@ struct OnboardingConnectView: View {
                 }
                 .padding(.top, 20)
 
-                // Sample-data preview — clearly labeled, opt-in only.
-                // This is the path App Store reviewers take to see the full
+                // Sample-data preview — opt-in only, clearly labeled.
+                // Used by App Store reviewers and curious users to see the full
                 // feature set without uploading real screenshots.
                 Button {
                     store.completeOnboarding(viaDemo: true)
                 } label: {
                     VStack(spacing: 4) {
-                        Text("Browse with sample data")
+                        Text("Just exploring? See a demo →")
                             .font(AppFont.smallB).foregroundStyle(Palette.mute)
-                        Text("See what Phantom looks like with 14 example subscriptions. Clear any time in Settings.")
+                        Text("Loads 14 EXAMPLE subscriptions (not yours). Clear any time.")
                             .font(AppFont.small).foregroundStyle(Palette.mute2)
                             .multilineTextAlignment(.center)
                     }
