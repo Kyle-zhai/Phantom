@@ -78,7 +78,9 @@ enum MerchantNormalizer {
             #"\s+(US|USA)\s*$"#,                   // trailing US
             #"\s+\d{3}[- ]?\d{3}[- ]?\d{4}"#,      // phone numbers
             #"\s+\d{6,}"#,                          // long transaction ids
-            #"\*[A-Z0-9]{4,}"#,                     // *ABC123 suffix
+            #"\*[A-Z0-9]*\d[A-Z0-9]*"#,             // *RT3JK / *A5KU — must contain a digit
+                                                    // (never strip *EATS / *RIDE / *ONE / *PRO,
+                                                    // which are subscription-meaningful)
             #"\s+#\d+"#,                            // trailing #1234
         ]
         for pattern in trailingPatterns {
@@ -292,9 +294,12 @@ enum MerchantNormalizer {
         //    we didn't enumerate, plus pre-tax displays in no-tax states (OR, NH, DE, MT, AK)
         if cents % 100 == 99 && dollars <= 250 { return true }
 
-        // 4. Round-dollar prices $5-$250 (Claude / ChatGPT $20, ChatGPT Team $25,
-        //    yearly Hulu, etc.) — only when ML already thinks it's a subscription
-        if cents % 100 == 0 && dollars >= 5 && dollars <= 250 { return true }
+        // Note: we deliberately do NOT match generic round-dollar amounts
+        // ($30, $50, $89, $100). Too many one-off charges (gym day passes,
+        // restaurants, store purchases) hit those values, and the small
+        // number of unknown subs at those prices isn't worth the noise.
+        // Round-dollar prices that ARE common ($20 ChatGPT, $25 ChatGPT Team)
+        // live in commonSubscriptionAmounts above.
 
         return false
     }

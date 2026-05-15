@@ -103,31 +103,98 @@ enum TransactionParser {
         }
         if !currentRow.isEmpty { rows.append(currentRow) }
 
-        // 2. For each row, see if there's a $ amount
+        // 2. Classify each row, then pair stacked "date row + merchant row"
+        //    transactions before generating ParsedTransactions.
+        //
+        //    Citi and some Discover statements use a two-row layout per charge:
+        //      Row A: "May 8, 2026                 $18.86"      ← txn amount
+        //      Row B: "UBER *EATS HELP.UBER.COMCA  $1,343.61"   ← running balance
+        //    The amount on row A is the real transaction; the amount on row B
+        //    is the running balance. The merchant name lives on row B.
+        //    We pair them: take amount + date from A, merchant from B.
+        let kinds: [RowKind] = rows.map(classify)
+
         var transactions: [ParsedTransaction] = []
-        for row in rows {
-            let merged = row.sorted { $0.box.minX < $1.box.minX }
-            let combined = merged.map(\.text).joined(separator: " ")
-            guard let amount = parseAmount(in: combined), amount > 0.10 else { continue }
-            // Merchant is the text up to the amount
-            let merchantRaw = combined
-                .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            // Use the full normalizer (handles POS/SP*/AMZN/PAYPAL prefixes + bank junk)
-            guard let merchant = MerchantNormalizer.normalize(merchantRaw),
-                  !isSummary(merchant),
-                  isPlausibleMerchant(merchant) else { continue }
-            let date = extractDates(from: combined)
-            transactions.append(ParsedTransaction(merchant: merchant, amount: amount, date: date, rawRow: combined))
+        var i = 0
+        while i < kinds.count {
+            switch kinds[i] {
+            case .ignored:
+                i += 1
+            case let .dateOnlyWithAmount(amount, date, raw):
+                // Look ahead for the next merchant row to pair with
+                if i + 1 < kinds.count,
+                   case let .merchantWithAmount(merchant, _, mDate, mRaw) = kinds[i + 1] {
+                    transactions.append(ParsedTransaction(
+                        merchant: merchant,
+                        amount: amount,
+                        date: date ?? mDate,
+                        rawRow: "\(raw) | \(mRaw)"
+                    ))
+                    i += 2
+                } else {
+                    // Orphan date row — no merchant to attach to. Drop it
+                    // (otherwise the date string itself ends up as the merchant).
+                    i += 1
+                }
+            case let .merchantWithAmount(merchant, amount, date, raw):
+                transactions.append(ParsedTransaction(
+                    merchant: merchant, amount: amount, date: date, rawRow: raw
+                ))
+                i += 1
+            }
         }
 
         // 3. Per-merchant dedup: when the same merchant has multiple amounts
-        //    in this batch, the SMALLEST is the real transaction price — the
-        //    larger ones are running balances / daily totals / monthly sums
-        //    that BoA and some Chase statements show on the row beneath the
-        //    actual charge. Without this, "$15.49 Netflix" and "$185.49 Netflix
-        //    (running balance)" get treated as two separate charges.
+        //    in this batch (different Y-clustering races, OCR duplicates, etc.),
+        //    the SMALLEST is the real transaction price.
         return collapseByMerchantPreferSmaller(transactions)
+    }
+
+    private enum RowKind {
+        case ignored
+        /// Row content is just a date string + a $ amount. Citi-style charges.
+        case dateOnlyWithAmount(amount: Double, date: Date?, raw: String)
+        /// Row has a real merchant name + a $ amount.
+        case merchantWithAmount(merchant: String, amount: Double, date: Date?, raw: String)
+    }
+
+    private static func classify(_ row: [OCR.Line]) -> RowKind {
+        let merged = row.sorted { $0.box.minX < $1.box.minX }
+        let combined = merged.map(\.text).joined(separator: " ")
+        guard let amount = parseAmount(in: combined), amount > 0.10 else { return .ignored }
+
+        let merchantRaw = combined
+            .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if isDateOnlyText(merchantRaw) {
+            return .dateOnlyWithAmount(amount: amount, date: extractDates(from: combined), raw: combined)
+        }
+
+        guard let merchant = MerchantNormalizer.normalize(merchantRaw),
+              !isSummary(merchant),
+              isPlausibleMerchant(merchant) else { return .ignored }
+
+        return .merchantWithAmount(
+            merchant: merchant,
+            amount: amount,
+            date: extractDates(from: combined),
+            raw: combined
+        )
+    }
+
+    /// Returns true when `text` is JUST a date (no merchant content).
+    /// Catches both numeric ("12/15", "12-15-2024") and month-name forms
+    /// ("May 8, 2026", "Apr 30", "May 4,").
+    private static func isDateOnlyText(_ text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Numeric date: 12/15, 1/2, 12-15-2024
+        if trimmed.range(of: #"^\d{1,2}[/-]\d{1,2}([/-]\d{2,4})?$"#,
+                         options: .regularExpression) != nil { return true }
+        // Month-name date: "May 8, 2026", "May 4,", "Apr 30 2026"
+        let pattern = #"^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}[\s,]*\d{0,4}\s*$"#
+        if trimmed.lowercased().range(of: pattern, options: .regularExpression) != nil { return true }
+        return false
     }
 
     /// Per-merchant collapse: keep only the smallest amount per (merchant + date).
