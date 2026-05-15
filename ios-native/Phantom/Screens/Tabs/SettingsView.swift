@@ -66,12 +66,14 @@ struct SettingsView: View {
                 }
                 .padding(.top, 28)
 
-                SectionWrap(title: "Privacy", caption: "The three things Phantom will never do.") {
+                VStack(alignment: .leading, spacing: 12) {
+                    SectionHeader("Privacy", caption: "The three things Phantom will never do.")
                     VStack(alignment: .leading, spacing: 12) {
                         privacyRow("never sell", suffix: "your data to anyone.")
                         privacyRow("never push", suffix: "loans or credit cards.")
                         privacyRow("never store", suffix: "your card number — OCR runs entirely on your iPhone.")
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(18)
                     .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
                 }

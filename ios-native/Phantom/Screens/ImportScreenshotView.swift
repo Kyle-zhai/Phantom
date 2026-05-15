@@ -164,13 +164,13 @@ struct ImportScreenshotView: View {
         let confirmedIds = Set(confirmed.map { $0.id })
         let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
             .filter { !confirmedIds.contains($0.id) }
-        let totalSubs = confirmed.count + likely.count
+        let subs = confirmed + likely
 
-        return VStack(alignment: .leading, spacing: 16) {
+        return VStack(alignment: .leading, spacing: 20) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("FOUND \(parsedTxs.count) CHARGES").font(AppFont.smallB).foregroundStyle(Palette.success)
-                    Text("\(totalSubs) look like subscriptions")
+                    Text("SCAN COMPLETE").font(AppFont.smallB).foregroundStyle(Palette.success)
+                    Text("\(parsedTxs.count) charges · \(subs.count) subscriptions")
                         .font(AppFont.h2).foregroundStyle(Palette.ink)
                     if !likely.isEmpty {
                         Text("\(confirmed.count) confirmed (repeat charges) · \(likely.count) likely (1 sighting — upload next month to confirm)")
@@ -182,17 +182,87 @@ struct ImportScreenshotView: View {
             }
             .padding(.top, 24)
 
+            subscriptionsBox(subs)
+
+            allChargesBox
+
+            PrimaryButton("Scan more screenshots", variant: .secondary) {
+                pickedItems = []
+                step = .pick
+            } leading: {
+                Image(systemName: "plus.rectangle.on.rectangle")
+            }
+        }
+    }
+
+    private func subscriptionsBox(_ subs: [Subscription]) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "repeat.circle.fill")
+                    .foregroundStyle(Palette.success).font(.system(size: 14, weight: .bold))
+                Text("SUBSCRIPTIONS DETECTED · \(subs.count)").font(AppFont.smallB).foregroundStyle(Palette.success)
+                Spacer()
+            }
+
+            if subs.isEmpty {
+                Text("No recurring charges spotted in this batch. Upload a few more months — Phantom needs to see the same charge repeat to confirm.")
+                    .font(AppFont.small).foregroundStyle(Palette.mute)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md))
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(subs.prefix(30)) { s in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(s.name).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                Text(cycleLabel(s.cycle)).font(AppFont.small).foregroundStyle(Palette.mute)
+                            }
+                            Spacer()
+                            Text(fmtUSD(s.amount)).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                        }
+                        .padding(.horizontal, 14).padding(.vertical, 10)
+                        if s.id != subs.prefix(30).last?.id {
+                            Rectangle().fill(Palette.border).frame(height: 1)
+                        }
+                    }
+                }
+                .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+                .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.success.opacity(0.4), lineWidth: 1))
+
+                PrimaryButton("Add these \(subs.count) to my Phantom") {
+                    commit()
+                } leading: {
+                    Image(systemName: "checkmark.circle.fill")
+                }
+            }
+        }
+    }
+
+    private var allChargesBox: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "list.bullet.rectangle")
+                    .foregroundStyle(Palette.mute).font(.system(size: 14, weight: .bold))
+                Text("ALL CHARGES SCANNED · \(parsedTxs.count)").font(AppFont.smallB).foregroundStyle(Palette.mute)
+                Spacer()
+            }
+
+            Text("For reference. Phantom won't import these as subscriptions.")
+                .font(AppFont.small).foregroundStyle(Palette.mute2)
+
             VStack(spacing: 0) {
                 ForEach(parsedTxs.prefix(30)) { tx in
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(tx.merchant).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                            Text(tx.merchant).font(AppFont.body).foregroundStyle(Palette.ink)
                             if let d = tx.date {
                                 Text(fmtRelDate(d)).font(AppFont.small).foregroundStyle(Palette.mute)
                             }
                         }
                         Spacer()
-                        Text(fmtUSD(tx.amount)).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                        Text(fmtUSD(tx.amount)).font(AppFont.body).foregroundStyle(Palette.mute)
                     }
                     .padding(.horizontal, 14).padding(.vertical, 10)
                     if tx.id != parsedTxs.prefix(30).last?.id {
@@ -204,23 +274,17 @@ struct ImportScreenshotView: View {
             .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
 
             if parsedTxs.count > 30 {
-                Text("Showing first 30. \(parsedTxs.count - 30) more will be saved.")
+                Text("Showing first 30 of \(parsedTxs.count).")
                     .font(AppFont.small).foregroundStyle(Palette.mute)
             }
+        }
+    }
 
-            PrimaryButton("Add these to my Phantom") {
-                commit()
-            } leading: {
-                Image(systemName: "checkmark.circle.fill")
-            }
-            .padding(.top, 8)
-
-            PrimaryButton("Scan more screenshots", variant: .secondary) {
-                pickedItems = []
-                step = .pick
-            } leading: {
-                Image(systemName: "plus.rectangle.on.rectangle")
-            }
+    private func cycleLabel(_ cycle: BillingCycle) -> String {
+        switch cycle {
+        case .monthly: return "Monthly"
+        case .yearly:  return "Yearly"
+        case .weekly:  return "Weekly"
         }
     }
 
