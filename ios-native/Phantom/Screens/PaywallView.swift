@@ -16,6 +16,10 @@ struct PaywallView: View {
     @State private var selected: Product?
     @State private var purchasing = false
     @State private var purchaseError: String?
+    @State private var loadTimedOut = false
+    @State private var selectedPlanTier: PlanTier = .yearly
+
+    private enum PlanTier { case monthly, yearly }
 
     private var purchaseService: PurchaseService { store.purchaseService }
 
@@ -52,32 +56,22 @@ struct PaywallView: View {
                 }
                 .padding(.top, 8)
 
-                if purchaseService.products.isEmpty {
-                    ProgressView()
-                        .padding(.top, 40)
-                        .task { await purchaseService.refresh() }
-                } else {
-                    VStack(spacing: 12) {
-                        if let yearly = purchaseService.yearly {
-                            planCard(product: yearly,
-                                     title: "Annual",
-                                     subline: yearlySubline(yearly),
-                                     badge: "Refund within 30 days",
-                                     best: true)
-                        }
-                        if let monthly = purchaseService.monthly {
-                            planCard(product: monthly,
-                                     title: "Monthly",
-                                     subline: "per month · cancel anytime",
-                                     badge: nil,
-                                     best: false)
+                planSection
+                    .padding(.top, 30)
+                    .task {
+                        // Kick off product load in parallel with a 2-second timer.
+                        // If StoreKit hasn't returned products by then (e.g. running
+                        // outside Xcode without the .storekit config), fall back to
+                        // static plan cards so the screen is usable.
+                        Task { await purchaseService.refresh() }
+                        try? await Task.sleep(nanoseconds: 2_000_000_000)
+                        if purchaseService.products.isEmpty {
+                            loadTimedOut = true
                         }
                     }
-                    .padding(.top, 30)
                     .onAppear {
                         if selected == nil { selected = purchaseService.yearly ?? purchaseService.monthly }
                     }
-                }
 
                 VStack(spacing: 14) {
                     ForEach(perks, id: \.self) { perk in
@@ -106,11 +100,9 @@ struct PaywallView: View {
                     Text(err).font(AppFont.small).foregroundStyle(Palette.danger).padding(.top, 12)
                 }
 
-                PrimaryButton(ctaTitle, variant: .primary) {
-                    Task { await purchase() }
-                }
-                .disabled(purchasing || selected == nil)
-                .padding(.top, 24)
+                PrimaryButton(ctaTitle, variant: .primary, action: ctaAction)
+                    .disabled(ctaDisabled)
+                    .padding(.top, 24)
                 PrimaryButton("Continue with Free", variant: .ghost) { dismiss() }
                     .padding(.top, 12)
 
@@ -127,9 +119,117 @@ struct PaywallView: View {
         }
     }
 
+    @ViewBuilder
+    private var planSection: some View {
+        if !purchaseService.products.isEmpty {
+            // Real StoreKit products loaded
+            VStack(spacing: 12) {
+                if let yearly = purchaseService.yearly {
+                    planCard(product: yearly,
+                             title: "Annual",
+                             subline: yearlySubline(yearly),
+                             badge: "Refund within 30 days",
+                             best: true)
+                }
+                if let monthly = purchaseService.monthly {
+                    planCard(product: monthly,
+                             title: "Monthly",
+                             subline: "per month · cancel anytime",
+                             badge: nil,
+                             best: false)
+                }
+            }
+        } else if loadTimedOut {
+            // Fallback: display static plan info if StoreKit unavailable
+            VStack(spacing: 12) {
+                staticPlanCard(tier: .yearly,
+                               title: "Annual",
+                               price: "$29.99",
+                               subline: "per year · ~$2.50 / month · save 37%",
+                               badge: "Refund within 30 days",
+                               best: true)
+                staticPlanCard(tier: .monthly,
+                               title: "Monthly",
+                               price: "$3.99",
+                               subline: "per month · cancel anytime",
+                               badge: nil,
+                               best: false)
+                Text("Purchase available on real device. In the simulator, run from Xcode to enable StoreKit testing.")
+                    .font(AppFont.small)
+                    .foregroundStyle(Palette.mute)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 8)
+                    .padding(.top, 4)
+            }
+        } else {
+            // Initial loading state
+            HStack(spacing: 10) {
+                ProgressView()
+                Text("Loading plans…").font(AppFont.small).foregroundStyle(Palette.mute)
+            }
+            .padding(.vertical, 30)
+        }
+    }
+
+    private func staticPlanCard(tier: PlanTier, title: String, price: String, subline: String, badge: String?, best: Bool) -> some View {
+        let active = selectedPlanTier == tier
+        return Button { selectedPlanTier = tier } label: {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Text(title).font(AppFont.h3).foregroundStyle(Palette.ink)
+                    Spacer()
+                    ZStack {
+                        Circle().stroke(active ? Palette.ink : Palette.mute2, lineWidth: 2).frame(width: 22, height: 22)
+                        if active { Circle().fill(Palette.ink).frame(width: 10, height: 10) }
+                    }
+                }
+                Text(price).font(AppFont.display).foregroundStyle(Palette.ink).padding(.top, 8)
+                Text(subline).font(AppFont.small).foregroundStyle(Palette.mute).padding(.top, 2)
+                if let badge { Badge(badge, tone: .keep).padding(.top, 12) }
+            }
+            .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
+            .overlay(
+                RoundedRectangle(cornerRadius: Radius.md)
+                    .stroke(active ? Palette.ink : Palette.border, lineWidth: active ? 2 : 1)
+            )
+            .overlay(alignment: .topTrailing) {
+                if best {
+                    Text("BEST VALUE").micro()
+                        .foregroundStyle(Palette.white)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(Palette.ink, in: Capsule())
+                        .offset(x: -16, y: -10)
+                }
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
     private var ctaTitle: String {
-        guard let sel = selected else { return "Start Pro" }
-        return purchasing ? "Processing…" : "Start Pro · \(sel.displayPrice) / \(sel.id.hasSuffix("yearly") ? "year" : "month")"
+        if purchasing { return "Processing…" }
+        if let sel = selected {
+            return "Start Pro · \(sel.displayPrice) / \(sel.id.hasSuffix("yearly") ? "year" : "month")"
+        }
+        if loadTimedOut {
+            return selectedPlanTier == .yearly
+                ? "Start Pro · $29.99 / year"
+                : "Start Pro · $3.99 / month"
+        }
+        return "Start Pro"
+    }
+
+    private var ctaDisabled: Bool {
+        purchasing || (selected == nil && !loadTimedOut)
+    }
+
+    private var ctaAction: () -> Void {
+        if purchaseService.products.isEmpty && loadTimedOut {
+            // No StoreKit — show informational error rather than fail silently
+            return { purchaseError = "Purchases unavailable in this build. Run from Xcode or install via TestFlight to test." }
+        }
+        return { Task { await purchase() } }
     }
 
     private func yearlySubline(_ y: Product) -> String {

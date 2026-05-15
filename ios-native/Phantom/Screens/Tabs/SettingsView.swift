@@ -66,18 +66,11 @@ struct SettingsView: View {
                 }
                 .padding(.top, 28)
 
-                SectionWrap(title: "Connected accounts") {
-                    SettingsRow(icon: "link", label: "Chase ····4218", value: "Connected")
-                    DividerLine()
-                    SettingsRow(icon: "plus.circle", label: "Add another bank")
-                }
-                .padding(.top, 28)
-
                 SectionWrap(title: "Privacy", caption: "The three things Phantom will never do.") {
                     VStack(alignment: .leading, spacing: 12) {
                         privacyRow("never sell", suffix: "your data to anyone.")
                         privacyRow("never push", suffix: "loans or credit cards.")
-                        privacyRow("never store", suffix: "your card number — read-only via Plaid.")
+                        privacyRow("never store", suffix: "your card number — OCR runs entirely on your iPhone.")
                     }
                     .padding(18)
                     .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
@@ -100,12 +93,6 @@ struct SettingsView: View {
                         }.buttonStyle(.plain)
                         DividerLine()
                     }
-                    if store.profile?.plaidConnected == true {
-                        Button { confirmDisconnect = true } label: {
-                            SettingsRow(icon: "link.badge.plus", label: "Disconnect bank")
-                        }.buttonStyle(.plain)
-                        DividerLine()
-                    }
                     Button { confirmSignOut = true } label: {
                         SettingsRow(icon: "rectangle.portrait.and.arrow.right", label: "Sign out")
                     }.buttonStyle(.plain)
@@ -115,19 +102,6 @@ struct SettingsView: View {
                     }.buttonStyle(.plain)
                 }
                 .padding(.top, 28)
-
-                #if DEBUG
-                SectionWrap(title: "Developer", caption: "Visible in Debug builds only.") {
-                    Button { store.togglePro() } label: {
-                        SettingsRow(icon: "rosette", label: store.isPro ? "Disable Pro (debug)" : "Enable Pro (debug)")
-                    }.buttonStyle(.plain)
-                    DividerLine()
-                    Button { store.resetOnboarding() } label: {
-                        SettingsRow(icon: "arrow.clockwise", label: "Restart onboarding")
-                    }.buttonStyle(.plain)
-                }
-                .padding(.top, 28)
-                #endif
 
                 Text("Phantom · v1.0 · Made for people who hate losing money.")
                     .font(AppFont.small).foregroundStyle(Palette.mute2)
