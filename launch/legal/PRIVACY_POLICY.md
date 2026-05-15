@@ -153,8 +153,7 @@ We may update this policy. If we make a material change, we will notify you in-a
 ## 10. Contact
 
 **Yinan Zhai**
-**[STREET ADDRESS]**
-**[CITY, STATE ZIP]**
+Address available on request — see email above.
 Email: **[yn.zhai0205@gmail.com]**
 Security: **[yn.zhai0205@gmail.com]**
 

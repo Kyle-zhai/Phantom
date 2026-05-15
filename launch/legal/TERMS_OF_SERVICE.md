@@ -168,7 +168,7 @@ We may update these Terms. Material changes will be notified at least 30 days in
 ## 15. Contact
 
 **Yinan Zhai**
-**[STREET ADDRESS]**
+**Address available on request**
 Email: **[yn.zhai0205@gmail.com]**
 Legal: **[yn.zhai0205@gmail.com]**
 
