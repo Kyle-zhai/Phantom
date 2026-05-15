@@ -1,13 +1,13 @@
-# SubSpy Privacy Policy
+# Phantom Privacy Policy
 
 **Effective date: [DATE OF FIRST RELEASE]**
 **Last updated: [DATE]**
 
 > ⚠️ **Template — replace bracketed items before publishing.** Have a US-licensed attorney review before public release. Plaid and Apple App Review will read this carefully.
 
-This Privacy Policy describes how **[YOUR LEGAL ENTITY NAME]** ("**SubSpy**", "**we**", "**us**", or "**our**") collects, uses, stores, and shares information when you use the **SubSpy** iOS application and any related services (collectively, the "**Service**").
+This Privacy Policy describes how **[YOUR LEGAL ENTITY NAME]** ("**Phantom**", "**we**", "**us**", or "**our**") collects, uses, stores, and shares information when you use the **Phantom** iOS application and any related services (collectively, the "**Service**").
 
-By using SubSpy you agree to the data practices described here. If you do not agree, do not use SubSpy.
+By using Phantom you agree to the data practices described here. If you do not agree, do not use Phantom.
 
 ---
 
@@ -17,7 +17,7 @@ By using SubSpy you agree to the data practices described here. If you do not ag
 
 - **Account information**: name, email address, password (stored as a salted hash).
 - **Subscription preferences**: which alerts you turn on, which subscriptions you've cancelled, your ratings of services.
-- **Disputes you generate**: the contents of any dispute letter you draft or send through SubSpy.
+- **Disputes you generate**: the contents of any dispute letter you draft or send through Phantom.
 
 ### 1.2 Information collected via Plaid
 
@@ -27,14 +27,14 @@ We use **[Plaid Inc.](https://plaid.com)** as our bank-data provider. When you c
 - Plaid returns an **access token** that we store, which lets us request read-only transaction data on your behalf.
 - For each transaction we receive: **merchant name, amount, date, and Plaid's category labels**. We do **not** receive your full card number, account number, account balance, or transfer authority.
 
-You can disconnect your bank at any time in the SubSpy Settings → Account → "Disconnect bank" — this revokes the access token with Plaid and stops all future data pulls.
+You can disconnect your bank at any time in the Phantom Settings → Account → "Disconnect bank" — this revokes the access token with Plaid and stops all future data pulls.
 
 Plaid's own privacy practices are described at https://plaid.com/legal/#consumers.
 
 ### 1.3 Information collected automatically
 
 - **Device information**: iOS version, device model (used to debug crashes).
-- **Crash reports**: anonymous stack traces if SubSpy crashes (via Apple's diagnostic system, opt-in at the OS level).
+- **Crash reports**: anonymous stack traces if Phantom crashes (via Apple's diagnostic system, opt-in at the OS level).
 - **Aggregated, non-identifying usage**: which screens are opened, which features are used — used to improve the app.
 
 We do **not** use third-party analytics SDKs that perform cross-app tracking. We do **not** use advertising identifiers. We are not, and will not be, members of the IDFA / Ad Network ecosystem.
@@ -76,7 +76,7 @@ To pull your transaction history. Plaid is a data processor acting on our (and y
 
 ### 3.2 With Apple
 
-Anonymous crash reports and App Store-mediated purchase data (Apple, not SubSpy, processes your payment for SubSpy Pro).
+Anonymous crash reports and App Store-mediated purchase data (Apple, not Phantom, processes your payment for Phantom Pro).
 
 ### 3.3 With hosting and infrastructure vendors
 
@@ -88,7 +88,7 @@ We will respond to lawful subpoenas, court orders, or other legally binding requ
 
 ### 3.5 With acquirers
 
-If SubSpy is acquired or merged, your information will transfer with the company. The acquiring party will be bound by terms no less protective than this policy.
+If Phantom is acquired or merged, your information will transfer with the company. The acquiring party will be bound by terms no less protective than this policy.
 
 We do **not** share information with any other category of recipient. In particular: **we do not share data with banks (other than your own), credit bureaus, lenders, insurers, or marketing platforms.**
 
@@ -134,13 +134,13 @@ We will not retaliate against you for exercising any of these rights.
 
 ## 7. Children
 
-SubSpy is not directed at children under 13 (or 16 in the EU). We do not knowingly collect data from anyone in that age group. If you believe a child has provided data to us, contact us and we will delete it.
+Phantom is not directed at children under 13 (or 16 in the EU). We do not knowingly collect data from anyone in that age group. If you believe a child has provided data to us, contact us and we will delete it.
 
 ---
 
 ## 8. International transfers
 
-SubSpy stores data on servers located in the **United States**. By using the Service from outside the US, you consent to your data being transferred there. We rely on **Standard Contractual Clauses** for transfers from the EEA and UK.
+Phantom stores data on servers located in the **United States**. By using the Service from outside the US, you consent to your data being transferred there. We rely on **Standard Contractual Clauses** for transfers from the EEA and UK.
 
 ---
 

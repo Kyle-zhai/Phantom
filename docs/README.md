@@ -1,6 +1,6 @@
 # docs/ — GitHub Pages site
 
-This directory is served by GitHub Pages at `https://kyle-zhai.github.io/SubSpy/`.
+This directory is served by GitHub Pages at `https://kyle-zhai.github.io/Phantom/`.
 
 ## Files
 
@@ -15,30 +15,30 @@ This directory is served by GitHub Pages at `https://kyle-zhai.github.io/SubSpy/
 
 After pushing this repo:
 
-1. Go to **https://github.com/Kyle-zhai/SubSpy/settings/pages**
+1. Go to **https://github.com/Kyle-zhai/Phantom/settings/pages**
 2. Source: deploy from a branch
 3. Branch: `main`, folder: `/docs`
 4. Save
 
 Within ~60 seconds the site goes live at:
 
-- Landing:  https://kyle-zhai.github.io/SubSpy/
-- Privacy:  https://kyle-zhai.github.io/SubSpy/privacy.html
-- Terms:    https://kyle-zhai.github.io/SubSpy/terms.html
-- Prices:   https://kyle-zhai.github.io/SubSpy/data/prices.json
+- Landing:  https://kyle-zhai.github.io/Phantom/
+- Privacy:  https://kyle-zhai.github.io/Phantom/privacy.html
+- Terms:    https://kyle-zhai.github.io/Phantom/terms.html
+- Prices:   https://kyle-zhai.github.io/Phantom/data/prices.json
 
 These are the URLs you paste into App Store Connect under *App Privacy* and *Support URL*.
 
 ## Custom domain (later, optional)
 
-If you eventually buy `subspy.app` (or any domain):
+If you eventually buy `phantom.app` (or any domain):
 
-1. DNS provider → add `CNAME` record: `subspy.app` → `kyle-zhai.github.io`
-2. Repo settings → Pages → Custom domain → enter `subspy.app` → save
+1. DNS provider → add `CNAME` record: `phantom.app` → `kyle-zhai.github.io`
+2. Repo settings → Pages → Custom domain → enter `phantom.app` → save
 3. GitHub auto-provisions HTTPS in ~10 minutes
-4. Update `ios-native/SubSpy/Services/AppConfig.swift` → `priceCatalogURL` to `https://subspy.app/data/prices.json`
+4. Update `ios-native/Phantom/Services/AppConfig.swift` → `priceCatalogURL` to `https://phantom.app/data/prices.json`
 
-Until then the default `kyle-zhai.github.io/SubSpy/` URLs work perfectly for App Store submission.
+Until then the default `kyle-zhai.github.io/Phantom/` URLs work perfectly for App Store submission.
 
 ## What to fill in before launch
 

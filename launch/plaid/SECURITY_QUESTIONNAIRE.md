@@ -9,11 +9,11 @@
 | Question | Answer |
 |---|---|
 | Legal name | **[YOUR LEGAL ENTITY NAME]** |
-| DBA | SubSpy |
-| Company website | **[https://subspy.com]** |
-| Privacy policy URL | **[https://subspy.com/privacy]** |
-| Terms of service URL | **[https://subspy.com/terms]** |
-| Primary contact (compliance) | **[YOUR NAME, your-email@subspy.com]** |
+| DBA | Phantom |
+| Company website | **[https://phantom.com]** |
+| Privacy policy URL | **[https://phantom.com/privacy]** |
+| Terms of service URL | **[https://phantom.com/terms]** |
+| Primary contact (compliance) | **[YOUR NAME, your-email@phantom.com]** |
 | Country of incorporation | **[USA — Delaware]** |
 | Year founded | **[2026]** |
 
@@ -21,7 +21,7 @@
 
 **Question: Describe your use case for Plaid in one paragraph.**
 
-> SubSpy is a US-only personal-finance app that helps consumers identify and cancel unused subscriptions. We use Plaid's `transactions/sync` endpoint to read users' recent recurring charges from their checking/credit accounts. We do **not** use Plaid for payments, money movement, account verification, identity verification, or any product other than transaction read. Users connect their bank explicitly through Plaid Link, can disconnect at any time, and can delete their account permanently from within the app. We never share user data with third parties (including data brokers, advertisers, or lenders), and we never offer or recommend financial products.
+> Phantom is a US-only personal-finance app that helps consumers identify and cancel unused subscriptions. We use Plaid's `transactions/sync` endpoint to read users' recent recurring charges from their checking/credit accounts. We do **not** use Plaid for payments, money movement, account verification, identity verification, or any product other than transaction read. Users connect their bank explicitly through Plaid Link, can disconnect at any time, and can delete their account permanently from within the app. We never share user data with third parties (including data brokers, advertisers, or lenders), and we never offer or recommend financial products.
 
 **Plaid products requested**:
 - ☑ Transactions
@@ -55,7 +55,7 @@
 | Penetration testing | **[Annual third-party pen test scheduled for Q3 2026]** |
 | Incident response | Documented playbook with 72-hour breach notification commitment (GDPR-aligned) |
 | Employee training | Mandatory annual data-privacy training; signed confidentiality agreements |
-| Subprocessor inventory | Maintained at **[https://subspy.com/subprocessors]** — Plaid, Vercel, Apple, **[any others]** |
+| Subprocessor inventory | Maintained at **[https://phantom.com/subprocessors]** — Plaid, Vercel, Apple, **[any others]** |
 | SOC 2 / ISO 27001 | **[Planned — not yet certified. Will pursue SOC 2 Type 1 within 18 months of launch.]** |
 
 ### Authentication

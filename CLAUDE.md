@@ -1,6 +1,6 @@
-# SubSpy — Project Context for Claude Code
+# Phantom — Project Context for Claude Code
 
-> A subscription-management iOS app that surfaces "zombie subscriptions," generates EFTA-compliant dispute letters, warns about price hikes, and helps users negotiate retention discounts. Sees PRD at `SubSpy_PRD.md`. Designed to ship on the App Store; UI inspired by Uber (black-and-white, large type, generous spacing).
+> A subscription-management iOS app that surfaces "zombie subscriptions," generates EFTA-compliant dispute letters, warns about price hikes, and helps users negotiate retention discounts. Sees PRD at `Phantom_PRD.md`. Designed to ship on the App Store; UI inspired by Uber (black-and-white, large type, generous spacing).
 
 ## 1. Product (one-liner per surface)
 
@@ -29,7 +29,7 @@
 ## 3. Repo layout
 
 ```
-SubSpy/
+Phantom/
 ├── app/                       # Expo Router (file-based)
 │   ├── _layout.tsx            # Root stack
 │   ├── index.tsx              # Splash → routes to onboarding or tabs
@@ -45,7 +45,7 @@ SubSpy/
 │   ├── data/mock.ts           # Mock subscriptions, alerts, usage
 │   └── store.ts               # Zustand store
 ├── assets/                    # Icons, fonts
-├── SubSpy_PRD.md              # Source of truth for product decisions
+├── Phantom_PRD.md              # Source of truth for product decisions
 └── CLAUDE.md                  # This file
 ```
 
@@ -110,7 +110,7 @@ I verify the build by running `npm run web` and driving it with Playwright (via 
 
 - EAS Build (`eas build -p ios --profile production`)
 - App Store Connect listing copy lives in `store/` (TBD)
-- Pre-submit: replace mock data adapter with real Plaid Link + server, configure `app.json` bundle identifier `com.subspy.app`
+- Pre-submit: replace mock data adapter with real Plaid Link + server, configure `app.json` bundle identifier `com.phantom.app`
 
 ## 10. What "done" means for this session
 

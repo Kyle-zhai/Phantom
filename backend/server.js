@@ -30,10 +30,10 @@ app.post('/account/delete', async (req, res) => {
 // 1. Issue a Link token for the iOS Plaid Link flow
 app.post('/plaid/link-token', async (req, res) => {
   try {
-    const { userId = `subspy-${Date.now()}` } = req.body || {};
+    const { userId = `phantom-${Date.now()}` } = req.body || {};
     const r = await plaidClient.linkTokenCreate({
       user: { client_user_id: userId },
-      client_name: 'SubSpy',
+      client_name: 'Phantom',
       products: ['transactions'],
       country_codes: ['US'],
       language: 'en',
@@ -117,7 +117,7 @@ app.get('/negotiate/scripts', async (_req, res) => {
 
 const port = Number(process.env.PORT || 3000);
 app.listen(port, () => {
-  console.log(`SubSpy backend listening on :${port}`);
+  console.log(`Phantom backend listening on :${port}`);
 });
 
 export default app;

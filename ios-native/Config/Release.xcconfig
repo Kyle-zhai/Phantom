@@ -1,9 +1,9 @@
 // Release build — talks to production Vercel deployment.
 // Used for TestFlight and App Store submissions.
 //
-// ⚠️ Set SUBSPY_API_BASE to your deployed Vercel URL once /backend/DEPLOY.md is done.
+// ⚠️ Set PHANTOM_API_BASE to your deployed Vercel URL once /backend/DEPLOY.md is done.
 
-SUBSPY_API_BASE = https:/$()/api.subspy.com
+PHANTOM_API_BASE = https:/$()/api.phantom.com
 PLAID_ENVIRONMENT = production
-PRODUCT_BUNDLE_IDENTIFIER = com.subspy.app
+PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =

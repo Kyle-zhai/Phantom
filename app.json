@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "SubSpy",
-    "slug": "subspy",
+    "name": "Phantom",
+    "slug": "phantom",
     "version": "1.0.0",
-    "description": "Find the money you're losing. SubSpy scans your bank, scores every subscription for zombie behavior, generates EFTA-compliant dispute letters, and warns you 7 days before any price hike.",
+    "description": "Find the money you're losing. Phantom scans your bank, scores every subscription for zombie behavior, generates EFTA-compliant dispute letters, and warns you 7 days before any price hike.",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "subspy",
+    "scheme": "phantom",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -16,10 +16,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.subspy.app",
+      "bundleIdentifier": "com.phantom.app",
       "buildNumber": "1",
       "infoPlist": {
-        "NSUserTrackingUsageDescription": "We never track you. This permission is requested only to comply with App Store policies — SubSpy does not perform any cross-app tracking.",
+        "NSUserTrackingUsageDescription": "We never track you. This permission is requested only to comply with App Store policies — Phantom does not perform any cross-app tracking.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "config": {
@@ -27,7 +27,7 @@
       }
     },
     "android": {
-      "package": "com.subspy.app",
+      "package": "com.phantom.app",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#000000",

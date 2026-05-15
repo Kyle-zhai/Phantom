@@ -23,7 +23,7 @@ export default function DisputeLetter() {
   );
 
   const [fullName, setFullName] = useState('Jordan Lee');
-  const [email, setEmail] = useState('jordan@subspy.com');
+  const [email, setEmail] = useState('jordan@phantom.com');
   const [chargeDate, setChargeDate] = useState(today);
   const [amount, setAmount] = useState(sub ? String(sub.amount) : '0');
   const [referenceNumber, setReferenceNumber] = useState('');
@@ -222,7 +222,7 @@ export default function DisputeLetter() {
               {successRateFor(reason)}%
             </Text>
             <Text style={[type.small, { color: colors.mute, marginTop: 4 }]}>
-              Based on 12,400+ SubSpy disputes filed in 2025–2026.
+              Based on 12,400+ Phantom disputes filed in 2025–2026.
             </Text>
           </Card>
 

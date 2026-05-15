@@ -1,9 +1,9 @@
 {
-  "name": "subspy-backend",
+  "name": "phantom-backend",
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "SubSpy backend — Plaid token exchange, price monitoring, notification fanout. Designed for Vercel functions but runnable as a single Express server too.",
+  "description": "Phantom backend — Plaid token exchange, price monitoring, notification fanout. Designed for Vercel functions but runnable as a single Express server too.",
   "main": "server.js",
   "scripts": {
     "dev": "node --watch server.js",

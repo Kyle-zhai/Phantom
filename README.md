@@ -1,4 +1,4 @@
-# SubSpy
+# Phantom
 
 > Find the money you're losing. Subscription Radar + Zombie Score + Dispute Letter generator + Price-hike alerts + Negotiation scripts.
 
@@ -28,7 +28,7 @@ Backend listens on `http://localhost:3000`. Confirm with `curl http://localhost:
 ### 2. Open the iOS app
 
 ```bash
-open ios-native/SubSpy.xcodeproj
+open ios-native/Phantom.xcodeproj
 ```
 
 In Xcode:
@@ -43,7 +43,7 @@ In Xcode:
 3. Use sandbox credentials:
    - Username: `user_good`
    - Password: `pass_good`
-4. Pick any account → SubSpy fetches transactions and auto-detects recurring charges.
+4. Pick any account → Phantom fetches transactions and auto-detects recurring charges.
 
 Or tap **Skip — explore with demo data** to skip Plaid and use curated samples.
 
@@ -60,7 +60,7 @@ Or tap **Skip — explore with demo data** to skip Plaid and use curated samples
 | Negotiation script registry (10 vendors) | Real, served by backend so it's updatable |
 | Price-hike monitoring (55+ services) | Real catalog + hike detection. Live scraping requires `PRICE_MONITOR_LIVE=true` |
 | Local notifications (trial / hike / zombie nudges) | Real UNUserNotificationCenter |
-| StoreKit 2 in-app purchases | Real, with `SubSpy.storekit` local config for sim testing |
+| StoreKit 2 in-app purchases | Real, with `Phantom.storekit` local config for sim testing |
 | SwiftData persistence | Real, `@Model` schemas for Subscription / Alert / UserProfile |
 | Keychain for sensitive tokens | Real, `kSecAttrAccessibleAfterFirstUnlock` |
 | Real device install + App Store archive | Verified — `xcodebuild archive` produces a valid `.xcarchive` |
@@ -70,37 +70,37 @@ Or tap **Skip — explore with demo data** to skip Plaid and use curated samples
 1. **Apple Developer Program account** ($99/yr) — required to sign the binary, ship to TestFlight, list on App Store Connect.
 2. **Plaid Production approval** — sandbox is free and ready; flipping to `production` env needs Plaid's compliance review of your company.
 3. **App Store Connect product configuration** — create two auto-renewing subscriptions matching the product IDs:
-   - `com.subspy.app.pro.monthly` ($3.99/mo)
-   - `com.subspy.app.pro.yearly` ($29.99/yr)
-4. **Deploy backend** — works locally as-is. For TestFlight/App Store, deploy `backend/` to Vercel (run `vercel deploy` inside it) and set `SUBSPY_API_BASE` in Xcode build settings to the deployed URL.
+   - `com.phantom.app.pro.monthly` ($3.99/mo)
+   - `com.phantom.app.pro.yearly` ($29.99/yr)
+4. **Deploy backend** — works locally as-is. For TestFlight/App Store, deploy `backend/` to Vercel (run `vercel deploy` inside it) and set `PHANTOM_API_BASE` in Xcode build settings to the deployed URL.
 
 ## Submission checklist
 
 ```bash
 # 1. Set your team in Xcode → Signing & Capabilities
 # 2. Build for archive (signed)
-xcodebuild -project ios-native/SubSpy.xcodeproj \
-  -scheme SubSpy -configuration Release \
+xcodebuild -project ios-native/Phantom.xcodeproj \
+  -scheme Phantom -configuration Release \
   -destination 'generic/platform=iOS' \
-  -archivePath /tmp/subspy.xcarchive archive
+  -archivePath /tmp/phantom.xcarchive archive
 
 # 3. Validate with App Store Connect
 xcodebuild -exportArchive \
-  -archivePath /tmp/subspy.xcarchive \
-  -exportPath /tmp/subspy-export \
+  -archivePath /tmp/phantom.xcarchive \
+  -exportPath /tmp/phantom-export \
   -exportOptionsPlist ios-native/exportOptions.plist
 
 # 4. Upload
-xcrun altool --upload-app -f /tmp/subspy-export/SubSpy.ipa \
+xcrun altool --upload-app -f /tmp/phantom-export/Phantom.ipa \
   -t ios -u YOUR_APPLE_ID -p YOUR_APP_SPECIFIC_PASSWORD
 ```
 
 ## Architecture
 
 ```
-ios-native/SubSpy/
-├── SubSpyApp.swift               @main, wires SwiftData + AppStore
-├── SubSpy.storekit               Local StoreKit config (Pro monthly + yearly)
+ios-native/Phantom/
+├── PhantomApp.swift               @main, wires SwiftData + AppStore
+├── Phantom.storekit               Local StoreKit config (Pro monthly + yearly)
 ├── Theme/Theme.swift             Uber-style design tokens
 ├── Models/
 │   ├── Models.swift              Subscription, PriceAlert, Category, BillingCycle
@@ -157,4 +157,4 @@ When running via Xcode you can pass arguments in *Edit Scheme → Arguments*:
 | `--screen-paywall` | Open paywall |
 | `--screen-{value,connect}` | Open a specific onboarding screen |
 
-These also work via `xcrun simctl launch booted com.subspy.app --demo`.
+These also work via `xcrun simctl launch booted com.phantom.app --demo`.

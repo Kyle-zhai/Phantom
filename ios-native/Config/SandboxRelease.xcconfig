@@ -1,7 +1,7 @@
 // "Sandbox release" — Release build that still talks to Plaid sandbox.
 // Use this for TestFlight builds before Plaid Production is approved.
 
-SUBSPY_API_BASE = https:/$()/subspy-backend-staging.vercel.app
+PHANTOM_API_BASE = https:/$()/phantom-backend-staging.vercel.app
 PLAID_ENVIRONMENT = sandbox
-PRODUCT_BUNDLE_IDENTIFIER = com.subspy.app.sandbox
+PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app.sandbox
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =

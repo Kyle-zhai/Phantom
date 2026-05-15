@@ -1,0 +1,75 @@
+{
+  "identifier" : "F4A8B8D2-6E12-4A18-B501-A1A2A3A4A5A6",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_applicationInternalID" : "1000000000",
+    "_developerTeamID" : "ABCDE12345",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "20B8A8D2-6E12-4A18-B501-B1B2B3B4B5B6",
+      "localizations" : [
+        {
+          "description" : "Find the money you're losing — unlimited dispute letters, price-hike alerts, negotiation scripts.",
+          "displayName" : "Phantom Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "Phantom Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "30B8A8D2-6E12-4A18-B501-C1C2C3C4C5C6",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited scans, dispute letters, and price alerts. Cancel any time.",
+              "displayName" : "Phantom Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.phantom.app.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro Monthly",
+          "subscriptionGroupID" : "20B8A8D2-6E12-4A18-B501-B1B2B3B4B5B6",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "29.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "40B8A8D2-6E12-4A18-B501-D1D2D3D4D5D6",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Save 37% vs monthly. Unlimited features, refund within 30 days.",
+              "displayName" : "Phantom Pro Annual",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.phantom.app.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Annual",
+          "subscriptionGroupID" : "20B8A8D2-6E12-4A18-B501-B1B2B3B4B5B6",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

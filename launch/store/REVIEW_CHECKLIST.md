@@ -2,7 +2,7 @@
 
 Common rejection reasons for finance apps, mapped to the actual code in this repo.
 
-| Guideline | Risk | Fix in SubSpy |
+| Guideline | Risk | Fix in Phantom |
 |---|---|---|
 | **2.3.1** — Accurate metadata | Medium | App Store screenshots must show *real* in-app screens, not mockups. Use the ones in `ios-native/screenshots/` taken on iPhone 17 Pro simulator. |
 | **2.3.10** — Don't include placeholders | High | Remove "Lorem ipsum"-style demo content from the marketing copy. Marketing copy in `launch/store/APP_STORE_LISTING.md` is final. |
@@ -102,8 +102,8 @@ When Plaid Link is presented, Plaid's own UI handles attribution. No extra discl
 Before submission run:
 
 ```bash
-xcodebuild -project ios-native/SubSpy.xcodeproj \
-  -scheme SubSpy \
+xcodebuild -project ios-native/Phantom.xcodeproj \
+  -scheme Phantom \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
   -configuration Release \
   build

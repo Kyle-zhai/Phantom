@@ -43,7 +43,7 @@ export async function monitorPrices({ live = false } = {}) {
     }
     try {
       const r = await fetch(seed.pricingUrl, {
-        headers: { 'user-agent': 'SubSpyPriceBot/1.0' },
+        headers: { 'user-agent': 'PhantomPriceBot/1.0' },
         // 8s timeout via AbortController
         signal: AbortSignal.timeout(8000),
       });

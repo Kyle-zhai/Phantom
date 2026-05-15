@@ -42,7 +42,7 @@ export default function Paywall() {
           <Ionicons name="sparkles" size={28} color={colors.white} />
         </View>
         <Text style={[type.h1, { color: colors.ink, marginTop: 22, textAlign: 'center' }]}>
-          SubSpy Pro
+          Phantom Pro
         </Text>
         <Text style={[type.body, { color: colors.mute, marginTop: 8, textAlign: 'center', maxWidth: 320 }]}>
           Most Pro users save $47/month on average. Pro pays for itself in week one.

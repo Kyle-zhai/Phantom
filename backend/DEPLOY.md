@@ -1,4 +1,4 @@
-# Deploying the SubSpy backend
+# Deploying the Phantom backend
 
 The backend is a vanilla Express app. We use **Vercel** because it's free for small projects and one command from here to production.
 
@@ -11,7 +11,7 @@ npm i -g vercel@latest
 # 2. From /backend/, link the directory to a Vercel project
 cd backend
 vercel link
-# Pick "Create a new project", name it "subspy-backend"
+# Pick "Create a new project", name it "phantom-backend"
 
 # 3. Set production env vars (these are encrypted by Vercel, not stored in git)
 vercel env add PLAID_CLIENT_ID production
@@ -34,17 +34,17 @@ vercel deploy --prod
 
 Output:
 ```
-✅ Production: https://subspy-backend.vercel.app
+✅ Production: https://phantom-backend.vercel.app
 ```
 
 Copy that URL. You'll plug it into the iOS app in the next step.
 
 ## Wire iOS to production backend
 
-Edit `ios-native/SubSpy.xcconfig` (or `Release.xcconfig` if you split, see `production-xcconfig` task):
+Edit `ios-native/Phantom.xcconfig` (or `Release.xcconfig` if you split, see `production-xcconfig` task):
 
 ```
-SUBSPY_API_BASE = https://subspy-backend.vercel.app
+PHANTOM_API_BASE = https://phantom-backend.vercel.app
 PLAID_ENVIRONMENT = production
 ```
 
@@ -53,27 +53,27 @@ Then rebuild — the app reads from `Info.plist` which is populated from these.
 ## Smoke test
 
 ```bash
-curl https://subspy-backend.vercel.app/health
+curl https://phantom-backend.vercel.app/health
 # → {"ok":true,"ts":1729...}
 
-curl https://subspy-backend.vercel.app/prices | jq '.count'
+curl https://phantom-backend.vercel.app/prices | jq '.count'
 # → 55  (or whatever your seed contains)
 ```
 
 ## Custom domain (optional)
 
 ```bash
-vercel domains add api.subspy.com
+vercel domains add api.phantom.com
 # Follow the DNS-record instructions Vercel prints out
-vercel alias set subspy-backend.vercel.app api.subspy.com
+vercel alias set phantom-backend.vercel.app api.phantom.com
 ```
 
-Then update `SUBSPY_API_BASE = https://api.subspy.com`.
+Then update `PHANTOM_API_BASE = https://api.phantom.com`.
 
 ## Monitoring
 
 Vercel includes:
-- Function logs at https://vercel.com/[your-team]/subspy-backend/logs
+- Function logs at https://vercel.com/[your-team]/phantom-backend/logs
 - Request analytics
 - Build status
 
@@ -93,4 +93,4 @@ vercel rollback <url>     # promote an older one to prod
 | Hobby (free) | Up to ~100K invocations / month |
 | Pro ($20/mo) | If you grow past hobby; includes team features, larger functions |
 
-For SubSpy's MVP traffic (a few hundred users), free tier is enough indefinitely. Plaid will be your bigger cost — see `plaid/SECURITY_QUESTIONNAIRE.md`.
+For Phantom's MVP traffic (a few hundred users), free tier is enough indefinitely. Plaid will be your bigger cost — see `plaid/SECURITY_QUESTIONNAIRE.md`.

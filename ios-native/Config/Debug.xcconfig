@@ -1,7 +1,7 @@
 // Debug build — talks to local Express server.
 // Used by Xcode Debug runs in Simulator.
 
-SUBSPY_API_BASE = http:/$()/localhost:3000
+PHANTOM_API_BASE = http:/$()/localhost:3000
 PLAID_ENVIRONMENT = sandbox
-PRODUCT_BUNDLE_IDENTIFIER = com.subspy.app.debug
+PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app.debug
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG

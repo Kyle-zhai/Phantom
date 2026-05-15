@@ -60,7 +60,7 @@ export default function Settings() {
       <View style={styles.header}>
         <Text style={[type.smallBold, { color: colors.mute }]}>YOU</Text>
         <Text style={[type.h1, { color: colors.ink, marginTop: 2 }]}>Jordan Lee</Text>
-        <Text style={[type.body, { color: colors.mute, marginTop: 6 }]}>jordan@subspy.com</Text>
+        <Text style={[type.body, { color: colors.mute, marginTop: 6 }]}>jordan@phantom.com</Text>
       </View>
 
       {!isPro ? (
@@ -93,7 +93,7 @@ export default function Settings() {
               <Feather name="check" size={18} color={colors.white} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={[type.bodyBold, { color: colors.ink }]}>SubSpy Pro is active</Text>
+              <Text style={[type.bodyBold, { color: colors.ink }]}>Phantom Pro is active</Text>
               <Text style={[type.small, { color: colors.mute, marginTop: 2 }]}>
                 Annual · renews next year
               </Text>
@@ -120,7 +120,7 @@ export default function Settings() {
         </View>
       </Section>
 
-      <Section title="Privacy" caption="The three things SubSpy will never do.">
+      <Section title="Privacy" caption="The three things Phantom will never do.">
         <View style={styles.privacy}>
           <View style={styles.privacyRow}>
             <Ionicons name="shield-checkmark" size={20} color={colors.success} />
@@ -175,7 +175,7 @@ export default function Settings() {
       </Section>
 
       <Text style={[type.small, { color: colors.mute2, textAlign: 'center', marginTop: 24 }]}>
-        SubSpy · v1.0 · Made for people who hate losing money.
+        Phantom · v1.0 · Made for people who hate losing money.
       </Text>
 
       <View style={{ height: 24 }} />

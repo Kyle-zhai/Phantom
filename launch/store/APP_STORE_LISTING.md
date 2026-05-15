@@ -8,12 +8,12 @@ Copy and paste each field into App Store Connect at https://appstoreconnect.appl
 
 | Field | Value |
 |---|---|
-| **Name** | SubSpy |
+| **Name** | Phantom |
 | **Subtitle** (max 30 chars) | Find the money you're losing |
 | **Primary category** | Finance |
 | **Secondary category** | Productivity |
-| **Bundle ID** | `com.subspy.app` |
-| **SKU** | `subspy-ios-001` |
+| **Bundle ID** | `com.phantom.app` |
+| **SKU** | `phantom-ios-001` |
 | **Content rights** | "Does this app use third-party content?" → **No** |
 | **Age rating** | 4+ (no objectionable content) |
 | **Pricing** | Free with In-App Purchases |
@@ -24,9 +24,9 @@ Copy and paste each field into App Store Connect at https://appstoreconnect.appl
 ## Description (max 4000 chars)
 
 ```
-SubSpy finds the subscriptions you forgot you were paying for — and helps you cancel them in seconds.
+Phantom finds the subscriptions you forgot you were paying for — and helps you cancel them in seconds.
 
-The average American pays for 4.5 subscriptions they never use. That's about $50 per month silently disappearing from your bank account. SubSpy stops the bleeding.
+The average American pays for 4.5 subscriptions they never use. That's about $50 per month silently disappearing from your bank account. Phantom stops the bleeding.
 
 HOW IT WORKS
 
@@ -40,7 +40,7 @@ HOW IT WORKS
 
 5. Get a 7-day heads up before any price increase across 2,000+ services.
 
-6. For services that hand out retention discounts (Hulu, SiriusXM, Audible, Adobe Creative Cloud, and more), SubSpy gives you the exact script to use.
+6. For services that hand out retention discounts (Hulu, SiriusXM, Audible, Adobe Creative Cloud, and more), Phantom gives you the exact script to use.
 
 PRIVACY YOU CAN VERIFY
 
@@ -53,13 +53,13 @@ These aren't promises in a privacy policy footnote. They're the entire business 
 
 WHY NOT ROCKET MONEY?
 
-Rocket Money's parent company is a lender. Their goal is to qualify you for loans, and they sell anonymized data to do it. SubSpy's only revenue is a $3.99/month subscription. We win when you save money. That's the entire alignment.
+Rocket Money's parent company is a lender. Their goal is to qualify you for loans, and they sell anonymized data to do it. Phantom's only revenue is a $3.99/month subscription. We win when you save money. That's the entire alignment.
 
 PRICING
 
 Free: 3 subscriptions scanned, basic detection
-SubSpy Pro Monthly: $3.99/month — unlimited scans, alerts, disputes
-SubSpy Pro Annual: $29.99/year — save 37% vs monthly
+Phantom Pro Monthly: $3.99/month — unlimited scans, alerts, disputes
+Phantom Pro Annual: $29.99/year — save 37% vs monthly
 
 Average Pro user saves $47/month. Pro pays for itself in week one.
 
@@ -119,9 +119,9 @@ https://[yourdomain.com]/privacy
 ### Notes for reviewer
 
 ```
-Thanks for reviewing SubSpy.
+Thanks for reviewing Phantom.
 
-SubSpy is a privacy-first subscription-management app. Users either
+Phantom is a privacy-first subscription-management app. Users either
 upload screenshots of their bank/credit-card app (OCR runs entirely
 on-device via Apple Vision) or add subscriptions manually. The app
 never connects to a bank in production — no Plaid, no API keys, no
@@ -164,9 +164,9 @@ KEY FLOWS TO REVIEW (after loading sample data):
 NOTES ON IN-APP PURCHASES:
 
 We use StoreKit 2 with two auto-renewing subscriptions:
-   com.subspy.app.pro.monthly  ($3.99/month)
-   com.subspy.app.pro.yearly   ($29.99/year)
-Both share the subscription group "SubSpy Pro".
+   com.phantom.app.pro.monthly  ($3.99/month)
+   com.phantom.app.pro.yearly   ($29.99/year)
+Both share the subscription group "Phantom Pro".
 
 Free tier is genuinely useful (5 subscriptions, 1 dispute letter
 per month, 1 alert at a time). Pro unlocks unlimited everything.
@@ -176,7 +176,7 @@ PRIVACY / DATA HANDLING:
 No server-side data of any kind. All transaction parsing happens
 on-device with Apple Vision OCR. No third-party SDK that performs
 tracking. No analytics SDK. Privacy Policy and Terms of Service
-linked above; full source: github.com/Kyle-zhai/SubSpy
+linked above; full source: github.com/Kyle-zhai/Phantom
 
 Thanks!
 [Your name]
@@ -193,18 +193,18 @@ Thanks!
 
 ## In-App Purchases
 
-Create two **auto-renewable** subscriptions in App Store Connect → Features → In-App Purchases. Both belong to a single subscription group named "SubSpy Pro".
+Create two **auto-renewable** subscriptions in App Store Connect → Features → In-App Purchases. Both belong to a single subscription group named "Phantom Pro".
 
 ### Product 1 — Monthly
 
 | Field | Value |
 |---|---|
 | Reference name | `Pro Monthly` |
-| Product ID | `com.subspy.app.pro.monthly` |
+| Product ID | `com.phantom.app.pro.monthly` |
 | Subscription Duration | 1 month |
 | Pricing | Tier 4 ($3.99 USD) |
 | Localizations (English) | |
-| — Display name | `SubSpy Pro Monthly` |
+| — Display name | `Phantom Pro Monthly` |
 | — Description | `Unlimited subscription scans, dispute letters, and price-hike alerts. Cancel any time.` |
 | Review screenshot | Use `screenshots/16-paywall.png` |
 
@@ -213,11 +213,11 @@ Create two **auto-renewable** subscriptions in App Store Connect → Features �
 | Field | Value |
 |---|---|
 | Reference name | `Pro Annual` |
-| Product ID | `com.subspy.app.pro.yearly` |
+| Product ID | `com.phantom.app.pro.yearly` |
 | Subscription Duration | 1 year |
 | Pricing | Tier 30 ($29.99 USD) |
 | Localizations (English) | |
-| — Display name | `SubSpy Pro Annual` |
+| — Display name | `Phantom Pro Annual` |
 | — Description | `Save 37% vs monthly. Unlimited features. 30-day refund window.` |
 | Review screenshot | Same as monthly |
 
@@ -226,9 +226,9 @@ Create two **auto-renewable** subscriptions in App Store Connect → Features �
 ## What's New in This Version (release notes, v1.0)
 
 ```
-Welcome to SubSpy 1.0.
+Welcome to Phantom 1.0.
 
-Stop paying for subscriptions you don't use. SubSpy scans your bank, scores every recurring charge for "zombie" behavior, generates EFTA-compliant dispute letters for wrongful charges, and warns you 7 days before any price hike.
+Stop paying for subscriptions you don't use. Phantom scans your bank, scores every recurring charge for "zombie" behavior, generates EFTA-compliant dispute letters for wrongful charges, and warns you 7 days before any price hike.
 
 We never sell your data. We never push loans. We never store your card number.
 

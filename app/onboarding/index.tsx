@@ -13,7 +13,7 @@ export default function OnboardingWelcome() {
           <View style={styles.logo}>
             <Feather name="radio" size={26} color={colors.black} />
           </View>
-          <Text style={[type.h3, { color: colors.white }]}>SubSpy</Text>
+          <Text style={[type.h3, { color: colors.white }]}>Phantom</Text>
         </View>
 
         <View style={styles.center}>
@@ -21,7 +21,7 @@ export default function OnboardingWelcome() {
             Find the{'\n'}money{'\n'}you're losing.
           </Text>
           <Text style={[type.body, { color: '#9CA3AF', marginTop: 20, maxWidth: 320 }]}>
-            The average American pays for 4.5 subscriptions they never use. SubSpy finds them, scores them, and helps you cancel — in seconds.
+            The average American pays for 4.5 subscriptions they never use. Phantom finds them, scores them, and helps you cancel — in seconds.
           </Text>
         </View>
 
