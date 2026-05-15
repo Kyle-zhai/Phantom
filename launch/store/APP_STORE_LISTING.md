@@ -187,7 +187,7 @@ Thanks!
 | First name | **[Your name]** |
 | Last name | — |
 | Phone | **[+1 ...]** |
-| Email | **[review@yourdomain.com]** |
+| Email | **[yn.zhai0205@gmail.com]** |
 
 ---
 

@@ -42,6 +42,6 @@ Until then the default `kyle-zhai.github.io/Phantom/` URLs work perfectly for Ap
 
 ## What to fill in before launch
 
-Open `privacy.html` and `terms.html`, search for `[YOUR LEGAL NAME]` and `[YOUR ADDRESS OR VIRTUAL MAILBOX]`, replace with your real info.
+Open `privacy.html` and `terms.html`, search for `[YOUR ADDRESS OR VIRTUAL MAILBOX]`, replace with your real info.
 
 Search: `Kyle Zhai` is recommended for legal name if that's your real name. Address can be your home address or a virtual-mailbox service like iPostal1 ($9/month) if you want privacy.

@@ -5,7 +5,7 @@
 
 > ⚠️ **Template — replace bracketed items before publishing.** Have a US-licensed attorney review before public release. Plaid and Apple App Review will read this carefully.
 
-This Privacy Policy describes how **[YOUR LEGAL ENTITY NAME]** ("**Phantom**", "**we**", "**us**", or "**our**") collects, uses, stores, and shares information when you use the **Phantom** iOS application and any related services (collectively, the "**Service**").
+This Privacy Policy describes how **Yinan Zhai** ("**Phantom**", "**we**", "**us**", or "**our**") collects, uses, stores, and shares information when you use the **Phantom** iOS application and any related services (collectively, the "**Service**").
 
 By using Phantom you agree to the data practices described here. If you do not agree, do not use Phantom.
 
@@ -100,7 +100,7 @@ We do **not** share information with any other category of recipient. In particu
 - Plaid access tokens are stored in the iOS Keychain on your device with `kSecAttrAccessibleAfterFirstUnlock` protection.
 - Server-side databases are encrypted at rest using AES-256.
 - Access to production data is limited to a small number of named employees who have signed confidentiality agreements.
-- We perform routine vulnerability scanning and respond to disclosed security issues at **[security@yourdomain.com]**.
+- We perform routine vulnerability scanning and respond to disclosed security issues at **[yn.zhai0205@gmail.com]**.
 
 ---
 
@@ -119,14 +119,14 @@ If you delete your account (Settings → Account → "Delete account"), we wipe 
 
 You have the right to:
 
-1. **Access** the data we hold about you (email **[privacy@yourdomain.com]**).
+1. **Access** the data we hold about you (email **[yn.zhai0205@gmail.com]**).
 2. **Correct** inaccurate data.
 3. **Delete** your account and all associated data at any time, directly in the app.
 4. **Export** your data in a machine-readable format on request.
 5. **Restrict or object** to certain processing.
 6. **Disconnect your bank** at any time without deleting your account.
 
-European, UK, and California users have additional rights under GDPR, UK-GDPR, and the CCPA respectively. To exercise these rights, email **[privacy@yourdomain.com]**. We will respond within 30 days.
+European, UK, and California users have additional rights under GDPR, UK-GDPR, and the CCPA respectively. To exercise these rights, email **[yn.zhai0205@gmail.com]**. We will respond within 30 days.
 
 We will not retaliate against you for exercising any of these rights.
 
@@ -152,10 +152,10 @@ We may update this policy. If we make a material change, we will notify you in-a
 
 ## 10. Contact
 
-**[YOUR LEGAL ENTITY NAME]**
+**Yinan Zhai**
 **[STREET ADDRESS]**
 **[CITY, STATE ZIP]**
-Email: **[privacy@yourdomain.com]**
-Security: **[security@yourdomain.com]**
+Email: **[yn.zhai0205@gmail.com]**
+Security: **[yn.zhai0205@gmail.com]**
 
-For California consumers — Do Not Sell My Personal Information: we **do not sell personal information** as defined by the CCPA. If you wish to opt out of any future change, email **[privacy@yourdomain.com]**.
+For California consumers — Do Not Sell My Personal Information: we **do not sell personal information** as defined by the CCPA. If you wish to opt out of any future change, email **[yn.zhai0205@gmail.com]**.

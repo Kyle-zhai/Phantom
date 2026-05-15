@@ -5,7 +5,7 @@
 
 > ⚠️ **Template — replace bracketed items before publishing.** Have a US-licensed attorney review before public release.
 
-These Terms of Service (the "**Terms**") form a binding contract between you and **[YOUR LEGAL ENTITY NAME]** ("**Phantom**", "**we**", "**us**", or "**our**") governing your use of the **Phantom** iOS application and any related services (collectively, the "**Service**").
+These Terms of Service (the "**Terms**") form a binding contract between you and **Yinan Zhai** ("**Phantom**", "**we**", "**us**", or "**our**") governing your use of the **Phantom** iOS application and any related services (collectively, the "**Service**").
 
 By creating an account or otherwise using Phantom, you agree to these Terms. If you do not agree, do not use the Service.
 
@@ -42,7 +42,7 @@ We do **not** make subscription cancellation decisions for you. We do **not** se
 ## 3. Your account
 
 - You are responsible for all activity that occurs under your account.
-- Keep your credentials confidential. Notify us immediately at **[security@yourdomain.com]** if you suspect unauthorized access.
+- Keep your credentials confidential. Notify us immediately at **[yn.zhai0205@gmail.com]** if you suspect unauthorized access.
 - You may not transfer your account or share login credentials.
 - We may suspend or terminate your account if you violate these Terms, with notice except where notice is impractical (e.g., investigation of fraud).
 
@@ -151,9 +151,9 @@ You may terminate by deleting your account. We may terminate or suspend for caus
 
 ## 13. Governing law and dispute resolution
 
-These Terms are governed by the laws of **[STATE OF FORMATION, e.g., Delaware]** without regard to conflict-of-laws principles.
+These Terms are governed by the laws of **Delaware** without regard to conflict-of-laws principles.
 
-**Binding arbitration**: any dispute will be resolved by binding arbitration under the AAA Consumer Arbitration Rules, on an individual basis (no class actions, no consolidated proceedings). You may opt out within 30 days of first creating an account by emailing **[legal@yourdomain.com]** with the subject "Arbitration opt-out".
+**Binding arbitration**: any dispute will be resolved by binding arbitration under the AAA Consumer Arbitration Rules, on an individual basis (no class actions, no consolidated proceedings). You may opt out within 30 days of first creating an account by emailing **[yn.zhai0205@gmail.com]** with the subject "Arbitration opt-out".
 
 Small-claims court is permitted for individual claims within its jurisdiction.
 
@@ -167,10 +167,10 @@ We may update these Terms. Material changes will be notified at least 30 days in
 
 ## 15. Contact
 
-**[YOUR LEGAL ENTITY NAME]**
+**Yinan Zhai**
 **[STREET ADDRESS]**
-Email: **[support@yourdomain.com]**
-Legal: **[legal@yourdomain.com]**
+Email: **[yn.zhai0205@gmail.com]**
+Legal: **[yn.zhai0205@gmail.com]**
 
 ---
 
@@ -180,4 +180,4 @@ You have additional rights under the CCPA. See our Privacy Policy section 6. We 
 
 ## Appendix B — EEA / UK users
 
-You have additional rights under GDPR / UK-GDPR. See our Privacy Policy section 6. The data controller is **[YOUR LEGAL ENTITY NAME]**.
+You have additional rights under GDPR / UK-GDPR. See our Privacy Policy section 6. The data controller is **Yinan Zhai**.
