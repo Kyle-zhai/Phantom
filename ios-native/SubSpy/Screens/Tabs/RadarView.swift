@@ -2,12 +2,17 @@ import SwiftUI
 
 struct RadarView: View {
     @Environment(AppStore.self) private var store
+    @State private var showImport = false
+    @State private var showManual = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 header
                 heroPanel.padding(.top, 20)
+                if store.subscriptions.isEmpty {
+                    emptyStateCard.padding(.top, 16)
+                }
                 if store.potentialSavings > 0 {
                     savingsCard.padding(.top, 16)
                 }
@@ -39,6 +44,12 @@ struct RadarView: View {
         .background(Palette.white)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $showImport) {
+            ImportScreenshotView().environment(store)
+        }
+        .sheet(isPresented: $showManual) {
+            ManualAddSubscriptionView().environment(store)
+        }
     }
 
     private var header: some View {
@@ -48,19 +59,42 @@ struct RadarView: View {
                 Text("Your subscriptions").font(AppFont.h1).foregroundStyle(Palette.ink)
             }
             Spacer()
-            Button {
-                let gen = UIImpactFeedbackGenerator(style: .light)
-                gen.impactOccurred()
-                store.selectedTab = 3
-            } label: {
-                Image(systemName: "person")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(Palette.ink)
-                    .frame(width: 40, height: 40)
-                    .background(Palette.surface, in: Circle())
+            HStack(spacing: 10) {
+                Menu {
+                    Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        showImport = true
+                    } label: {
+                        Label("Scan from screenshots", systemImage: "photo.on.rectangle.angled")
+                    }
+                    Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        showManual = true
+                    } label: {
+                        Label("Add manually", systemImage: "pencil.line")
+                    }
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(Palette.white)
+                        .frame(width: 40, height: 40)
+                        .background(Palette.ink, in: Circle())
+                }
+                .accessibilityLabel("Add subscription")
+
+                Button {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    store.selectedTab = 3
+                } label: {
+                    Image(systemName: "person")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(Palette.ink)
+                        .frame(width: 40, height: 40)
+                        .background(Palette.surface, in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Account and settings")
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Account and settings")
         }
         .padding(.top, 4)
     }
@@ -93,6 +127,45 @@ struct RadarView: View {
 
     private var divider: some View {
         Rectangle().fill(Color(red: 0.16, green: 0.16, blue: 0.16)).frame(width: 1, height: 36).padding(.horizontal, 8)
+    }
+
+    private var emptyStateCard: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 12) {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.system(size: 32, weight: .medium))
+                    .foregroundStyle(Palette.ink)
+                Text("Nothing here yet")
+                    .font(AppFont.h3)
+                    .foregroundStyle(Palette.ink)
+                Text("Snap a screenshot of your bank app or Apple Wallet — we'll auto-detect every recurring charge.")
+                    .font(AppFont.small)
+                    .foregroundStyle(Palette.mute)
+                    .fixedSize(horizontal: false, vertical: true)
+                HStack(spacing: 10) {
+                    Button { showImport = true } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "photo.on.rectangle.angled")
+                            Text("Scan").font(AppFont.smallB)
+                        }
+                        .foregroundStyle(Palette.white)
+                        .padding(.horizontal, 14).padding(.vertical, 9)
+                        .background(Palette.ink, in: Capsule())
+                    }
+                    Button { showManual = true } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "pencil.line")
+                            Text("Add manually").font(AppFont.smallB)
+                        }
+                        .foregroundStyle(Palette.ink)
+                        .padding(.horizontal, 14).padding(.vertical, 9)
+                        .background(Palette.surface, in: Capsule())
+                    }
+                }
+                .padding(.top, 4)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     private var savingsCard: some View {

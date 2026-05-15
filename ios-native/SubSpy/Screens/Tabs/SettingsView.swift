@@ -9,6 +9,8 @@ struct SettingsView: View {
     @State private var usageAnalysis = true
     @State private var showPaywall = false
     @State private var showManageSubs = false
+    @State private var showImport = false
+    @State private var showManual = false
     @State private var confirmDisconnect = false
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
@@ -28,6 +30,17 @@ struct SettingsView: View {
                 } else {
                     proActive.padding(.top, 20)
                 }
+
+                SectionWrap(title: "Subscriptions") {
+                    Button { showImport = true } label: {
+                        SettingsRow(icon: "photo.on.rectangle.angled", label: "Scan from screenshots")
+                    }.buttonStyle(.plain)
+                    DividerLine()
+                    Button { showManual = true } label: {
+                        SettingsRow(icon: "pencil.line", label: "Add manually")
+                    }.buttonStyle(.plain)
+                }
+                .padding(.top, 28)
 
                 SectionWrap(title: "Notifications") {
                     SettingsRow(icon: "chart.line.uptrend.xyaxis", label: "Price-hike alerts", toggle: $hikeAlerts)
@@ -113,6 +126,12 @@ struct SettingsView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environment(store)
+        }
+        .sheet(isPresented: $showImport) {
+            ImportScreenshotView().environment(store)
+        }
+        .sheet(isPresented: $showManual) {
+            ManualAddSubscriptionView().environment(store)
         }
         .manageSubscriptionsSheet(isPresented: $showManageSubs)
         .confirmationDialog(
