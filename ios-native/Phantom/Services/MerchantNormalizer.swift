@@ -159,24 +159,80 @@ enum MerchantNormalizer {
             .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
     }
 
-    /// Heuristic: does this amount + name LOOK like a subscription (even with only 1 sighting)?
-    /// Used in single-screenshot detection where we don't have recurrence proof.
+    /// Strict single-sighting filter. Only surfaces a charge as a "likely sub"
+    /// when the merchant matches a known subscription brand AND isn't on the
+    /// transactional blacklist.
+    ///
+    /// Why so strict: with only one observation we can't distinguish a Starbucks
+    /// at $5.95 from a streaming service at $5.95. The previous cents-pattern
+    /// heuristic produced too many false positives (Uber rides, restaurant bills,
+    /// gas station charges all hit ".99" or ".95" prices). Known brand → high
+    /// confidence; everything else waits for the recurrence detector to confirm.
     static func looksLikeSubscription(name: String, amount: Double) -> Bool {
-        // 1. Known subscription brand → yes
-        if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
-            return true
-        }
-        // 2. Common subscription price points: round dollars + cents pattern
-        let cents = Int((amount * 100).rounded()) % 100
-        let isCommonCents = [99, 95, 0, 49, 9, 89].contains(cents)
-        let isCommonRange = amount >= 2.99 && amount <= 100.0
-        if isCommonCents && isCommonRange { return true }
-        // 3. Yearly subs in $50-500 range with /yr-style amounts
-        if amount >= 50 && amount <= 500 && (amount.truncatingRemainder(dividingBy: 1.0) == 0 || cents == 99) {
+        if isLikelyTransactional(name) { return false }
+        return BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil
+    }
+
+    /// Returns true when the merchant string looks like a one-off retail/food/
+    /// transport/ATM charge — never a subscription. Used to filter noise from
+    /// both single-sighting and recurrence detection so a daily Starbucks habit
+    /// doesn't get flagged as a subscription.
+    static func isLikelyTransactional(_ name: String) -> Bool {
+        let lower = name.lowercased()
+        for keyword in transactionalKeywords where lower.contains(keyword) {
             return true
         }
         return false
     }
+
+    // Common US merchant strings that are never subscriptions.
+    // Each entry is a lowercase substring searched in the merchant name.
+    private static let transactionalKeywords: [String] = [
+        // Rideshare & transit
+        "uber", "lyft", "via ", "curb", "yellow cab", "taxi",
+        "amtrak", "greyhound", "septa", "mta", "bart", "wmata", "metro card",
+        // Gas stations
+        "shell oil", "shell ", "exxon", "chevron", "bp ", "mobil", "speedway",
+        "sunoco", "valero", "citgo", "marathon ", "76 station",
+        // Food / coffee / fast food / chains
+        "starbucks", "dunkin", "peets", "mcdonald", "burger king", "wendy",
+        "chipotle", "panera", "chick-fil", "taco bell", "kfc", "popeyes",
+        "subway sandwich", "domino", "pizza hut", "papa john", "in-n-out",
+        "shake shack", "five guys", "sweetgreen", "cava ", "jamba",
+        "smoothie king", "auntie anne", "panda express", "qdoba", "moe's",
+        // Restaurant generic patterns
+        "restaurant", "cafe", "diner", " grill", "bistro", "tavern",
+        "kitchen", " deli", "bakery", "noodle", "ramen", "sushi", "pho ",
+        " bbq", "steakhouse", "pizzeria", "pub ",
+        // Delivery
+        "doordash", "ubereats", "uber eats", "grubhub", "postmates",
+        "seamless", "instacart", "gopuff", "favor delivery",
+        // Groceries / convenience
+        "trader joe", "whole foods", "safeway", "kroger", "publix",
+        "wegmans", "h-e-b", "stop & shop", "shoprite", "albertsons",
+        "7-eleven", "wawa", "cvs ", "walgreens", "rite aid", "duane reade",
+        "aldi ", "sprouts", "fresh market",
+        // Big-box retail (one-off purchases)
+        "target.com", "target store", "walmart store", "walmart.com",
+        "best buy", "home depot", "lowe's", "marshalls", "tjmaxx",
+        "tj maxx", "ross stores", "burlington store", "ikea", "macy",
+        "nordstrom", "kohl's", "bloomingdale",
+        // Apparel chains
+        "uniqlo", "h&m", "zara ", "gap store", "old navy", "urban outfitters",
+        "lululemon", "athleta", "banana republic",
+        // Beauty
+        "sephora", "ulta beauty",
+        // ATM / fees / transfers
+        "atm withdrawal", "cash withdrawal", "wire fee", "service charge",
+        "overdraft", "annual fee", "interest charge", "foreign transaction",
+        "non-sufficient funds",
+        // Peer-to-peer payments (not subs)
+        "venmo *", "zelle to", "zelle from", "cash app *", "popmoney",
+        // Travel one-offs
+        "airline", "expedia", "kayak", "booking.com", "airbnb",
+        "marriott", "hilton ", "hyatt ", "ihg ",
+        " hertz", "enterprise rent", "budget rent", "avis ",
+    ]
 
     private static func titleCase(_ s: String) -> String {
         s.lowercased()

@@ -112,9 +112,12 @@ enum RecurrenceDetector {
     /// - Parameter txs: All transactions known to the app (current OCR + previous imports).
     /// - Returns: One subscription per detected merchant whose charges look periodic.
     static func detect(in txs: [ParsedTransaction]) -> [Subscription] {
-        // Group by brand id (so "POS DEBIT NETFLIX", "SP*NETFLIX", "NETFLIX.COM" all collapse)
+        // Group by brand id (so "POS DEBIT NETFLIX", "SP*NETFLIX", "NETFLIX.COM" all collapse).
+        // Skip transactional merchants (Uber/Starbucks/etc.) even if they happen
+        // to recur at sub-like intervals.
         var groups: [String: [ParsedTransaction]] = [:]
         for t in txs where t.amount > 0 && t.date != nil {
+            guard !MerchantNormalizer.isLikelyTransactional(t.merchant) else { continue }
             let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
             guard !key.isEmpty else { continue }
             groups[key, default: []].append(t)
