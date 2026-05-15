@@ -15,6 +15,7 @@
 		15A3B613D53354C9AA05D1C8 /* TransactionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DB4B99561897976EA97DA8 /* TransactionParser.swift */; };
 		1DAF7D612C89F3596AE695F0 /* youtube-premium.svg in Resources */ = {isa = PBXBuildFile; fileRef = 94C3292773B5A07DD97F72C2 /* youtube-premium.svg */; };
 		1E172D8FC1B363236DB3229C /* chatgpt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 52F1C85418AAF89985AB83CB /* chatgpt.svg */; };
+		1F5DE00E101CDE0412D53104 /* OnboardingProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBC5BAC3FC9C85046AE2F9A /* OnboardingProfileView.swift */; };
 		2010C7A3DC4EE3FD324ED029 /* NegotiateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2230CDF13ACFA2756C53DD1A /* NegotiateView.swift */; };
 		22B0D52049DE9221A4801A19 /* adobe-photography.svg in Resources */ = {isa = PBXBuildFile; fileRef = C8B424C1DFED7F83DACBA6A1 /* adobe-photography.svg */; };
 		24634F2C07ED9E33179EC977 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3267159EDF93B6AE273A327 /* PaywallView.swift */; };
@@ -167,6 +168,7 @@
 		D93DCC7A25C41F50CE8A31E9 /* gemini.svg */ = {isa = PBXFileReference; path = gemini.svg; sourceTree = "<group>"; };
 		DB40B6A52EA48B905C92A7A7 /* OnboardingValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueView.swift; sourceTree = "<group>"; };
 		DC93C585DF15E02B748D9FFE /* github.svg */ = {isa = PBXFileReference; path = github.svg; sourceTree = "<group>"; };
+		DFBC5BAC3FC9C85046AE2F9A /* OnboardingProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProfileView.swift; sourceTree = "<group>"; };
 		E032C6180F1B6F0A2E9134EB /* paramount.svg */ = {isa = PBXFileReference; path = paramount.svg; sourceTree = "<group>"; };
 		E06EFB7295280C56D90D1D59 /* DisputeLetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisputeLetter.swift; sourceTree = "<group>"; };
 		E0C8DD09A06F5AF989EF26FD /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				9158F85B37BCC06A503A8238 /* OnboardingConnectView.swift */,
+				DFBC5BAC3FC9C85046AE2F9A /* OnboardingProfileView.swift */,
 				DB40B6A52EA48B905C92A7A7 /* OnboardingValueView.swift */,
 				0DA34C700213C4322D9524EA /* OnboardingWelcomeView.swift */,
 			);
@@ -531,6 +534,7 @@
 				397B052D49E1105F61645629 /* NotificationCenter.swift in Sources */,
 				8F9433FD15D2799760148AB8 /* OCR.swift in Sources */,
 				ED2DA1DA5812739EF0DED4B5 /* OnboardingConnectView.swift in Sources */,
+				1F5DE00E101CDE0412D53104 /* OnboardingProfileView.swift in Sources */,
 				7FC4CAF87B29E0BEFE120042 /* OnboardingValueView.swift in Sources */,
 				02281E47C72BF592B1809AD8 /* OnboardingWelcomeView.swift in Sources */,
 				24634F2C07ED9E33179EC977 /* PaywallView.swift in Sources */,

@@ -1,5 +1,6 @@
 import Foundation
 
+#if DEBUG
 private func daysAgo(_ n: Int) -> Date {
     Date().addingTimeInterval(TimeInterval(-n * 86_400))
 }
@@ -8,6 +9,13 @@ private func daysAhead(_ n: Int) -> Date {
     Date().addingTimeInterval(TimeInterval(n * 86_400))
 }
 
+/// DEBUG-only demo seed data. Used by:
+///   - `--demo` launch arg (so App Store reviewers can see the full feature
+///     set without uploading screenshots)
+///   - Xcode previews
+///
+/// **Not compiled into Release / TestFlight / App Store builds.** Production
+/// users always start with an empty data set.
 enum MockData {
     static let subscriptions: [Subscription] = [
         Subscription(
@@ -175,3 +183,4 @@ enum MockData {
         ),
     ]
 }
+#endif

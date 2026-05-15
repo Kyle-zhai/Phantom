@@ -15,13 +15,24 @@ struct SettingsView: View {
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
 
+    private var profileDisplayName: String {
+        let n = store.profile?.fullName ?? ""
+        return n.isEmpty ? "Add your name" : n
+    }
+    private var profileDisplayEmail: String {
+        let e = store.profile?.email ?? ""
+        return e.isEmpty ? "Tap Edit profile below" : e
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("YOU").font(AppFont.smallB).foregroundStyle(Palette.mute)
-                    Text("Jordan Lee").font(AppFont.h1).foregroundStyle(Palette.ink)
-                    Text("jordan@subspy.com").font(AppFont.body).foregroundStyle(Palette.mute)
+                    Text(profileDisplayName)
+                        .font(AppFont.h1).foregroundStyle(Palette.ink)
+                    Text(profileDisplayEmail)
+                        .font(AppFont.body).foregroundStyle(Palette.mute)
                 }
                 .padding(.top, 4)
 

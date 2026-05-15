@@ -43,15 +43,19 @@ final class AppStore {
         self.modelContext = modelContext
         loadFromDisk()
         loadDisputeUsage()
+        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--demo") && subscriptions.isEmpty {
             subscriptions = MockData.subscriptions
             alerts = MockData.alerts
             persistAllSubscriptions()
             persistAllAlerts()
             ensureProfile()
+            profile?.fullName = profile?.fullName.isEmpty ?? true ? "Demo User" : profile!.fullName
+            profile?.email = profile?.email.isEmpty ?? true ? "demo@subspy.app" : profile!.email
             profile?.onboardedAt = Date()
             save()
         }
+        #endif
     }
 
     var scoresById: [String: Int] {
@@ -91,16 +95,24 @@ final class AppStore {
 
     // MARK: - Onboarding & Plaid
 
+    func setProfile(name: String, email: String) {
+        ensureProfile()
+        profile?.fullName = name
+        profile?.email = email
+        save()
+    }
+
     func completeOnboarding(viaDemo: Bool = false) {
         ensureProfile()
         profile?.onboardedAt = Date()
+        #if DEBUG
         if viaDemo && subscriptions.isEmpty {
-            // Demo mode — seed with curated sample data so the user has something to look at
             subscriptions = MockData.subscriptions
             alerts = MockData.alerts
             persistAllSubscriptions()
             persistAllAlerts()
         }
+        #endif
         save()
     }
 

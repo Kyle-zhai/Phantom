@@ -60,7 +60,7 @@ struct OnboardingValueView: View {
         }
         .background(Palette.white)
         .navigationDestination(isPresented: $goNext) {
-            OnboardingConnectView()
+            OnboardingProfileView()
         }
         .toolbar(.hidden, for: .navigationBar)
     }

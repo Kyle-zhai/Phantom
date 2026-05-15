@@ -19,11 +19,11 @@ struct DisputeLetterView: View {
 
     init(subId: String) {
         self.subId = subId
-        let amount = MockData.subscriptions.first(where: { $0.id == subId })?.amount ?? 0
         let d = DateFormatter()
         d.dateFormat = "MMM d, yyyy"
         let chargeDate = d.string(from: Date().addingTimeInterval(-6 * 86_400))
-        _form = State(initialValue: DisputeForm(chargeDate: chargeDate, amount: amount))
+        // Amount + profile populated in .onAppear once we have the store/sub
+        _form = State(initialValue: DisputeForm(chargeDate: chargeDate, amount: 0))
     }
 
     var body: some View {
@@ -56,6 +56,16 @@ struct DisputeLetterView: View {
             }
         }
         .background(Palette.white)
+        .onAppear {
+            // Seed amount + name + email from real data on first appear.
+            if form.amount == 0, let sub = store.subscription(byId: subId) {
+                form.amount = sub.amount
+            }
+            if form.fullName.isEmpty, let p = store.profile {
+                form.fullName = p.fullName
+                form.email = p.email
+            }
+        }
     }
 
     private var topBar: some View {

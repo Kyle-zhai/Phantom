@@ -100,6 +100,25 @@ struct SubscriptionDetailView: View {
                 }
                 .padding(.top, 22)
 
+                if breakdown.hasUnknowns {
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundStyle(Palette.warn)
+                            .font(.system(size: 18))
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Score is approximate")
+                                .font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                            Text("Add your last-used date and rating below to refine it.")
+                                .font(AppFont.small).foregroundStyle(Palette.mute)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(14)
+                    .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+                    .padding(.top, 14)
+                }
+
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader("Why this score")
                     VStack(spacing: 0) {

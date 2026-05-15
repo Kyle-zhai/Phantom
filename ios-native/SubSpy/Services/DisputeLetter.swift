@@ -123,8 +123,8 @@ enum DisputeReason: String, CaseIterable, Identifiable {
 }
 
 struct DisputeForm {
-    var fullName: String = "Jordan Lee"
-    var email: String = "jordan@subspy.com"
+    var fullName: String = ""
+    var email: String = ""
     var chargeDate: String
     var amount: Double
     var reason: DisputeReason = .forgottenTrial

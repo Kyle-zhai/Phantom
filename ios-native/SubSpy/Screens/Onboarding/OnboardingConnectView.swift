@@ -54,10 +54,19 @@ struct OnboardingConnectView: View {
                 .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
                 .padding(.top, 24)
 
-                PrimaryButton("Skip — explore with demo data", variant: .ghost) {
-                    store.completeOnboarding(viaDemo: true)
+                PrimaryButton("Set up later", variant: .ghost) {
+                    // Production: mark onboarded with empty data; user can add anytime
+                    // from Radar "+" or Settings. No fake data inserted.
+                    store.completeOnboarding(viaDemo: false)
                 }
                 .padding(.top, 20)
+
+                #if DEBUG
+                PrimaryButton("DEBUG: seed with sample data", variant: .ghost) {
+                    store.completeOnboarding(viaDemo: true)
+                }
+                .padding(.top, 8)
+                #endif
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)

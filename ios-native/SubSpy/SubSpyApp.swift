@@ -52,6 +52,8 @@ struct RootView: View {
             NavigationStack { OnboardingValueView() }
         } else if args.contains("--screen-connect") {
             NavigationStack { OnboardingConnectView() }
+        } else if args.contains("--screen-profile") {
+            NavigationStack { OnboardingProfileView() }
         } else if args.contains("--screen-import") {
             ImportScreenshotView()
         } else if store.isOnboarded {
