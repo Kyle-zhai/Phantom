@@ -113,7 +113,7 @@ private struct AlertCard: View {
                     }
                 }
                 HStack(alignment: .top, spacing: 12) {
-                    Avatar(label: sub.name, bg: sub.brandColor, fg: Palette.white, size: 40)
+                    Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white, size: 40)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(alert.title).font(AppFont.bodyB).foregroundStyle(Palette.ink)
                         Text(alert.message).font(AppFont.small).foregroundStyle(Palette.mute)

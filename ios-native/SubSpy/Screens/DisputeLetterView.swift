@@ -33,7 +33,7 @@ struct DisputeLetterView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         topBar
                         HStack(spacing: 14) {
-                            Avatar(label: sub.name, bg: sub.brandColor, fg: Palette.white, size: 56)
+                            Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white, size: 56)
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Refund from \(sub.name)").font(AppFont.h2).foregroundStyle(Palette.ink)
                                 Text("We generate the letter — you send it. EFTA-compliant language.")
@@ -238,13 +238,27 @@ struct DisputeLetterView: View {
                         Badge("EST", tone: .neutral)
                     }
                     Text("~\(form.reason.successRate)%").font(AppFont.display).foregroundStyle(Palette.success)
-                    Text("Estimated from CFPB complaint resolution rates for similar disputes. Real outcomes vary by vendor and case strength.")
+                    Text("Based on CFPB Consumer Complaint Database 2024: % of similar disputes that closed with monetary relief.")
                         .font(AppFont.small).foregroundStyle(Palette.mute)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.top, 28)
+
+            Card {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "lightbulb").foregroundStyle(Palette.warn)
+                        Text("IF THEY IGNORE YOU").font(AppFont.smallB).foregroundStyle(Palette.warn)
+                    }
+                    Text(form.reason.escalationTip)
+                        .font(AppFont.small).foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.top, 12)
 
             VStack(spacing: 12) {
                 PrimaryButton("Done") { dismiss() }

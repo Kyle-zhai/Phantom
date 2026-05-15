@@ -20,7 +20,7 @@ struct SubscriptionRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Avatar(label: sub.name, bg: sub.brandColor, fg: Palette.white)
+            Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white)
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(sub.name).font(AppFont.bodyB).foregroundStyle(Palette.ink).lineLimit(1)

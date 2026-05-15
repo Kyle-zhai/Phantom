@@ -44,6 +44,8 @@ targets:
       - sdk: UserNotifications.framework
       - sdk: Vision.framework
       - sdk: PhotosUI.framework
+      - package: SVGView
+        product: SVGView
     info:
       path: SubSpy/Info.plist
       properties:
@@ -78,6 +80,11 @@ targets:
         PRODUCT_NAME: SubSpy
         SUBSPY_API_BASE: "http://localhost:3000"
         PLAID_ENVIRONMENT: "sandbox"
+
+packages:
+  SVGView:
+    url: https://github.com/exyte/SVGView
+    from: "1.0.6"
 
 schemes:
   SubSpy:

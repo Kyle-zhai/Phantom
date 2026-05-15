@@ -59,7 +59,7 @@ struct SubscriptionDetailView: View {
                 topBar(category: sub.category.rawValue)
 
                 HStack(spacing: 16) {
-                    Avatar(label: sub.name, bg: sub.brandColor, fg: Palette.white, size: 72)
+                    Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white, size: 72)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(sub.name).font(AppFont.h2).foregroundStyle(Palette.ink)
                         Text(sub.vendor).font(AppFont.small).foregroundStyle(Palette.mute)

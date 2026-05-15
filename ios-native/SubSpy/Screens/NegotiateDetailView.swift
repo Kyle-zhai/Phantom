@@ -50,7 +50,7 @@ struct NegotiateDetailView: View {
             VStack(alignment: .leading, spacing: 0) {
                 topBar(label: "NEGOTIATE")
                 HStack(spacing: 14) {
-                    Avatar(label: sub.name, bg: sub.brandColor, fg: Palette.white, size: 64)
+                    Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white, size: 64)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(sub.name).font(AppFont.h2).foregroundStyle(Palette.ink)
                         Text("Up to \(fmtUSD(offer.yearlySaving))/yr if you ask the right way.")

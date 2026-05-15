@@ -58,7 +58,7 @@ struct NegotiateView: View {
 
     private func offerRow(offer: NegotiationOffer, sub: Subscription) -> some View {
         HStack(alignment: .center, spacing: 12) {
-            Avatar(label: offer.vendor, bg: sub.brandColor, fg: Palette.white)
+            Avatar(label: offer.vendor, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white)
             VStack(alignment: .leading, spacing: 6) {
                 Text(offer.vendor)
                     .font(AppFont.bodyB)
