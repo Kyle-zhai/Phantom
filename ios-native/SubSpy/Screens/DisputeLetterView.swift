@@ -15,6 +15,7 @@ struct DisputeLetterView: View {
     @State private var copied = false
     @State private var showMail = false
     @State private var mailUnavailable = false
+    @State private var showPaywall = false
 
     init(subId: String) {
         self.subId = subId
@@ -96,12 +97,40 @@ struct DisputeLetterView: View {
             FieldView(label: "Full name", text: $form.fullName, placeholder: "As on your card")
             FieldView(label: "Email", text: $form.email, placeholder: "you@example.com", keyboard: .emailAddress)
 
-            PrimaryButton("Preview letter") {
-                step = .preview
-            } trailing: {
-                Image(systemName: "arrow.right")
+            if store.canGenerateDispute {
+                PrimaryButton("Preview letter") {
+                    step = .preview
+                } trailing: {
+                    Image(systemName: "arrow.right")
+                }
+                .padding(.top, 24)
+                if !store.isPro {
+                    Text("Free tier: \(store.disputesRemainingThisMonth) dispute remaining this month.")
+                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 8)
+                }
+            } else {
+                Card(background: Palette.surface, borderColor: Palette.surface) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack { ProTag(); Spacer() }
+                        Text("Free dispute already used this month")
+                            .font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                        Text("Pro unlocks unlimited dispute letters. Next free letter resets on the 1st.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Button { showPaywall = true } label: {
+                            Text("Unlock with Pro").font(AppFont.smallB)
+                                .foregroundStyle(Palette.white)
+                                .padding(.horizontal, 16).padding(.vertical, 10)
+                                .background(Palette.ink, in: Capsule())
+                        }
+                        .padding(.top, 4)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 24)
             }
-            .padding(.top, 24)
         }
     }
 
@@ -160,7 +189,10 @@ struct DisputeLetterView: View {
                     body: DisputeLetter.generate(for: sub, form: form),
                     to: []
                 ) { result, _ in
-                    if result == .sent { step = .sent }
+                    if result == .sent {
+                        store.recordDisputeUsage()
+                        step = .sent
+                    }
                 }
                 .ignoresSafeArea()
             }
@@ -168,6 +200,9 @@ struct DisputeLetterView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("Add a Mail account in Settings, or use 'Copy to clipboard' and paste into your email client.")
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView().environment(store)
             }
 
             Button {

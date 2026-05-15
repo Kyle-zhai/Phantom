@@ -5,6 +5,7 @@ struct NegotiateDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let subId: String
     @State private var copied = false
+    @State private var showPaywall = false
 
     private var sub: Subscription? { store.subscription(byId: subId) }
     private var offer: NegotiationOffer? { sub.flatMap { Negotiation.offer(for: $0) } }
@@ -21,6 +22,9 @@ struct NegotiateDetailView: View {
         }
         .background(Palette.white)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environment(store)
+        }
     }
 
     private func topBar(label: String) -> some View {
@@ -111,17 +115,41 @@ struct NegotiateDetailView: View {
                 .padding(.top, 28)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    SectionHeader("Your script", caption: "Tap to copy. Read it almost verbatim.")
-                    Button { copy(offer.script) } label: {
-                        Card(background: Palette.surface, borderColor: Palette.surface) {
-                            Text("\"\(offer.script)\"")
-                                .font(AppFont.body)
-                                .foregroundStyle(Palette.ink)
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                    SectionHeader("Your script", caption: store.isPro ? "Tap to copy. Read it almost verbatim." : "Pro unlocks the proven retention phrasing.")
+                    if store.isPro {
+                        Button { copy(offer.script) } label: {
+                            Card(background: Palette.surface, borderColor: Palette.surface) {
+                                Text("\"\(offer.script)\"")
+                                    .font(AppFont.body)
+                                    .foregroundStyle(Palette.ink)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        ZStack {
+                            Card(background: Palette.surface, borderColor: Palette.surface) {
+                                Text(String(repeating: "•", count: 240))
+                                    .font(AppFont.body)
+                                    .foregroundStyle(Palette.mute2)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .blur(radius: 6)
+                            }
+                            VStack(spacing: 10) {
+                                ProTag()
+                                Text("Script locked")
+                                    .font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                Button { showPaywall = true } label: {
+                                    Text("Unlock with Pro").font(AppFont.smallB)
+                                        .foregroundStyle(Palette.white)
+                                        .padding(.horizontal, 16).padding(.vertical, 10)
+                                        .background(Palette.ink, in: Capsule())
+                                }
+                            }
                         }
                     }
-                    .buttonStyle(.plain)
                 }
                 .padding(.top, 28)
 
@@ -136,10 +164,17 @@ struct NegotiateDetailView: View {
                 }
                 .padding(.top, 28)
 
-                PrimaryButton(copied ? "Copied!" : "Copy script") { copy(offer.script) } leading: {
-                    Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                if store.isPro {
+                    PrimaryButton(copied ? "Copied!" : "Copy script") { copy(offer.script) } leading: {
+                        Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                    }
+                    .padding(.top, 24)
+                } else {
+                    PrimaryButton("Unlock with Pro to copy") { showPaywall = true } leading: {
+                        Image(systemName: "sparkles")
+                    }
+                    .padding(.top, 24)
                 }
-                .padding(.top, 24)
 
                 PrimaryButton("It didn't work — cancel instead", variant: .ghost) { dismiss() }
                     .padding(.top, 12)

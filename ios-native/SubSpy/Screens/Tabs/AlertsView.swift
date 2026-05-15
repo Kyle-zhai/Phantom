@@ -18,6 +18,15 @@ private func style(for type: AlertType) -> AlertStyle {
 
 struct AlertsView: View {
     @Environment(AppStore.self) private var store
+    @State private var showPaywall = false
+
+    private var visibleAlerts: [PriceAlert] {
+        store.isPro ? store.alerts : Array(store.alerts.prefix(1))
+    }
+
+    private var lockedCount: Int {
+        store.isPro ? 0 : max(0, store.alerts.count - 1)
+    }
 
     var body: some View {
         ScrollView {
@@ -26,15 +35,35 @@ struct AlertsView: View {
                     Text("ALERTS").font(AppFont.smallB).foregroundStyle(Palette.mute)
                     Text("\(store.unreadAlerts) need your attention")
                         .font(AppFont.h1).foregroundStyle(Palette.ink)
-                    Text("We monitor 2,000+ services and ping you 7 days before any price hike.")
+                    Text("We monitor 50+ services and ping you 7 days before any price hike.")
                         .font(AppFont.small).foregroundStyle(Palette.mute)
                 }
                 .padding(.top, 4)
 
                 VStack(spacing: 12) {
-                    ForEach(store.alerts) { alert in
+                    ForEach(visibleAlerts) { alert in
                         if let sub = store.subscription(byId: alert.subscriptionId) {
                             AlertCard(alert: alert, sub: sub)
+                        }
+                    }
+                    if lockedCount > 0 {
+                        Card {
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack { ProTag(); Spacer() }
+                                Text("\(lockedCount) more alert\(lockedCount == 1 ? "" : "s") waiting")
+                                    .font(AppFont.h3).foregroundStyle(Palette.ink)
+                                Text("Free tier sees only the most recent alert. Upgrade to see price hikes and trial endings for every subscription.")
+                                    .font(AppFont.small).foregroundStyle(Palette.mute)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Button { showPaywall = true } label: {
+                                    Text("Unlock with Pro").font(AppFont.smallB)
+                                        .foregroundStyle(Palette.white)
+                                        .padding(.horizontal, 16).padding(.vertical, 10)
+                                        .background(Palette.ink, in: Capsule())
+                                }
+                                .padding(.top, 4)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }
@@ -49,6 +78,9 @@ struct AlertsView: View {
         }
         .navigationDestination(for: DisputeRoute.self) { route in
             DisputeLetterView(subId: route.subId)
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environment(store)
         }
         .toolbar(.hidden, for: .navigationBar)
     }

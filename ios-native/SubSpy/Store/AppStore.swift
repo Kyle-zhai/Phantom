@@ -20,6 +20,7 @@ final class AppStore {
     var loadState: LoadState = .idle
     var lastSync: Date?
     var selectedTab: Int = 0
+    var disputeUsageDates: [Date] = []
 
     private(set) var profile: UserProfile?
     private(set) var purchaseService: PurchaseService
@@ -41,6 +42,7 @@ final class AppStore {
     func attach(modelContext: ModelContext) {
         self.modelContext = modelContext
         loadFromDisk()
+        loadDisputeUsage()
         if ProcessInfo.processInfo.arguments.contains("--demo") && subscriptions.isEmpty {
             subscriptions = MockData.subscriptions
             alerts = MockData.alerts

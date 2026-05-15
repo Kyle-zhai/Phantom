@@ -4,6 +4,7 @@ struct RadarView: View {
     @Environment(AppStore.self) private var store
     @State private var showImport = false
     @State private var showManual = false
+    @State private var showPaywall = false
 
     var body: some View {
         ScrollView {
@@ -37,6 +38,9 @@ struct RadarView: View {
                 if !store.cancelledSubs.isEmpty {
                     cancelledSection.padding(.top, 28)
                 }
+                if hiddenCount > 0 {
+                    lockedMoreCard.padding(.top, 28)
+                }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)
@@ -49,6 +53,40 @@ struct RadarView: View {
         }
         .sheet(isPresented: $showManual) {
             ManualAddSubscriptionView().environment(store)
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environment(store)
+        }
+    }
+
+    /// Number of active subs hidden from free users.
+    private var hiddenCount: Int {
+        guard !store.isPro else { return 0 }
+        let total = store.activeSubs.count
+        return max(0, total - Entitlements.freeSubscriptionLimit)
+    }
+
+    private var lockedMoreCard: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    ProTag()
+                    Spacer()
+                }
+                Text("\(hiddenCount) more subscription\(hiddenCount == 1 ? "" : "s") detected")
+                    .font(AppFont.h3).foregroundStyle(Palette.ink)
+                Text("Free tier shows the top \(Entitlements.freeSubscriptionLimit) by spend. Unlock Pro to see all \(store.activeSubs.count) — and get Zombie Scores, price-hike alerts, and unlimited dispute letters.")
+                    .font(AppFont.small).foregroundStyle(Palette.mute)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button { showPaywall = true } label: {
+                    Text("Unlock with Pro").font(AppFont.smallB)
+                        .foregroundStyle(Palette.white)
+                        .padding(.horizontal, 16).padding(.vertical, 10)
+                        .background(Palette.ink, in: Capsule())
+                }
+                .padding(.top, 4)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -209,18 +247,24 @@ struct RadarView: View {
         }
     }
 
+    /// Apply free-tier limit: keep top N by monthly cost, hide rest.
+    private func visibleSubs() -> [Subscription] {
+        let all = store.activeSubs.sorted { $0.monthlyAmount > $1.monthlyAmount }
+        return store.isPro ? all : Array(all.prefix(Entitlements.freeSubscriptionLimit))
+    }
+
     private func zombies() -> [Subscription] {
-        store.activeSubs.filter { store.score(for: $0.id) >= 80 }
+        visibleSubs().filter { store.score(for: $0.id) >= 80 }
             .sorted { store.score(for: $0.id) > store.score(for: $1.id) }
     }
 
     private func review() -> [Subscription] {
-        store.activeSubs.filter { let s = store.score(for: $0.id); return s >= 50 && s < 80 }
+        visibleSubs().filter { let s = store.score(for: $0.id); return s >= 50 && s < 80 }
             .sorted { store.score(for: $0.id) > store.score(for: $1.id) }
     }
 
     private func keep() -> [Subscription] {
-        store.activeSubs.filter { store.score(for: $0.id) < 50 }
+        visibleSubs().filter { store.score(for: $0.id) < 50 }
             .sorted { $0.monthlyAmount > $1.monthlyAmount }
     }
 }
