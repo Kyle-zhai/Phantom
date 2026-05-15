@@ -16,7 +16,7 @@ struct PaywallView: View {
     @State private var selected: Product?
     @State private var purchasing = false
     @State private var purchaseError: String?
-    @State private var loadTimedOut = false
+    @State private var storeKitUnavailable = false
     @State private var selectedPlanTier: PlanTier = .yearly
 
     private enum PlanTier { case monthly, yearly }
@@ -59,18 +59,28 @@ struct PaywallView: View {
                 planSection
                     .padding(.top, 30)
                     .task {
-                        // Kick off product load in parallel with a 2-second timer.
-                        // If StoreKit hasn't returned products by then (e.g. running
-                        // outside Xcode without the .storekit config), fall back to
-                        // static plan cards so the screen is usable.
-                        Task { await purchaseService.refresh() }
-                        try? await Task.sleep(nanoseconds: 2_000_000_000)
+                        // Plans render instantly using built-in price labels.
+                        // StoreKit silently upgrades to localized prices (e.g. €27.99
+                        // for EU users) once Apple's servers respond — no spinner.
+                        await purchaseService.refresh()
                         if purchaseService.products.isEmpty {
-                            loadTimedOut = true
+                            storeKitUnavailable = true
                         }
                     }
                     .onAppear {
-                        if selected == nil { selected = purchaseService.yearly ?? purchaseService.monthly }
+                        selectedPlanTier = .yearly
+                        if selected == nil {
+                            selected = purchaseService.yearly ?? purchaseService.monthly
+                        }
+                    }
+                    .onChange(of: purchaseService.products) { _, _ in
+                        // When products arrive after initial render, snap selection to
+                        // whichever tier the user currently has visually highlighted.
+                        if selected == nil {
+                            selected = selectedPlanTier == .yearly
+                                ? purchaseService.yearly
+                                : purchaseService.monthly
+                        }
                     }
 
                 VStack(spacing: 14) {
@@ -121,59 +131,54 @@ struct PaywallView: View {
 
     @ViewBuilder
     private var planSection: some View {
-        if !purchaseService.products.isEmpty {
-            // Real StoreKit products loaded
-            VStack(spacing: 12) {
-                if let yearly = purchaseService.yearly {
-                    planCard(product: yearly,
-                             title: "Annual",
-                             subline: yearlySubline(yearly),
-                             badge: "Refund within 30 days",
-                             best: true)
-                }
-                if let monthly = purchaseService.monthly {
-                    planCard(product: monthly,
-                             title: "Monthly",
-                             subline: "per month · cancel anytime",
-                             badge: nil,
-                             best: false)
-                }
-            }
-        } else if loadTimedOut {
-            // Fallback: display static plan info if StoreKit unavailable
-            VStack(spacing: 12) {
-                staticPlanCard(tier: .yearly,
-                               title: "Annual",
-                               price: "$29.99",
-                               subline: "per year · ~$2.50 / month · save 37%",
-                               badge: "Refund within 30 days",
-                               best: true)
-                staticPlanCard(tier: .monthly,
-                               title: "Monthly",
-                               price: "$3.99",
-                               subline: "per month · cancel anytime",
-                               badge: nil,
-                               best: false)
-                Text("Purchase available on real device. In the simulator, run from Xcode to enable StoreKit testing.")
+        VStack(spacing: 12) {
+            unifiedPlanCard(
+                tier: .yearly,
+                product: purchaseService.yearly,
+                title: "Annual",
+                fallbackPrice: "$29.99",
+                subline: yearlySublineText,
+                badge: "Refund within 30 days",
+                best: true
+            )
+            unifiedPlanCard(
+                tier: .monthly,
+                product: purchaseService.monthly,
+                title: "Monthly",
+                fallbackPrice: "$3.99",
+                subline: "per month · cancel anytime",
+                badge: nil,
+                best: false
+            )
+            if storeKitUnavailable {
+                Text("Purchase will work on a real device. In the simulator, run from Xcode to test StoreKit.")
                     .font(AppFont.small)
                     .foregroundStyle(Palette.mute)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 8)
                     .padding(.top, 4)
             }
-        } else {
-            // Initial loading state
-            HStack(spacing: 10) {
-                ProgressView()
-                Text("Loading plans…").font(AppFont.small).foregroundStyle(Palette.mute)
-            }
-            .padding(.vertical, 30)
         }
     }
 
-    private func staticPlanCard(tier: PlanTier, title: String, price: String, subline: String, badge: String?, best: Bool) -> some View {
+    /// Renders a plan card instantly using the fallback price label.
+    /// If the StoreKit Product has loaded, uses its localized displayPrice
+    /// and stores the Product reference for purchase.
+    private func unifiedPlanCard(
+        tier: PlanTier,
+        product: Product?,
+        title: String,
+        fallbackPrice: String,
+        subline: String,
+        badge: String?,
+        best: Bool
+    ) -> some View {
         let active = selectedPlanTier == tier
-        return Button { selectedPlanTier = tier } label: {
+        let displayPrice = product?.displayPrice ?? fallbackPrice
+        return Button {
+            selectedPlanTier = tier
+            if let product { selected = product }
+        } label: {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text(title).font(AppFont.h3).foregroundStyle(Palette.ink)
@@ -183,7 +188,7 @@ struct PaywallView: View {
                         if active { Circle().fill(Palette.ink).frame(width: 10, height: 10) }
                     }
                 }
-                Text(price).font(AppFont.display).foregroundStyle(Palette.ink).padding(.top, 8)
+                Text(displayPrice).font(AppFont.display).foregroundStyle(Palette.ink).padding(.top, 8)
                 Text(subline).font(AppFont.small).foregroundStyle(Palette.mute).padding(.top, 2)
                 if let badge { Badge(badge, tone: .keep).padding(.top, 12) }
             }
@@ -207,26 +212,29 @@ struct PaywallView: View {
         .buttonStyle(.plain)
     }
 
+    private var yearlySublineText: String {
+        if let y = purchaseService.yearly {
+            return yearlySubline(y)
+        }
+        return "per year · ~$2.50 / month · save 37%"
+    }
+
     private var ctaTitle: String {
         if purchasing { return "Processing…" }
         if let sel = selected {
             return "Start Pro · \(sel.displayPrice) / \(sel.id.hasSuffix("yearly") ? "year" : "month")"
         }
-        if loadTimedOut {
-            return selectedPlanTier == .yearly
-                ? "Start Pro · $29.99 / year"
-                : "Start Pro · $3.99 / month"
-        }
-        return "Start Pro"
+        // Static fallback price
+        return selectedPlanTier == .yearly
+            ? "Start Pro · $29.99 / year"
+            : "Start Pro · $3.99 / month"
     }
 
-    private var ctaDisabled: Bool {
-        purchasing || (selected == nil && !loadTimedOut)
-    }
+    private var ctaDisabled: Bool { purchasing }
 
     private var ctaAction: () -> Void {
-        if purchaseService.products.isEmpty && loadTimedOut {
-            // No StoreKit — show informational error rather than fail silently
+        if purchaseService.products.isEmpty {
+            // StoreKit unavailable — show a friendly message rather than fail silently
             return { purchaseError = "Purchases unavailable in this build. Run from Xcode or install via TestFlight to test." }
         }
         return { Task { await purchase() } }
