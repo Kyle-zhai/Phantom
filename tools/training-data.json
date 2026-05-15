@@ -1654,5 +1654,133 @@
   {
     "text": "LINEAR ORBIT",
     "label": "subscription"
+  },
+  {
+    "text": "UBER *ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER ONE MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER *MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "LYFT PINK",
+    "label": "subscription"
+  },
+  {
+    "text": "LYFT *PINK",
+    "label": "subscription"
+  },
+  {
+    "text": "LYFT MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "DOORDASH *DASHPASS",
+    "label": "subscription"
+  },
+  {
+    "text": "DASHPASS",
+    "label": "subscription"
+  },
+  {
+    "text": "INSTACART EXPRESS",
+    "label": "subscription"
+  },
+  {
+    "text": "INSTACART PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "GRUBHUB+",
+    "label": "subscription"
+  },
+  {
+    "text": "STARBUCKS REWARDS+",
+    "label": "subscription"
+  },
+  {
+    "text": "STARBUCKS PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "ROBINHOOD GOLD",
+    "label": "subscription"
+  },
+  {
+    "text": "ROBINHOOD*GOLD",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON KIDS+",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON KINDLE UNLIMITED",
+    "label": "subscription"
+  },
+  {
+    "text": "KINDLE UNLIMITED",
+    "label": "subscription"
+  },
+  {
+    "text": "AMZN*KINDLE UNLTD",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON MUSIC UNLIMITED",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON FRESH",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER *TRIP HELP",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER*TRIP 4421",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT *RIDE TUE 3PM",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT RIDE 0089",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH *MCDONALDS",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH*ORDER 12421",
+    "label": "transactional"
+  },
+  {
+    "text": "INSTACART*GROCERIES 4421",
+    "label": "transactional"
+  },
+  {
+    "text": "GRUBHUB*ORDER 4422",
+    "label": "transactional"
+  },
+  {
+    "text": "AMZN MKTPL*RT3JK",
+    "label": "transactional"
+  },
+  {
+    "text": "AMAZON MKTPLACE *RT3",
+    "label": "transactional"
+  },
+  {
+    "text": "AMAZON.COM*1234",
+    "label": "transactional"
   }
 ]

@@ -194,8 +194,16 @@ enum MerchantNormalizer {
     /// gas station charges all hit ".99" or ".95" prices). Known brand → high
     /// confidence; everything else waits for the recurrence detector to confirm.
     static func looksLikeSubscription(name: String, amount: Double) -> Bool {
+        // Hard transactional rejection (gas station, restaurant, ride, etc.)
         if isLikelyTransactional(name) { return false }
-        return BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil
+        // Strong positive signal #1: matches a known subscription brand
+        if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
+            return true
+        }
+        // Strong positive signal #2: ML classifier is very confident this is
+        // a subscription. Catches subs whose brand isn't in our registry yet
+        // (e.g. Uber One, Robinhood Gold, niche local services).
+        return MerchantML.subscriptionProbability(for: name) >= 0.80
     }
 
     /// Returns true when the merchant string looks like a one-off retail/food/
@@ -217,10 +225,17 @@ enum MerchantNormalizer {
 
     // Common US merchant strings that are never subscriptions.
     // Each entry is a lowercase substring searched in the merchant name.
+    //
+    // ⚠️ Be specific. "uber" alone would kill Uber One ($9.99/mo subscription)
+    // and "amazon" alone would kill Amazon Prime. Only blacklist patterns that
+    // unambiguously identify a one-off transaction.
     private static let transactionalKeywords: [String] = [
-        // Rideshare & transit
-        "uber", "lyft", "via ", "curb", "yellow cab", "taxi",
-        "amtrak", "greyhound", "septa", "mta", "bart", "wmata", "metro card",
+        // Rideshare & transit (specific patterns — keep Uber One / DashPass alive)
+        "uber *trip", "uber trip", "uber*trip", "uber eats", "uber *eats",
+        "ubereats", "lyft *ride", "lyft ride", "lyft trip", "lyft *trip",
+        "via rideshare", "curb taxi", "yellow cab", " taxi ",
+        "amtrak ", "greyhound bus", "septa key", "mta*nyct", "mta subway",
+        "bart *fare", "wmata*metro", "metro card", "metrocard",
         // Gas stations
         "shell oil", "shell ", "exxon", "chevron", "bp ", "mobil", "speedway",
         "sunoco", "valero", "citgo", "marathon ", "76 station",
