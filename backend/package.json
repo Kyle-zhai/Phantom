@@ -1,0 +1,25 @@
+{
+  "name": "subspy-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "SubSpy backend — Plaid token exchange, price monitoring, notification fanout. Designed for Vercel functions but runnable as a single Express server too.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "vercel-build": "echo 'No build step'",
+    "seed-prices": "node lib/seed-prices.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "plaid": "^29.0.0",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5",
+    "node-fetch": "^3.3.2",
+    "cheerio": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

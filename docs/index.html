@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubSpy — Find the money you're losing</title>
+<meta name="description" content="SubSpy finds the subscriptions you forgot you were paying for and helps you cancel them in seconds. Privacy-first. iOS only.">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { color: #0a0a0a; background: #ffffff; line-height: 1.5; }
+  a { color: inherit; }
+  .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+  nav { padding: 24px 0; display: flex; align-items: center; justify-content: space-between; }
+  nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  nav .brand-logo { width: 28px; height: 28px; border-radius: 7px; background: #000; display: flex; align-items: center; justify-content: center; }
+  nav .brand-logo svg { width: 16px; height: 16px; }
+  nav .links a { margin-left: 28px; text-decoration: none; font-size: 14px; color: #6B7280; font-weight: 500; }
+  nav .links a:hover { color: #0a0a0a; }
+  .hero { padding: 80px 0 120px; text-align: center; }
+  .hero h1 { font-size: 72px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.0; max-width: 720px; margin: 0 auto; }
+  .hero p { font-size: 19px; color: #6B7280; max-width: 560px; margin: 24px auto 36px; }
+  .cta { display: inline-block; background: #000; color: #fff; text-decoration: none; padding: 16px 32px; border-radius: 999px; font-weight: 600; }
+  .cta:hover { opacity: 0.9; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 720px; margin: 60px auto 0; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
+  .stat-label { font-size: 13px; color: #6B7280; margin-top: 4px; font-weight: 500; }
+  section { padding: 80px 0; border-top: 1px solid #E5E7EB; }
+  section h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; max-width: 600px; line-height: 1.1; }
+  section p.lede { color: #6B7280; font-size: 17px; max-width: 560px; margin-top: 16px; }
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 48px; }
+  @media (max-width: 700px) { .features { grid-template-columns: 1fr; } .hero h1 { font-size: 48px; } }
+  .feature { padding: 24px; border: 1px solid #E5E7EB; border-radius: 20px; }
+  .feature-icon { width: 44px; height: 44px; border-radius: 12px; background: #F4F4F5; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .feature h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .feature p { color: #6B7280; font-size: 14px; }
+  .promise { background: #D1FAE5; padding: 32px; border-radius: 20px; margin-top: 48px; display: flex; gap: 20px; align-items: flex-start; }
+  .promise strong { display: block; margin-bottom: 4px; }
+  footer { padding: 60px 0 80px; border-top: 1px solid #E5E7EB; color: #6B7280; font-size: 13px; text-align: center; }
+  footer a { color: inherit; margin: 0 12px; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav>
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      SubSpy
+    </div>
+    <div class="links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:hello.subspy@gmail.com">Contact</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Find the money you&rsquo;re losing.</h1>
+    <p>The average American pays for 4.5 subscriptions they never use. SubSpy finds them, scores them, and helps you cancel — in seconds. Privacy-first. iOS only.</p>
+    <a class="cta" href="#download">Download for iPhone</a>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">4.5</div><div class="stat-label">UNUSED SUBS AVG</div></div>
+      <div class="stat"><div class="stat-num">$47</div><div class="stat-label">MONTHLY WASTE</div></div>
+      <div class="stat"><div class="stat-num">$564</div><div class="stat-label">PER YEAR</div></div>
+    </div>
+  </div>
+</div>
+
+<section>
+<div class="container">
+  <h2>One screenshot. Every subscription, found.</h2>
+  <p class="lede">SubSpy reads screenshots of your bank app, Apple Wallet, or credit-card statement using Apple Vision OCR — entirely on your iPhone. We never see your bank login. We never see your card number. We never see your data.</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">📷</div>
+      <h3>Snap, don&rsquo;t connect</h3>
+      <p>Screenshot your Apple Wallet transactions or any bank app. SubSpy OCRs it on-device and detects every recurring charge.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🧟</div>
+      <h3>Zombie Score</h3>
+      <p>0–100 ranking based on how often you actually use each subscription. Scores ≥ 80 are flagged for cancellation.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✉️</div>
+      <h3>Dispute letter generator</h3>
+      <p>One tap = a legal letter citing EFTA, ROSCA, and Regulation E for wrongful charges, auto-renewals, and trial conversions.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📈</div>
+      <h3>Price-hike alerts</h3>
+      <p>Notified 7 days before any price increase across 55+ services. Cancel before the bill hits.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💬</div>
+      <h3>Negotiation scripts</h3>
+      <p>Real retention phrases for Hulu, SiriusXM, Audible, Adobe, and more. Tap to copy.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <h3>Private by design</h3>
+      <p>OCR runs on-device with Apple Vision. No bank login, no server, no analytics SDK, no third-party tracking. Ever.</p>
+    </div>
+  </div>
+
+  <div class="promise">
+    <div style="font-size: 28px;">✅</div>
+    <div>
+      <strong>We never sell your data. We never push loans. We never store your card number.</strong>
+      These aren&rsquo;t footnote promises &mdash; they&rsquo;re the entire business model. SubSpy makes $3.99/month from happy users, period.
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="download">
+<div class="container" style="text-align: center;">
+  <h2 style="margin: 0 auto;">Stop paying for what you don&rsquo;t use.</h2>
+  <p class="lede" style="margin: 16px auto 32px;">$3.99/month or $29.99/year. Average user saves $47/month.</p>
+  <a class="cta" href="#">Coming soon to the App Store</a>
+</div>
+</section>
+
+<footer>
+<div class="container">
+  Made by humans who hate losing money.<br>
+  <a href="privacy.html">Privacy Policy</a> &middot; <a href="terms.html">Terms of Service</a> &middot; <a href="mailto:hello.subspy@gmail.com">Contact</a>
+</div>
+</footer>
+
+</body>
+</html>
