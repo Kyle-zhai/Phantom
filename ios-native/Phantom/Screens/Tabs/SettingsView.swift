@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State private var confirmDisconnect = false
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
+    @State private var showEditProfile = false
 
     private var profileDisplayName: String {
         let n = store.profile?.fullName ?? ""
@@ -21,7 +22,7 @@ struct SettingsView: View {
     }
     private var profileDisplayEmail: String {
         let e = store.profile?.email ?? ""
-        return e.isEmpty ? "Tap Edit profile below" : e
+        return e.isEmpty ? "Tap Edit profile to add your email" : e
     }
 
     var body: some View {
@@ -33,6 +34,21 @@ struct SettingsView: View {
                         .font(AppFont.h1).foregroundStyle(Palette.ink)
                     Text(profileDisplayEmail)
                         .font(AppFont.body).foregroundStyle(Palette.mute)
+                    Button {
+                        showEditProfile = true
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "pencil")
+                                .font(.system(size: 12, weight: .semibold))
+                            Text("Edit profile").font(AppFont.smallB)
+                        }
+                        .foregroundStyle(Palette.ink)
+                        .padding(.horizontal, 14).padding(.vertical, 8)
+                        .background(Palette.surface, in: Capsule())
+                        .overlay(Capsule().stroke(Palette.border, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 6)
                 }
                 .padding(.top, 4)
 
@@ -123,6 +139,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showManual) {
             ManualAddSubscriptionView().environment(store)
+        }
+        .sheet(isPresented: $showEditProfile) {
+            EditProfileView().environment(store)
         }
         .manageSubscriptionsSheet(isPresented: $showManageSubs)
         .confirmationDialog(

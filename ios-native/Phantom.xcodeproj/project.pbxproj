@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043288EF59B4D6F7D64FAAB0 /* huggingface.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2E4F5F33C271B0F7BFC98C40 /* huggingface.svg */; };
 		055163920CE9CAF8BA77B43F /* ImportScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2FC5E0956B57856DF6C11 /* ImportScreenshotView.swift */; };
 		06517D3D642900B611B91546 /* OnboardingConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */; };
 		081EC1AB08FB4352C99EAD4E /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0FC19F5EFB70C9E4F1518 /* NotificationCenter.swift */; };
@@ -19,13 +20,16 @@
 		22FEB491BB035936E3B5F9F1 /* netflix.svg in Resources */ = {isa = PBXBuildFile; fileRef = FE091922E81767D6905A3863 /* netflix.svg */; };
 		24C9AB4D62C49A8EE815E492 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BD5C8FD355095D162ABBAA /* AppConfig.swift */; };
 		272CA6C43DD46DF6022C67F5 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C5DF3525DE79B65D7355DF0 /* Badge.swift */; };
+		29541D4C9CA7E284F015A93D /* lovable.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0DD600B9162D2DB4ABE815BB /* lovable.svg */; };
 		2A01CCC268CCACB1BCF1529D /* MerchantClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */; };
+		2BABA5F9736579304CA6A52A /* bolt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9E33AD25DEFFCFA29B5754C0 /* bolt.svg */; };
 		2BD3C1E438BBB0E704944BB7 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82EA3BDF4FB2A5A0A761FDC /* AlertsView.swift */; };
 		2C0958881E81D35EDFD46CE3 /* adobe-cc.svg in Resources */ = {isa = PBXBuildFile; fileRef = 887C2DDA5BD9DE2C107553E7 /* adobe-cc.svg */; };
 		2E32A67D2210D3C5B8DE0F28 /* headspace.svg in Resources */ = {isa = PBXBuildFile; fileRef = 55B64E5F33A510AA16F6A511 /* headspace.svg */; };
 		2EB735968C3C51F7A0419443 /* hbo-max.svg in Resources */ = {isa = PBXBuildFile; fileRef = B5B0C4BECA60274D2EBF3E81 /* hbo-max.svg */; };
 		2FD53D25830DF167E389B900 /* apple-tv.svg in Resources */ = {isa = PBXBuildFile; fileRef = 36760C085256F29FE12E5715 /* apple-tv.svg */; };
 		30747607137D93C449279A80 /* duolingo.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6937172CEC5855232A48D146 /* duolingo.svg */; };
+		36C65B55A6800FBB74250F7C /* elevenlabs.svg in Resources */ = {isa = PBXBuildFile; fileRef = 828D06226C150068382ED583 /* elevenlabs.svg */; };
 		36D011EC142CE3514671E1AC /* ManualAddSubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511F995ACCF30BDDD095E755 /* ManualAddSubscriptionView.swift */; };
 		388AFB48E6642B9AFAAA5E06 /* NegotiateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6513E15C42BBB1D2CCE0C4B /* NegotiateDetailView.swift */; };
 		38F9E9912650572368518054 /* claude.svg in Resources */ = {isa = PBXBuildFile; fileRef = 58159BEA296A2B2B707DC7C4 /* claude.svg */; };
@@ -33,18 +37,22 @@
 		4660CFADA525BE9D336C0AF2 /* BrandRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0388E833EBAE0B3855B90B7F /* BrandRegistry.swift */; };
 		4986782828F1631918058E6C /* OnboardingProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5572D4B4F44E161F9D82C86 /* OnboardingProfileView.swift */; };
 		4CF7C168054E2F72CBBA65B3 /* nyt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4BC7B695B6F35B2F6187FD78 /* nyt.svg */; };
+		4FF37FB5CCF7581A77697F97 /* perplexity.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2CC108C43E3E769F6355BB8A /* perplexity.svg */; };
 		52190E931DD6D65C31DAD2C8 /* amazon-prime.svg in Resources */ = {isa = PBXBuildFile; fileRef = C52A9AF206AA9F8443696A17 /* amazon-prime.svg */; };
 		585429D8082692724D4E8307 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478815D9E4C62B74A98C1C68 /* RootTabView.swift */; };
 		58EE7BABE7B46091B5A20715 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90DD51A355FCDE874358208 /* SettingsView.swift */; };
 		5A76D0B4D307F0E6648A816B /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD822A61D7A0FB4DFC6DAED /* PaywallView.swift */; };
 		5CC4DAE9514BC8B344FBDB6C /* spotify.svg in Resources */ = {isa = PBXBuildFile; fileRef = 78BFD4A1B020004EB4CDBA07 /* spotify.svg */; };
 		5F849C98BDB01BAD0263B3A7 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528450789CD1A8010E5986A2 /* Section.swift */; };
+		600F1E0C7B9428233E53E395 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A3B7FEC066BB7E541A5B5E /* EditProfileView.swift */; };
+		665937AF799ACAC532909918 /* deepseek.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4CE796352630D664D229C8F0 /* deepseek.svg */; };
 		695C1F2740E266B51561EABE /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66C94B9BC810302D424FBBB1 /* PhotosUI.framework */; };
 		69634BBE128A686BA5E82DD5 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C60DE91DDD4E3B66CCC771 /* Keychain.swift */; };
 		6A89DABDE5E30E76AA34EFC4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05DF1B56B6EE38D37CDA07C3 /* MessageUI.framework */; };
 		6B45C334678FBDFF5CD423BA /* PriceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */; };
 		6C3AE2CAA8F49205CD7DAAB7 /* google-one.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7CA8CAA96AD05D073D030E1B /* google-one.svg */; };
 		71FA79B5A270A131ADADF1D0 /* ProLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE806B50D4F4232552080A1E /* ProLock.swift */; };
+		72A84F932F962ACBAA6273ED /* openai.svg in Resources */ = {isa = PBXBuildFile; fileRef = 42A778FE15EE8A0CDE4BC1A1 /* openai.svg */; };
 		77146A88D9A11EB22BE3D81D /* gemini.svg in Resources */ = {isa = PBXBuildFile; fileRef = A606EDBFB658CD086975717C /* gemini.svg */; };
 		779F192085EF3E64C7E2F1C2 /* Phantom.storekit in Resources */ = {isa = PBXBuildFile; fileRef = FB235C01E4DFAF3C31FEDA90 /* Phantom.storekit */; };
 		794E6EC1B0122CB4EA8C4035 /* ZombieScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5183A18C06B0360D663D7B84 /* ZombieScore.swift */; };
@@ -56,6 +64,7 @@
 		8B6C06208C913F0916A628F7 /* PhantomMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1B5C7145FAFD37AB96E47A /* PhantomMark.swift */; };
 		9136FBB60B124D230F3F7893 /* walmart-plus.svg in Resources */ = {isa = PBXBuildFile; fileRef = 92EE88D77F625206EB31C62A /* walmart-plus.svg */; };
 		9313285F4F091D0745432C7D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69E2B4A8387D8F51125F99B /* Theme.swift */; };
+		985092B2E6EEE13253614289 /* vercel.svg in Resources */ = {isa = PBXBuildFile; fileRef = A795CADF5BEE909441DA5322 /* vercel.svg */; };
 		9C4345D3CA08FDC5753ED04D /* chatgpt.svg in Resources */ = {isa = PBXBuildFile; fileRef = EE0989F569BDA9DD77A858F0 /* chatgpt.svg */; };
 		A1D5BE3990ACEE7B799FF595 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8662F100C46EE0850752F5C /* Button.swift */; };
 		A330A36E95EC297FC17E2CF6 /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33DFB01CC932DF3A1AD5BFA5 /* Negotiation.swift */; };
@@ -70,7 +79,9 @@
 		B3C44488797EB304EA386760 /* MerchantML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A44E8256E99AEB76343B51 /* MerchantML.swift */; };
 		B755A4052794CF6B04D97ED2 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7808DCA6392DDAF5B3BF75EC /* Vision.framework */; };
 		B9BBAF339C958E2654A93098 /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */; };
+		B9E805C55FFB5761CF1B4F9E /* replit.svg in Resources */ = {isa = PBXBuildFile; fileRef = EAF40175CC21AB322E836C11 /* replit.svg */; };
 		BA5664E23B3FB031C4E4F12F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */; };
+		BD3C9B898E8BFC0A82AE450B /* v0.svg in Resources */ = {isa = PBXBuildFile; fileRef = A7BDF722DFCC1659DBEEC133 /* v0.svg */; };
 		BEEAC775BF28D88B48D8D4A3 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6EF7045A1FA8306036B3F0 /* APIClient.swift */; };
 		C06C28CCA455CC7B0FD20376 /* DisputeLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FDC2506B511B9CC1DA272E /* DisputeLetter.swift */; };
 		C0D7A7A0CC50F6D73156F502 /* ZombieMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */; };
@@ -80,12 +91,15 @@
 		D360A535EAE961E4DB79F648 /* youtube-premium.svg in Resources */ = {isa = PBXBuildFile; fileRef = D14D695EF708997503500C44 /* youtube-premium.svg */; };
 		D5AD509895262D928301B7E3 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07576F60D08E61EDE129FAB4 /* PurchaseService.swift */; };
 		D5B2EE80669548ADE12336F2 /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3DE3250E337AFD4BE0DA7A /* OCR.swift */; };
+		DBE36A4E00534978814990C3 /* linear.svg in Resources */ = {isa = PBXBuildFile; fileRef = CA56EA7A127EF77DE710328D /* linear.svg */; };
 		DC1F6274EFFEFADAD9ACD4D9 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC435C44EC9AA0FA37025E1 /* Persistent.swift */; };
 		DC5EE891792F67E06C5D8D60 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29412028E3E9B8CA4E79B285 /* Card.swift */; };
 		DC6C5AE9DCAD81D28D796676 /* youtube-tv.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2C838F0A6D53C7168DFEFE96 /* youtube-tv.svg */; };
+		DD5FB18E478FB032AD150306 /* suno.svg in Resources */ = {isa = PBXBuildFile; fileRef = 80F8DDC13E7F978AE6F130BE /* suno.svg */; };
 		E27398144F25E1F407544F6D /* github.svg in Resources */ = {isa = PBXBuildFile; fileRef = F4A2AB3330E72C9428EC3F5E /* github.svg */; };
 		E29C484FB413BC45FE9113F2 /* PhantomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */; };
 		E2C8BB879A1FE0F365844055 /* 1password.svg in Resources */ = {isa = PBXBuildFile; fileRef = 523E4FA8DA3B902209175A41 /* 1password.svg */; };
+		E4DFE22672D20D3C43FB4A1C /* cursor.svg in Resources */ = {isa = PBXBuildFile; fileRef = 168D3D9FB6D40385E40A5FCB /* cursor.svg */; };
 		E53084A818A50F73CCE9561D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */; };
 		E7F9B82D61A9CFEF78B4736C /* MerchantClassifier.mlmodelc in Resources */ = {isa = PBXBuildFile; fileRef = 997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */; };
 		E968A7E1D9D816C4882EAF10 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18BD117CB25F72AA4921333 /* AppStore.swift */; };
@@ -97,6 +111,7 @@
 		F79D166610310DC9704D2883 /* github-copilot.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2BA9885DE5F28145E0F24396 /* github-copilot.svg */; };
 		F7DF6D3B19DA0EF5B6DB7A70 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4842DC9FE7EDE316B60F92FD /* Models.swift */; };
 		F8547D924FD271B8D9E39232 /* expressvpn.svg in Resources */ = {isa = PBXBuildFile; fileRef = AB1FC821E462234A77F60C9F /* expressvpn.svg */; };
+		FC1E5CCDF639A6211577D330 /* anthropic.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9D64848F41BDB0482156A097 /* anthropic.svg */; };
 		FEF9A6ECB5AB7B6450749ECA /* icloud.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21CD8D872520F04796933021 /* icloud.svg */; };
 /* End PBXBuildFile section */
 
@@ -105,9 +120,11 @@
 		05DF1B56B6EE38D37CDA07C3 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		07576F60D08E61EDE129FAB4 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
 		0D1D779A4C5715FA08BA6BB8 /* notion.svg */ = {isa = PBXFileReference; path = notion.svg; sourceTree = "<group>"; };
+		0DD600B9162D2DB4ABE815BB /* lovable.svg */ = {isa = PBXFileReference; path = lovable.svg; sourceTree = "<group>"; };
 		0F40C1ABEEF906F815480C43 /* OnboardingValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueView.swift; sourceTree = "<group>"; };
 		109FD842715CF7259792316C /* Phantom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Phantom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		125F762194D4BAA2B8B9AB48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		168D3D9FB6D40385E40A5FCB /* cursor.svg */ = {isa = PBXFileReference; path = cursor.svg; sourceTree = "<group>"; };
 		1765C8A5DD5FA5BAE1BAFFC6 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		1AC2C803D87FA59BD9F5AF57 /* audible.svg */ = {isa = PBXFileReference; path = audible.svg; sourceTree = "<group>"; };
 		21CD8D872520F04796933021 /* icloud.svg */ = {isa = PBXFileReference; path = icloud.svg; sourceTree = "<group>"; };
@@ -118,16 +135,20 @@
 		2BA9885DE5F28145E0F24396 /* github-copilot.svg */ = {isa = PBXFileReference; path = "github-copilot.svg"; sourceTree = "<group>"; };
 		2C75C9EFBAF3550A4C8B0841 /* hulu.svg */ = {isa = PBXFileReference; path = hulu.svg; sourceTree = "<group>"; };
 		2C838F0A6D53C7168DFEFE96 /* youtube-tv.svg */ = {isa = PBXFileReference; path = "youtube-tv.svg"; sourceTree = "<group>"; };
+		2CC108C43E3E769F6355BB8A /* perplexity.svg */ = {isa = PBXFileReference; path = perplexity.svg; sourceTree = "<group>"; };
+		2E4F5F33C271B0F7BFC98C40 /* huggingface.svg */ = {isa = PBXFileReference; path = huggingface.svg; sourceTree = "<group>"; };
 		33DFB01CC932DF3A1AD5BFA5 /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
 		36219F8B9CFA70B3B4D02629 /* adobe-photography.svg */ = {isa = PBXFileReference; path = "adobe-photography.svg"; sourceTree = "<group>"; };
 		36760C085256F29FE12E5715 /* apple-tv.svg */ = {isa = PBXFileReference; path = "apple-tv.svg"; sourceTree = "<group>"; };
 		398A20068C3B8F964C120FDA /* peloton.svg */ = {isa = PBXFileReference; path = peloton.svg; sourceTree = "<group>"; };
 		3C5DF3525DE79B65D7355DF0 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		3E4BD67B848BF6476869A54B /* TransactionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParser.swift; sourceTree = "<group>"; };
+		42A778FE15EE8A0CDE4BC1A1 /* openai.svg */ = {isa = PBXFileReference; path = openai.svg; sourceTree = "<group>"; };
 		42E5A1FC61151654E4446DCF /* MerchantNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantNormalizer.swift; sourceTree = "<group>"; };
 		478815D9E4C62B74A98C1C68 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		4842DC9FE7EDE316B60F92FD /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		4BC7B695B6F35B2F6187FD78 /* nyt.svg */ = {isa = PBXFileReference; path = nyt.svg; sourceTree = "<group>"; };
+		4CE796352630D664D229C8F0 /* deepseek.svg */ = {isa = PBXFileReference; path = deepseek.svg; sourceTree = "<group>"; };
 		50823962F8013DAFD3823BFD /* RecurrenceDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceDetector.swift; sourceTree = "<group>"; };
 		511F995ACCF30BDDD095E755 /* ManualAddSubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAddSubscriptionView.swift; sourceTree = "<group>"; };
 		5183A18C06B0360D663D7B84 /* ZombieScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZombieScore.swift; sourceTree = "<group>"; };
@@ -149,6 +170,8 @@
 		78BFD4A1B020004EB4CDBA07 /* spotify.svg */ = {isa = PBXFileReference; path = spotify.svg; sourceTree = "<group>"; };
 		7B3DE3250E337AFD4BE0DA7A /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		7CA8CAA96AD05D073D030E1B /* google-one.svg */ = {isa = PBXFileReference; path = "google-one.svg"; sourceTree = "<group>"; };
+		80F8DDC13E7F978AE6F130BE /* suno.svg */ = {isa = PBXFileReference; path = suno.svg; sourceTree = "<group>"; };
+		828D06226C150068382ED583 /* elevenlabs.svg */ = {isa = PBXFileReference; path = elevenlabs.svg; sourceTree = "<group>"; };
 		886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
 		887C2DDA5BD9DE2C107553E7 /* adobe-cc.svg */ = {isa = PBXFileReference; path = "adobe-cc.svg"; sourceTree = "<group>"; };
 		8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZombieMeter.swift; sourceTree = "<group>"; };
@@ -158,8 +181,12 @@
 		94A44E8256E99AEB76343B51 /* MerchantML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantML.swift; sourceTree = "<group>"; };
 		96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */ = {isa = PBXFileReference; path = MerchantClassifier.mlmodelc; sourceTree = "<group>"; };
+		9D64848F41BDB0482156A097 /* anthropic.svg */ = {isa = PBXFileReference; path = anthropic.svg; sourceTree = "<group>"; };
+		9E33AD25DEFFCFA29B5754C0 /* bolt.svg */ = {isa = PBXFileReference; path = bolt.svg; sourceTree = "<group>"; };
 		A1C0FC19F5EFB70C9E4F1518 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		A606EDBFB658CD086975717C /* gemini.svg */ = {isa = PBXFileReference; path = gemini.svg; sourceTree = "<group>"; };
+		A795CADF5BEE909441DA5322 /* vercel.svg */ = {isa = PBXFileReference; path = vercel.svg; sourceTree = "<group>"; };
+		A7BDF722DFCC1659DBEEC133 /* v0.svg */ = {isa = PBXFileReference; path = v0.svg; sourceTree = "<group>"; };
 		AB1FC821E462234A77F60C9F /* expressvpn.svg */ = {isa = PBXFileReference; path = expressvpn.svg; sourceTree = "<group>"; };
 		ABA121F373279B49C117B44A /* SwipeToDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDelete.swift; sourceTree = "<group>"; };
 		AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceMonitor.swift; sourceTree = "<group>"; };
@@ -173,6 +200,7 @@
 		C52A9AF206AA9F8443696A17 /* amazon-prime.svg */ = {isa = PBXFileReference; path = "amazon-prime.svg"; sourceTree = "<group>"; };
 		C69E2B4A8387D8F51125F99B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		C82EA3BDF4FB2A5A0A761FDC /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
+		CA56EA7A127EF77DE710328D /* linear.svg */ = {isa = PBXFileReference; path = linear.svg; sourceTree = "<group>"; };
 		D14D695EF708997503500C44 /* youtube-premium.svg */ = {isa = PBXFileReference; path = "youtube-premium.svg"; sourceTree = "<group>"; };
 		D16ACD422863E0E8F54D014C /* dropbox.svg */ = {isa = PBXFileReference; path = dropbox.svg; sourceTree = "<group>"; };
 		D5F2FC5E0956B57856DF6C11 /* ImportScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportScreenshotView.swift; sourceTree = "<group>"; };
@@ -182,11 +210,13 @@
 		E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConnectView.swift; sourceTree = "<group>"; };
 		E76B1C8CCE18AAD96B30ED67 /* SubscriptionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDetailView.swift; sourceTree = "<group>"; };
 		E90DD51A355FCDE874358208 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EAF40175CC21AB322E836C11 /* replit.svg */ = {isa = PBXFileReference; path = replit.svg; sourceTree = "<group>"; };
 		EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MerchantClassifier.mlmodel; sourceTree = "<group>"; };
 		EE0989F569BDA9DD77A858F0 /* chatgpt.svg */ = {isa = PBXFileReference; path = chatgpt.svg; sourceTree = "<group>"; };
 		EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomApp.swift; sourceTree = "<group>"; };
 		F33FF9C492C468B82A893A00 /* apple-music.svg */ = {isa = PBXFileReference; path = "apple-music.svg"; sourceTree = "<group>"; };
 		F4A2AB3330E72C9428EC3F5E /* github.svg */ = {isa = PBXFileReference; path = github.svg; sourceTree = "<group>"; };
+		F5A3B7FEC066BB7E541A5B5E /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		F5C60DE91DDD4E3B66CCC771 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		F8662F100C46EE0850752F5C /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		F87298ADC05DDCC32A8E607A /* MailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposer.swift; sourceTree = "<group>"; };
@@ -355,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				562A357B8FE51749CA94BEE0 /* DisputeLetterView.swift */,
+				F5A3B7FEC066BB7E541A5B5E /* EditProfileView.swift */,
 				D5F2FC5E0956B57856DF6C11 /* ImportScreenshotView.swift */,
 				511F995ACCF30BDDD095E755 /* ManualAddSubscriptionView.swift */,
 				D6513E15C42BBB1D2CCE0C4B /* NegotiateDetailView.swift */,
@@ -382,13 +413,18 @@
 				887C2DDA5BD9DE2C107553E7 /* adobe-cc.svg */,
 				36219F8B9CFA70B3B4D02629 /* adobe-photography.svg */,
 				C52A9AF206AA9F8443696A17 /* amazon-prime.svg */,
+				9D64848F41BDB0482156A097 /* anthropic.svg */,
 				F33FF9C492C468B82A893A00 /* apple-music.svg */,
 				36760C085256F29FE12E5715 /* apple-tv.svg */,
 				1AC2C803D87FA59BD9F5AF57 /* audible.svg */,
+				9E33AD25DEFFCFA29B5754C0 /* bolt.svg */,
 				EE0989F569BDA9DD77A858F0 /* chatgpt.svg */,
 				58159BEA296A2B2B707DC7C4 /* claude.svg */,
+				168D3D9FB6D40385E40A5FCB /* cursor.svg */,
+				4CE796352630D664D229C8F0 /* deepseek.svg */,
 				D16ACD422863E0E8F54D014C /* dropbox.svg */,
 				6937172CEC5855232A48D146 /* duolingo.svg */,
+				828D06226C150068382ED583 /* elevenlabs.svg */,
 				AB1FC821E462234A77F60C9F /* expressvpn.svg */,
 				A606EDBFB658CD086975717C /* gemini.svg */,
 				2BA9885DE5F28145E0F24396 /* github-copilot.svg */,
@@ -396,17 +432,26 @@
 				7CA8CAA96AD05D073D030E1B /* google-one.svg */,
 				B5B0C4BECA60274D2EBF3E81 /* hbo-max.svg */,
 				55B64E5F33A510AA16F6A511 /* headspace.svg */,
+				2E4F5F33C271B0F7BFC98C40 /* huggingface.svg */,
 				2C75C9EFBAF3550A4C8B0841 /* hulu.svg */,
 				21CD8D872520F04796933021 /* icloud.svg */,
 				28B3CA1BA64FF4AD9A90BA9B /* lastpass.svg */,
+				CA56EA7A127EF77DE710328D /* linear.svg */,
+				0DD600B9162D2DB4ABE815BB /* lovable.svg */,
 				FE091922E81767D6905A3863 /* netflix.svg */,
 				681AB1DE4B2254525163A97A /* nordvpn.svg */,
 				0D1D779A4C5715FA08BA6BB8 /* notion.svg */,
 				4BC7B695B6F35B2F6187FD78 /* nyt.svg */,
+				42A778FE15EE8A0CDE4BC1A1 /* openai.svg */,
 				B6A534FE45D40BD9FD4D4B3A /* paramount.svg */,
 				398A20068C3B8F964C120FDA /* peloton.svg */,
+				2CC108C43E3E769F6355BB8A /* perplexity.svg */,
+				EAF40175CC21AB322E836C11 /* replit.svg */,
 				78BFD4A1B020004EB4CDBA07 /* spotify.svg */,
+				80F8DDC13E7F978AE6F130BE /* suno.svg */,
 				8C45848131D11219EF04F9B3 /* tidal.svg */,
+				A7BDF722DFCC1659DBEEC133 /* v0.svg */,
+				A795CADF5BEE909441DA5322 /* vercel.svg */,
 				92EE88D77F625206EB31C62A /* walmart-plus.svg */,
 				D14D695EF708997503500C44 /* youtube-premium.svg */,
 				2C838F0A6D53C7168DFEFE96 /* youtube-tv.svg */,
@@ -486,13 +531,18 @@
 				2C0958881E81D35EDFD46CE3 /* adobe-cc.svg in Resources */,
 				1637DACACD2BB44282D35AE6 /* adobe-photography.svg in Resources */,
 				52190E931DD6D65C31DAD2C8 /* amazon-prime.svg in Resources */,
+				FC1E5CCDF639A6211577D330 /* anthropic.svg in Resources */,
 				A64DE2F1D187F1795AD20BC5 /* apple-music.svg in Resources */,
 				2FD53D25830DF167E389B900 /* apple-tv.svg in Resources */,
 				A39B9BFB3DF3B0A313E93E83 /* audible.svg in Resources */,
+				2BABA5F9736579304CA6A52A /* bolt.svg in Resources */,
 				9C4345D3CA08FDC5753ED04D /* chatgpt.svg in Resources */,
 				38F9E9912650572368518054 /* claude.svg in Resources */,
+				E4DFE22672D20D3C43FB4A1C /* cursor.svg in Resources */,
+				665937AF799ACAC532909918 /* deepseek.svg in Resources */,
 				F2559A9E5DF90F36D3CF9738 /* dropbox.svg in Resources */,
 				30747607137D93C449279A80 /* duolingo.svg in Resources */,
+				36C65B55A6800FBB74250F7C /* elevenlabs.svg in Resources */,
 				F8547D924FD271B8D9E39232 /* expressvpn.svg in Resources */,
 				77146A88D9A11EB22BE3D81D /* gemini.svg in Resources */,
 				F79D166610310DC9704D2883 /* github-copilot.svg in Resources */,
@@ -500,17 +550,26 @@
 				6C3AE2CAA8F49205CD7DAAB7 /* google-one.svg in Resources */,
 				2EB735968C3C51F7A0419443 /* hbo-max.svg in Resources */,
 				2E32A67D2210D3C5B8DE0F28 /* headspace.svg in Resources */,
+				043288EF59B4D6F7D64FAAB0 /* huggingface.svg in Resources */,
 				A608F8218A76B8BB3D148053 /* hulu.svg in Resources */,
 				FEF9A6ECB5AB7B6450749ECA /* icloud.svg in Resources */,
 				C1D0455EB5659E0C988A581D /* lastpass.svg in Resources */,
+				DBE36A4E00534978814990C3 /* linear.svg in Resources */,
+				29541D4C9CA7E284F015A93D /* lovable.svg in Resources */,
 				22FEB491BB035936E3B5F9F1 /* netflix.svg in Resources */,
 				4164000717484FC6F79F6721 /* nordvpn.svg in Resources */,
 				A55DC97FEC441EE6B48A932C /* notion.svg in Resources */,
 				4CF7C168054E2F72CBBA65B3 /* nyt.svg in Resources */,
+				72A84F932F962ACBAA6273ED /* openai.svg in Resources */,
 				21E8ECBFAAF8E9294477FED9 /* paramount.svg in Resources */,
 				EE459F1B6B64A926D8706D60 /* peloton.svg in Resources */,
+				4FF37FB5CCF7581A77697F97 /* perplexity.svg in Resources */,
+				B9E805C55FFB5761CF1B4F9E /* replit.svg in Resources */,
 				5CC4DAE9514BC8B344FBDB6C /* spotify.svg in Resources */,
+				DD5FB18E478FB032AD150306 /* suno.svg in Resources */,
 				F12C865F97B6733019FE234E /* tidal.svg in Resources */,
+				BD3C9B898E8BFC0A82AE450B /* v0.svg in Resources */,
+				985092B2E6EEE13253614289 /* vercel.svg in Resources */,
 				9136FBB60B124D230F3F7893 /* walmart-plus.svg in Resources */,
 				D360A535EAE961E4DB79F648 /* youtube-premium.svg in Resources */,
 				DC6C5AE9DCAD81D28D796676 /* youtube-tv.svg in Resources */,
@@ -536,6 +595,7 @@
 				DC5EE891792F67E06C5D8D60 /* Card.swift in Sources */,
 				C06C28CCA455CC7B0FD20376 /* DisputeLetter.swift in Sources */,
 				10D6580FA7CDD9FC14E595A0 /* DisputeLetterView.swift in Sources */,
+				600F1E0C7B9428233E53E395 /* EditProfileView.swift in Sources */,
 				849C0AAFC05396CF38B38BB4 /* Entitlements.swift in Sources */,
 				055163920CE9CAF8BA77B43F /* ImportScreenshotView.swift in Sources */,
 				69634BBE128A686BA5E82DD5 /* Keychain.swift in Sources */,
