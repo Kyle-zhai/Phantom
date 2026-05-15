@@ -183,6 +183,29 @@ final class AppStore {
         Task { await refreshPriceAlerts() }
     }
 
+    /// Permanently remove a subscription from the user's library. Called when
+    /// the user swipes-to-delete a row that was mis-detected (e.g. an Uber ride
+    /// that looked recurring). Wipes:
+    ///   - in-memory subscriptions + cancelledIds + related alerts
+    ///   - SwiftData persistent row + persistent alerts
+    ///   - any scheduled local notifications for that sub
+    func removeSubscription(_ id: String) {
+        subscriptions.removeAll { $0.id == id }
+        cancelledIds.remove(id)
+        alerts.removeAll { $0.subscriptionId == id }
+
+        if let ctx = modelContext {
+            if let row = try? ctx.fetch(FetchDescriptor<PersistentSubscription>()).first(where: { $0.id == id }) {
+                ctx.delete(row)
+            }
+            if let alertRows = try? ctx.fetch(FetchDescriptor<PersistentAlert>()) {
+                for a in alertRows where a.subscriptionId == id { ctx.delete(a) }
+            }
+            try? ctx.save()
+        }
+        Task { await NotificationService.cancel(for: id) }
+    }
+
     /// Disconnect bank only — keep account, history, ratings.
     func disconnectBank() {
         Keychain.clear(.plaidAccessToken)

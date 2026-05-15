@@ -14,6 +14,7 @@
 		148420AEF17375E16691C038 /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87298ADC05DDCC32A8E607A /* MailComposer.swift */; };
 		1637DACACD2BB44282D35AE6 /* adobe-photography.svg in Resources */ = {isa = PBXBuildFile; fileRef = 36219F8B9CFA70B3B4D02629 /* adobe-photography.svg */; };
 		1A8C049A4C0CA70B78F41C8E /* MerchantNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5A1FC61151654E4446DCF /* MerchantNormalizer.swift */; };
+		1C36198245EF93D304B4DE2A /* SwipeToDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA121F373279B49C117B44A /* SwipeToDelete.swift */; };
 		21E8ECBFAAF8E9294477FED9 /* paramount.svg in Resources */ = {isa = PBXBuildFile; fileRef = B6A534FE45D40BD9FD4D4B3A /* paramount.svg */; };
 		22FEB491BB035936E3B5F9F1 /* netflix.svg in Resources */ = {isa = PBXBuildFile; fileRef = FE091922E81767D6905A3863 /* netflix.svg */; };
 		24C9AB4D62C49A8EE815E492 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BD5C8FD355095D162ABBAA /* AppConfig.swift */; };
@@ -155,6 +156,7 @@
 		A1C0FC19F5EFB70C9E4F1518 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		A606EDBFB658CD086975717C /* gemini.svg */ = {isa = PBXFileReference; path = gemini.svg; sourceTree = "<group>"; };
 		AB1FC821E462234A77F60C9F /* expressvpn.svg */ = {isa = PBXFileReference; path = expressvpn.svg; sourceTree = "<group>"; };
+		ABA121F373279B49C117B44A /* SwipeToDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDelete.swift; sourceTree = "<group>"; };
 		AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceMonitor.swift; sourceTree = "<group>"; };
 		B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B49971A2E95FCA075C378F8D /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				BE806B50D4F4232552080A1E /* ProLock.swift */,
 				528450789CD1A8010E5986A2 /* Section.swift */,
 				2A958149F86E9C1F806B44E7 /* SubscriptionRow.swift */,
+				ABA121F373279B49C117B44A /* SwipeToDelete.swift */,
 				8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */,
 			);
 			path = Components;
@@ -554,6 +557,7 @@
 				58EE7BABE7B46091B5A20715 /* SettingsView.swift in Sources */,
 				EDB25B027B4EBB7B72D538E0 /* SubscriptionDetailView.swift in Sources */,
 				C94E24E58B6B506ADBEA4331 /* SubscriptionRow.swift in Sources */,
+				1C36198245EF93D304B4DE2A /* SwipeToDelete.swift in Sources */,
 				9313285F4F091D0745432C7D /* Theme.swift in Sources */,
 				EAD99DD0EC6906277BF7791C /* TransactionParser.swift in Sources */,
 				C0D7A7A0CC50F6D73156F502 /* ZombieMeter.swift in Sources */,

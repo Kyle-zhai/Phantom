@@ -276,10 +276,14 @@ struct RadarView: View {
             }
             VStack(spacing: 0) {
                 ForEach(store.cancelledSubs) { sub in
-                    NavigationLink(value: sub.id) {
-                        SubscriptionRow(sub: sub, score: store.score(for: sub.id), cancelled: true, showScore: false)
+                    SwipeToDelete(onDelete: {
+                        store.removeSubscription(sub.id)
+                    }) {
+                        NavigationLink(value: sub.id) {
+                            SubscriptionRow(sub: sub, score: store.score(for: sub.id), cancelled: true, showScore: false)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 12)
@@ -330,10 +334,14 @@ private struct ScoreSection: View {
                 }
                 VStack(spacing: 0) {
                     ForEach(subs) { sub in
-                        NavigationLink(value: sub.id) {
-                            SubscriptionRow(sub: sub, score: store.score(for: sub.id))
+                        SwipeToDelete(onDelete: {
+                            store.removeSubscription(sub.id)
+                        }) {
+                            NavigationLink(value: sub.id) {
+                                SubscriptionRow(sub: sub, score: store.score(for: sub.id))
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal, 12)
