@@ -121,37 +121,45 @@ https://[yourdomain.com]/privacy
 ```
 Thanks for reviewing SubSpy.
 
-SubSpy is a subscription-management app. Users connect their bank
-account via Plaid (read-only) to detect recurring charges.
+SubSpy is a privacy-first subscription-management app. Users either
+upload screenshots of their bank/credit-card app (OCR runs entirely
+on-device via Apple Vision) or add subscriptions manually. The app
+never connects to a bank in production — no Plaid, no API keys, no
+server-side data.
 
-TO REVIEW WITHOUT A REAL BANK ACCOUNT:
+TO REVIEW THE APP IN UNDER 2 MINUTES:
 
-Option 1 — Demo mode (fastest):
-   On the third onboarding screen, tap "Skip — explore with demo
-   data". This populates the app with 14 sample subscriptions so you
-   can review the full feature set without any bank connection.
+1. On launch you'll see a 4-step onboarding (Welcome → Value →
+   Profile → Method).
 
-Option 2 — Plaid Sandbox (recommended to verify the integration):
-   On the connect screen, tap "Connect with Plaid". When Plaid Link
-   opens:
-     Bank: First Platypus Bank (search "Platypus")
-     Username: user_good
-     Password: pass_good
-     MFA code (if asked): 1234
-   This connects to a fake bank Plaid runs for testing. No real
-   credentials are stored on our servers.
+2. On the Profile screen, enter any name and email (e.g.
+   "Reviewer" / "reviewer@apple.com"). Data is stored on-device only.
 
-KEY FLOWS TO REVIEW:
+3. On the "How should we find your subscriptions?" screen, scroll
+   to the bottom and tap "Browse with sample data".
 
-1. Onboarding (3 screens) → bank connect → dashboard auto-populates
-2. Subscription detail → score breakdown → cancel + undo cancel
-3. Alerts tab → tap any alert → action button
-4. Dispute letter generator → fill form → preview → send via Mail
-   (uses MFMailComposeViewController)
-5. Negotiate tab → pick any service → copy retention script
+4. This loads 14 curated example subscriptions (Netflix, Hulu,
+   Adobe, Audible, Planet Fitness, etc.) so you can review the full
+   feature set without uploading any real screenshots.
+
+5. A yellow "SAMPLE DATA MODE" banner appears in Settings so it's
+   always clear this is preview data, not real user data. A "Clear
+   sample data" button is one tap away.
+
+KEY FLOWS TO REVIEW (after loading sample data):
+
+1. Radar tab → tap any subscription → see Zombie Score breakdown
+2. Subscription detail → "Cancel" → opens vendor's real cancel page
+   in Safari (e.g., Netflix /cancelplan)
+3. Alerts tab → tap any alert → "Take action" or "Get refund"
+4. Dispute letter generator → fill form → preview → "Send via Mail"
+   (opens MFMailComposeViewController)
+5. Negotiate tab → pick any service → see real retention script
 6. Settings → Account → "Delete account" (App Store 5.1.1(v) compliance)
-7. Settings → "Manage subscription" (deep links to iOS subscription
-   management as required for IAP)
+7. Settings → "Manage subscription" (deep links to iOS Subscriptions)
+8. Free tier limit: only top 5 subscriptions visible; "Unlock with
+   Pro" surfaces the rest. Tap to see the paywall.
+9. Paywall → "Restore" button in top-right (required by 3.1.1)
 
 NOTES ON IN-APP PURCHASES:
 
@@ -160,13 +168,15 @@ We use StoreKit 2 with two auto-renewing subscriptions:
    com.subspy.app.pro.yearly   ($29.99/year)
 Both share the subscription group "SubSpy Pro".
 
-Restore Purchases is in the paywall top-right corner.
+Free tier is genuinely useful (5 subscriptions, 1 dispute letter
+per month, 1 alert at a time). Pro unlocks unlimited everything.
 
 PRIVACY / DATA HANDLING:
 
-We use Plaid for read-only bank transaction data only — no payment,
-balance, or identity products. We never sell data, push loans, or
-store card numbers. Full policy at [Privacy URL above].
+No server-side data of any kind. All transaction parsing happens
+on-device with Apple Vision OCR. No third-party SDK that performs
+tracking. No analytics SDK. Privacy Policy and Terms of Service
+linked above; full source: github.com/Kyle-zhai/SubSpy
 
 Thanks!
 [Your name]

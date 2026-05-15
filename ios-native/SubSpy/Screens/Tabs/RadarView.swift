@@ -201,6 +201,11 @@ struct RadarView: View {
                     }
                 }
                 .padding(.top, 4)
+                Button { store.seedSampleData() } label: {
+                    Text("or browse with sample data →")
+                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                }
+                .padding(.top, 4)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

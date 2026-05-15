@@ -1,6 +1,5 @@
 import Foundation
 
-#if DEBUG
 private func daysAgo(_ n: Int) -> Date {
     Date().addingTimeInterval(TimeInterval(-n * 86_400))
 }
@@ -9,13 +8,17 @@ private func daysAhead(_ n: Int) -> Date {
     Date().addingTimeInterval(TimeInterval(n * 86_400))
 }
 
-/// DEBUG-only demo seed data. Used by:
-///   - `--demo` launch arg (so App Store reviewers can see the full feature
-///     set without uploading screenshots)
-///   - Xcode previews
+/// Curated **sample** dataset representing a typical American household's
+/// subscription stack. The companies and prices are real and current; the
+/// usage/rating fields are illustrative.
 ///
-/// **Not compiled into Release / TestFlight / App Store builds.** Production
-/// users always start with an empty data set.
+/// Surfaced to the user only via an **explicit opt-in** ("Browse with sample
+/// data" button on the Connect screen and the empty Radar state). Never
+/// auto-loaded. The Settings screen shows a "Sample data mode" banner whenever
+/// it's active, with a one-tap Clear button.
+///
+/// This is the path App Store reviewers take to see the full feature set
+/// without needing to import their own screenshots.
 enum MockData {
     static let subscriptions: [Subscription] = [
         Subscription(
@@ -183,4 +186,3 @@ enum MockData {
         ),
     ]
 }
-#endif

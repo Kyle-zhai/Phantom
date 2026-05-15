@@ -43,19 +43,42 @@ final class AppStore {
         self.modelContext = modelContext
         loadFromDisk()
         loadDisputeUsage()
-        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--demo") && subscriptions.isEmpty {
-            subscriptions = MockData.subscriptions
-            alerts = MockData.alerts
-            persistAllSubscriptions()
-            persistAllAlerts()
-            ensureProfile()
-            profile?.fullName = profile?.fullName.isEmpty ?? true ? "Demo User" : profile!.fullName
-            profile?.email = profile?.email.isEmpty ?? true ? "demo@subspy.app" : profile!.email
-            profile?.onboardedAt = Date()
-            save()
+            seedSampleData()
         }
-        #endif
+    }
+
+    /// Opt-in sample data path. Called from "Browse with sample data" buttons
+    /// in onboarding and the empty Radar state. Also used by the `--demo`
+    /// launch flag for automated UI tests.
+    func seedSampleData() {
+        subscriptions = MockData.subscriptions
+        alerts = MockData.alerts
+        persistAllSubscriptions()
+        persistAllAlerts()
+        ensureProfile()
+        if profile?.fullName.isEmpty ?? true { profile?.fullName = "Sample User" }
+        if profile?.email.isEmpty ?? true { profile?.email = "sample@subspy.app" }
+        profile?.onboardedAt = Date()
+        UserDefaults.standard.set(true, forKey: "subspy.sampleMode")
+        save()
+    }
+
+    /// Whether the current data set was seeded from sample data (vs. real
+    /// user-imported transactions). Shown as a banner in Settings + Radar.
+    var isSampleMode: Bool {
+        UserDefaults.standard.bool(forKey: "subspy.sampleMode")
+    }
+
+    /// Removes seeded sample data and returns the app to a clean state.
+    func clearSampleData() {
+        subscriptions = []
+        alerts = []
+        cancelledIds = []
+        clearAllPersistent()
+        UserDefaults.standard.removeObject(forKey: "subspy.sampleMode")
+        // Keep the profile and onboardedAt — user gets to skip onboarding
+        save()
     }
 
     var scoresById: [String: Int] {
@@ -105,14 +128,9 @@ final class AppStore {
     func completeOnboarding(viaDemo: Bool = false) {
         ensureProfile()
         profile?.onboardedAt = Date()
-        #if DEBUG
         if viaDemo && subscriptions.isEmpty {
-            subscriptions = MockData.subscriptions
-            alerts = MockData.alerts
-            persistAllSubscriptions()
-            persistAllAlerts()
+            seedSampleData()
         }
-        #endif
         save()
     }
 

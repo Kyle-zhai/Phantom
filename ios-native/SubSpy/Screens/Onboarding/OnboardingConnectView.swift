@@ -55,18 +55,27 @@ struct OnboardingConnectView: View {
                 .padding(.top, 24)
 
                 PrimaryButton("Set up later", variant: .ghost) {
-                    // Production: mark onboarded with empty data; user can add anytime
-                    // from Radar "+" or Settings. No fake data inserted.
                     store.completeOnboarding(viaDemo: false)
                 }
                 .padding(.top, 20)
 
-                #if DEBUG
-                PrimaryButton("DEBUG: seed with sample data", variant: .ghost) {
+                // Sample-data preview — clearly labeled, opt-in only.
+                // This is the path App Store reviewers take to see the full
+                // feature set without uploading real screenshots.
+                Button {
                     store.completeOnboarding(viaDemo: true)
+                } label: {
+                    VStack(spacing: 4) {
+                        Text("Browse with sample data")
+                            .font(AppFont.smallB).foregroundStyle(Palette.mute)
+                        Text("See what SubSpy looks like with 14 example subscriptions. Clear any time in Settings.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute2)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal, 20)
+                    .frame(maxWidth: .infinity)
                 }
                 .padding(.top, 8)
-                #endif
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)

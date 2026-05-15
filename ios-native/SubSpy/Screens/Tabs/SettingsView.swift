@@ -36,6 +36,10 @@ struct SettingsView: View {
                 }
                 .padding(.top, 4)
 
+                if store.isSampleMode {
+                    sampleModeBanner.padding(.top, 16)
+                }
+
                 if !store.isPro {
                     proUpsell.padding(.top, 20)
                 } else {
@@ -176,6 +180,30 @@ struct SettingsView: View {
             Text("Permanent — your Plaid item is revoked, server-side data is purged, and you'll be signed out. To stop a paid subscription, also use 'Manage subscription' first.")
         }
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    private var sampleModeBanner: some View {
+        Card(background: Palette.warnSoft, borderColor: Palette.warnSoft) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(spacing: 8) {
+                    Image(systemName: "info.circle.fill").foregroundStyle(Palette.warn)
+                    Text("SAMPLE DATA MODE").font(AppFont.smallB).foregroundStyle(Palette.warn)
+                }
+                Text("You're previewing SubSpy with 14 example subscriptions. None of this is real — it's here so you can see what the app looks like with data.")
+                    .font(AppFont.small).foregroundStyle(Palette.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button {
+                    store.clearSampleData()
+                } label: {
+                    Text("Clear sample data").font(AppFont.smallB)
+                        .foregroundStyle(Palette.white)
+                        .padding(.horizontal, 16).padding(.vertical, 10)
+                        .background(Palette.ink, in: Capsule())
+                }
+                .padding(.top, 4)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     private var proUpsell: some View {
