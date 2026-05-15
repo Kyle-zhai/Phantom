@@ -11,6 +11,8 @@ struct ImportScreenshotView: View {
     @State private var parsedTxs: [ParsedTransaction] = []
     @State private var step: Step = .pick
     @State private var error: String?
+    @State private var showDiagnostic = false
+    @State private var copiedAt: Date?
 
     enum Step {
         case pick, processing, review
@@ -248,6 +250,15 @@ struct ImportScreenshotView: View {
                     .foregroundStyle(Palette.mute).font(.system(size: 14, weight: .bold))
                 Text("ALL CHARGES SCANNED · \(parsedTxs.count)").font(AppFont.smallB).foregroundStyle(Palette.mute)
                 Spacer()
+                Button {
+                    showDiagnostic.toggle()
+                } label: {
+                    Text(showDiagnostic ? "Hide raw OCR" : "Show raw OCR")
+                        .font(AppFont.smallB)
+                        .foregroundStyle(Palette.ink)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(Palette.surface, in: Capsule())
+                }
             }
 
             Text("For reference. Phantom won't import these as subscriptions.")
@@ -255,15 +266,24 @@ struct ImportScreenshotView: View {
 
             VStack(spacing: 0) {
                 ForEach(parsedTxs.prefix(30)) { tx in
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(tx.merchant).font(AppFont.body).foregroundStyle(Palette.ink)
-                            if let d = tx.date {
-                                Text(fmtRelDate(d)).font(AppFont.small).foregroundStyle(Palette.mute)
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(tx.merchant).font(AppFont.body).foregroundStyle(Palette.ink)
+                                if let d = tx.date {
+                                    Text(fmtRelDate(d)).font(AppFont.small).foregroundStyle(Palette.mute)
+                                }
                             }
+                            Spacer()
+                            Text(fmtUSD(tx.amount)).font(AppFont.body).foregroundStyle(Palette.mute)
                         }
-                        Spacer()
-                        Text(fmtUSD(tx.amount)).font(AppFont.body).foregroundStyle(Palette.mute)
+                        if showDiagnostic, !tx.rawRow.isEmpty {
+                            Text("OCR: \(tx.rawRow)")
+                                .font(.system(.caption2, design: .monospaced))
+                                .foregroundStyle(Palette.mute2)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
                     }
                     .padding(.horizontal, 14).padding(.vertical, 10)
                     if tx.id != parsedTxs.prefix(30).last?.id {
@@ -278,7 +298,56 @@ struct ImportScreenshotView: View {
                 Text("Showing first 30 of \(parsedTxs.count).")
                     .font(AppFont.small).foregroundStyle(Palette.mute)
             }
+
+            Button {
+                UIPasteboard.general.string = diagnosticReport
+                copiedAt = Date()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: copiedAt != nil ? "checkmark.circle.fill" : "doc.on.doc")
+                    Text(copiedAt != nil ? "Copied — paste in chat" : "Copy diagnostic to clipboard")
+                        .font(AppFont.smallB)
+                }
+                .foregroundStyle(Palette.ink)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md))
+                .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
+            }
+            .buttonStyle(.plain)
         }
+    }
+
+    private var diagnosticReport: String {
+        let confirmed = RecurrenceDetector.detect(in: parsedTxs + existingTxs())
+        let confirmedIds = Set(confirmed.map { $0.id })
+        let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
+            .filter { !confirmedIds.contains($0.id) }
+        let subIds = Set((confirmed + likely).map { $0.id })
+
+        var out = "=== Phantom OCR diagnostic ===\n"
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd HH:mm"
+        out += "When: \(f.string(from: Date()))\n"
+        out += "Total charges: \(parsedTxs.count)\n"
+        out += "Subscriptions detected: \(subIds.count)\n"
+        out += "------------------------------\n"
+        for (i, tx) in parsedTxs.enumerated() {
+            let key = MerchantNormalizer.brandId(forNormalized: tx.merchant)
+            let isSub = subIds.contains(key) || subIds.contains(tx.id)
+            let mlScore = MerchantML.subscriptionProbability(for: tx.merchant)
+            let txnal = MerchantNormalizer.isLikelyTransactional(tx.merchant)
+            let amtMatch = MerchantNormalizer.isLikelySubscriptionAmount(tx.amount)
+            let dateStr = tx.date.map { d -> String in
+                let g = DateFormatter()
+                g.dateFormat = "MM/dd"
+                return g.string(from: d)
+            } ?? "-"
+            out += "\(i + 1). \(tx.merchant) | $\(String(format: "%.2f", tx.amount)) | \(dateStr) | \(isSub ? "SUB" : "not")\n"
+            out += "   ml=\(String(format: "%.0f%%", mlScore * 100)) txnal=\(txnal) priceMatch=\(amtMatch)\n"
+            out += "   raw: \(tx.rawRow)\n"
+        }
+        return out
     }
 
     private func cycleLabel(_ cycle: BillingCycle) -> String {

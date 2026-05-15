@@ -11,11 +11,16 @@ struct ParsedTransaction: Identifiable, Hashable {
     let merchant: String
     let amount: Double
     let date: Date?
+    /// The unprocessed OCR row text (merchant + amount + dates + junk),
+    /// captured so the import screen can show users (and the developer)
+    /// exactly what Vision read — invaluable when a charge looks wrong.
+    let rawRow: String
 
-    init(merchant: String, amount: Double, date: Date?) {
+    init(merchant: String, amount: Double, date: Date?, rawRow: String = "") {
         self.merchant = merchant
         self.amount = amount
         self.date = date
+        self.rawRow = rawRow
         self.id = "\(merchant.lowercased())-\(amount)-\(date?.timeIntervalSince1970 ?? 0)"
     }
 }
@@ -113,7 +118,7 @@ enum TransactionParser {
                   !isSummary(merchant),
                   isPlausibleMerchant(merchant) else { continue }
             let date = extractDates(from: combined)
-            transactions.append(ParsedTransaction(merchant: merchant, amount: amount, date: date))
+            transactions.append(ParsedTransaction(merchant: merchant, amount: amount, date: date, rawRow: combined))
         }
 
         // 3. Per-merchant dedup: when the same merchant has multiple amounts
