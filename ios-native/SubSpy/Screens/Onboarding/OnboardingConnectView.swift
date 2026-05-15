@@ -50,6 +50,7 @@ struct OnboardingConnectView: View {
                     privacyRow("Delete everything any time in Settings")
                 }
                 .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
                 .padding(.top, 24)
 
