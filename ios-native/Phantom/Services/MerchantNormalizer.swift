@@ -99,112 +99,202 @@ enum MerchantNormalizer {
     }
 
     /// Returns an id suitable for matching against BrandRegistry.byId.
+    /// Patterns are matched against both the raw lowercase string AND a
+    /// punctuation-stripped variant so that "APL*ITUNES.COM/BILL",
+    /// "AMZN PRIME*RT3JK", and OCR'd misreads like "NETFL IX" still map.
     static func brandId(forNormalized name: String) -> String {
         let lower = name.lowercased()
-        // Map common-name aliases to canonical brand ids in BrandRegistry.byId
-        let aliases: [(pattern: String, id: String)] = [
-            ("netflix", "netflix"),
-            ("hulu", "hulu"),
-            ("spotify", "spotify"),
-            ("peacock", "peacock"),
-            ("paramount", "paramount"),
-            ("disney", "disney-plus"),
-            ("hbo", "hbo-max"),
-            ("max ", "hbo-max"),
-            ("apple tv", "apple-tv"),
-            ("apple music", "apple-music"),
-            ("tidal", "tidal"),
-            ("sirius", "sirius-xm"),
-            ("audible", "audible"),
-            ("amazon prime", "amazon-prime"),
-            ("amazon", "amazon-prime"),
-            ("walmart", "walmart-plus"),
-            ("icloud", "icloud"),
-            ("google one", "google-one"),
-            ("google", "google-one"),
-            ("dropbox", "dropbox"),
-            ("adobe creative", "adobe-cc"),
-            ("adobe", "adobe-photography"),
-            ("microsoft 365", "github"),
-            ("github copilot", "github-copilot"),
-            ("github", "github"),
-            ("chatgpt", "chatgpt"),
-            ("openai", "chatgpt"),
-            ("anthropic", "claude"),
-            ("claude", "claude"),
-            ("gemini", "gemini"),
-            ("google ai pro", "gemini"),
-            ("ai premium", "gemini"),
-            ("perplexity", "perplexity"),
-            ("cursor", "cursor"),
-            ("anyspher", "cursor"),
-            ("replit", "replit"),
-            ("v0.dev", "v0"),
-            ("vercel", "vercel"),
-            ("bolt.new", "bolt"),
-            ("stackblitz", "bolt"),
-            ("lovable", "lovable"),
-            ("linear.app", "linear"),
-            ("linear orbit", "linear"),
-            ("midjourney", "openai"),
-            ("runway", "openai"),
-            ("suno", "suno"),
-            ("elevenlabs", "elevenlabs"),
-            ("eleven labs", "elevenlabs"),
-            ("huggingface", "huggingface"),
-            ("hugging face", "huggingface"),
-            ("deepseek", "deepseek"),
-            ("mistral", "anthropic"),
-            ("cohere", "anthropic"),
-            ("together ai", "anthropic"),
-            ("groq", "anthropic"),
-            ("notion", "notion"),
-            ("duolingo", "duolingo"),
-            ("masterclass", "masterclass"),
-            ("lastpass", "lastpass"),
-            ("1password", "1password"),
-            ("expressvpn", "expressvpn"),
-            ("nordvpn", "nordvpn"),
-            ("new york times", "nyt"),
-            ("nytimes", "nyt"),
-            ("wsj", "wsj"),
-            ("planet fitness", "planet-fitness"),
-            ("peloton", "peloton"),
-            ("headspace", "headspace"),
-            ("calm", "calm"),
-            ("noom", "noom"),
-            ("youtube tv", "youtube-tv"),
-            ("youtube", "youtube-premium"),
+        let stripped = lower.filter { $0.isLetter || $0.isNumber }
+        // (rawPattern, strippedPattern, id) — strippedPattern checked when raw misses.
+        // Bank-statement descriptors known to occur in the wild: keep this list
+        // up to date as users report unfamiliar formats.
+        let aliases: [(String, String, String)] = [
+            // Streaming
+            ("netflix",         "netflix",       "netflix"),
+            ("hulu",            "hulu",          "hulu"),
+            ("spotify",         "spotify",       "spotify"),
+            ("peacock",         "peacock",       "peacock"),
+            ("paramount",       "paramount",     "paramount"),
+            ("disney",          "disney",        "disney-plus"),
+            ("hbo",             "hbomax",        "hbo-max"),
+            ("max ",            "hbomax",        "hbo-max"),
+            ("youtubepre",      "youtubepre",    "youtube-premium"),
+            ("youtube tv",      "youtubetv",     "youtube-tv"),
+            ("youtube",         "youtube",       "youtube-premium"),
+            // Apple — billing always goes through APL*/APPLE.COM/BILL
+            ("apple tv",        "appletv",       "apple-tv"),
+            ("apple music",     "applemusic",    "apple-music"),
+            ("apple one",       "appleone",      "apple-music"),
+            ("apple.com/bill",  "applecombill",  "apple-music"),
+            ("apl*itunes",      "aplitunes",     "apple-music"),
+            ("apl itunes",      "aplitunes",     "apple-music"),
+            ("itunes.com/bill", "itunescombill", "apple-music"),
+            ("apl*",            "apl",           "apple-music"),
+            ("icloud",          "icloud",        "icloud"),
+            // Music & audio
+            ("tidal",           "tidal",         "tidal"),
+            ("sirius",          "sirius",        "sirius-xm"),
+            ("audible",         "audible",       "audible"),
+            // Amazon
+            ("amazon prime",    "amazonprime",   "amazon-prime"),
+            ("amzn prime",      "amznprime",     "amazon-prime"),
+            ("amzn digital",    "amzndigital",   "audible"),
+            ("amazon digital",  "amazondigital", "audible"),
+            ("kindle unlimited","kindleunlim",   "audible"),
+            ("amazon",          "amazon",        "amazon-prime"),
+            ("walmart",         "walmart",       "walmart-plus"),
+            // Google
+            ("google one",      "googleone",     "google-one"),
+            ("google *youtube", "googleyoutube", "youtube-premium"),
+            ("googl*youtube",   "googleyoutube", "youtube-premium"),
+            ("google storage",  "googlestorage", "google-one"),
+            ("google",          "google",        "google-one"),
+            ("googl*",          "google",        "google-one"),
+            // Cloud storage / productivity
+            ("dropbox",         "dropbox",       "dropbox"),
+            ("adobe creative",  "adobecreative", "adobe-cc"),
+            ("adobe *cre",      "adobecre",      "adobe-cc"),
+            ("adobe",           "adobe",         "adobe-photography"),
+            ("microsoft 365",   "microsoft365",  "github"),
+            ("msft*office",     "msftoffice",    "github"),
+            ("msft *office",    "msftoffice",    "github"),
+            // GitHub & Copilot
+            ("github copilot",  "githubcopilot", "github-copilot"),
+            ("github *copilot", "githubcopilot", "github-copilot"),
+            ("github",          "github",        "github"),
+            // AI / chat
+            ("chatgpt",         "chatgpt",       "chatgpt"),
+            ("openai",          "openai",        "chatgpt"),
+            ("anthropic",       "anthropic",     "claude"),
+            ("claude",          "claude",        "claude"),
+            ("gemini",          "gemini",        "gemini"),
+            ("google ai pro",   "googleaipro",   "gemini"),
+            ("ai premium",      "aipremium",     "gemini"),
+            ("perplexity",      "perplexity",    "perplexity"),
+            // Dev tools
+            ("cursor",          "cursor",        "cursor"),
+            ("anyspher",        "anyspher",      "cursor"),
+            ("replit",          "replit",        "replit"),
+            ("v0.dev",          "v0dev",         "v0"),
+            ("v0 *",            "v0",            "v0"),
+            ("vercel",          "vercel",        "vercel"),
+            ("bolt.new",        "boltnew",       "bolt"),
+            ("stackblitz",      "stackblitz",    "bolt"),
+            ("lovable",         "lovable",       "lovable"),
+            ("linear.app",      "linearapp",     "linear"),
+            ("linear orbit",    "linearorbit",   "linear"),
+            ("linear inc",      "linearinc",     "linear"),
+            // AI media
+            ("midjourney",      "midjourney",    "openai"),
+            ("runway",          "runway",        "openai"),
+            ("suno",            "suno",          "suno"),
+            ("elevenlabs",      "elevenlabs",    "elevenlabs"),
+            ("eleven labs",     "elevenlabs",    "elevenlabs"),
+            ("huggingface",     "huggingface",   "huggingface"),
+            ("hugging face",    "huggingface",   "huggingface"),
+            ("deepseek",        "deepseek",      "deepseek"),
+            ("mistral",         "mistral",       "anthropic"),
+            ("cohere",          "cohere",        "anthropic"),
+            ("together ai",     "togetherai",    "anthropic"),
+            ("groq",            "groq",          "anthropic"),
+            // Notes / language / learning
+            ("notion",          "notion",        "notion"),
+            ("duolingo",        "duolingo",      "duolingo"),
+            ("masterclass",     "masterclass",   "masterclass"),
+            // Password / VPN
+            ("lastpass",        "lastpass",      "lastpass"),
+            ("logmein*lastpass","logmeinlastpass","lastpass"),
+            ("1password",       "1password",     "1password"),
+            ("expressvpn",      "expressvpn",    "expressvpn"),
+            ("express vpn",     "expressvpn",    "expressvpn"),
+            ("nordvpn",         "nordvpn",       "nordvpn"),
+            ("nord vpn",        "nordvpn",       "nordvpn"),
+            // News
+            ("new york times",  "newyorktimes",  "nyt"),
+            ("nytimes",         "nytimes",       "nyt"),
+            ("nyt ",            "nyt",           "nyt"),
+            ("wsj",             "wsj",           "wsj"),
+            ("washington post", "washingtonpost","washington-post"),
+            // Fitness
+            ("planet fitness",  "planetfitness", "planet-fitness"),
+            ("equinox",         "equinox",       "equinox"),
+            ("peloton",         "peloton",       "peloton"),
+            // Wellness
+            ("headspace",       "headspace",     "headspace"),
+            ("calm",            "calm",          "calm"),
+            ("noom",            "noom",          "noom"),
+            // Third-party processors that wrap subs
+            ("paypal *netflix", "paypalnetflix", "netflix"),
+            ("paypal *spotify", "paypalspotify", "spotify"),
+            ("paypal *hulu",    "paypalhulu",    "hulu"),
         ]
-        for (pattern, id) in aliases {
+        for (pattern, _, id) in aliases {
             if lower.contains(pattern) { return id }
         }
-        // Fall back: slug the name
+        // Fuzzy fallback: try stripped pattern against stripped name
+        // (handles "APL*ITUNES", "AMZN  DIGITAL" with double space, etc.)
+        for (_, strippedPattern, id) in aliases where strippedPattern.count >= 5 {
+            if stripped.contains(strippedPattern) { return id }
+        }
+        // Last resort: slug the name
         return lower.replacingOccurrences(of: #"[^a-z0-9]+"#, with: "-", options: .regularExpression)
             .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
     }
 
-    /// Strict single-sighting filter. Only surfaces a charge as a "likely sub"
-    /// when the merchant matches a known subscription brand AND isn't on the
-    /// transactional blacklist.
+    /// Three-tier check: hard rejection → known brand → ML × price gate.
     ///
-    /// Why so strict: with only one observation we can't distinguish a Starbucks
-    /// at $5.95 from a streaming service at $5.95. The previous cents-pattern
-    /// heuristic produced too many false positives (Uber rides, restaurant bills,
-    /// gas station charges all hit ".99" or ".95" prices). Known brand → high
-    /// confidence; everything else waits for the recurrence detector to confirm.
+    /// The price gate exists because subscription pricing is unusually regular
+    /// ($X.99 tiers, round-dollar AI tools). When the merchant is unknown but
+    /// the amount matches that pattern, we trust mid-confidence ML predictions.
+    /// When the amount is random ($24.50, $6.75 — classic restaurant/ride),
+    /// we require ML to be very confident before saying "subscription".
     static func looksLikeSubscription(name: String, amount: Double) -> Bool {
         // Hard transactional rejection (gas station, restaurant, ride, etc.)
         if isLikelyTransactional(name) { return false }
-        // Strong positive signal #1: matches a known subscription brand
+        // Known subscription brand → accept
         if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
             return true
         }
-        // Strong positive signal #2: ML classifier is very confident this is
-        // a subscription. Catches subs whose brand isn't in our registry yet
-        // (e.g. Uber One, Robinhood Gold, niche local services).
-        return MerchantML.subscriptionProbability(for: name) >= 0.80
+        // Otherwise weigh the ML score against the price signal
+        let mlScore = MerchantML.subscriptionProbability(for: name)
+        if mlScore >= 0.80 { return true }
+        if mlScore >= 0.50 && isLikelySubscriptionAmount(amount) { return true }
+        return false
     }
+
+    /// Returns true if `amount` matches a common subscription price tier.
+    /// Covers the standard $X.99 streaming pricing, round-dollar AI tools
+    /// ($20 ChatGPT/Claude), and rounded annual prices ($99.99 / $119.99
+    /// Amazon Prime). Used as a positive secondary signal in
+    /// `looksLikeSubscription` — never on its own (food / retail / rideshare
+    /// also hit $X.99 frequently).
+    static func isLikelySubscriptionAmount(_ amount: Double) -> Bool {
+        let cents = Int((amount * 100).rounded())
+        guard cents > 0 else { return false }
+        let dollars = Double(cents) / 100
+        if commonSubscriptionAmounts.contains(dollars) { return true }
+        // Generic ".99 under $250" pattern — captures regional / student / family tier pricing
+        if cents % 100 == 99 && dollars <= 250 { return true }
+        // Round-dollar prices under $250 (Claude Pro $20, ChatGPT $20, Apple One $19.95 family etc.)
+        if cents % 100 == 0 && dollars >= 5 && dollars <= 250 { return true }
+        return false
+    }
+
+    private static let commonSubscriptionAmounts: Set<Double> = [
+        // Cheap tier (Apple TV+, iCloud 50GB, basic streaming with ads)
+        0.99, 1.99, 2.99, 3.99, 4.99, 5.99, 6.99, 7.99, 8.99,
+        // Standard streaming / music (Spotify, Apple Music, Hulu, DashPass, Uber One)
+        9.99, 10.99, 11.99, 12.99, 13.99, 14.99,
+        // Netflix Standard / family streaming / mid SaaS
+        15.49, 15.99, 16.99, 17.99, 18.99, 19.99,
+        // ChatGPT/Claude Pro round-dollar tier + family Apple One
+        20.00, 21.99, 22.99, 24.99, 25.00, 29.99,
+        // Live TV / fitness / family
+        34.99, 39.99, 44.99, 49.99, 54.99, 59.99, 69.99,
+        // Annual rounded (Prime, news, gym)
+        79.99, 89.99, 99.99, 109.99, 119.99, 129.99, 139.99, 149.99,
+        159.99, 169.99, 179.99, 199.00, 199.99, 219.99, 239.99, 249.99,
+    ]
 
     /// Returns true when the merchant string looks like a one-off retail/food/
     /// transport/ATM charge — never a subscription.

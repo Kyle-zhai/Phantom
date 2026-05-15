@@ -1782,5 +1782,581 @@
   {
     "text": "AMAZON.COM*1234",
     "label": "transactional"
+  },
+  {
+    "text": "NETFLIX.COM SAN FRANCISCO CA",
+    "label": "subscription"
+  },
+  {
+    "text": "NETFLIX 866-579-7172 CA",
+    "label": "subscription"
+  },
+  {
+    "text": "NETFLIX COM CA",
+    "label": "subscription"
+  },
+  {
+    "text": "PAYPAL *NETFLIX",
+    "label": "subscription"
+  },
+  {
+    "text": "SPOTIFY USA",
+    "label": "subscription"
+  },
+  {
+    "text": "SPOTIFY 877-778-9440 NY",
+    "label": "subscription"
+  },
+  {
+    "text": "SPOTIFY P0123",
+    "label": "subscription"
+  },
+  {
+    "text": "PAYPAL *SPOTIFYUSA",
+    "label": "subscription"
+  },
+  {
+    "text": "HULU LLC SANTA MONICA CA",
+    "label": "subscription"
+  },
+  {
+    "text": "HULU.COM/BILL",
+    "label": "subscription"
+  },
+  {
+    "text": "PAYPAL *HULULLC",
+    "label": "subscription"
+  },
+  {
+    "text": "DISNEYPLUS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "DISNEY PLUS BURBANK CA",
+    "label": "subscription"
+  },
+  {
+    "text": "MAX*WB GAMES",
+    "label": "subscription"
+  },
+  {
+    "text": "HBO MAX MOBILE",
+    "label": "subscription"
+  },
+  {
+    "text": "PEACOCK NBCUNI",
+    "label": "subscription"
+  },
+  {
+    "text": "PARAMOUNT PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "PARAMOUNT+ STREAMING",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE.COM/BILL ITUNES.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "APL*ITUNES.COM/BILL",
+    "label": "subscription"
+  },
+  {
+    "text": "APL ITUNES.COM/BILL 866-712-7753",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE.COM/BILL 866-712-7753 CA",
+    "label": "subscription"
+  },
+  {
+    "text": "APL*APPLE.COM/BILL",
+    "label": "subscription"
+  },
+  {
+    "text": "APPLE.COM/US",
+    "label": "subscription"
+  },
+  {
+    "text": "APL*APPLE ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "APL*ICLOUD STORAGE",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON PRIME*RT3JK MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "AMZN PRIME*RT4LM",
+    "label": "subscription"
+  },
+  {
+    "text": "AMAZON PRIME*5678 WA",
+    "label": "subscription"
+  },
+  {
+    "text": "AMZN DIGITAL*RT5MN",
+    "label": "subscription"
+  },
+  {
+    "text": "AMZN DGTL*KU2024",
+    "label": "subscription"
+  },
+  {
+    "text": "Prime Video Channels",
+    "label": "subscription"
+  },
+  {
+    "text": "AUDIBLE*MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "AUDIBLE*06A5KU",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE *CREATIVE CLD",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE *CRE CLOUD",
+    "label": "subscription"
+  },
+  {
+    "text": "ADOBE INC SAN JOSE CA",
+    "label": "subscription"
+  },
+  {
+    "text": "MSFT * E0400G7B7N",
+    "label": "subscription"
+  },
+  {
+    "text": "MSFT*Office365",
+    "label": "subscription"
+  },
+  {
+    "text": "MICROSOFT*STORE",
+    "label": "subscription"
+  },
+  {
+    "text": "MICROSOFT*OFFICE",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB.COM SAN FRANCISCO",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB INC",
+    "label": "subscription"
+  },
+  {
+    "text": "GITHUB *COPILOT",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *YouTubePremi",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *YouTubeMusic",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *YouTubeTV",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE*STORAGE",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *GSUITE_acme.io",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *GEMINI",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGLE *ONE",
+    "label": "subscription"
+  },
+  {
+    "text": "GOOGL*YOUTUBE TV",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI *CHATGPT",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI LLC SAN FRANCISCO",
+    "label": "subscription"
+  },
+  {
+    "text": "OPENAI *OPENAI SUB",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC, PBC",
+    "label": "subscription"
+  },
+  {
+    "text": "ANTHROPIC PBC SAN FRANC CA",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY AI INC",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY *INSIGHT",
+    "label": "subscription"
+  },
+  {
+    "text": "PERPLEXITY.AI",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR.SH",
+    "label": "subscription"
+  },
+  {
+    "text": "CURSOR *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "ANYSPHERE INC",
+    "label": "subscription"
+  },
+  {
+    "text": "REPLIT *REPL",
+    "label": "subscription"
+  },
+  {
+    "text": "REPLIT INC",
+    "label": "subscription"
+  },
+  {
+    "text": "VERCEL INC.",
+    "label": "subscription"
+  },
+  {
+    "text": "V0 *PROHQ",
+    "label": "subscription"
+  },
+  {
+    "text": "BOLT.NEW HQ",
+    "label": "subscription"
+  },
+  {
+    "text": "LOVABLE.DEV INC",
+    "label": "subscription"
+  },
+  {
+    "text": "LINEAR.APP",
+    "label": "subscription"
+  },
+  {
+    "text": "LINEAR INC SAN FRAN CA",
+    "label": "subscription"
+  },
+  {
+    "text": "1PASSWORD.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "1PASSWORD CA",
+    "label": "subscription"
+  },
+  {
+    "text": "EXPRESSVPN.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "EXPRESS VPN INTERNATIONAL",
+    "label": "subscription"
+  },
+  {
+    "text": "NORDVPN.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "TEFINCOM SA NORD",
+    "label": "subscription"
+  },
+  {
+    "text": "DUOLINGO *PLUS",
+    "label": "subscription"
+  },
+  {
+    "text": "DUOLINGO INC PITTSBURGH",
+    "label": "subscription"
+  },
+  {
+    "text": "HEADSPACE INC",
+    "label": "subscription"
+  },
+  {
+    "text": "HEADSPACE.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "CALM.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "CALM*PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "PELOTON INTERACTIVE",
+    "label": "subscription"
+  },
+  {
+    "text": "MASTERCLASS.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "MASTERCLASS *ALL ACCESS",
+    "label": "subscription"
+  },
+  {
+    "text": "NEW YORK TIMES DIGITAL",
+    "label": "subscription"
+  },
+  {
+    "text": "NYTIMES *DIGITAL",
+    "label": "subscription"
+  },
+  {
+    "text": "NYT *COMPLETE",
+    "label": "subscription"
+  },
+  {
+    "text": "WSJ.COM/SUBSCRIPTION",
+    "label": "subscription"
+  },
+  {
+    "text": "WSJ *SUBSCRIPTION",
+    "label": "subscription"
+  },
+  {
+    "text": "WASHINGTON POST *DIG",
+    "label": "subscription"
+  },
+  {
+    "text": "PLANET FIT *CLUB FEE",
+    "label": "subscription"
+  },
+  {
+    "text": "PLANET FITNESS CLUB",
+    "label": "subscription"
+  },
+  {
+    "text": "EQUINOX *MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "DROPBOX *MEMBERSHIP",
+    "label": "subscription"
+  },
+  {
+    "text": "DROPBOX*MONTHLY",
+    "label": "subscription"
+  },
+  {
+    "text": "NOTION *SUBSCRIPTION",
+    "label": "subscription"
+  },
+  {
+    "text": "NOTION LABS INC",
+    "label": "subscription"
+  },
+  {
+    "text": "SIRIUSXM *INTERNET",
+    "label": "subscription"
+  },
+  {
+    "text": "SIRIUS XM RADIO INC",
+    "label": "subscription"
+  },
+  {
+    "text": "TIDAL *PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "ELEVENLABS *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "ELEVEN LABS INC",
+    "label": "subscription"
+  },
+  {
+    "text": "SUNO *PREMIUM",
+    "label": "subscription"
+  },
+  {
+    "text": "HUGGINGFACE.CO PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "DEEPSEEK *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "MIDJOURNEY *INC SUB",
+    "label": "subscription"
+  },
+  {
+    "text": "RUNWAYML *PRO",
+    "label": "subscription"
+  },
+  {
+    "text": "POSTHOG INC",
+    "label": "subscription"
+  },
+  {
+    "text": "RESEND.COM",
+    "label": "subscription"
+  },
+  {
+    "text": "UBER TRIP HELP.UBER.COM",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER *TRIP J3KLM",
+    "label": "transactional"
+  },
+  {
+    "text": "UBER *EATS LUNCH",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT *RIDE THU 8AM",
+    "label": "transactional"
+  },
+  {
+    "text": "LYFT *RIDE WED 6PM",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH *PIZZA HUT",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH *CHIPOTLE",
+    "label": "transactional"
+  },
+  {
+    "text": "DOORDASH*SUBWAY",
+    "label": "transactional"
+  },
+  {
+    "text": "GRUBHUB*PIZZA HUT",
+    "label": "transactional"
+  },
+  {
+    "text": "POSTMATES*JOES",
+    "label": "transactional"
+  },
+  {
+    "text": "INSTACART*KROGER",
+    "label": "transactional"
+  },
+  {
+    "text": "AMAZON.COM*RTNL",
+    "label": "transactional"
+  },
+  {
+    "text": "AMAZON MKTPLACE PMTS",
+    "label": "transactional"
+  },
+  {
+    "text": "AMZN.COM/BILLWA",
+    "label": "transactional"
+  },
+  {
+    "text": "TARGET.COM*ABC123",
+    "label": "transactional"
+  },
+  {
+    "text": "TARGET 00012345",
+    "label": "transactional"
+  },
+  {
+    "text": "WALMART.COM 800-925",
+    "label": "transactional"
+  },
+  {
+    "text": "WALMART STORE #2345",
+    "label": "transactional"
+  },
+  {
+    "text": "BEST BUY #1234",
+    "label": "transactional"
+  },
+  {
+    "text": "HOME DEPOT 1234",
+    "label": "transactional"
+  },
+  {
+    "text": "STARBUCKS STORE 04521",
+    "label": "transactional"
+  },
+  {
+    "text": "STARBUCKS #41258",
+    "label": "transactional"
+  },
+  {
+    "text": "DUNKIN #345789",
+    "label": "transactional"
+  },
+  {
+    "text": "MCDONALDS F12345",
+    "label": "transactional"
+  },
+  {
+    "text": "CHIPOTLE 1234",
+    "label": "transactional"
+  },
+  {
+    "text": "PANERA BREAD #3456",
+    "label": "transactional"
+  },
+  {
+    "text": "WHOLE FOODS MKT 12345",
+    "label": "transactional"
+  },
+  {
+    "text": "TRADER JOE'S #001",
+    "label": "transactional"
+  },
+  {
+    "text": "KROGER #001 FUEL",
+    "label": "transactional"
+  },
+  {
+    "text": "SHELL OIL 1234567",
+    "label": "transactional"
+  },
+  {
+    "text": "EXXONMOBIL 5678901",
+    "label": "transactional"
+  },
+  {
+    "text": "CHEVRON 12345",
+    "label": "transactional"
+  },
+  {
+    "text": "76 STATION FUEL 4321",
+    "label": "transactional"
   }
 ]

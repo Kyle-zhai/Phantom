@@ -130,6 +130,7 @@ struct ImportScreenshotView: View {
         VStack(alignment: .leading, spacing: 10) {
             tipRow(icon: "wallet.bifold", text: "Apple Wallet → tap card → screenshot transactions")
             tipRow(icon: "building.columns", text: "Chase / BofA / Wells Fargo / Amex app — transactions tab")
+            tipRow(icon: "camera.viewfinder", text: "Screenshot (Power + Vol Up), don't photograph the screen with another phone.")
             tipRow(icon: "envelope", text: "Email receipts work too (Netflix charge confirmation, etc.)")
             tipRow(icon: "shield.lefthalf.filled", text: "Vision OCR runs entirely on your iPhone. No upload.")
         }
