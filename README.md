@@ -70,8 +70,8 @@ Or tap **Skip — explore with demo data** to skip Plaid and use curated samples
 1. **Apple Developer Program account** ($99/yr) — required to sign the binary, ship to TestFlight, list on App Store Connect.
 2. **Plaid Production approval** — sandbox is free and ready; flipping to `production` env needs Plaid's compliance review of your company.
 3. **App Store Connect product configuration** — create two auto-renewing subscriptions matching the product IDs:
-   - `com.phantom.app.pro.monthly` ($3.99/mo)
-   - `com.phantom.app.pro.yearly` ($29.99/yr)
+   - `com.yinanzhai.phantom.pro.monthly` ($3.99/mo)
+   - `com.yinanzhai.phantom.pro.yearly` ($29.99/yr)
 4. **Deploy backend** — works locally as-is. For TestFlight/App Store, deploy `backend/` to Vercel (run `vercel deploy` inside it) and set `PHANTOM_API_BASE` in Xcode build settings to the deployed URL.
 
 ## Submission checklist
@@ -157,4 +157,4 @@ When running via Xcode you can pass arguments in *Edit Scheme → Arguments*:
 | `--screen-paywall` | Open paywall |
 | `--screen-{value,connect}` | Open a specific onboarding screen |
 
-These also work via `xcrun simctl launch booted com.phantom.app --demo`.
+These also work via `xcrun simctl launch booted com.yinanzhai.phantom --demo`.

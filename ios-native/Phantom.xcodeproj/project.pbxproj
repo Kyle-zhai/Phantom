@@ -435,7 +435,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					12F09A3FE37083A511C002DF = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = 7N337R6J9M;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -581,7 +581,7 @@
 				);
 				PHANTOM_API_BASE = "http://localhost:3000";
 				PLAID_ENVIRONMENT = sandbox;
-				PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom;
 				PRODUCT_NAME = Phantom;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -626,7 +626,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7N337R6J9M;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -677,7 +677,7 @@
 				);
 				PHANTOM_API_BASE = "http://localhost:3000";
 				PLAID_ENVIRONMENT = sandbox;
-				PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom;
 				PRODUCT_NAME = Phantom;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -722,7 +722,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7N337R6J9M;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

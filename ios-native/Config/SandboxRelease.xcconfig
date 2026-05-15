@@ -3,5 +3,7 @@
 
 PHANTOM_API_BASE = https:/$()/phantom-backend-staging.vercel.app
 PLAID_ENVIRONMENT = sandbox
-PRODUCT_BUNDLE_IDENTIFIER = com.phantom.app.sandbox
+PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom.sandbox
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =
+
+DEVELOPMENT_TEAM = 7N337R6J9M

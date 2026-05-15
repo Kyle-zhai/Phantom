@@ -38,7 +38,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.phantom.app.pro.monthly",
+          "productID" : "com.yinanzhai.phantom.pro.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Pro Monthly",
           "subscriptionGroupID" : "20B8A8D2-6E12-4A18-B501-B1B2B3B4B5B6",
@@ -59,7 +59,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "com.phantom.app.pro.yearly",
+          "productID" : "com.yinanzhai.phantom.pro.yearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Pro Annual",
           "subscriptionGroupID" : "20B8A8D2-6E12-4A18-B501-B1B2B3B4B5B6",

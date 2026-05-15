@@ -110,7 +110,7 @@ I verify the build by running `npm run web` and driving it with Playwright (via 
 
 - EAS Build (`eas build -p ios --profile production`)
 - App Store Connect listing copy lives in `store/` (TBD)
-- Pre-submit: replace mock data adapter with real Plaid Link + server, configure `app.json` bundle identifier `com.phantom.app`
+- Pre-submit: replace mock data adapter with real Plaid Link + server, configure `app.json` bundle identifier `com.yinanzhai.phantom`
 
 ## 10. What "done" means for this session
 

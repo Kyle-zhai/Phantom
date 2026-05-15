@@ -16,7 +16,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.phantom.app",
+      "bundleIdentifier": "com.yinanzhai.phantom",
       "buildNumber": "1",
       "infoPlist": {
         "NSUserTrackingUsageDescription": "We never track you. This permission is requested only to comply with App Store policies — Phantom does not perform any cross-app tracking.",
@@ -27,7 +27,7 @@
       }
     },
     "android": {
-      "package": "com.phantom.app",
+      "package": "com.yinanzhai.phantom",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#000000",

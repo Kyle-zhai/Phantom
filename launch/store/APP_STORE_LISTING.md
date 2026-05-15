@@ -12,7 +12,7 @@ Copy and paste each field into App Store Connect at https://appstoreconnect.appl
 | **Subtitle** (max 30 chars) | Find the money you're losing |
 | **Primary category** | Finance |
 | **Secondary category** | Productivity |
-| **Bundle ID** | `com.phantom.app` |
+| **Bundle ID** | `com.yinanzhai.phantom` |
 | **SKU** | `phantom-ios-001` |
 | **Content rights** | "Does this app use third-party content?" â†’ **No** |
 | **Age rating** | 4+ (no objectionable content) |
@@ -164,8 +164,8 @@ KEY FLOWS TO REVIEW (after loading sample data):
 NOTES ON IN-APP PURCHASES:
 
 We use StoreKit 2 with two auto-renewing subscriptions:
-   com.phantom.app.pro.monthly  ($3.99/month)
-   com.phantom.app.pro.yearly   ($29.99/year)
+   com.yinanzhai.phantom.pro.monthly  ($3.99/month)
+   com.yinanzhai.phantom.pro.yearly   ($29.99/year)
 Both share the subscription group "Phantom Pro".
 
 Free tier is genuinely useful (5 subscriptions, 1 dispute letter
@@ -200,7 +200,7 @@ Create two **auto-renewable** subscriptions in App Store Connect â†’ Features â†
 | Field | Value |
 |---|---|
 | Reference name | `Pro Monthly` |
-| Product ID | `com.phantom.app.pro.monthly` |
+| Product ID | `com.yinanzhai.phantom.pro.monthly` |
 | Subscription Duration | 1 month |
 | Pricing | Tier 4 ($3.99 USD) |
 | Localizations (English) | |
@@ -213,7 +213,7 @@ Create two **auto-renewable** subscriptions in App Store Connect â†’ Features â†
 | Field | Value |
 |---|---|
 | Reference name | `Pro Annual` |
-| Product ID | `com.phantom.app.pro.yearly` |
+| Product ID | `com.yinanzhai.phantom.pro.yearly` |
 | Subscription Duration | 1 year |
 | Pricing | Tier 30 ($29.99 USD) |
 | Localizations (English) | |
