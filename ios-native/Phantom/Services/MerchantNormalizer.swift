@@ -174,15 +174,20 @@ enum MerchantNormalizer {
     }
 
     /// Returns true when the merchant string looks like a one-off retail/food/
-    /// transport/ATM charge — never a subscription. Used to filter noise from
-    /// both single-sighting and recurrence detection so a daily Starbucks habit
-    /// doesn't get flagged as a subscription.
+    /// transport/ATM charge — never a subscription.
+    ///
+    /// Two-stage check:
+    ///   1. Fast keyword blacklist (microseconds, deterministic, easy to debug)
+    ///   2. CreateML-trained NLModel for anything not caught by keywords —
+    ///      handles unseen merchant variants like "PANDA EXPRESS 7741" or
+    ///      "TST*JOE'S DINER" that aren't in the keyword list verbatim.
     static func isLikelyTransactional(_ name: String) -> Bool {
         let lower = name.lowercased()
         for keyword in transactionalKeywords where lower.contains(keyword) {
             return true
         }
-        return false
+        // Fall back to ML classifier for unseen merchant patterns
+        return MerchantML.isLikelyTransactional(name)
     }
 
     // Common US merchant strings that are never subscriptions.

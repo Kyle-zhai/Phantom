@@ -19,6 +19,7 @@
 		22FEB491BB035936E3B5F9F1 /* netflix.svg in Resources */ = {isa = PBXBuildFile; fileRef = FE091922E81767D6905A3863 /* netflix.svg */; };
 		24C9AB4D62C49A8EE815E492 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BD5C8FD355095D162ABBAA /* AppConfig.swift */; };
 		272CA6C43DD46DF6022C67F5 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C5DF3525DE79B65D7355DF0 /* Badge.swift */; };
+		2A01CCC268CCACB1BCF1529D /* MerchantClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */; };
 		2BD3C1E438BBB0E704944BB7 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82EA3BDF4FB2A5A0A761FDC /* AlertsView.swift */; };
 		2C0958881E81D35EDFD46CE3 /* adobe-cc.svg in Resources */ = {isa = PBXBuildFile; fileRef = 887C2DDA5BD9DE2C107553E7 /* adobe-cc.svg */; };
 		2E32A67D2210D3C5B8DE0F28 /* headspace.svg in Resources */ = {isa = PBXBuildFile; fileRef = 55B64E5F33A510AA16F6A511 /* headspace.svg */; };
@@ -66,6 +67,7 @@
 		A64DE2F1D187F1795AD20BC5 /* apple-music.svg in Resources */ = {isa = PBXBuildFile; fileRef = F33FF9C492C468B82A893A00 /* apple-music.svg */; };
 		A68D1EFB05F040E68E122A63 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1765C8A5DD5FA5BAE1BAFFC6 /* Avatar.swift */; };
 		AFDA429BABBF03F4775D4E38 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F9AD8B43F35D4D5BA2A5F1 /* UserNotifications.framework */; };
+		B3C44488797EB304EA386760 /* MerchantML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A44E8256E99AEB76343B51 /* MerchantML.swift */; };
 		B755A4052794CF6B04D97ED2 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7808DCA6392DDAF5B3BF75EC /* Vision.framework */; };
 		B9BBAF339C958E2654A93098 /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */; };
 		BA5664E23B3FB031C4E4F12F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */; };
@@ -85,6 +87,7 @@
 		E29C484FB413BC45FE9113F2 /* PhantomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */; };
 		E2C8BB879A1FE0F365844055 /* 1password.svg in Resources */ = {isa = PBXBuildFile; fileRef = 523E4FA8DA3B902209175A41 /* 1password.svg */; };
 		E53084A818A50F73CCE9561D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */; };
+		E7F9B82D61A9CFEF78B4736C /* MerchantClassifier.mlmodelc in Resources */ = {isa = PBXBuildFile; fileRef = 997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */; };
 		E968A7E1D9D816C4882EAF10 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18BD117CB25F72AA4921333 /* AppStore.swift */; };
 		EAD99DD0EC6906277BF7791C /* TransactionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4BD67B848BF6476869A54B /* TransactionParser.swift */; };
 		EDB25B027B4EBB7B72D538E0 /* SubscriptionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76B1C8CCE18AAD96B30ED67 /* SubscriptionDetailView.swift */; };
@@ -152,7 +155,9 @@
 		8C45848131D11219EF04F9B3 /* tidal.svg */ = {isa = PBXFileReference; path = tidal.svg; sourceTree = "<group>"; };
 		90F9AD8B43F35D4D5BA2A5F1 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		92EE88D77F625206EB31C62A /* walmart-plus.svg */ = {isa = PBXFileReference; path = "walmart-plus.svg"; sourceTree = "<group>"; };
+		94A44E8256E99AEB76343B51 /* MerchantML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantML.swift; sourceTree = "<group>"; };
 		96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */ = {isa = PBXFileReference; path = MerchantClassifier.mlmodelc; sourceTree = "<group>"; };
 		A1C0FC19F5EFB70C9E4F1518 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		A606EDBFB658CD086975717C /* gemini.svg */ = {isa = PBXFileReference; path = gemini.svg; sourceTree = "<group>"; };
 		AB1FC821E462234A77F60C9F /* expressvpn.svg */ = {isa = PBXFileReference; path = expressvpn.svg; sourceTree = "<group>"; };
@@ -177,6 +182,7 @@
 		E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConnectView.swift; sourceTree = "<group>"; };
 		E76B1C8CCE18AAD96B30ED67 /* SubscriptionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDetailView.swift; sourceTree = "<group>"; };
 		E90DD51A355FCDE874358208 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MerchantClassifier.mlmodel; sourceTree = "<group>"; };
 		EE0989F569BDA9DD77A858F0 /* chatgpt.svg */ = {isa = PBXFileReference; path = chatgpt.svg; sourceTree = "<group>"; };
 		EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomApp.swift; sourceTree = "<group>"; };
 		F33FF9C492C468B82A893A00 /* apple-music.svg */ = {isa = PBXFileReference; path = "apple-music.svg"; sourceTree = "<group>"; };
@@ -254,6 +260,8 @@
 			isa = PBXGroup;
 			children = (
 				B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */,
+				EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */,
+				997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */,
 				E04B66D72F6C6A0B64E5B2F4 /* Brands */,
 			);
 			path = Resources;
@@ -319,6 +327,7 @@
 				251F818D18623CDE1B2A4487 /* Entitlements.swift */,
 				F5C60DE91DDD4E3B66CCC771 /* Keychain.swift */,
 				F87298ADC05DDCC32A8E607A /* MailComposer.swift */,
+				94A44E8256E99AEB76343B51 /* MerchantML.swift */,
 				42E5A1FC61151654E4446DCF /* MerchantNormalizer.swift */,
 				B49971A2E95FCA075C378F8D /* MockData.swift */,
 				33DFB01CC932DF3A1AD5BFA5 /* Negotiation.swift */,
@@ -472,6 +481,7 @@
 			files = (
 				E2C8BB879A1FE0F365844055 /* 1password.svg in Resources */,
 				BA5664E23B3FB031C4E4F12F /* Assets.xcassets in Resources */,
+				E7F9B82D61A9CFEF78B4736C /* MerchantClassifier.mlmodelc in Resources */,
 				779F192085EF3E64C7E2F1C2 /* Phantom.storekit in Resources */,
 				2C0958881E81D35EDFD46CE3 /* adobe-cc.svg in Resources */,
 				1637DACACD2BB44282D35AE6 /* adobe-photography.svg in Resources */,
@@ -531,6 +541,8 @@
 				69634BBE128A686BA5E82DD5 /* Keychain.swift in Sources */,
 				148420AEF17375E16691C038 /* MailComposer.swift in Sources */,
 				36D011EC142CE3514671E1AC /* ManualAddSubscriptionView.swift in Sources */,
+				2A01CCC268CCACB1BCF1529D /* MerchantClassifier.mlmodel in Sources */,
+				B3C44488797EB304EA386760 /* MerchantML.swift in Sources */,
 				1A8C049A4C0CA70B78F41C8E /* MerchantNormalizer.swift in Sources */,
 				A392C75B703F3862E517C463 /* MockData.swift in Sources */,
 				F7DF6D3B19DA0EF5B6DB7A70 /* Models.swift in Sources */,
