@@ -55,11 +55,19 @@ enum TransactionParser {
     }
 
     private static func extractDates(from line: String) -> Date? {
-        // Crude: try to find candidate date substrings
-        let tokens = line.components(separatedBy: CharacterSet(charactersIn: " \t,"))
+        // Crude: scan sliding token windows of 1-3 words looking for a parseable date.
+        let tokens = line
+            .components(separatedBy: CharacterSet(charactersIn: " \t,"))
+            .filter { !$0.isEmpty }
+        guard tokens.count >= 1 else { return nil }
         for window in 1...3 {
-            for i in 0..<tokens.count - window {
-                let candidate = tokens[i..<i + window + 1].joined(separator: " ")
+            // tokens[i..<(i + window)] must be a valid sub-range — bail if we don't
+            // have enough tokens. (Earlier version crashed with
+            // "Range requires lowerBound <= upperBound" when tokens.count < window.)
+            guard tokens.count >= window else { break }
+            let lastStart = tokens.count - window
+            for i in 0...lastStart {
+                let candidate = tokens[i..<(i + window)].joined(separator: " ")
                 if let d = parseDate(candidate) { return d }
             }
         }
