@@ -73,9 +73,13 @@ enum RecurrenceDetector {
         var grouped: [String: ParsedTransaction] = [:]
         for t in txs where t.amount > 0 {
             let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
-            if let existing = grouped[key],
-               (existing.date ?? .distantPast) > (t.date ?? .distantPast) {
-                continue
+            if let existing = grouped[key] {
+                let existingDate = existing.date ?? .distantPast
+                let tDate = t.date ?? .distantPast
+                // Newer date wins; same date → smaller amount wins (defends
+                // against running-balance rows that slip past the parser dedup)
+                if tDate < existingDate { continue }
+                if tDate == existingDate && t.amount >= existing.amount { continue }
             }
             grouped[key] = t
         }

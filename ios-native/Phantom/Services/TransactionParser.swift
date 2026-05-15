@@ -80,7 +80,10 @@ enum TransactionParser {
 
         // 1. Cluster lines by horizontal band (rows in the original image)
         let sorted = lines.sorted { $0.box.midY > $1.box.midY }
-        let bandTolerance: CGFloat = 0.02 // 2% of image height
+        // 1.2% of image height — tight enough to keep BoA's "merchant + amount"
+        // and "running balance" on separate rows, loose enough that a wrapped
+        // merchant + its right-aligned amount still cluster together.
+        let bandTolerance: CGFloat = 0.012
         var rows: [[OCR.Line]] = []
         var currentRow: [OCR.Line] = []
         var currentY: CGFloat = sorted.first?.box.midY ?? 0
@@ -107,22 +110,74 @@ enum TransactionParser {
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             // Use the full normalizer (handles POS/SP*/AMZN/PAYPAL prefixes + bank junk)
             guard let merchant = MerchantNormalizer.normalize(merchantRaw),
-                  !isSummary(merchant) else { continue }
+                  !isSummary(merchant),
+                  isPlausibleMerchant(merchant) else { continue }
             let date = extractDates(from: combined)
             transactions.append(ParsedTransaction(merchant: merchant, amount: amount, date: date))
         }
-        return transactions
+
+        // 3. Per-merchant dedup: when the same merchant has multiple amounts
+        //    in this batch, the SMALLEST is the real transaction price — the
+        //    larger ones are running balances / daily totals / monthly sums
+        //    that BoA and some Chase statements show on the row beneath the
+        //    actual charge. Without this, "$15.49 Netflix" and "$185.49 Netflix
+        //    (running balance)" get treated as two separate charges.
+        return collapseByMerchantPreferSmaller(transactions)
+    }
+
+    /// Per-merchant collapse: keep only the smallest amount per (merchant + date).
+    /// Running-balance / daily-total rows are always larger than the individual
+    /// transaction, so the smallest is the safe choice.
+    private static func collapseByMerchantPreferSmaller(_ txs: [ParsedTransaction]) -> [ParsedTransaction] {
+        var bestByKey: [String: ParsedTransaction] = [:]
+        for t in txs {
+            let key = "\(t.merchant.lowercased())|\(dateKey(t.date))"
+            if let existing = bestByKey[key] {
+                if t.amount < existing.amount {
+                    bestByKey[key] = t
+                }
+            } else {
+                bestByKey[key] = t
+            }
+        }
+        return Array(bestByKey.values)
+    }
+
+    private static func dateKey(_ d: Date?) -> String {
+        guard let d else { return "nil" }
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "yyyy-MM-dd"
+        return f.string(from: d)
     }
 
     private static let summaryKeywords: Set<String> = [
         "total", "subtotal", "balance", "available", "current", "pending",
         "rewards", "interest", "points", "payment", "amount due",
         "credit limit", "minimum", "statement", "previous balance",
+        // BoA / Chase / Wells specific
+        "running total", "running balance", "daily total", "daily balance",
+        "month-to-date", "month to date", "year-to-date", "year to date",
+        "ytd", "mtd", "ending balance", "beginning balance",
+        "purchases", "fees charged", "interest charged",
+        "new balance", "this period",
     ]
 
     private static func isSummary(_ text: String) -> Bool {
         let lower = text.lowercased()
         return summaryKeywords.contains(where: { lower.contains($0) })
+    }
+
+    /// True when the merchant string looks like an actual store/service name —
+    /// at least 3 letters and not just a date / state code / single token.
+    /// Filters out OCR'd row fragments like "12/15", "CA", "WA 98101".
+    private static func isPlausibleMerchant(_ name: String) -> Bool {
+        let letters = name.filter { $0.isLetter }
+        if letters.count < 3 { return false }
+        // Reject if the whole string is a date pattern
+        if name.range(of: #"^\s*\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?\s*$"#,
+                      options: .regularExpression) != nil { return false }
+        return true
     }
 
     private static func cleanMerchant(_ raw: String) -> String {
