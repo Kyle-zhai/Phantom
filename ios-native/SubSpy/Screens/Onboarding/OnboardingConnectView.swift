@@ -90,12 +90,14 @@ struct OnboardingConnectView: View {
                     .font(AppFont.small).foregroundStyle(Palette.mute)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: "chevron.right")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(Palette.mute2)
                 .padding(.top, 16)
         }
         .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
         .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
     }
