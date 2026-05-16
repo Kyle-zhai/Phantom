@@ -143,7 +143,7 @@ enum MockData {
             hasOverlapWith: [], notes: nil
         ),
         Subscription(
-            id: "sirius", name: "SiriusXM All Access", vendor: "Sirius XM",
+            id: "sirius-xm", name: "SiriusXM All Access", vendor: "Sirius XM",
             brandHex: "0033A0", category: .entertainment,
             amount: 24.99, cycle: .monthly,
             nextBilling: daysAhead(6), startedAt: daysAgo(720),
