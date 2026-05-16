@@ -154,12 +154,13 @@ struct NegotiateDetailView: View {
                 .padding(.top, 28)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    SectionHeader("Tips for this call")
+                    SectionHeader("Tips for this \(offer.channel == .phone ? "call" : offer.channel == .chat ? "chat" : "request")",
+                                  caption: offer.tips.isEmpty ? nil : "Specific to \(sub.name).")
+                    let tipsList = offer.tips.isEmpty ? Negotiation.fallbackTips : offer.tips
                     VStack(spacing: 14) {
-                        tip("1", "Be polite — agents have discretion. Hostility kills retention offers.")
-                        tip("2", "Mention a competitor by name. It triggers their retention script.")
-                        tip("3", "If the first offer is small, ask: 'Is that the best you can do?'")
-                        tip("4", "Confirm the new rate in writing (email or chat transcript).")
+                        ForEach(Array(tipsList.enumerated()), id: \.offset) { idx, text in
+                            tip("\(idx + 1)", text)
+                        }
                     }
                 }
                 .padding(.top, 28)

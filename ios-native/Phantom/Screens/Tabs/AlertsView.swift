@@ -123,12 +123,20 @@ private struct AlertCard: View {
 
                 HStack {
                     let isRefund = alert.type == .unused || alert.type == .newCharge
-                    NavigationLink(value: isRefund ? AnyHashable(DisputeRoute(subId: sub.id)) : AnyHashable(sub.id)) {
-                        Text(isRefund ? "Get refund" : "Take action")
-                            .font(AppFont.smallB)
-                            .foregroundStyle(Palette.white)
-                            .padding(.horizontal, 14).padding(.vertical, 9)
-                            .background(Palette.black, in: Capsule())
+                    // Two separate NavigationLinks so each carries a properly-
+                    // typed value — wrapping in AnyHashable used to break the
+                    // navigationDestination(for: DisputeRoute.self) handler
+                    // (SwiftUI matches destinations by exact type, not value).
+                    Group {
+                        if isRefund {
+                            NavigationLink(value: DisputeRoute(subId: sub.id)) {
+                                actionLabel("Get refund")
+                            }
+                        } else {
+                            NavigationLink(value: sub.id) {
+                                actionLabel("Take action")
+                            }
+                        }
                     }
                     .simultaneousGesture(TapGesture().onEnded { store.markAlertRead(alert.id) })
                     Spacer()
@@ -140,5 +148,13 @@ private struct AlertCard: View {
             }
         }
         .opacity(alert.read ? 0.7 : 1)
+    }
+
+    private func actionLabel(_ text: String) -> some View {
+        Text(text)
+            .font(AppFont.smallB)
+            .foregroundStyle(Palette.white)
+            .padding(.horizontal, 14).padding(.vertical, 9)
+            .background(Palette.black, in: Capsule())
     }
 }

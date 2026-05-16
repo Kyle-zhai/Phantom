@@ -388,6 +388,15 @@ enum MerchantNormalizer {
         "via rideshare", "curb taxi", "yellow cab", " taxi ",
         "amtrak ", "greyhound bus", "septa key", "mta*nyct", "mta subway",
         "bart *fare", "wmata*metro", "metro card", "metrocard",
+        // US transit agencies — single-ride / ticket purchases are NOT subs
+        "mbta", "mbta mticket", "mbta charlie", "charliecard",
+        "bart ", "wmata ", "marta", "cta train", "cta bus", "njt",
+        "rtd ", "miami-dade transit", "ride dart", "rta ",
+        "muni mobile", "muni metro", "caltrain", "metra ",
+        "long island rail", "lirr", "patco", "path nyc",
+        "transit auth", "transit agency", "regional transit",
+        "ez pass", "ezpass", "fastrak", "sunpass", "i-pass",
+        "metro-north", "metro north",
         // Gas stations
         "shell oil", "shell ", "exxon", "chevron", "bp ", "mobil", "speedway",
         "sunoco", "valero", "citgo", "marathon ", "76 station",

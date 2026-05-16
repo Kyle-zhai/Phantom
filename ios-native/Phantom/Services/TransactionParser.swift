@@ -60,16 +60,18 @@ enum TransactionParser {
     }
 
     private static func extractDates(from line: String) -> Date? {
-        // Crude: scan sliding token windows of 1-3 words looking for a parseable date.
+        // Scan sliding token windows for a parseable date.
+        //
+        // Critical: try LARGEST windows first so "Apr 28 2026" (window 3,
+        // includes the year) gets recognized before "Apr 28" (window 2,
+        // "MMM d" format defaults to year 2000). Previously the parser
+        // returned year-2000 dates for every screenshot.
         let tokens = line
             .components(separatedBy: CharacterSet(charactersIn: " \t,"))
             .filter { !$0.isEmpty }
-        guard tokens.count >= 1 else { return nil }
-        for window in 1...3 {
-            // tokens[i..<(i + window)] must be a valid sub-range — bail if we don't
-            // have enough tokens. (Earlier version crashed with
-            // "Range requires lowerBound <= upperBound" when tokens.count < window.)
-            guard tokens.count >= window else { break }
+        guard !tokens.isEmpty else { return nil }
+        for window in stride(from: 3, through: 1, by: -1) {
+            guard tokens.count >= window else { continue }
             let lastStart = tokens.count - window
             for i in 0...lastStart {
                 let candidate = tokens[i..<(i + window)].joined(separator: " ")
