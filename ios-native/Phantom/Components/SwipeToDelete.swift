@@ -37,17 +37,29 @@ struct SwipeToDelete<Content: View>: View {
             }
             .buttonStyle(.plain)
 
-            // Content slides left
+            // Content slides left. simultaneousGesture (not .gesture) so the
+            // drag is recognized alongside the inner NavigationLink's tap —
+            // tapping the row still navigates, swiping left still reveals
+            // the trash button.
             content()
                 .background(Palette.white)
+                .contentShape(Rectangle())
                 .offset(x: currentOffset)
-                .gesture(swipeGesture)
+                .simultaneousGesture(swipeGesture)
                 .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.7), value: offset)
+                .overlay {
+                    // When open, a transparent layer captures taps anywhere
+                    // on the content and uses them to close — without this
+                    // the NavigationLink tap would fire and yank the user
+                    // into the detail view.
+                    if isOpen {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture { close() }
+                    }
+                }
         }
         .clipShape(RoundedRectangle(cornerRadius: Radius.sm))
-        .onTapGesture {
-            if isOpen { close() }
-        }
     }
 
     private var currentOffset: CGFloat {
