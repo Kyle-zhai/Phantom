@@ -304,6 +304,129 @@ let s12: [Tx] = [
 ]
 renderStatement(style: .apple, header: "Apple Card", txs: s12, to: "\(outDir)/12_fitness_travel.png")
 
+// --- 13: Apple ecosystem consolidation (Chase) — heavy APL*/APPLE.COM/BILL traffic ---
+let s13: [Tx] = [
+    Tx(date: "5/08", merchant: "APPLE.COM/BILL 866-712-7753 CA",         amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+    Tx(date: "5/07", merchant: "APL*APPLE MUSIC",                         amount: "$10.99", balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+    Tx(date: "5/06", merchant: "APL*ICLOUD+ STORAGE 200GB",               amount: "$2.99",  balance: "", isSubscription: true,  expectedBrandSvg: "icloud"),
+    Tx(date: "5/05", merchant: "APL*APPLE TV+",                           amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-tv"),
+    // (correct expected SVG)
+    Tx(date: "5/04", merchant: "APPLE.COM/BILL DUBLIN IE",                amount: "$0.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+    Tx(date: "5/03", merchant: "APPLE STORE #R051 BOSTON MA",             amount: "$129.00",balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "5/02", merchant: "APL*APPLE ONE FAMILY",                    amount: "$22.95", balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+    Tx(date: "5/01", merchant: "APPLE.COM/US CUPERTINO CA",               amount: "$549.00",balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "4/30", merchant: "ITUNES.COM/BILL CORK IE",                 amount: "$4.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+    Tx(date: "4/28", merchant: "APL* APPLE ARCADE",                       amount: "$6.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-music"),
+]
+renderStatement(style: .chase, header: "Chase Sapphire Reserve", txs: s13, to: "\(outDir)/13_apple_ecosystem.png")
+
+// --- 14: Google ecosystem (Citi) — GOOGLE * variants and YouTube TV ---
+let s14: [Tx] = [
+    Tx(date: "May 8, 2026", merchant: "GOOGLE *YouTube Premium",          amount: "$13.99", balance: "$1,234.56", isSubscription: true,  expectedBrandSvg: "youtube-premium"),
+    Tx(date: "May 7, 2026", merchant: "GOOGLE *YouTube TV",               amount: "$82.99", balance: "$1,220.57", isSubscription: true,  expectedBrandSvg: "youtube-tv"),
+    Tx(date: "May 6, 2026", merchant: "GOOGLE *Google One",               amount: "$1.99",  balance: "$1,137.58", isSubscription: true,  expectedBrandSvg: "google-one"),
+    Tx(date: "May 5, 2026", merchant: "GOOGLE *Workspace",                amount: "$6.00",  balance: "$1,135.59", isSubscription: true,  expectedBrandSvg: "google-one"),
+    Tx(date: "May 4, 2026", merchant: "GOOGLE *Gemini Advanced",          amount: "$19.99", balance: "$1,129.59", isSubscription: true,  expectedBrandSvg: "gemini"),
+    Tx(date: "May 3, 2026", merchant: "GOOGL*Play Store Refund",          amount: "$2.99",  balance: "$1,109.60", isSubscription: false, expectedBrandSvg: nil), // refund text → not sub
+    Tx(date: "May 2, 2026", merchant: "GOOGLE *YouTube Music",            amount: "$10.99", balance: "$1,106.61", isSubscription: true,  expectedBrandSvg: "youtube-premium"),
+    Tx(date: "May 1, 2026", merchant: "TARGET 00012345",                  amount: "$45.50", balance: "$1,095.62", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "Apr 30, 2026",merchant: "GOOGLE *Google Pixel",             amount: "$799.00",balance: "$1,050.12", isSubscription: false, expectedBrandSvg: nil),
+]
+renderStatement(style: .citi, header: "Citi Custom Cash", txs: s14, to: "\(outDir)/14_google_ecosystem.png")
+
+// --- 15: Random transaction-ID suffix stress (Citi) — *XXXXXX / .COM/BILL clutter ---
+let s15: [Tx] = [
+    Tx(date: "May 8, 2026", merchant: "AMZN PRIME*RT3JK 866-216-1072 WA",        amount: "$14.99", balance: "$1,234.56", isSubscription: true,  expectedBrandSvg: "amazon-prime"),
+    Tx(date: "May 7, 2026", merchant: "AMZN MKTP US*RT2A4QR1 SEATTLE WA",        amount: "$28.43", balance: "$1,219.57", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 6, 2026", merchant: "ANTHROPIC PBC *CLDPRO MENLO PARK",        amount: "$20.00", balance: "$1,191.14", isSubscription: true,  expectedBrandSvg: "anthropic"),
+    Tx(date: "May 5, 2026", merchant: "OPENAI *CHATGPT SUBSCR SAN FRAN CA",      amount: "$20.00", balance: "$1,171.14", isSubscription: true,  expectedBrandSvg: "openai"),
+    Tx(date: "May 4, 2026", merchant: "NETFLIX.COM 866-579-7172 CA",             amount: "$22.99", balance: "$1,151.14", isSubscription: true,  expectedBrandSvg: "netflix"),
+    Tx(date: "May 3, 2026", merchant: "SPOTIFY USA 877-7781161 NY",              amount: "$11.99", balance: "$1,128.15", isSubscription: true,  expectedBrandSvg: "spotify"),
+    Tx(date: "May 2, 2026", merchant: "AMZN MKTP US*W2A4QR1 866-216-1072 WA",    amount: "$54.21", balance: "$1,116.16", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 1, 2026", merchant: "DOORDASH*DASHPASS SAN FRANCISCO CA",      amount: "$9.99",  balance: "$1,061.95", isSubscription: true,  expectedBrandSvg: "doordash"),
+    Tx(date: "Apr 30, 2026",merchant: "STRIPE *NEWSLETTER 999-555-1212 CA",      amount: "$5.00",  balance: "$1,051.96", isSubscription: false, expectedBrandSvg: nil), // unknown stripe sub, generic
+]
+renderStatement(style: .citi, header: "USAA Cashback Rewards Plus", txs: s15, to: "\(outDir)/15_random_ids.png")
+
+// --- 16: Bank-specific format edge cases (Wells single-row) ---
+let s16: [Tx] = [
+    Tx(date: "05/08", merchant: "PURCHASE AUTHORIZED ON 05/07 NETFLIX.COM",    amount: "$15.49", balance: "", isSubscription: true,  expectedBrandSvg: "netflix"),
+    Tx(date: "05/07", merchant: "RECURRING PAYMENT AUTHORIZED ON 05/06 SPOTIFY USA NY", amount: "$11.99", balance: "", isSubscription: true,  expectedBrandSvg: "spotify"),
+    Tx(date: "05/06", merchant: "POS PURCHASE - WHOLE FOODS MKT 12345 NY",     amount: "$73.21", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "05/05", merchant: "ELECTRONIC PMT - DISNEYPLUS.COM BURBANK",     amount: "$10.99", balance: "", isSubscription: true,  expectedBrandSvg: "disney-missing"),
+    Tx(date: "05/04", merchant: "RECURRING DEBIT GITHUB.COM SAN FRANCISCO",    amount: "$4.00",  balance: "", isSubscription: true,  expectedBrandSvg: "github"),
+    Tx(date: "05/03", merchant: "CHECK CARD PURCHASE - STARBUCKS #41258",      amount: "$6.75",  balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "05/02", merchant: "POS DEBIT HBO MAX *SUBSCRIPTION",             amount: "$15.99", balance: "", isSubscription: true,  expectedBrandSvg: "hbo-max"),
+    Tx(date: "05/01", merchant: "DEBIT CARD PURCHASE - TARGET 00012345",       amount: "$84.30", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "04/30", merchant: "PURCHASE - PARAMOUNT PLUS NY",                amount: "$11.99", balance: "", isSubscription: true,  expectedBrandSvg: "paramount"),
+    Tx(date: "04/29", merchant: "POS PURCHASE PEACOCK NBCUNI",                 amount: "$13.99", balance: "", isSubscription: true,  expectedBrandSvg: "peacock"),
+]
+renderStatement(style: .wells, header: "Wells Fargo Active Cash", txs: s16, to: "\(outDir)/16_wells_prefixes.png")
+
+// --- 17: Discover It dense statement (Discover) — mostly transactional ---
+let s17: [Tx] = [
+    Tx(date: "May 8, 2026", merchant: "STARBUCKS STORE 04521 SEATTLE WA",    amount: "$6.75",  balance: "$987.65", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 8, 2026", merchant: "TRADER JOE'S #572 PROVIDENCE RI",     amount: "$34.18", balance: "$980.90", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 7, 2026", merchant: "AMZN MKTP US*RT9JK SEATTLE WA",       amount: "$24.99", balance: "$946.72", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 7, 2026", merchant: "NETFLIX.COM LOS GATOS CA",            amount: "$15.49", balance: "$921.73", isSubscription: true,  expectedBrandSvg: "netflix"),
+    Tx(date: "May 6, 2026", merchant: "UBER *EATS HELP.UBER.COM",            amount: "$22.45", balance: "$906.24", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 6, 2026", merchant: "SHELL OIL 5712345 BOSTON MA",         amount: "$48.13", balance: "$883.79", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 5, 2026", merchant: "CVS PHARMACY #1234",                  amount: "$18.92", balance: "$835.66", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 5, 2026", merchant: "ANTHROPIC PBC",                       amount: "$20.00", balance: "$816.74", isSubscription: true,  expectedBrandSvg: "anthropic"),
+    Tx(date: "May 4, 2026", merchant: "PANERA BREAD #3456",                  amount: "$12.45", balance: "$796.74", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 4, 2026", merchant: "WHOLE FOODS MKT 10456 NY",            amount: "$87.42", balance: "$784.29", isSubscription: false, expectedBrandSvg: nil),
+]
+renderStatement(style: .discover, header: "Discover It · 9911", txs: s17, to: "\(outDir)/17_discover_dense.png")
+
+// --- 18: Negotiation/cancellation candidates (Citi) — mix of high-value and zombie subs ---
+let s18: [Tx] = [
+    Tx(date: "May 8, 2026", merchant: "EQUINOX *MEMBERSHIP 866-EQUINOX",     amount: "$235.00",balance: "$2,345.00", isSubscription: true,  expectedBrandSvg: nil),
+    Tx(date: "May 6, 2026", merchant: "NEW YORK TIMES DIGITAL 800-698-4637", amount: "$25.00", balance: "$2,110.00", isSubscription: true,  expectedBrandSvg: "nyt"),
+    Tx(date: "May 4, 2026", merchant: "WASHINGTON POST DIGITAL 800-477-4679",amount: "$12.00", balance: "$2,085.00", isSubscription: true,  expectedBrandSvg: nil),
+    Tx(date: "May 2, 2026", merchant: "WSJ.COM/SUBSCRIPTION 800-568-7625",   amount: "$38.99", balance: "$2,073.00", isSubscription: true,  expectedBrandSvg: nil),
+    Tx(date: "May 1, 2026", merchant: "PELOTON INTERACTIVE",                 amount: "$44.00", balance: "$2,034.01", isSubscription: true,  expectedBrandSvg: "peloton"),
+    Tx(date: "Apr 28, 2026",merchant: "EXPRESSVPN.COM",                      amount: "$12.95", balance: "$1,990.01", isSubscription: true,  expectedBrandSvg: "expressvpn"),
+    Tx(date: "Apr 26, 2026",merchant: "PLANET FIT *CLUB FEE",                amount: "$24.99", balance: "$1,977.06", isSubscription: true,  expectedBrandSvg: nil),
+    Tx(date: "Apr 24, 2026",merchant: "MASTERCLASS *ALL ACCESS",             amount: "$15.00", balance: "$1,952.07", isSubscription: true,  expectedBrandSvg: nil),
+]
+renderStatement(style: .citi, header: "Chase Sapphire Preferred", txs: s18, to: "\(outDir)/18_negotiable.png")
+
+// --- 19: Chase single-row mixed with truncated descriptors ---
+let s19: [Tx] = [
+    Tx(date: "5/08", merchant: "OPENAI *CHATGPT SUBSCR",                     amount: "$20.00", balance: "", isSubscription: true,  expectedBrandSvg: "openai"),
+    Tx(date: "5/07", merchant: "APL*Apple TV+ Subscription",                 amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-tv"),
+    Tx(date: "5/06", merchant: "GOOGLE *YouTube TV",                         amount: "$82.99", balance: "", isSubscription: true,  expectedBrandSvg: "youtube-tv"),
+    Tx(date: "5/05", merchant: "AMZN MKTP US*RT9JK",                         amount: "$24.99", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "5/04", merchant: "UBER *ONE MEMBERSHIP",                       amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "uber"),
+    Tx(date: "5/03", merchant: "NORDVPN.COM",                                amount: "$11.95", balance: "", isSubscription: true,  expectedBrandSvg: "nordvpn"),
+    Tx(date: "5/02", merchant: "STARBUCKS STORE 04521",                      amount: "$5.95",  balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "5/01", merchant: "PERPLEXITY AI INC",                          amount: "$20.00", balance: "", isSubscription: true,  expectedBrandSvg: "perplexity"),
+    Tx(date: "4/30", merchant: "CURSOR AI ANYSPHERE",                        amount: "$20.00", balance: "", isSubscription: true,  expectedBrandSvg: "cursor"),
+    Tx(date: "4/29", merchant: "DOORDASH*DASHPASS",                          amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "doordash"),
+    Tx(date: "4/28", merchant: "AUDIBLE*MEMBERSHIP",                         amount: "$14.95", balance: "", isSubscription: true,  expectedBrandSvg: "audible"),
+    Tx(date: "4/27", merchant: "WHOLE FOODS MKT 10456",                      amount: "$73.21", balance: "", isSubscription: false, expectedBrandSvg: nil),
+]
+renderStatement(style: .chase, header: "Chase Freedom Unlimited", txs: s19, to: "\(outDir)/19_chase_truncated.png")
+
+// --- 20: Stress mix — 14 rows alternating subs & one-offs in Apple Wallet format ---
+let s20: [Tx] = [
+    Tx(date: "Today",       merchant: "OPENAI *CHATGPT",                     amount: "$20.00", balance: "", isSubscription: true,  expectedBrandSvg: "openai"),
+    Tx(date: "Yesterday",   merchant: "STARBUCKS STORE 04521",               amount: "$6.75",  balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 6, 2026", merchant: "NETFLIX.COM LOS GATOS CA",            amount: "$15.49", balance: "", isSubscription: true,  expectedBrandSvg: "netflix"),
+    Tx(date: "May 5, 2026", merchant: "UBER *EATS HELP.UBER.COM",            amount: "$22.45", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 4, 2026", merchant: "SPOTIFY USA 877-778-9440",            amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "spotify"),
+    Tx(date: "May 3, 2026", merchant: "WHOLE FOODS MKT 12345 NY",            amount: "$87.42", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "May 2, 2026", merchant: "APL*APPLE TV+",                       amount: "$9.99",  balance: "", isSubscription: true,  expectedBrandSvg: "apple-tv"),
+    Tx(date: "May 1, 2026", merchant: "AMZN MKTP US*RT3JK",                  amount: "$45.00", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "Apr 30, 2026",merchant: "DISNEYPLUS.COM BURBANK CA",           amount: "$10.99", balance: "", isSubscription: true,  expectedBrandSvg: "disney-missing"),
+    Tx(date: "Apr 28, 2026",merchant: "TARGET 00012345",                     amount: "$67.43", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "Apr 26, 2026",merchant: "GITHUB *COPILOT",                     amount: "$10.00", balance: "", isSubscription: true,  expectedBrandSvg: "github-copilot"),
+    Tx(date: "Apr 24, 2026",merchant: "SHELL OIL 1234567",                   amount: "$52.00", balance: "", isSubscription: false, expectedBrandSvg: nil),
+    Tx(date: "Apr 22, 2026",merchant: "HULU LLC SANTA MONICA",               amount: "$17.99", balance: "", isSubscription: true,  expectedBrandSvg: "hulu"),
+    Tx(date: "Apr 20, 2026",merchant: "GRUBHUB*CHIPOTLE",                    amount: "$18.50", balance: "", isSubscription: false, expectedBrandSvg: nil),
+]
+renderStatement(style: .apple, header: "Apple Card", txs: s20, to: "\(outDir)/20_stress_mix.png")
+
 struct GTEntry { let image: String; let txs: [Tx] }
 let allCases: [GTEntry] = [
     GTEntry(image: "01_streaming.png",       txs: s01),
@@ -318,6 +441,14 @@ let allCases: [GTEntry] = [
     GTEntry(image: "10_audio_news.png",      txs: s10),
     GTEntry(image: "11_paypal_creators.png", txs: s11),
     GTEntry(image: "12_fitness_travel.png",  txs: s12),
+    GTEntry(image: "13_apple_ecosystem.png", txs: s13),
+    GTEntry(image: "14_google_ecosystem.png",txs: s14),
+    GTEntry(image: "15_random_ids.png",      txs: s15),
+    GTEntry(image: "16_wells_prefixes.png",  txs: s16),
+    GTEntry(image: "17_discover_dense.png",  txs: s17),
+    GTEntry(image: "18_negotiable.png",      txs: s18),
+    GTEntry(image: "19_chase_truncated.png", txs: s19),
+    GTEntry(image: "20_stress_mix.png",      txs: s20),
 ]
 
 var manifest = "image\tdate\tmerchant\tamount\tis_subscription\texpected_brand_svg\n"

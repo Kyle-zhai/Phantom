@@ -70,6 +70,9 @@ backend/.vercel/
 # Tmp
 *.tmp
 
+# Sample bank statements downloaded for OCR regression scratch
+test_real/
+
 # Generated native folders (Expo prebuild)
 /ios
 /android
