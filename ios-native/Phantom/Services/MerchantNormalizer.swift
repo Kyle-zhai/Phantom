@@ -61,10 +61,11 @@ enum MerchantNormalizer {
             (#"^SP\s*\*"#, nil),           // Stripe: SP*<merchant>
             (#"^STR\s*\*"#, nil),          // Stripe alt
             (#"^STRIPE\s*\*"#, nil),
-            (#"^GOOGLE\s*\*"#, "Google"),  // GOOGLE *YouTube etc → could be Google itself
-            (#"^APPLE\.COM/BILL"#, "Apple"),
-            (#"^ITUNES\.COM/BILL"#, "Apple"),
-            (#"^APPLE\s+\.COM"#, "Apple"),
+            // Removed: GOOGLE * / APPLE.COM/BILL / ITUNES.COM/BILL processors.
+            // Stripping them dropped the product context (left bare "ONE" or
+            // " ITUNES.COM"); rewriting them to the brand also dropped context.
+            // Better to leave the full descriptor intact and let brandId match
+            // patterns like "google *youtube" or "apple.com/bill" directly.
         ]
         for (pattern, brand) in processors {
             if s.range(of: pattern, options: .regularExpression) != nil {
@@ -129,10 +130,13 @@ enum MerchantNormalizer {
             ("disney",          "disney",        "disney-plus"),
             ("hbo",             "hbomax",        "hbo-max"),
             ("max ",            "hbomax",        "hbo-max"),
+            ("max*",            "hbomax",        "hbo-max"),
             ("youtubepre",      "youtubepre",    "youtube-premium"),
             ("youtube tv",      "youtubetv",     "youtube-tv"),
             ("youtube",         "youtube",       "youtube-premium"),
-            // Apple — billing always goes through APL*/APPLE.COM/BILL
+            // Apple — check iCloud first so "APL*ICLOUD" doesn't fall into the
+            // generic "apl*" → apple-music bucket.
+            ("icloud",          "icloud",        "icloud"),
             ("apple tv",        "appletv",       "apple-tv"),
             ("apple music",     "applemusic",    "apple-music"),
             ("apple one",       "appleone",      "apple-music"),
@@ -140,20 +144,26 @@ enum MerchantNormalizer {
             ("apl*itunes",      "aplitunes",     "apple-music"),
             ("apl itunes",      "aplitunes",     "apple-music"),
             ("itunes.com/bill", "itunescombill", "apple-music"),
+            ("itunes",          "itunes",        "apple-music"),
             ("apl*",            "apl",           "apple-music"),
-            ("icloud",          "icloud",        "icloud"),
+            ("apple",           "apple",         "apple-music"),
             // Music & audio
             ("tidal",           "tidal",         "tidal"),
             ("sirius",          "sirius",        "sirius-xm"),
             ("audible",         "audible",       "audible"),
-            // Amazon
+            // Amazon — only the membership tier names map to the brand. The
+            // bare "amazon" / "walmart" aliases used to send every marketplace
+            // / store charge to Prime / Walmart+ as a false-positive sub. The
+            // transactional keyword blacklist still handles "amazon.com*",
+            // "amzn mktpl", "walmart store", "walmart.com".
             ("amazon prime",    "amazonprime",   "amazon-prime"),
             ("amzn prime",      "amznprime",     "amazon-prime"),
+            ("amazon+",         "amazonplus",    "amazon-prime"),
             ("amzn digital",    "amzndigital",   "audible"),
             ("amazon digital",  "amazondigital", "audible"),
             ("kindle unlimited","kindleunlim",   "audible"),
-            ("amazon",          "amazon",        "amazon-prime"),
-            ("walmart",         "walmart",       "walmart-plus"),
+            ("walmart plus",    "walmartplus",   "walmart-plus"),
+            ("walmart+",        "walmartplus",   "walmart-plus"),
             // Google
             ("google one",      "googleone",     "google-one"),
             ("google *youtube", "googleyoutube", "youtube-premium"),
@@ -167,8 +177,14 @@ enum MerchantNormalizer {
             ("adobe *cre",      "adobecre",      "adobe-cc"),
             ("adobe",           "adobe",         "adobe-photography"),
             ("microsoft 365",   "microsoft365",  "github"),
+            ("microsoft*office","microsoftoffice","github"),
+            ("microsoft*store", "microsoftstore","github"),
+            ("microsoft",       "microsoft",     "github"),
             ("msft*office",     "msftoffice",    "github"),
             ("msft *office",    "msftoffice",    "github"),
+            ("msft*",           "msft",          "github"),
+            ("msft ",           "msft",          "github"),
+            ("msft",            "msft",          "github"),
             // GitHub & Copilot
             ("github copilot",  "githubcopilot", "github-copilot"),
             ("github *copilot", "githubcopilot", "github-copilot"),
@@ -176,7 +192,7 @@ enum MerchantNormalizer {
             // AI / chat
             ("chatgpt",         "chatgpt",       "chatgpt"),
             ("openai",          "openai",        "chatgpt"),
-            ("anthropic",       "anthropic",     "claude"),
+            ("anthropic",       "anthropic",     "anthropic"),
             ("claude",          "claude",        "claude"),
             ("gemini",          "gemini",        "gemini"),
             ("google ai pro",   "googleaipro",   "gemini"),
@@ -188,6 +204,9 @@ enum MerchantNormalizer {
             ("replit",          "replit",        "replit"),
             ("v0.dev",          "v0dev",         "v0"),
             ("v0 *",            "v0",            "v0"),
+            ("v0*",             "v0",            "v0"),
+            ("vo *",            "vo",            "v0"),   // OCR misreads "V0" as "VO"
+            ("vo*",             "vo",            "v0"),
             ("vercel",          "vercel",        "vercel"),
             ("bolt.new",        "boltnew",       "bolt"),
             ("stackblitz",      "stackblitz",    "bolt"),
@@ -228,6 +247,7 @@ enum MerchantNormalizer {
             ("washington post", "washingtonpost","washington-post"),
             // Fitness
             ("planet fitness",  "planetfitness", "planet-fitness"),
+            ("planet fit",      "planetfit",     "planet-fitness"),
             ("equinox",         "equinox",       "equinox"),
             ("peloton",         "peloton",       "peloton"),
             // Wellness
@@ -268,13 +288,14 @@ enum MerchantNormalizer {
     /// When the amount is random ($24.50, $6.75 — classic restaurant/ride),
     /// we require ML to be very confident before saying "subscription".
     static func looksLikeSubscription(name: String, amount: Double) -> Bool {
-        // Hard transactional rejection (gas station, restaurant, ride, etc.)
+        // 1. Hard transactional rejection (keyword blacklist + ML, but ML
+        //    only fires when there's no known brand — see isLikelyTransactional).
         if isLikelyTransactional(name) { return false }
-        // Known subscription brand → accept
+        // 2. Known subscription brand → accept.
         if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
             return true
         }
-        // Otherwise weigh the ML score against the price signal
+        // 3. ML + price gate for unknown brands at typical sub pricing.
         let mlScore = MerchantML.subscriptionProbability(for: name)
         if mlScore >= 0.80 { return true }
         if mlScore >= 0.50 && isLikelySubscriptionAmount(amount) { return true }
@@ -318,14 +339,17 @@ enum MerchantNormalizer {
         // Standard streaming / music (Spotify, Apple Music, Hulu, DashPass, Uber One)
         9.99, 10.99, 11.99, 12.99, 13.99, 14.99,
         // Netflix Standard / family streaming / mid SaaS
-        15.49, 15.99, 16.99, 17.99, 18.99, 19.99,
+        15.00, 15.49, 15.99, 16.99, 17.99, 18.99, 19.99,
         // ChatGPT/Claude Pro round-dollar tier + family Apple One
         20.00, 21.99, 22.99, 24.99, 25.00, 29.99,
-        // Live TV / fitness / family
-        34.99, 39.99, 44.99, 49.99, 54.99, 59.99, 69.99,
-        // Annual rounded (Prime, news, gym)
-        79.99, 89.99, 99.99, 109.99, 119.99, 129.99, 139.99, 149.99,
-        159.99, 169.99, 179.99, 199.00, 199.99, 219.99, 239.99, 249.99,
+        // Live TV / fitness / family — round-dollar Peloton / Hulu+Live etc.
+        30.00, 34.99, 35.00, 39.99, 40.00, 44.00, 44.99, 49.99, 50.00,
+        54.99, 59.99, 60.00, 69.99, 70.00,
+        // Higher round tiers (ChatGPT Team $100, premium gym memberships)
+        75.00, 79.99, 80.00, 89.99, 99.00, 99.95, 99.99,
+        100.00, 109.99, 119.00, 119.99, 125.00, 129.00, 129.99, 139.00, 139.99,
+        149.00, 149.99, 159.99, 169.99, 179.99, 185.00, 199.00, 199.99,
+        219.99, 239.99, 249.99,
     ]
 
     /// Returns true when the merchant string looks like a one-off retail/food/
@@ -338,10 +362,16 @@ enum MerchantNormalizer {
     ///      "TST*JOE'S DINER" that aren't in the keyword list verbatim.
     static func isLikelyTransactional(_ name: String) -> Bool {
         let lower = name.lowercased()
+        // Deterministic keyword blacklist — always wins.
         for keyword in transactionalKeywords where lower.contains(keyword) {
             return true
         }
-        // Fall back to ML classifier for unseen merchant patterns
+        // ML fallback — but ONLY when there's no known subscription brand.
+        // Otherwise a known brand like "V0 *prohq" could be falsely flagged by
+        // an over-confident ML prediction on a short/unfamiliar string.
+        if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
+            return false
+        }
         return MerchantML.isLikelyTransactional(name)
     }
 

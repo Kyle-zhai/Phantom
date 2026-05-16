@@ -78,6 +78,18 @@ enum BrandRegistry {
         "uber-one":             Brand(svgName: "uber", hex: "000000", backgroundHex: nil),
         "lyft-pink":            Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil),
         "dashpass":             Brand(svgName: "doordash", hex: "EB1700", backgroundHex: nil),
+        // No-SVG subscription brands — recognized so looksLikeSubscription
+        // returns true via the brand-match path. Avatar falls back to the
+        // first-letter glyph on the brand-coloured background.
+        "planet-fitness":       Brand(svgName: "planet-fitness-missing", hex: "5A1B5A", backgroundHex: nil),
+        "equinox":              Brand(svgName: "equinox-missing", hex: "000000", backgroundHex: nil),
+        "masterclass":          Brand(svgName: "masterclass-missing", hex: "C8102E", backgroundHex: nil),
+        "wsj":                  Brand(svgName: "wsj-missing", hex: "000000", backgroundHex: nil),
+        "washington-post":      Brand(svgName: "washington-post-missing", hex: "000000", backgroundHex: nil),
+        "sirius-xm":            Brand(svgName: "sirius-missing", hex: "0033A0", backgroundHex: nil),
+        "calm":                 Brand(svgName: "calm-missing", hex: "1A7DEF", backgroundHex: nil),
+        "noom":                 Brand(svgName: "noom-missing", hex: "FF7E00", backgroundHex: nil),
+        "disney-plus":          Brand(svgName: "disney-missing", hex: "113CCF", backgroundHex: "000000"),
     ]
 
     /// Fuzzy fallback — checks the human-readable name for these substrings.
