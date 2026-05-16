@@ -20,6 +20,9 @@ struct RadarView: View {
                 if store.potentialSavings > 0 {
                     savingsCard.padding(.top, 16)
                 }
+                if !store.subscriptions.isEmpty {
+                    longPressTip.padding(.top, 16)
+                }
                 ScoreSection(
                     title: "Zombies",
                     caption: "These have been silent. Score ≥ 80.",
@@ -250,6 +253,21 @@ struct RadarView: View {
         }
     }
 
+    private var longPressTip: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "hand.tap")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Palette.mute)
+            Text("Tap a row to see details · long-press for delete & quick actions")
+                .font(AppFont.small)
+                .foregroundStyle(Palette.mute)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.sm))
+    }
+
     private var savingsCard: some View {
         Card {
             HStack(alignment: .top, spacing: 14) {
@@ -271,18 +289,21 @@ struct RadarView: View {
 
     private var cancelledSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader("Cancelled this session") {
+            SectionHeader("Cancelled this session", caption: "Long-press a row for quick actions.") {
                 Badge(fmtUSD(store.cancelledSubs.reduce(0) { $0 + $1.monthlyAmount }), tone: .keep)
             }
             VStack(spacing: 0) {
                 ForEach(store.cancelledSubs) { sub in
-                    SwipeToDelete(onDelete: {
-                        store.removeSubscription(sub.id)
-                    }) {
-                        NavigationLink(value: sub.id) {
-                            SubscriptionRow(sub: sub, score: store.score(for: sub.id), cancelled: true, showScore: false)
+                    NavigationLink(value: sub.id) {
+                        SubscriptionRow(sub: sub, score: store.score(for: sub.id), cancelled: true, showScore: false)
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            store.removeSubscription(sub.id)
+                        } label: {
+                            Label("Remove from Phantom", systemImage: "trash")
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -334,13 +355,21 @@ private struct ScoreSection: View {
                 }
                 VStack(spacing: 0) {
                     ForEach(subs) { sub in
-                        SwipeToDelete(onDelete: {
-                            store.removeSubscription(sub.id)
-                        }) {
-                            NavigationLink(value: sub.id) {
-                                SubscriptionRow(sub: sub, score: store.score(for: sub.id))
+                        NavigationLink(value: sub.id) {
+                            SubscriptionRow(sub: sub, score: store.score(for: sub.id))
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                store.removeSubscription(sub.id)
+                            } label: {
+                                Label("Remove from Phantom", systemImage: "trash")
                             }
-                            .buttonStyle(.plain)
+                            Button {
+                                store.cancel(sub.id)
+                            } label: {
+                                Label("Mark as cancelled", systemImage: "checkmark.circle")
+                            }
                         }
                     }
                 }

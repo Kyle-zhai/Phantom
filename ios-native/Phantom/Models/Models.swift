@@ -50,6 +50,25 @@ struct Subscription: Identifiable, Codable, Hashable {
         case .monthly: return amount
         }
     }
+
+    /// True annual cost based on the actual billing cycle — avoids the
+    /// rounding artifact you get from monthlyAmount * 12 when cycle is yearly
+    /// (199.99 / 12 * 12 → 199.989999…).
+    var yearlyAmount: Double {
+        switch cycle {
+        case .yearly:  return amount
+        case .weekly:  return amount * 52
+        case .monthly: return amount * 12
+        }
+    }
+
+    var cycleLabel: String {
+        switch cycle {
+        case .yearly:  return "Yearly"
+        case .weekly:  return "Weekly"
+        case .monthly: return "Monthly"
+        }
+    }
 }
 
 enum AlertType: String, Codable {

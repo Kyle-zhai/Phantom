@@ -8,6 +8,7 @@ struct SubscriptionDetailView: View {
     @State private var showDispute = false
     @State private var goNegotiate = false
     @State private var showCancelConfirm = false
+    @State private var showDeleteConfirm = false
 
     private var sub: Subscription? {
         store.subscription(byId: subId)
@@ -33,6 +34,15 @@ struct SubscriptionDetailView: View {
         .sheet(isPresented: $showDispute) {
             DisputeLetterView(subId: subId)
                 .environment(store)
+        }
+        .confirmationDialog("Delete this subscription?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) {
+                if let sub { store.removeSubscription(sub.id) }
+                dismiss()
+            }
+            Button("Keep it", role: .cancel) {}
+        } message: {
+            Text("Removes \(sub?.name ?? "this subscription") from Phantom. It will reappear if Phantom detects it again on a future import. This does NOT cancel the underlying subscription.")
         }
         .confirmationDialog("Cancel \(sub?.name ?? "this subscription")?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
             if let sub {
@@ -65,7 +75,7 @@ struct SubscriptionDetailView: View {
         let breakdown = ZombieScore.compute(sub)
         let tier = ZombieScore.tier(for: breakdown.score)
         let monthly = sub.monthlyAmount
-        let yearly = monthly * 12
+        let yearly = sub.yearlyAmount
         let since = ZombieScore.daysSince(sub.lastUsedAt)
         let accrued = (Double(since) / 30.0) * monthly
 
@@ -182,11 +192,12 @@ struct SubscriptionDetailView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 12) {
-                    SectionHeader("The numbers")
+                    SectionHeader("The numbers", caption: "Dates reflect what Phantom observed in your imports — they may not match the actual sign-up or vendor billing schedule.")
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible())], spacing: 12) {
-                        StatTile(label: "Started", value: fmtRelDate(sub.startedAt))
-                        StatTile(label: "Yearly cost", value: fmtUSD(yearly), highlight: true)
-                        StatTile(label: "Next bill", value: fmtRelDate(sub.nextBilling))
+                        StatTile(label: "First charge seen", value: fmtRelDate(sub.startedAt))
+                        StatTile(label: "Billing cycle", value: sub.cycleLabel)
+                        StatTile(label: "Yearly at this rate", value: fmtUSD(yearly), highlight: true)
+                        StatTile(label: "Est. next charge", value: fmtRelDate(sub.nextBilling))
                         if accrued > 0 && sub.lastUsedAt != nil {
                             StatTile(label: "Spent since last use", value: fmtUSD(accrued), highlight: breakdown.score >= 80)
                         }
@@ -240,6 +251,25 @@ struct SubscriptionDetailView: View {
                             Image(systemName: "envelope")
                         }
                     }
+
+                    // Always-available "remove from Phantom" — separate from the
+                    // vendor-cancel flow above. This is what users want when the
+                    // charge was misdetected (e.g. an Uber Eats order parsed as a
+                    // subscription) and shouldn't be in the list at all.
+                    Button {
+                        showDeleteConfirm = true
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "trash")
+                            Text("Remove from Phantom").font(AppFont.smallB)
+                        }
+                        .foregroundStyle(Palette.danger)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Palette.dangerSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 8)
                 }
                 .padding(.top, 28)
                 .padding(.bottom, 30)
