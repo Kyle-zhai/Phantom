@@ -92,17 +92,46 @@ private let recipes: [String: Recipe] = [
 
 enum Negotiation {
     static func offer(for sub: Subscription) -> NegotiationOffer? {
-        guard let r = recipes[sub.id] else { return nil }
-        let saving = (r.savingForYear(sub) * 100).rounded() / 100
+        // 1. Brand-specific recipe (highest fidelity)
+        if let r = recipes[sub.id] {
+            let saving = (r.savingForYear(sub) * 100).rounded() / 100
+            return NegotiationOffer(
+                id: sub.id,
+                vendor: sub.name,
+                successRate: r.successRate,
+                yearlySaving: saving,
+                expectedDiscount: r.expectedDiscount,
+                script: r.script,
+                channel: r.channel,
+                contact: r.contact,
+                successRateEstimated: true
+            )
+        }
+        // 2. Generic fallback — works for any sub. Real saving is conservative
+        // (10% off for 3 months) but the script is universal.
+        return genericOffer(for: sub)
+    }
+
+    /// Universal retention-discount offer for any sub we don't have a brand
+    /// recipe for. Conservative 10%-off-for-3-months estimate. Real success
+    /// rate is unknown so we lean low (35%) to set expectations honestly.
+    private static func genericOffer(for sub: Subscription) -> NegotiationOffer {
+        let saving = (sub.monthlyAmount * 0.10 * 3 * 100).rounded() / 100
+        let script = """
+        Hi — I've been using \(sub.name) for a while, but my budget is getting tight \
+        and I'm reconsidering this subscription. Before I cancel, is there any \
+        retention offer, loyalty discount, or lower-priced plan you can apply to my \
+        account? I'd love to stay if there's something that brings the cost down.
+        """
         return NegotiationOffer(
             id: sub.id,
             vendor: sub.name,
-            successRate: r.successRate,
+            successRate: 35,
             yearlySaving: saving,
-            expectedDiscount: r.expectedDiscount,
-            script: r.script,
-            channel: r.channel,
-            contact: r.contact,
+            expectedDiscount: "Ask for a loyalty discount",
+            script: script,
+            channel: .chat,
+            contact: nil,
             successRateEstimated: true
         )
     }

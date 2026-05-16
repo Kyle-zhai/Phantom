@@ -87,12 +87,14 @@ enum RecurrenceDetector {
         for (key, t) in grouped {
             guard MerchantNormalizer.looksLikeSubscription(name: t.merchant, amount: t.amount) else { continue }
             let nextBilling = (t.date ?? Date()).addingTimeInterval(30 * 86_400)
+            let brandHex = BrandRegistry.brand(for: key, fallbackName: t.merchant)?.hex
+                ?? brandColor(for: key)
             out.append(
                 Subscription(
                     id: key,
                     name: t.merchant,
                     vendor: t.merchant,
-                    brandHex: brandColor(for: key),
+                    brandHex: brandHex,
                     category: .other,
                     amount: t.amount,
                     cycle: .monthly,
@@ -101,7 +103,7 @@ enum RecurrenceDetector {
                     lastUsedAt: nil,
                     sessionsLast30d: 0,
                     userRating: nil,
-                    marketAverage: t.amount,
+                    marketAverage: 0,   // unknown until we have a catalog entry
                     trialEndsAt: nil,
                     hasPriceHike: nil,
                     hasOverlapWith: [],
@@ -151,13 +153,15 @@ enum RecurrenceDetector {
             // Pick a clean human-readable name from the source merchant text
             let representative = sorted.last?.merchant ?? key
             let id = slug(key)
+            let brandHex = BrandRegistry.brand(for: key, fallbackName: representative)?.hex
+                ?? brandColor(for: key)
 
             subs.append(
                 Subscription(
                     id: id,
                     name: representative,
                     vendor: representative,
-                    brandHex: brandColor(for: key),
+                    brandHex: brandHex,
                     category: .other,
                     amount: (medAmt * 100).rounded() / 100,
                     cycle: rule.cycle,
@@ -166,7 +170,7 @@ enum RecurrenceDetector {
                     lastUsedAt: nil,
                     sessionsLast30d: 0,
                     userRating: nil,
-                    marketAverage: medAmt,
+                    marketAverage: 0,  // unknown until catalog provides a comparison
                     trialEndsAt: nil,
                     hasPriceHike: nil,
                     hasOverlapWith: [],

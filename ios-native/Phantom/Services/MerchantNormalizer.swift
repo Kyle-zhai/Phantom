@@ -238,6 +238,14 @@ enum MerchantNormalizer {
             ("paypal *netflix", "paypalnetflix", "netflix"),
             ("paypal *spotify", "paypalspotify", "spotify"),
             ("paypal *hulu",    "paypalhulu",    "hulu"),
+            // Mobility / delivery memberships (subs that ride on transactional apps)
+            ("uber one",        "uberone",       "uber-one"),
+            ("uber *one",       "uberone",       "uber-one"),
+            ("uber*one",        "uberone",       "uber-one"),
+            ("lyft pink",       "lyftpink",      "lyft-pink"),
+            ("lyft *pink",      "lyftpink",      "lyft-pink"),
+            ("dashpass",        "dashpass",      "dashpass"),
+            ("doordash dashpass","doordashdashpass","dashpass"),
         ]
         for (pattern, _, id) in aliases {
             if lower.contains(pattern) { return id }

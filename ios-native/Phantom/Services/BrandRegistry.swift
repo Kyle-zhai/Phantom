@@ -73,6 +73,11 @@ enum BrandRegistry {
         "youtube-premium":      Brand(svgName: "youtube-premium", hex: "FF0000", backgroundHex: "FFFFFF"),
         "youtube-tv":           Brand(svgName: "youtube-tv", hex: "FF0000", backgroundHex: "FFFFFF"),
         "paramount-plus":       Brand(svgName: "paramount", hex: "0064FF", backgroundHex: nil),
+        // Mobility / delivery subscription tiers — the *Pass / *One / *Pink
+        // memberships that ride on top of the ride/food apps.
+        "uber-one":             Brand(svgName: "uber", hex: "000000", backgroundHex: nil),
+        "lyft-pink":            Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil),
+        "dashpass":             Brand(svgName: "doordash", hex: "EB1700", backgroundHex: nil),
     ]
 
     /// Fuzzy fallback — checks the human-readable name for these substrings.
@@ -134,5 +139,10 @@ enum BrandRegistry {
         ("peloton",        Brand(svgName: "peloton", hex: "DF1B2C", backgroundHex: nil)),
         ("headspace",      Brand(svgName: "headspace", hex: "F47D31", backgroundHex: nil)),
         ("walmart",        Brand(svgName: "walmart-plus", hex: "0071CE", backgroundHex: nil)),
+        ("uber one",       Brand(svgName: "uber", hex: "000000", backgroundHex: nil)),
+        ("uber *one",      Brand(svgName: "uber", hex: "000000", backgroundHex: nil)),
+        ("lyft pink",      Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil)),
+        ("lyft *pink",     Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil)),
+        ("dashpass",       Brand(svgName: "doordash", hex: "EB1700", backgroundHex: nil)),
     ]
 }

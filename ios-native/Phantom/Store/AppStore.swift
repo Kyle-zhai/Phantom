@@ -150,6 +150,7 @@ final class AppStore {
     func mergeImported(subs: [Subscription], transactions: [ParsedTransaction]) {
         let existing = Dictionary(uniqueKeysWithValues: subscriptions.map { ($0.id, $0) })
         var merged = subscriptions
+        var newlyAdded: [Subscription] = []
         for new in subs {
             if let cur = existing[new.id] {
                 // Update price/cycle/dates, keep user data
@@ -173,12 +174,36 @@ final class AppStore {
                 }
             } else {
                 merged.append(new)
+                newlyAdded.append(new)
             }
         }
         subscriptions = merged
         persistAllSubscriptions()
         ensureProfile()
         profile?.onboardedAt = profile?.onboardedAt ?? Date()
+
+        // Surface the new subs in the Alerts tab so the user has something
+        // to act on (and so the tab isn't empty right after their first import).
+        for sub in newlyAdded {
+            let dateStr: String = {
+                let f = DateFormatter()
+                f.dateStyle = .medium
+                return f.string(from: sub.startedAt)
+            }()
+            let alert = PriceAlert(
+                id: "newcharge-\(sub.id)-\(Int(sub.startedAt.timeIntervalSince1970))",
+                subscriptionId: sub.id,
+                type: .newCharge,
+                title: "New subscription detected: \(sub.name)",
+                message: "First seen \(dateStr) for \(fmtUSD(sub.amount)). Tap to review the details or generate a dispute letter if it's not yours.",
+                createdAt: Date(),
+                read: false
+            )
+            if !alerts.contains(where: { $0.id == alert.id }) {
+                alerts.append(alert)
+                persist(alert: alert)
+            }
+        }
         save()
         Task { await refreshPriceAlerts() }
     }
