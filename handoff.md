@@ -1,6 +1,6 @@
 # Phantom — Handoff
 
-> Last updated: 2026-05-16. Latest commit on `main`: `344b128` (work below is uncommitted).
+> Last updated: 2026-05-16. Latest commit on `main`: `8e0598e` (all session work landed).
 
 ## Goal
 
