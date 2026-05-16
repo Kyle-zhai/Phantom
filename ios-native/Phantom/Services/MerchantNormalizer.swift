@@ -36,15 +36,27 @@ enum MerchantNormalizer {
             "ELECTRONIC PMT ", "ONLINE TRANSFER ", "MOBILE PURCHASE ",
             "PURCHASE ", "DEBIT ", "CHECK CARD PURCHASE ", "POS ",
             "PYMT TO ", "PAYMENT TO ",
+            // Leading numeric date — e.g. "5/08 NETFLIX.COM" (Chase, Wells,
+            // Discover all use this single-row layout where date prefixes the
+            // merchant on the same OCR row).
+            "\\d{1,2}/\\d{1,2}(?:/\\d{2,4})?\\s+",
+            "\\d{1,2}-\\d{1,2}(?:-\\d{2,4})?\\s+",
         ]
         for prefix in prefixes {
             s = s.replacingOccurrences(of: "^" + prefix, with: "", options: .regularExpression)
         }
 
         // 3. Strip 3rd-party processor prefixes (these are 99% of mis-grouping)
+        //
+        // Note on Amazon: AMZN MKTPL / AMAZON MKTPLACE are MARKETPLACE one-offs
+        // (random retail), NOT Amazon Prime subscriptions. We leave them alone
+        // so the "amzn mktpl" keyword blacklist + the ML classifier handle them
+        // as transactional. Amazon Prime descriptors ("AMZN PRIME*RT4LM",
+        // "AMAZON PRIME*…") are caught separately via the brandId alias map.
         let processors: [(pattern: String, brand: String?)] = [
             (#"^PAYPAL\s*\*"#, nil),       // PAYPAL *<merchant> — strip, keep merchant
             (#"^SQ\s*\*"#, nil),           // Square: SQ *<merchant>
+            (#"^SPO\s*\*"#, nil),          // SPO* (another Square variant — restaurants/retail)
             (#"^TST\s*\*"#, nil),          // Toast: TST*<merchant>
             (#"^SP\s*\*"#, nil),           // Stripe: SP*<merchant>
             (#"^STR\s*\*"#, nil),          // Stripe alt
@@ -53,9 +65,6 @@ enum MerchantNormalizer {
             (#"^APPLE\.COM/BILL"#, "Apple"),
             (#"^ITUNES\.COM/BILL"#, "Apple"),
             (#"^APPLE\s+\.COM"#, "Apple"),
-            (#"^AMZN\s+MKTP"#, "Amazon"),
-            (#"^AMAZON\s+MKTP"#, "Amazon"),
-            (#"^AMZN\.COM"#, "Amazon"),
         ]
         for (pattern, brand) in processors {
             if s.range(of: pattern, options: .regularExpression) != nil {
@@ -264,42 +273,33 @@ enum MerchantNormalizer {
         return false
     }
 
-    /// Returns true if `amount` looks like a common subscription price tier,
-    /// **including up to ~10.5% US sales tax**. Most US states tax digital
-    /// subscriptions (CA, NY, WA, TX, IL, OH, PA…), so the bank-statement
-    /// amount is almost never the clean advertised price:
-    ///   - Spotify $9.99  + NY  8.875% → $10.87
-    ///   - Netflix $15.49 + CA  7.25%  → $16.61
-    ///   - ChatGPT $20.00 + WA 10.5%   → $22.10
+    /// Returns true if `amount` looks like a common subscription price tier.
+    /// Used as a secondary signal in `looksLikeSubscription` (paired with
+    /// mid-confidence ML).
     ///
-    /// This is intentionally permissive — it's only used as an auxiliary
-    /// signal in `looksLikeSubscription` (paired with mid-confidence ML).
-    /// The transactional blacklist and the ML classifier do the actual
-    /// rejection work; a $10.87 Starbucks still gets rejected by the
-    /// "starbucks" keyword, regardless of what this returns.
+    /// Conservative on purpose: we ONLY match exact advertised prices and
+    /// the .99-ending pattern. A naive "base + tax tolerance" loop sounds
+    /// useful but is actually deadly — the commonSubscriptionAmounts set
+    /// has ~50 entries densely packed every $1-$2, so a 10% tax window
+    /// covers nearly every dollar amount $1-$275. That caused $10/$31/$52
+    /// restaurant/gym one-offs to all match.
+    ///
+    /// Tradeoff: we miss tax-included prices for UNKNOWN brands (e.g.,
+    /// $10.87 = Spotify + NY tax). For KNOWN brands this is fine because
+    /// BrandRegistry catches them before the price gate. For unknown brands
+    /// at tax-inclusive prices, the user adds them manually — preferable
+    /// to scrolling through 30 false-positive restaurant charges.
     static func isLikelySubscriptionAmount(_ amount: Double) -> Bool {
         let cents = Int((amount * 100).rounded())
         guard cents > 0 else { return false }
         let dollars = Double(cents) / 100
 
-        // 1. Exact match against known base prices
+        // 1. Exact match against the curated base-price list
         if commonSubscriptionAmounts.contains(dollars) { return true }
 
-        // 2. Base price + up to 10.5% sales tax (covers Seattle/Chicago — highest combined US rates)
-        for base in commonSubscriptionAmounts where amount > base {
-            if amount <= base * 1.105 { return true }
-        }
-
-        // 3. Generic ".99 under $250" — catches regional / student / family pricing
-        //    we didn't enumerate, plus pre-tax displays in no-tax states (OR, NH, DE, MT, AK)
+        // 2. Generic ".99 under $250" — every streaming/SaaS tier in the US
+        //    advertises in $X.99 form. This is the only safe generalization.
         if cents % 100 == 99 && dollars <= 250 { return true }
-
-        // Note: we deliberately do NOT match generic round-dollar amounts
-        // ($30, $50, $89, $100). Too many one-off charges (gym day passes,
-        // restaurants, store purchases) hit those values, and the small
-        // number of unknown subs at those prices isn't worth the noise.
-        // Round-dollar prices that ARE common ($20 ChatGPT, $25 ChatGPT Team)
-        // live in commonSubscriptionAmounts above.
 
         return false
     }
@@ -363,9 +363,18 @@ enum MerchantNormalizer {
         "restaurant", "cafe", "diner", " grill", "bistro", "tavern",
         "kitchen", " deli", "bakery", "noodle", "ramen", "sushi", "pho ",
         " bbq", "steakhouse", "pizzeria", "pub ",
-        // Delivery
-        "doordash", "ubereats", "uber eats", "grubhub", "postmates",
-        "seamless", "instacart", "gopuff", "favor delivery",
+        // Delivery — match only the "<service> *<restaurant>" patterns, so
+        // subscription tiers like DOORDASH DASHPASS / GRUBHUB+ / INSTACART+
+        // don't get caught. Bare "DOORDASH" without an asterisk is rare in
+        // the wild for individual orders.
+        "doordash *", "doordash*",
+        "ubereats *", "ubereats*", "ubereats ", "uber eats",
+        "grubhub *", "grubhub*",
+        "postmates *", "postmates*",
+        "seamless *", "seamless*",
+        "instacart *", "instacart*",
+        "gopuff *", "gopuff*",
+        "favor delivery",
         // Groceries / convenience
         "trader joe", "whole foods", "safeway", "kroger", "publix",
         "wegmans", "h-e-b", "stop & shop", "shoprite", "albertsons",
