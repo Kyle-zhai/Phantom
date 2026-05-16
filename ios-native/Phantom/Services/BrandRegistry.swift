@@ -90,6 +90,13 @@ enum BrandRegistry {
         "calm":                 Brand(svgName: "calm-missing", hex: "1A7DEF", backgroundHex: nil),
         "noom":                 Brand(svgName: "noom-missing", hex: "FF7E00", backgroundHex: nil),
         "disney-plus":          Brand(svgName: "disney-missing", hex: "113CCF", backgroundHex: "000000"),
+        // Cable / internet / wireless — recognized as subs so they appear on
+        // Radar; svgs fall back to a letter avatar on the brand color.
+        "spectrum":             Brand(svgName: "spectrum-missing", hex: "0099D8", backgroundHex: nil),
+        "xfinity":              Brand(svgName: "xfinity-missing", hex: "000000", backgroundHex: nil),
+        "t-mobile":             Brand(svgName: "tmobile-missing", hex: "E20074", backgroundHex: nil),
+        "verizon":              Brand(svgName: "verizon-missing", hex: "CD040B", backgroundHex: nil),
+        "att":                  Brand(svgName: "att-missing", hex: "00A8E0", backgroundHex: nil),
     ]
 
     /// Fuzzy fallback — checks the human-readable name for these substrings.

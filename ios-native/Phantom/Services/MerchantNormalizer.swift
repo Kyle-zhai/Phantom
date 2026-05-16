@@ -31,10 +31,15 @@ enum MerchantNormalizer {
         // 2. Strip bank action prefixes
         let prefixes: [String] = [
             "POS DEBIT ", "POS PURCHASE ", "DEBIT CARD PURCHASE ",
+            // Wells Fargo / Chase / BofA verbose prefixes (date-bearing).
+            // Strip the full "RECURRING PAYMENT AUTHORIZED ON 05/06 " variant
+            // before falling through to the bare "RECURRING PAYMENT " case.
+            "RECURRING PAYMENT AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
             "PURCHASE AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
+            "AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
             "RECURRING PAYMENT ", "RECURRING DEBIT ",
-            "ELECTRONIC PMT ", "ONLINE TRANSFER ", "MOBILE PURCHASE ",
-            "PURCHASE ", "DEBIT ", "CHECK CARD PURCHASE ", "POS ",
+            "ELECTRONIC PMT\\s*-?\\s*", "ONLINE TRANSFER ", "MOBILE PURCHASE ",
+            "CHECK CARD PURCHASE\\s*-?\\s*", "PURCHASE\\s*-?\\s*", "DEBIT ", "POS ",
             "PYMT TO ", "PAYMENT TO ",
             // Leading numeric date — e.g. "5/08 NETFLIX.COM" (Chase, Wells,
             // Discover all use this single-row layout where date prefixes the
@@ -42,8 +47,20 @@ enum MerchantNormalizer {
             "\\d{1,2}/\\d{1,2}(?:/\\d{2,4})?\\s+",
             "\\d{1,2}-\\d{1,2}(?:-\\d{2,4})?\\s+",
         ]
-        for prefix in prefixes {
-            s = s.replacingOccurrences(of: "^" + prefix, with: "", options: .regularExpression)
+        // Prefix-strip iteratively until stable. Wells single-row layout joins
+        // the date column with the merchant column on the same OCR band:
+        //   "05/07 RECURRING PAYMENT AUTHORIZED ON 05/06 SPOTIFY USA NY"
+        // One pass can only strip ONE prefix; we want to strip BOTH the leading
+        // "05/07 " and the inner "RECURRING PAYMENT AUTHORIZED ON 05/06 ".
+        // Iterating until no change handles both, in either order.
+        var previous = ""
+        var iterations = 0
+        while s != previous && iterations < 6 {
+            previous = s
+            for prefix in prefixes {
+                s = s.replacingOccurrences(of: "^" + prefix, with: "", options: .regularExpression)
+            }
+            iterations += 1
         }
 
         // 3. Strip 3rd-party processor prefixes (these are 99% of mis-grouping)
@@ -81,10 +98,15 @@ enum MerchantNormalizer {
         }
 
         // 4. Strip trailing junk: card last-4, dates, city/state, phone numbers, transaction ids
+        //
+        // State-code stripping is whitelisted to actual US state abbreviations.
+        // Blindly stripping any trailing 2-letter caps ate "TV" off "YouTube TV"
+        // and broke the youtube-tv brand match.
+        let stateCodes = "(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)"
         let trailingPatterns: [String] = [
             #"\s+\d{4}\s*$"#,                      // ending 4 digits (card last-4)
             #"\s+\d{2}/\d{2}(/\d{2,4})?\s*"#,      // dates anywhere
-            #"\s+[A-Z]{2}\s*$"#,                    // trailing state code (CA, NY)
+            "\\s+" + stateCodes + "\\s*$",          // trailing state code — whitelisted
             #"\s+(US|USA)\s*$"#,                   // trailing US
             #"\s+\d{3}[- ]?\d{3}[- ]?\d{4}"#,      // phone numbers
             #"\s+\d{6,}"#,                          // long transaction ids
@@ -164,13 +186,22 @@ enum MerchantNormalizer {
             ("kindle unlimited","kindleunlim",   "audible"),
             ("walmart plus",    "walmartplus",   "walmart-plus"),
             ("walmart+",        "walmartplus",   "walmart-plus"),
-            // Google
-            ("google one",      "googleone",     "google-one"),
-            ("google *youtube", "googleyoutube", "youtube-premium"),
-            ("googl*youtube",   "googleyoutube", "youtube-premium"),
-            ("google storage",  "googlestorage", "google-one"),
-            ("google",          "google",        "google-one"),
-            ("googl*",          "google",        "google-one"),
+            // Google — Specific Google product aliases MUST come before the
+            // generic "google" / "googl*" fallback. Otherwise "GOOGLE *Gemini"
+            // or "GOOGL*YouTube TV" would match the catch-all → google-one.
+            ("google *youtube tv",  "googleyoutubetv",  "youtube-tv"),
+            ("googl*youtube tv",    "googleyoutubetv",  "youtube-tv"),
+            ("google *youtube",     "googleyoutube",    "youtube-premium"),
+            ("googl*youtube",       "googleyoutube",    "youtube-premium"),
+            ("google *gemini",      "googlegemini",     "gemini"),
+            ("googl*gemini",        "googlegemini",     "gemini"),
+            ("google ai pro",       "googleaipro",      "gemini"),
+            ("google one",          "googleone",        "google-one"),
+            ("google storage",      "googlestorage",    "google-one"),
+            ("google workspace",    "googleworkspace",  "google-one"),
+            ("google *workspace",   "googleworkspace",  "google-one"),
+            ("google",              "google",           "google-one"),
+            ("googl*",              "google",           "google-one"),
             // Cloud storage / productivity
             ("dropbox",         "dropbox",       "dropbox"),
             ("adobe creative",  "adobecreative", "adobe-cc"),
@@ -254,6 +285,18 @@ enum MerchantNormalizer {
             ("headspace",       "headspace",     "headspace"),
             ("calm",            "calm",          "calm"),
             ("noom",            "noom",          "noom"),
+            // Cable / internet / wireless — biggest negotiation wins live here.
+            ("spectrum",        "spectrum",      "spectrum"),
+            ("charter comm",    "chartercomm",   "spectrum"),
+            ("xfinity",         "xfinity",       "xfinity"),
+            ("comcast",         "comcast",       "xfinity"),
+            ("t-mobile",        "tmobile",       "t-mobile"),
+            ("tmobile",         "tmobile",       "t-mobile"),
+            ("t mobile",        "tmobile",       "t-mobile"),
+            ("verizon wireless","verizonwireless","verizon"),
+            ("verizon ",        "verizon",       "verizon"),
+            ("at&t ",           "att",           "att"),
+            ("at and t",        "att",           "att"),
             // Third-party processors that wrap subs
             ("paypal *netflix", "paypalnetflix", "netflix"),
             ("paypal *spotify", "paypalspotify", "spotify"),
@@ -356,24 +399,49 @@ enum MerchantNormalizer {
     /// transport/ATM charge — never a subscription.
     ///
     /// Two-stage check:
-    ///   1. Fast keyword blacklist (microseconds, deterministic, easy to debug)
-    ///   2. CreateML-trained NLModel for anything not caught by keywords —
+    ///   1. Subscription-tier allowlist (skips the blacklist for known
+    ///      sub products that ride on transactional apps — DASHPASS / UBER
+    ///      ONE / LYFT PINK / INSTACART+).
+    ///   2. Fast keyword blacklist (microseconds, deterministic, easy to debug)
+    ///   3. CreateML-trained NLModel for anything not caught by keywords —
     ///      handles unseen merchant variants like "PANDA EXPRESS 7741" or
     ///      "TST*JOE'S DINER" that aren't in the keyword list verbatim.
     static func isLikelyTransactional(_ name: String) -> Bool {
         let lower = name.lowercased()
-        // Deterministic keyword blacklist — always wins.
+        // 1. Subscription-tier allowlist — if the merchant matches one of
+        //    these, never call it transactional. The blacklist patterns
+        //    "doordash*" / "uber *" / "instacart *" otherwise eat the
+        //    subscription tier names that sit on top of those apps.
+        for sub in subscriptionTierKeywords where lower.contains(sub) {
+            return false
+        }
+        // 2. Deterministic keyword blacklist — always wins over brand match.
         for keyword in transactionalKeywords where lower.contains(keyword) {
             return true
         }
-        // ML fallback — but ONLY when there's no known subscription brand.
-        // Otherwise a known brand like "V0 *prohq" could be falsely flagged by
-        // an over-confident ML prediction on a short/unfamiliar string.
+        // 3. ML fallback — but ONLY when there's no known subscription brand.
+        //    Otherwise a known brand like "V0 *prohq" could be falsely flagged
+        //    by an over-confident ML prediction on a short/unfamiliar string.
         if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
             return false
         }
         return MerchantML.isLikelyTransactional(name)
     }
+
+    /// Subscription tier names that sit on transactional apps. These must be
+    /// preserved as subscriptions even when the merchant string contains a
+    /// pattern that's normally a transactional blacklist hit (e.g.
+    /// "DOORDASH*DASHPASS" contains "doordash*").
+    private static let subscriptionTierKeywords: [String] = [
+        "dashpass", "doordash dashpass", "doordash*dashpass",
+        "uber one", "uber *one", "uber*one",
+        "lyft pink", "lyft *pink", "lyft*pink",
+        "instacart+", "instacart plus", "grubhub+", "grubhub plus",
+        "amazon prime", "amzn prime", "walmart+", "walmart plus",
+        "netflix", "spotify", "hulu", "disney+", "disneyplus", "peacock", "paramount+",
+        "hbo max", "max *", "max*sub", "apple tv+", "apple one", "apple music",
+        "icloud+", "icloud storage",
+    ]
 
     // Common US merchant strings that are never subscriptions.
     // Each entry is a lowercase substring searched in the merchant name.
@@ -447,6 +515,16 @@ enum MerchantNormalizer {
         "airline", "expedia", "kayak", "booking.com", "airbnb",
         "marriott", "hilton ", "hyatt ", "ihg ",
         " hertz", "enterprise rent", "budget rent", "avis ",
+        // Apple physical / online store one-offs (not the App Store / .com/BILL
+        // subscription billing). "apple.com/us" routes to the Apple Online
+        // Store; "apple store #" is a brick-and-mortar location.
+        "apple store ", "apple store#", "apple.com/us", "apple.com /us",
+        // Google hardware one-offs and refunds (not the subscription billing
+        // routes via "GOOGLE *YouTube" / "GOOGLE *Gemini" / "GOOGL*Play Store"
+        // subscription-product variants).
+        "google pixel", "google store", "play store refund",
+        "google play store refund", "googl*play store refund",
+        " refund", "*refund", "credit refund", "merchandise return",
     ]
 
     private static func titleCase(_ s: String) -> String {
