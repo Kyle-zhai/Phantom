@@ -28,8 +28,10 @@ final class AppStore {
     private var modelContext: ModelContext?
 
     var isOnboarded: Bool {
+        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--skip-onboarding") { return true }
         if ProcessInfo.processInfo.arguments.contains("--demo") { return true }
+        #endif
         return profile?.onboardedAt != nil
     }
 
@@ -43,9 +45,11 @@ final class AppStore {
         self.modelContext = modelContext
         loadFromDisk()
         loadDisputeUsage()
+        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--demo") && subscriptions.isEmpty {
             seedSampleData()
         }
+        #endif
     }
 
     /// Opt-in sample data path. Called from "Browse with sample data" buttons
@@ -273,15 +277,15 @@ final class AppStore {
         }
     }
 
-    /// Hard delete — same as sign out plus a server-side request to forget the user.
-    /// Required by App Store Review Guideline 5.1.1(v) for any app that creates accounts.
+    /// Hard delete — same as sign out plus a one-time backend purge. Since
+    /// the current shipping app does not create server-side accounts (OCR
+    /// runs entirely on-device, no signup flow populates Keychain.userId),
+    /// there's nothing to purge server-side; this collapses to the local
+    /// wipe. Kept as a separate method so the Settings UX language ("Delete
+    /// account") matches App Store Review Guideline 5.1.1(v) terminology
+    /// for any user-visible "account" concept. If a real backend lands,
+    /// re-add an APIClient.post("/account/delete", …) call here.
     func deleteAccount() async {
-        // Best-effort backend delete — if it fails, still wipe local data
-        if let userId = Keychain.get(.userId) {
-            struct Req: Encodable { let userId: String }
-            struct Empty: Decodable {}
-            _ = try? await APIClient.shared.post("/account/delete", body: Req(userId: userId), as: Empty.self)
-        }
         await signOut()
     }
 

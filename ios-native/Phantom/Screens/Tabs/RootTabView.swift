@@ -4,10 +4,12 @@ struct RootTabView: View {
     @Environment(AppStore.self) private var store
 
     private static func computeInitialTab() -> Int {
+        #if DEBUG
         let args = ProcessInfo.processInfo.arguments
         if args.contains("--tab-alerts") { return 1 }
         if args.contains("--tab-negotiate") { return 2 }
         if args.contains("--tab-settings") { return 3 }
+        #endif
         return 0
     }
 

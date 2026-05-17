@@ -22,17 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsLocalNetworking</key>
-		<true/>
-	</dict>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>We never track you. This permission is requested only to comply with App Store policies — Phantom does not perform any cross-app tracking.</string>
-	<key>PLAID_ENVIRONMENT</key>
-	<string>$(PLAID_ENVIRONMENT)</string>
-	<key>PHANTOM_API_BASE</key>
-	<string>$(PHANTOM_API_BASE)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

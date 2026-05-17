@@ -63,10 +63,10 @@ targets:
         UIStatusBarStyle: UIStatusBarStyleDarkContent
         UIUserInterfaceStyle: Light
         NSUserTrackingUsageDescription: "We never track you. This permission is requested only to comply with App Store policies — Phantom does not perform any cross-app tracking."
-        PHANTOM_API_BASE: $(PHANTOM_API_BASE)
-        PLAID_ENVIRONMENT: $(PLAID_ENVIRONMENT)
-        NSAppTransportSecurity:
-          NSAllowsLocalNetworking: true
+        # No backend = no PHANTOM_API_BASE / PLAID_ENVIRONMENT shipped.
+        # All processing is on-device (Vision OCR, CoreML classifier,
+        # SwiftData persistence). Re-add these keys + xcconfig values
+        # if a real backend integration lands.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom
@@ -78,8 +78,15 @@ targets:
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         GENERATE_INFOPLIST_FILE: NO
         PRODUCT_NAME: Phantom
-        PHANTOM_API_BASE: "http://localhost:3000"
-        PLAID_ENVIRONMENT: "sandbox"
+        # PHANTOM_API_BASE / PLAID_ENVIRONMENT intentionally NOT set here.
+        # Setting them in the target's base settings overrides the per-config
+        # xcconfig values and would ship localhost:3000 to App Store. The
+        # xcconfigs (Config/Debug.xcconfig / Config/Release.xcconfig) set the
+        # right value per configuration.
+        # NSAppTransportSecurity / NSAllowsLocalNetworking also removed —
+        # the only API call (POST /account/delete) is dead code because no
+        # code path ever populates Keychain.userId. Adding it back is a
+        # one-line Info.plist change if a real backend integration lands.
 
 packages:
   SVGView:
