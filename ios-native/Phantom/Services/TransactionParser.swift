@@ -268,6 +268,16 @@ enum TransactionParser {
         "deposits and other credits", "withdrawals and other debits",
         "other credits", "other debits", "service charges and fees",
         "preauthorized credit", "preauthorized debit", "wire transfer",
+        // Chase / Capital One credit-card-payment markers — these are ACH
+        // payments between bank accounts (CC bill payment), not subscriptions.
+        "capital one cloantpmt", "cloantpmt",
+        "rcardpmt", "rcard pmt",
+        "web id:", "web id ",
+        "bill payment biltrent", "biltrent",
+        // Chase wide-table column headers — sometimes Y-clustered with a
+        // transaction row below, get parsed as a fake row.
+        "date description", "description card purchase amount",
+        "description card", "description amount",
     ]
 
     private static func isSummary(_ text: String) -> Bool {
