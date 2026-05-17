@@ -184,7 +184,7 @@ struct SettingsView: View {
                     Image(systemName: "info.circle.fill").foregroundStyle(Palette.warn)
                     Text("SAMPLE DATA MODE").font(AppFont.smallB).foregroundStyle(Palette.warn)
                 }
-                Text("You're previewing Phantom with 14 example subscriptions. None of this is real — it's here so you can see what the app looks like with data.")
+                Text("You're previewing Phantom with \(store.subscriptions.count) example subscriptions. None of this is real — it's here so you can see what the app looks like with data.")
                     .font(AppFont.small).foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
                 Button {
