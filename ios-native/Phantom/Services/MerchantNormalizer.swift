@@ -37,6 +37,19 @@ enum MerchantNormalizer {
             "RECURRING PAYMENT AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
             "PURCHASE AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
             "AUTHORIZED ON \\d{1,2}/\\d{1,2}\\s*",
+            // Chase-specific (real-world bills): "RECURRING CARD PURCHASE 03/12 ..."
+            // and "CARD PURCHASE 03/12 ..." — both followed by a date that
+            // the next-iteration date-prefix strip removes. These weren't in
+            // the prefix list and left the raw "Recurring Card Purchase" /
+            // "Card Purchase" text in the displayed merchant name.
+            // OCR variants: Apple Vision sometimes mis-reads "Recurring" as
+            // "Curring" (drops leading "Re"), "Car ring" (inserts a space),
+            // or just "Currin"; and "Card" as "Sand" or "Sard" (s/c confusion
+            // at certain font weights). Match all the seen variants.
+            "RECURRING CARD PURCHASE\\s*", "CURRING CARD PURCHASE\\s*",
+            "CAR RING CARD PURCHASE\\s*", "CURRIN CARD PURCHASE\\s*",
+            "RECURRING (CARD|SARD|SAND) PURCHASE\\s*",
+            "CARD PURCHASE\\s*", "SAND PURCHASE\\s*", "SARD PURCHASE\\s*",
             "RECURRING PAYMENT ", "RECURRING DEBIT ",
             "ELECTRONIC PMT\\s*-?\\s*", "ONLINE TRANSFER ", "MOBILE PURCHASE ",
             "CHECK CARD PURCHASE\\s*-?\\s*", "PURCHASE\\s*-?\\s*", "DEBIT ", "POS ",
@@ -99,24 +112,39 @@ enum MerchantNormalizer {
 
         // 4. Strip trailing junk: card last-4, dates, city/state, phone numbers, transaction ids
         //
+        // Two categories:
+        //   - $-anchored patterns: only at end of string, replace with ""
+        //   - mid-string patterns: replace with " " so the surrounding words
+        //     don't get glued (e.g. "Purchase 03/12 Google" → "Purchase Google",
+        //     not "PurchaseGoogle"). The whitespace-collapse step normalises.
+        //
         // State-code stripping is whitelisted to actual US state abbreviations.
         // Blindly stripping any trailing 2-letter caps ate "TV" off "YouTube TV"
         // and broke the youtube-tv brand match.
         let stateCodes = "(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)"
-        let trailingPatterns: [String] = [
-            #"\s+\d{4}\s*$"#,                      // ending 4 digits (card last-4)
-            #"\s+\d{2}/\d{2}(/\d{2,4})?\s*"#,      // dates anywhere
-            "\\s+" + stateCodes + "\\s*$",          // trailing state code — whitelisted
-            #"\s+(US|USA)\s*$"#,                   // trailing US
-            #"\s+\d{3}[- ]?\d{3}[- ]?\d{4}"#,      // phone numbers
-            #"\s+\d{6,}"#,                          // long transaction ids
-            #"\*[A-Z0-9]*\d[A-Z0-9]*"#,             // *RT3JK / *A5KU — must contain a digit
-                                                    // (never strip *EATS / *RIDE / *ONE / *PRO,
-                                                    // which are subscription-meaningful)
-            #"\s+#\d+"#,                            // trailing #1234
+        // Patterns guaranteed to be at $ end — safe to replace with "".
+        let endAnchored: [String] = [
+            #"\s+CARD\s+\d{4}\s*$"#,                // "CARD 3283" (Chase trailing card marker)
+            #"\s+\d{4}\s*$"#,                       // ending 4 digits (card last-4)
+            "\\s+" + stateCodes + "\\s*$",           // trailing state code — whitelisted
+            #"\s+(US|USA)\s*$"#,                    // trailing US
+            #"\s+#\d+\s*$"#,                        // trailing #1234
+            #"\*[A-Z0-9]*\d[A-Z0-9]*\s*$"#,         // trailing *RT3JK / *A5KU
         ]
-        for pattern in trailingPatterns {
+        for pattern in endAnchored {
             s = s.replacingOccurrences(of: pattern, with: "", options: .regularExpression)
+        }
+        // Mid-string patterns — replace with " " so neighboring words don't glue.
+        let midString: [String] = [
+            #"\s+\d{2}/\d{2}(/\d{2,4})?\s*"#,       // dates anywhere
+            #"\s+\d{3}[- ]?\d{3}[- ]?\d{4}"#,       // phone numbers
+            #"\s+\d{6,}"#,                          // long transaction ids
+            #"\*[A-Z0-9]*\d[A-Z0-9]*"#,             // *RT3JK / *Uy9H70Y — txn IDs
+                                                    // anywhere (not just trailing). Must contain a
+                                                    // digit so *EATS / *RIDE / *ONE / *PRO survive.
+        ]
+        for pattern in midString {
+            s = s.replacingOccurrences(of: pattern, with: " ", options: .regularExpression)
         }
 
         // 5. Cleanup whitespace and corporate suffixes
