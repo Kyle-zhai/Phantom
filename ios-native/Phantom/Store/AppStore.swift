@@ -239,6 +239,23 @@ final class AppStore {
         save()
     }
 
+    /// One-button data wipe — clears all imported subscriptions, alerts,
+    /// cancellation history, dispute-letter usage, and the sample-mode flag,
+    /// then drops the persistent SwiftData rows. Keeps the user signed in
+    /// (profile + onboarded state preserved) and keeps any Pro entitlement
+    /// active, so the user can re-import without going through onboarding
+    /// again or losing their subscription. Notifications scheduled for the
+    /// wiped subs are cancelled.
+    func clearAllData() async {
+        await NotificationService.cancelAll()
+        subscriptions = []
+        alerts = []
+        cancelledIds = []
+        disputeUsageDates = []
+        UserDefaults.standard.removeObject(forKey: "phantom.sampleMode")
+        clearAllPersistent()
+    }
+
     /// App Store-compliant sign out: clear everything and return to onboarding.
     func signOut() async {
         await NotificationService.cancelAll()

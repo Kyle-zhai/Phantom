@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State private var confirmDisconnect = false
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
+    @State private var confirmClearAll = false
     @State private var showEditProfile = false
 
     private var profileDisplayName: String {
@@ -70,6 +71,12 @@ struct SettingsView: View {
                     Button { showManual = true } label: {
                         SettingsRow(icon: "pencil.line", label: "Add manually")
                     }.buttonStyle(.plain)
+                    if !store.subscriptions.isEmpty || !store.alerts.isEmpty {
+                        DividerLine()
+                        Button { confirmClearAll = true } label: {
+                            SettingsRow(icon: "trash", label: "Clear all subscriptions", destructive: true)
+                        }.buttonStyle(.plain)
+                    }
                 }
                 .padding(.top, 28)
 
@@ -173,6 +180,16 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Permanent — your Plaid item is revoked, server-side data is purged, and you'll be signed out. To stop a paid subscription, also use 'Manage subscription' first.")
+        }
+        .confirmationDialog(
+            "Clear all subscriptions?",
+            isPresented: $confirmClearAll,
+            titleVisibility: .visible
+        ) {
+            Button("Clear everything", role: .destructive) { Task { await store.clearAllData() } }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Removes every imported subscription, alert, and cancellation record from this device. You stay signed in and your Pro subscription is unaffected. You can re-import by scanning new screenshots.")
         }
         .toolbar(.hidden, for: .navigationBar)
     }
