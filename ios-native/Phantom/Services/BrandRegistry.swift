@@ -95,6 +95,7 @@ enum BrandRegistry {
         "spectrum":             Brand(svgName: "spectrum", hex: "0099D8", backgroundHex: nil),
         "xfinity":              Brand(svgName: "xfinity-missing", hex: "000000", backgroundHex: nil),
         "t-mobile":             Brand(svgName: "tmobile-missing", hex: "E20074", backgroundHex: nil),
+        // (verizon / att continue below)
         "verizon":              Brand(svgName: "verizon", hex: "CD040B", backgroundHex: nil),
         "att":                  Brand(svgName: "att-missing", hex: "00A8E0", backgroundHex: nil),
     ]
@@ -163,5 +164,91 @@ enum BrandRegistry {
         ("lyft pink",      Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil)),
         ("lyft *pink",     Brand(svgName: "lyft", hex: "FF00BF", backgroundHex: nil)),
         ("dashpass",       Brand(svgName: "doordash", hex: "EB1700", backgroundHex: nil)),
+    ]
+
+    /// Clean, brand-aware display name for a given brand id. Used by the
+    /// Radar / Negotiate / Alerts list views to show "Netflix" / "Apple
+    /// Music" / "YouTube Premium" instead of the raw bank-statement text
+    /// ("APL*APPLE MUSIC" / "GOOGLE *Youtube Musi G.CO/Helppay#"). Returns
+    /// nil when the brand id is unknown — the caller should fall back to
+    /// the normalized merchant text.
+    ///
+    /// The map is hand-curated so we can preserve acronym casing (NYT,
+    /// WSJ, HBO) and brand-correct casing (YouTube, GitHub, iCloud,
+    /// 1Password) that a naive title-case wouldn't produce.
+    static func displayName(for brandId: String) -> String? {
+        knownDisplayNames[brandId.lowercased()]
+    }
+
+    private static let knownDisplayNames: [String: String] = [
+        // Streaming
+        "netflix": "Netflix",
+        "hulu": "Hulu",
+        "spotify": "Spotify",
+        "peacock": "Peacock",
+        "paramount": "Paramount+",
+        "paramount-plus": "Paramount+",
+        "disney-plus": "Disney+",
+        "hbo-max": "Max",
+        "apple-tv": "Apple TV+",
+        "apple-music": "Apple Music",
+        "tidal": "Tidal",
+        "audible": "Audible",
+        "amazon-prime": "Amazon Prime",
+        "walmart-plus": "Walmart+",
+        "icloud": "iCloud+",
+        "google-one": "Google One",
+        "dropbox": "Dropbox",
+        "adobe-cc": "Adobe Creative Cloud",
+        "adobe-photography": "Adobe Photography",
+        "github": "GitHub",
+        "github-copilot": "GitHub Copilot",
+        "chatgpt": "ChatGPT",
+        "openai": "OpenAI",
+        "claude": "Claude",
+        "anthropic": "Anthropic",
+        "gemini": "Gemini",
+        "perplexity": "Perplexity",
+        "cursor": "Cursor",
+        "replit": "Replit",
+        "vercel": "Vercel",
+        "v0": "v0",
+        "bolt": "Bolt",
+        "lovable": "Lovable",
+        "linear": "Linear",
+        "suno": "Suno",
+        "elevenlabs": "ElevenLabs",
+        "huggingface": "Hugging Face",
+        "deepseek": "DeepSeek",
+        "notion": "Notion",
+        "duolingo": "Duolingo",
+        "lastpass": "LastPass",
+        "1password": "1Password",
+        "expressvpn": "ExpressVPN",
+        "nordvpn": "NordVPN",
+        "nyt": "The New York Times",
+        "peloton": "Peloton",
+        "headspace": "Headspace",
+        "youtube-premium": "YouTube Premium",
+        "youtube-tv": "YouTube TV",
+        // Mobility / delivery memberships
+        "uber-one": "Uber One",
+        "lyft-pink": "Lyft Pink",
+        "dashpass": "DashPass",
+        // No-SVG brands
+        "planet-fitness": "Planet Fitness",
+        "equinox": "Equinox",
+        "masterclass": "MasterClass",
+        "wsj": "The Wall Street Journal",
+        "washington-post": "The Washington Post",
+        "sirius-xm": "SiriusXM",
+        "calm": "Calm",
+        "noom": "Noom",
+        // Cable / wireless
+        "spectrum": "Spectrum",
+        "xfinity": "Xfinity",
+        "t-mobile": "T-Mobile",
+        "verizon": "Verizon",
+        "att": "AT&T",
     ]
 }

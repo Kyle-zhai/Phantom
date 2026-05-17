@@ -22,8 +22,18 @@ struct PriceHike: Codable, Hashable {
 
 struct Subscription: Identifiable, Codable, Hashable {
     let id: String
+    /// Clean, brand-aware display name shown in list views (e.g. "Netflix",
+    /// "Apple Music", "Amazon Prime"). Derived from `brandId` when a known
+    /// brand was matched; falls back to the normalized merchant text.
     let name: String
     let vendor: String
+    /// The raw merchant string as it appeared on the user's bank statement
+    /// after normalization (e.g. "APL*APPLE MUSIC", "GOOGLE *YouTube Music",
+    /// "AMZN PRIME*RT3JK 866-216-1072 WA"). Shown only in the detail view
+    /// so users can confirm the match against their actual statement.
+    /// Optional for backwards compatibility with subs persisted before this
+    /// field existed and with manually-added subs where it has no meaning.
+    var rawDescriptor: String? = nil
     let brandHex: String
     let category: Category
     let amount: Double
