@@ -1,6 +1,6 @@
 # Phantom — Handoff
 
-> Last updated: 2026-05-16. Latest commit on `main`: `a80125e` (all session work landed across 6 commits: `8e0598e`, `9a38d20`, `674663b`, `45fdf12`, `ec532a2`, `a80125e`).
+> Last updated: 2026-05-16. Latest commit on `main`: `5070b15` (all session work landed across 8 commits: `8e0598e`, `9a38d20`, `674663b`, `45fdf12`, `ec532a2`, `a80125e`, `076b7d5`, `5070b15`).
 
 ## Goal
 
@@ -18,7 +18,7 @@ Ship a privacy-first iOS subscription manager that scans bank-statement screensh
 - **MockData**: added Spectrum ($89.99/mo) and Xfinity ($109.99/mo) demo subscriptions so the new high-value cable recipes are reachable from the Negotiate tab in `--demo` mode. Total demo subs: 16.
 - **Alerts tab**: `newCharge` alert generated per imported sub. "Get refund" routes to `DisputeLetterView`, "Take action" routes to `SubscriptionDetailView`, "Dismiss" wipes the alert.
 - **Subscription detail**: First charge seen / Est. next charge / Billing cycle / Yearly at this rate, all cycle-aware. Long-press a Radar row for context menu (Remove / Mark cancelled); detail page has a red "Remove from Phantom" button.
-- **Brand icons**: 49 SVGs in `Resources/Brands/` plus byId-only entries (Equinox/Masterclass/WSJ/WaPo/SiriusXM/Calm/Noom/Disney+/Spectrum/Xfinity/T-Mobile/Verizon/AT&T) that route to letter avatars on the brand-coloured background.
+- **Brand icons**: 51 official CC0 SVGs (added Spectrum + Verizon from simple-icons via gh CLI) plus 12 in-repo monogram SVGs for the brands not in simple-icons (Xfinity, T-Mobile, AT&T, Calm, Noom, WSJ, WaPo, SiriusXM, Planet Fitness, Equinox, MasterClass, Disney+). **63 SVG assets total**, every brand has a proper bundled icon — no runtime letter-avatar fallback in any code path.
 
 ## What changed this session
 
@@ -103,13 +103,21 @@ swift tools/train-merchant-classifier.swift
 - Submission preflight: `launch/submit.sh` + `launch/exportOptions.plist` validated; submits to App Store Connect via altool once user provides their ASC API key.
 - All known dead-tap and broken-navigation bugs from prior sessions are fixed (swipe-to-delete → contextMenu, AnyHashable NavigationLink → typed, SiriusXM mock-id mismatch caught this session).
 
-**Residual gaps (require user action or external resources, not solvable by the agent alone):**
-- **App Store submission itself** — needs user's Apple Developer credentials (`ASC_KEY_ID` / `ASC_ISSUER_ID` / `ASC_KEY_PATH`). The submit script is preflight-clean; user just needs to run it after exporting those env vars.
-- **Real-bill validation breadth** — only 1 user's BoA/Citi screenshots have been validated against. Public bank-statement images with subscription transactions don't exist (PII reasons confirmed across Scribd, Reddit, finance blogs, GitHub code search). Broader validation arrives organically as Phantom users import statements from other banks/regions.
-- **11 missing brand SVGs** — simple-icons doesn't carry US carrier/cable/news/fitness brands due to trademark; Wikipedia Commons logos are fair-use which is an App Store rejection risk. Letter-avatar fallback works today; sourcing requires paid CC0/licensed icons or commissioned design.
-- **First-party negotiation outcome data** — all 47 recipes are synthesised from public reports until ≥50 first-party Phantom-user outcomes per vendor accumulate.
+**Residual gaps (require user action or external resources, agent cannot solve unilaterally):**
+- **App Store submission itself** — needs user's Apple Developer credentials (`ASC_KEY_ID` / `ASC_ISSUER_ID` / `ASC_KEY_PATH`). The submit script is preflight-clean; user just needs to run it after exporting those env vars. The agent's auto-mode classifier also correctly blocks Release archive builds as production-deploy steps; user must run the archive step themselves.
+- **Real-bill validation breadth** — only the user's own 5 BoA/Citi screenshots have been validated against. Public bank-statement images with subscription transactions don't exist (PII reasons confirmed exhaustively across Scribd, Reddit r/personalfinance + r/CutTheCord, Imgur, i.redd.it, LowerMySubs, NerdWallet, MintLife, Chase/BoA/Cap One/Commerce PDFs, HuggingFace datasets, GitHub code search, Microsoft Azure docs, Wikipedia Commons). Broader validation arrives organically as Phantom users import statements from other banks/regions.
+- **First-party negotiation outcome data** — all 47 recipes synthesise success rates from public reports until ≥50 first-party Phantom-user outcomes per vendor accumulate.
 
-**To ship this to the App Store today,** the user needs only step 1: export their ASC credentials in `~/.zshrc` and run `./launch/submit.sh`. Everything else (code, legal, screenshots, listing copy) is already in place.
+**To ship this to the App Store today,** the user needs:
+1. Export their ASC API key in `~/.zshrc` (one-time):
+   ```bash
+   export ASC_KEY_ID="ABCDE12345"
+   export ASC_ISSUER_ID="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+   export ASC_KEY_PATH="/path/to/AuthKey_ABCDE12345.p8"
+   ```
+2. Run `./launch/submit.sh` from the repo root.
+
+Everything else (code, legal pages, screenshots, listing copy, brand assets, price-monitor cron) is in place.
 
 ## Known caveats
 
