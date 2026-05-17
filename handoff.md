@@ -1,6 +1,6 @@
 # Phantom — Handoff
 
-> Last updated: 2026-05-16. Latest commit on `main`: `6d1c9b5` (all session work landed across 10 commits: `8e0598e`, `9a38d20`, `674663b`, `45fdf12`, `ec532a2`, `a80125e`, `076b7d5`, `5070b15`, `4cdd83a`, `6d1c9b5`).
+> Last updated: 2026-05-16. Latest commit on `main`: `db1d198` (all session work landed across 12 commits — see `git log a649b3c..db1d198`).
 
 ## Goal
 
@@ -108,16 +108,15 @@ swift tools/train-merchant-classifier.swift
 - **Real-bill validation breadth** — only the user's own 5 BoA/Citi screenshots have been validated against. Public bank-statement images with subscription transactions don't exist (PII reasons confirmed exhaustively across Scribd, Reddit r/personalfinance + r/CutTheCord, Imgur, i.redd.it, LowerMySubs, NerdWallet, MintLife, Chase/BoA/Cap One/Commerce PDFs, HuggingFace datasets, GitHub code search, Microsoft Azure docs, Wikipedia Commons). Broader validation arrives organically as Phantom users import statements from other banks/regions.
 - **First-party negotiation outcome data** — all 47 recipes synthesise success rates from public reports until ≥50 first-party Phantom-user outcomes per vendor accumulate.
 
-**To ship this to the App Store today,** the user needs:
-1. Export their ASC API key in `~/.zshrc` (one-time):
-   ```bash
-   export ASC_KEY_ID="ABCDE12345"
-   export ASC_ISSUER_ID="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-   export ASC_KEY_PATH="/path/to/AuthKey_ABCDE12345.p8"
-   ```
-2. Run `./launch/submit.sh` from the repo root.
+**To ship this to the App Store today,** the user runs ONE command:
 
-Everything else (code, legal pages, screenshots, listing copy, brand assets, price-monitor cron) is in place.
+```bash
+./launch/SHIP_NOW.sh
+```
+
+The script preflight-checks 5 prereqs (git clean, code signing identity, ASC env vars, .p8 key file, legal pages live) and either runs the full archive + export + validate + upload pipeline OR prints the exact next step with how-to-get-it instructions. On first run it'll tell the user to export the 3 ASC env vars; on second run it ships.
+
+Everything else (code, legal pages, screenshots, listing copy, brand assets, price-monitor cron, recipe-coverage CI check, daily price refresh workflow) is in place.
 
 ## Known caveats
 
