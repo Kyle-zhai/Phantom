@@ -183,7 +183,7 @@ struct RadarView: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("These aren't your subscriptions").font(AppFont.bodyB).foregroundStyle(Palette.ink)
-                Text("You're in sample mode — 14 example subscriptions Phantom uses to demo the app. Tap Clear to start fresh, or scan your real bank screenshots.")
+                Text("You're in sample mode — \(store.subscriptions.count) example subscriptions Phantom uses to demo the app. Tap Clear to start fresh, or scan your real bank screenshots.")
                     .font(AppFont.small).foregroundStyle(Palette.mute)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 8) {

@@ -151,6 +151,24 @@ enum MockData {
             marketAverage: 18.0, trialEndsAt: nil, hasPriceHike: nil,
             hasOverlapWith: [], notes: nil
         ),
+        Subscription(
+            id: "spectrum", name: "Spectrum Internet 500", vendor: "Charter Communications",
+            brandHex: "0099D8", category: .other,
+            amount: 89.99, cycle: .monthly,
+            nextBilling: daysAhead(11), startedAt: daysAgo(900),
+            lastUsedAt: daysAgo(0), sessionsLast30d: 30, userRating: 3,
+            marketAverage: 70.0, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
+        Subscription(
+            id: "xfinity", name: "Xfinity Internet 800", vendor: "Comcast",
+            brandHex: "000000", category: .other,
+            amount: 109.99, cycle: .monthly,
+            nextBilling: daysAhead(18), startedAt: daysAgo(1100),
+            lastUsedAt: daysAgo(0), sessionsLast30d: 30, userRating: 2,
+            marketAverage: 80.0, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
     ]
 
     static let alerts: [PriceAlert] = [
