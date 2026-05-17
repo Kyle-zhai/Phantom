@@ -466,7 +466,7 @@ enum MerchantNormalizer {
         "ez pass", "ezpass", "fastrak", "sunpass", "i-pass",
         "metro-north", "metro north",
         // Gas stations
-        "shell oil", "shell ", "exxon", "chevron", "bp ", "mobil", "speedway",
+        "shell oil", "shell ", "exxon", "exxonmobil", "chevron", "bp ", "mobil ", "speedway",
         "sunoco", "valero", "citgo", "marathon ", "76 station",
         // Food / coffee / fast food / chains
         "starbucks", "dunkin", "peets", "mcdonald", "burger king", "wendy",
@@ -519,6 +519,7 @@ enum MerchantNormalizer {
         // subscription billing). "apple.com/us" routes to the Apple Online
         // Store; "apple store #" is a brick-and-mortar location.
         "apple store ", "apple store#", "apple.com/us", "apple.com /us",
+        "apple com/us", "apple com /us",
         // Google hardware one-offs and refunds (not the subscription billing
         // routes via "GOOGLE *YouTube" / "GOOGLE *Gemini" / "GOOGL*Play Store"
         // subscription-product variants).

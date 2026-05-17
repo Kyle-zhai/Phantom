@@ -123,13 +123,24 @@ enum TransactionParser {
             case .ignored:
                 i += 1
             case let .dateOnlyWithAmount(amount, date, raw):
-                // Look ahead for the next merchant row to pair with
+                // Look ahead for the next merchant row to pair with — either
+                // a merchantWithAmount row (running balance on the right) or
+                // a merchantOnly row (no balance on this band).
                 if i + 1 < kinds.count,
                    case let .merchantWithAmount(merchant, _, mDate, mRaw) = kinds[i + 1] {
                     transactions.append(ParsedTransaction(
                         merchant: merchant,
                         amount: amount,
                         date: date ?? mDate,
+                        rawRow: "\(raw) | \(mRaw)"
+                    ))
+                    i += 2
+                } else if i + 1 < kinds.count,
+                          case let .merchantOnly(merchant, mRaw) = kinds[i + 1] {
+                    transactions.append(ParsedTransaction(
+                        merchant: merchant,
+                        amount: amount,
+                        date: date,
                         rawRow: "\(raw) | \(mRaw)"
                     ))
                     i += 2
@@ -142,6 +153,10 @@ enum TransactionParser {
                 transactions.append(ParsedTransaction(
                     merchant: merchant, amount: amount, date: date, rawRow: raw
                 ))
+                i += 1
+            case .merchantOnly:
+                // Orphan merchant row without a preceding date+amount row.
+                // Drop it — without an amount we can't make a transaction.
                 i += 1
             }
         }
@@ -158,31 +173,44 @@ enum TransactionParser {
         case dateOnlyWithAmount(amount: Double, date: Date?, raw: String)
         /// Row has a real merchant name + a $ amount.
         case merchantWithAmount(merchant: String, amount: Double, date: Date?, raw: String)
+        /// Row has a merchant name but no $ amount. Pair with a preceding
+        /// dateOnlyWithAmount row when the layout splits "date+amount" on one
+        /// band and "merchant" alone on another (some BoA/Citi mobile layouts
+        /// where the running balance is read on its own line or not at all).
+        case merchantOnly(merchant: String, raw: String)
     }
 
     private static func classify(_ row: [OCR.Line]) -> RowKind {
         let merged = row.sorted { $0.box.minX < $1.box.minX }
         let combined = merged.map(\.text).joined(separator: " ")
-        guard let amount = parseAmount(in: combined), amount > 0.10 else { return .ignored }
 
-        let merchantRaw = combined
-            .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        if let amount = parseAmount(in: combined), amount > 0.10 {
+            let merchantRaw = combined
+                .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        if isDateOnlyText(merchantRaw) {
-            return .dateOnlyWithAmount(amount: amount, date: extractDates(from: combined), raw: combined)
+            if isDateOnlyText(merchantRaw) {
+                return .dateOnlyWithAmount(amount: amount, date: extractDates(from: combined), raw: combined)
+            }
+
+            guard let merchant = MerchantNormalizer.normalize(merchantRaw),
+                  !isSummary(merchant),
+                  isPlausibleMerchant(merchant) else { return .ignored }
+
+            return .merchantWithAmount(
+                merchant: merchant,
+                amount: amount,
+                date: extractDates(from: combined),
+                raw: combined
+            )
         }
 
-        guard let merchant = MerchantNormalizer.normalize(merchantRaw),
+        // No amount on this row — could be a merchant-only band that will
+        // pair with a preceding dateOnlyWithAmount row.
+        guard let merchant = MerchantNormalizer.normalize(combined),
               !isSummary(merchant),
               isPlausibleMerchant(merchant) else { return .ignored }
-
-        return .merchantWithAmount(
-            merchant: merchant,
-            amount: amount,
-            date: extractDates(from: combined),
-            raw: combined
-        )
+        return .merchantOnly(merchant: merchant, raw: combined)
     }
 
     /// Returns true when `text` is JUST a date (no merchant content).
