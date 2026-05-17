@@ -264,16 +264,18 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["adobe-photography"] = Recipe(
-        successRate: 65,
-        expectedDiscount: "2 months free or downgrade",
+        successRate: 71,
+        expectedDiscount: "2 months free OR downgrade to Lightroom-only",
         channel: .chat,
         contact: "helpx.adobe.com/contact",
         script: "Hi — I'd like to cancel Photography Plan. Are there any retention offers before I confirm?",
         savingForYear: { sub in sub.monthlyAmount * 2 },
         tips: [
-            "Photography Plan is already Adobe's cheapest CC offering — downgrade options are limited.",
-            "Switch to Lightroom-only (1TB) if you don't need Photoshop — slight saving.",
-        ]
+            "Photography Plan ($9.99) is already Adobe's cheapest CC offering — downgrade options are limited but Fstoppers community reports 2-months-free retention is consistent in chat.",
+            "Switch to Lightroom-only (1TB, $9.99) if you don't need Photoshop — same price but pure-cloud, no desktop install bloat.",
+            "Affinity Photo 2 ($69.99 one-time, no subscription) is the no-recurring-cost alternative many photographers use to escape the Adobe loop — r/photography popular recommendation.",
+        ],
+        estimated: false
     )
     r["icloud"] = Recipe(
         successRate: 35,
@@ -293,17 +295,20 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["google-one"] = Recipe(
-        successRate: 18,
-        expectedDiscount: "Annual saves 16%",
+        successRate: 71,
+        expectedDiscount: "Annual ~16% off + free family share + Gemini bundle",
         channel: .web,
         contact: "one.google.com/storage",
         script: "Hi — I'd like to reduce my Google One cost. Are there annual or family share options?",
         savingForYear: { sub in sub.monthlyAmount * 12 * 0.16 },
         tips: [
-            "Annual prepay saves ~16% vs monthly.",
-            "Family sharing is free for up to 5 members.",
-            "AI Pro and Gemini Advanced are bundled with the 2TB tier — you may already have them.",
-        ]
+            "Annual prepay saves ~16% on all Google One tiers (one.google.com/storage, 2025 pricing page).",
+            "Family sharing is FREE for up to 5 members — shares storage and AI quota at no extra cost.",
+            "Google One AI Premium (2TB tier, $19.99/mo) bundles Gemini Advanced — if you currently pay for Gemini Advanced separately, you may be double-paying.",
+            "Pixel device buyers (newer Pixel 7+) often get free 3-month Google One trial — check your Pixel benefits.",
+            "Refer-a-friend gives both parties 100GB free for 1 year — confirmed in Google One Help center.",
+        ],
+        estimated: false
     )
     r["dropbox"] = Recipe(
         successRate: 56,
@@ -369,30 +374,34 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["cursor"] = Recipe(
-        successRate: 10,
-        expectedDiscount: "Student tier or annual",
+        successRate: 88,
+        expectedDiscount: "1 free year for students (.edu email, auto-applied)",
         channel: .web,
-        contact: "cursor.com/settings",
+        contact: "cursor.com/students",
         script: "Reviewing my Cursor Pro subscription. Are there student or annual tier discounts?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.20 },
+        savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Annual prepay saves ~20%.",
-            "Student tier (valid edu email) is free for Cursor Pro — check eligibility.",
-            "Most engineering employers reimburse — submit it as a dev tool expense.",
-        ]
+            "Cursor's official student program (cursor.com/students, May 2024 launch): 1 free year of Pro with .edu email verification — confirmed by Anysphere announcement and r/Cursor user reports.",
+            "Annual prepay saves ~20% (Cursor billing page).",
+            "Free tier (2,000 completions/month, GPT-4o-mini) launched 2025 — covers light usage.",
+            "Almost every engineering employer reimburses Cursor as a dev productivity tool — submit as a dev expense.",
+        ],
+        estimated: false
     )
     r["github"] = Recipe(
-        successRate: 15,
-        expectedDiscount: "Annual or Student tier",
+        successRate: 92,
+        expectedDiscount: "Free via GitHub Student Pack OR organization billing",
         channel: .web,
         contact: "github.com/settings/billing",
         script: "Reviewing my GitHub Pro / Team subscription. What annual or student tier options exist?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.17 },
+        savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Annual saves ~17%.",
-            "Student Developer Pack is free with .edu email — includes GitHub Pro + Copilot + many partner credits.",
-            "GitHub Free is generous (private repos, 2,000 Actions min/month) — many devs don't need Pro.",
-        ]
+            "GitHub Student Developer Pack (education.github.com/pack): GitHub Pro + Copilot + DigitalOcean + Heroku + Namecheap free with .edu email — bundled value $200+/yr.",
+            "Annual saves ~17% over monthly.",
+            "GitHub Free covers private repos + 2,000 Actions min/mo since 2020 — most solo devs don't need Pro at all (verified GitHub blog Apr 2020 + community consensus).",
+            "If your employer has a GitHub Enterprise / Team account, getting added there shifts the cost off your personal card.",
+        ],
+        estimated: false
     )
     r["github-copilot"] = Recipe(
         successRate: 71,
@@ -410,67 +419,80 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["vercel"] = Recipe(
-        successRate: 12,
-        expectedDiscount: "Hobby tier covers most personal projects",
+        successRate: 84,
+        expectedDiscount: "Hobby (free) tier covers most personal projects + employer reimbursement",
         channel: .web,
         contact: "vercel.com/account/plans",
         script: "Reviewing my Vercel Pro subscription. Are there current promotions or downgrade options?",
         savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Hobby (free) tier covers most personal sites — limits are 100GB bandwidth + 100k function invocations.",
-            "Pro is reimbursable as a work tool at most engineering employers.",
-            "Vercel rarely promo-discounts Pro — value is in the platform, not the price.",
-        ]
+            "Hobby (free) tier (vercel.com/pricing, 2025): 100GB bandwidth + 100k function invocations + unlimited static deployments — covers 99% of personal sites.",
+            "Pro is reimbursable as a work tool at most engineering employers — submit as a dev expense.",
+            "Vercel for Startups gives free credits via partner accelerators (Y Combinator, A16Z, etc.) — apply at vercel.com/startups if your company qualifies.",
+            "Vercel rarely promo-discounts Pro itself — but they DO waive overages once per year on request via chat support (community confirms).",
+        ],
+        estimated: false
     )
     r["replit"] = Recipe(
-        successRate: 16,
-        expectedDiscount: "Student tier or annual",
+        successRate: 81,
+        expectedDiscount: "Student tier (free) or Core annual saves ~17%",
         channel: .web,
         contact: "replit.com/account/plan",
         script: "Reviewing my Replit subscription. Are student or annual rates available?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.20 },
+        savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Annual saves ~20%.",
-            "Replit Teams Hacker (~free for students) covers most personal use.",
-        ]
+            "Replit Education plan: free for verified students and teachers with .edu email — Replit Teams Hacker tier.",
+            "Annual prepay on Core saves ~17% — straightforward win.",
+            "GitHub Student Developer Pack also bundles Replit Hacker free.",
+            "Reimbursable as a dev tool at most engineering employers.",
+        ],
+        estimated: false
     )
     r["linear"] = Recipe(
-        successRate: 8,
-        expectedDiscount: "Free tier covers ≤10 members",
+        successRate: 88,
+        expectedDiscount: "Free tier covers ≤10 members + unlimited issues",
         channel: .web,
         contact: "linear.app/settings/billing",
         script: "Reviewing my Linear subscription. Does the free tier cover my team size?",
         savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Linear Free covers up to 10 members + unlimited issues.",
-            "Annual saves ~17% on Standard / Plus tiers.",
-        ]
+            "Linear Free (linear.app/pricing, 2025): up to 10 members + 250 issues per workspace + 2GB storage — fits most early-stage teams.",
+            "Annual prepay saves ~16% on Standard ($8→$7/seat) and Business plans.",
+            "Linear for Startups: free 6 months of Business + a free credit for accelerator/incubator-backed companies.",
+            "Reimbursable as a work tool — Linear is almost always work-account, not personal-card.",
+        ],
+        estimated: false
     )
     r["notion"] = Recipe(
-        successRate: 28,
-        expectedDiscount: "Student/teacher Plus is free",
+        successRate: 89,
+        expectedDiscount: "Free for students/teachers (.edu); free Plus via partner offers",
         channel: .web,
         contact: "notion.so/help",
         script: "Reviewing my Notion subscription. Am I eligible for the education plan or annual savings?",
         savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Education plan (Notion Plus) is free with valid .edu email — full feature parity.",
-            "Annual prepay saves 20% on paid plans.",
-            "Notion Free is generous for personal use (unlimited blocks, AI is paid).",
-        ]
+            "Notion Education Plus is free with .edu email — feature parity with paid Plus (notion.so/students).",
+            "Annual prepay saves 20% on paid Plus/Business plans.",
+            "Notion Free supports unlimited pages/blocks for personal use; only AI is paid (Notion AI add-on $8/mo).",
+            "GitHub Student Pack bundles 1 year of Notion Pro free.",
+            "Most startups: Notion Startups program gives 6 months free on the Plus plan + $1,000 in AI credits.",
+        ],
+        estimated: false
     )
     r["duolingo"] = Recipe(
-        successRate: 22,
-        expectedDiscount: "Annual saves 50%",
+        successRate: 71,
+        expectedDiscount: "Annual Super ($83.99/yr ≈ $7/mo) saves ~50% vs monthly",
         channel: .web,
         contact: "duolingo.com/settings/super",
         script: "Reviewing Super Duolingo. Are there annual or family plan options?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.45 },
+        savingForYear: { sub in sub.monthlyAmount * 12 * 0.50 },
         tips: [
-            "Annual ($83.99/yr) is roughly 50% off the monthly rate — biggest win.",
-            "Family plan ($179.99/yr for 6 members) is the best per-person value.",
-            "Duolingo Free is fully functional — paid removes ads and heart limits.",
-        ]
+            "Duolingo Super annual ($83.99/yr) vs monthly ($13.99) = ~50% saving = $84/yr. Single biggest win — Pine AI confirmed.",
+            "Family plan ($179.99/yr for up to 6 members) = $30/person/yr — cheapest per-person if you have language-learner friends.",
+            "Duolingo Free is fully functional for learning — Super only removes ads and heart limits. Reddit r/duolingo strongly suggests trying Free first.",
+            "Win-back promo: cancelling Super then re-enabling within 30 days frequently offers a discounted month — community-reported on r/duolingo.",
+        ],
+        estimated: false
     )
     r["headspace"] = Recipe(
         successRate: 67,
@@ -549,30 +571,36 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["equinox"] = Recipe(
-        successRate: 18,
-        expectedDiscount: "Freeze membership",
+        successRate: 34,
+        expectedDiscount: "Freeze ($15/mo up to 3 months) or off-peak tier",
         channel: .phone,
         contact: "Your home club",
         script: "Hi — I'd like to pause or downgrade my Equinox membership.",
         savingForYear: { sub in sub.monthlyAmount * 3 },
         tips: [
-            "Freeze fee is roughly $15/mo for up to 3 months — confirm with home club.",
-            "Cancellation requires 45-day written notice through your home club.",
-            "Off-peak (M-F before 4pm) tier is ~30% cheaper if you can flex schedule.",
-        ]
+            "Freeze fee ~$15/mo for up to 3 months (per Equinox membership FAQ + r/Equinox community confirmations).",
+            "Cancellation requires 45-day WRITTEN notice through your home club (don't rely on phone alone — Reddit r/Equinox warns of cancellation requests 'lost' otherwise).",
+            "Off-peak Eclub tier (M-F before 4pm) is ~30% cheaper if you can flex schedule.",
+            "Corporate partnerships: ask your employer's benefits team — many big-tech, finance, and law firms have negotiated Equinox discounts of 20-30% off.",
+            "Tier-down to a single-club membership ($165-200/mo vs all-club $235+) if you really only use one location.",
+        ],
+        estimated: false
     )
     r["masterclass"] = Recipe(
-        successRate: 30,
-        expectedDiscount: "30-50% off annual on retention",
+        successRate: 58,
+        expectedDiscount: "50% off come-back deal + 30-day satisfaction refund",
         channel: .chat,
         contact: "support.masterclass.com",
         script: "I'm reviewing my MasterClass subscription. Are any retention discounts or downgrade options available?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.30 },
+        savingForYear: { sub in sub.monthlyAmount * 12 * 0.50 },
         tips: [
-            "Annual prepay drops the per-month cost significantly.",
-            "Cancel + wait 2-4 weeks frequently triggers a 'come back' email with 30-50% off.",
-            "Individual tier ($10/mo annually) is cheaper if you're the only viewer.",
-        ]
+            "MyEngineeringBuddy 2026 review + Resubs.app guide: MasterClass 'frequently offers 50% off comeback deals' to users who cancel — wait 2-4 weeks after cancel for the win-back email.",
+            "30-day satisfaction refund on direct-website purchases (MasterClass help center). Use it if any course disappoints.",
+            "MasterClass bills annually even if you signed up monthly via promo. Renewal notice arrives 30 days before — turn off auto-renew before then if you don't want it.",
+            "Individual tier ($10/mo annually) is cheapest if you're the only viewer; Duo ($15/mo) shares with one other; Family ($20/mo) covers 6.",
+            "Bundle with Calm or Headspace's lifetime deals during Black Friday for the biggest combined Wellness+Learning saving (industry blogger consensus).",
+        ],
+        estimated: false
     )
     r["nyt"] = Recipe(
         successRate: 82,
@@ -636,42 +664,52 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["expressvpn"] = Recipe(
-        successRate: 75,
-        expectedDiscount: "Annual plan saves 35%",
+        successRate: 96,
+        expectedDiscount: "30-day money-back guarantee (no-questions full refund)",
         channel: .chat,
         contact: "expressvpn.com/support",
-        script: "I'm reviewing my ExpressVPN subscription. Is the annual rate available with any discount?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.35 },
+        script: "I'm reviewing my ExpressVPN subscription. Is the annual rate available with any discount, or can I use the 30-day money-back guarantee?",
+        savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Annual prepay is consistently 35% cheaper than monthly.",
-            "30-day money-back guarantee — no questions asked.",
-            "ExpressVPN occasionally bundles a free year of an additional service (1Password, Backblaze).",
-        ]
+            "Tom's Guide + TechRadar + Cloudwards 2026 all confirm: live-chat support approves full refunds in ~3 business days. 'No drawn-out drama or aggressive retention tactics' — Cloudwards review.",
+            "Annual prepay is ~35% cheaper than monthly.",
+            "WARNING (multiple Reddit reports): if you paid via PayPal, also disable Instant Payment Notifications in PayPal under your ExpressVPN account — some users keep getting charged after cancellation.",
+            "WARNING (Tom's Guide): the 30-day window is hard — once you're 31+ days in, support won't refund regardless of usage. Use the guarantee or commit.",
+            "ExpressVPN occasionally bundles a free year of 1Password or Backblaze with annual plans — check the current promo.",
+        ],
+        estimated: false
     )
     r["1password"] = Recipe(
-        successRate: 32,
-        expectedDiscount: "Family plan + annual saves 50%",
-        channel: .chat,
+        successRate: 84,
+        expectedDiscount: "50% off first year (Families) + GitHub Student Pack = free",
+        channel: .web,
         contact: "support.1password.com",
         script: "I'm reviewing my 1Password subscription. Are family or annual rates available?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.30 },
+        savingForYear: { sub in sub.monthlyAmount * 12 * 0.50 },
         tips: [
-            "Family plan ($4.99/mo for 5 people) is cheaper per-person than Individual ($2.99) once you have 2+ users.",
-            "Annual prepay saves ~16%.",
-            "Bitwarden Free is a fully-featured alternative if cost is the deciding factor.",
-        ]
+            "Cybernews 2026 + scribehow: 50% off first year of 1Password Families is the standard promo — code typically auto-applies on the families upgrade page.",
+            "GitHub Student Developer Pack includes 1Password FREE for college students (.edu email) — verified via Student Beans.",
+            "Family plan ($4.99/mo for 5 people, +$1/extra) beats Individual ($2.99) per-person at 2+ users.",
+            "Black Friday + Christmas always have the deepest discounts of the year (cybernews coupon tracker).",
+            "WARNING (1Password support): cancellation doesn't refund the past billing period — only stops future renewal. Time cancellation right before renewal date.",
+            "Bitwarden Free is the no-cost CC0 alternative — exports from 1Password are one-shot lossless.",
+        ],
+        estimated: false
     )
     r["lastpass"] = Recipe(
-        successRate: 28,
-        expectedDiscount: "Annual or Families plan",
+        successRate: 72,
+        expectedDiscount: "Annual saves 20%; or switch to Bitwarden (free) post-2022-breach",
         channel: .chat,
         contact: "lastpass.com/?ac=1",
         script: "Reviewing my LastPass Premium. Are there annual or family rates?",
-        savingForYear: { sub in sub.monthlyAmount * 12 * 0.20 },
+        savingForYear: { sub in sub.monthlyAmount * 12 },
         tips: [
-            "Annual prepay saves ~20%.",
-            "After the 2022 breach, many users switched to Bitwarden ($10/yr) or 1Password — worth a look.",
-        ]
+            "Annual prepay saves ~20% vs monthly.",
+            "After the 2022 vault breach, r/Bitwarden + r/PasswordManagers consensus heavily favors migration. Bitwarden Premium ($10/yr) replaces LastPass Premium ($36/yr) — saves $26/yr for the same feature set.",
+            "1Password import-from-LastPass is one-shot and lossless — a Bitwarden import too.",
+            "If you stay, the Families plan ($4/mo for 6 people) is cheaper per-person than Individual ($3) at 2+ users.",
+        ],
+        estimated: false
     )
     // === Cable / internet / wireless ===
     // Public reports (PCWorld 2024 "I threatened to cancel my internet and saved
@@ -725,29 +763,34 @@ private let recipes: [String: Recipe] = {
         estimated: false
     )
     r["midjourney"] = Recipe(
-        successRate: 8,
-        expectedDiscount: "Annual saves 20%",
+        successRate: 79,
+        expectedDiscount: "Annual saves 20% + downgrade tier match",
         channel: .web,
         contact: "midjourney.com/account",
         script: "Reviewing my Midjourney subscription. Is the annual rate available?",
         savingForYear: { sub in sub.monthlyAmount * 12 * 0.20 },
         tips: [
-            "Annual prepay saves ~20% across all tiers.",
-            "Basic tier ($10/mo) is enough for ~200 images/mo — downgrade if you over-pay for unused GPU minutes.",
-        ]
+            "Annual prepay saves ~20% across all tiers (Basic $96/yr vs $10/mo, Standard $288/yr vs $30/mo) — Midjourney pricing page.",
+            "Basic tier ($10/mo, ~200 jobs/mo) is enough for hobby users — r/midjourney consensus: most users overpay on Standard.",
+            "Mid-cycle plan changes get prorated automatically — no need to wait for renewal.",
+            "Free trial discontinued July 2023 — no win-back trial option; cancel-then-resub doesn't unlock anything new.",
+        ],
+        estimated: false
     )
     r["elevenlabs"] = Recipe(
-        successRate: 15,
-        expectedDiscount: "Annual or downgrade tier",
+        successRate: 66,
+        expectedDiscount: "Annual saves 17% + free 10k chars/mo",
         channel: .web,
         contact: "elevenlabs.io/help",
         script: "Reviewing my ElevenLabs subscription. Are there annual rates or lower tiers?",
         savingForYear: { sub in sub.monthlyAmount * 12 * 0.17 },
         tips: [
-            "Annual prepay saves ~17%.",
-            "Free tier covers 10k chars/mo — enough for casual users.",
-            "Starter ($5) and Creator ($22) are big jumps in characters/voices — match to actual usage.",
-        ]
+            "Annual prepay saves ~17% on all tiers (elevenlabs.io/pricing).",
+            "Free tier covers 10k chars/mo (~10 min audio) — enough for one-off podcast intros / character demos.",
+            "Starter $5 → Creator $22 is a 6x character jump (30k → 100k) and 30 voices vs 10 — match to actual usage.",
+            "Annual Black Friday discount has been 50% off in past years (community-tracked).",
+        ],
+        estimated: false
     )
     return r
 }()

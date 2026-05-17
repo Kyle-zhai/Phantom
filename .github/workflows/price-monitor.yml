@@ -1,0 +1,54 @@
+name: Price catalog refresh
+
+# Runs every day at 11:00 UTC. The job re-stamps docs/data/prices.json
+# with today's date so the iOS PriceMonitor sees a fresh `updatedAt`,
+# and (when a sub's `priceMonthly` was edited in a prior commit) preserves
+# the previous value as `prevPrice` so the next sync surfaces a hike alert.
+#
+# This workflow only reads its own checkout and a Python script in the
+# same repo — no untrusted PR-title / issue-body inputs are used, so the
+# common GitHub Actions injection patterns don't apply.
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Diff price file against parent commit
+        run: |
+          set -euo pipefail
+          PRICES="docs/data/prices.json"
+          if [[ ! -f "$PRICES" ]]; then
+            echo "No prices.json - nothing to refresh."
+            exit 0
+          fi
+          git show HEAD~1:"$PRICES" > /tmp/prev.json 2>/dev/null || cp "$PRICES" /tmp/prev.json
+          python3 .github/workflows/refresh_prices.py "$PRICES" /tmp/prev.json
+
+      - name: Commit if changed
+        env:
+          GIT_AUTHOR_NAME: phantom-price-monitor
+          GIT_AUTHOR_EMAIL: phantom-price-monitor@users.noreply.github.com
+          GIT_COMMITTER_NAME: phantom-price-monitor
+          GIT_COMMITTER_EMAIL: phantom-price-monitor@users.noreply.github.com
+        run: |
+          set -euo pipefail
+          if git diff --quiet docs/data/prices.json; then
+            echo "No changes. Skipping commit."
+            exit 0
+          fi
+          git add docs/data/prices.json
+          TODAY=$(date -u +%Y-%m-%d)
+          git commit -m "Daily price catalog refresh ($TODAY)"
+          git push origin HEAD:main
