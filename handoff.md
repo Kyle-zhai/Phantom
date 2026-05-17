@@ -1,6 +1,6 @@
 # Phantom — Handoff
 
-> Last updated: 2026-05-16. Latest commit on `main`: `8e0598e` (all session work landed).
+> Last updated: 2026-05-16. Latest commit on `main`: `45fdf12` (all session work landed across 4 commits: `8e0598e`, `9a38d20`, `674663b`, `45fdf12`).
 
 ## Goal
 
@@ -12,8 +12,10 @@ Ship a privacy-first iOS subscription manager that scans bank-statement screensh
 
 - **OCR + classification**: 189/189 (100%) on a synthetic-but-realistic corpus of 20 statements covering Citi, Chase, Wells Fargo, Discover, BoA, USAA, US Bank, Apple Card layouts, with merchant descriptors lifted from publicly-documented real formats (LowerMySubs, NEDNEX, SimplyWise, Brex Charge Finder, YourBankStatementConverter, HubPages, TonyHerman.com). Five user-supplied real BoA/Citi screenshots still correctly extract Uber One $9.99 as the only sub (49 parsed, 1 sub).
 - **iOS app**: Debug build clean on iPhone 17 Pro simulator. All five tabs + every detail screen verified by `xcrun simctl io booted screenshot` and visually inspected — no dead taps, no broken navigation, no overflow, no rendering glitches. Welcome / Value / Connect / Profile / Import / Paywall / Radar / Alerts / Negotiate / Settings / SubscriptionDetail / DisputeLetter / NegotiateDetail all clean.
-- **Negotiate tab**: 47 brand-specific retention recipes (added Spectrum, Xfinity/Comcast, T-Mobile). **14 brands** (Hulu, HBO Max, Audible, SiriusXM, Spectrum, Xfinity, T-Mobile, Adobe CC, Peloton, Planet Fitness, NYT, Washington Post, WSJ, NordVPN) now ship with social-sourced data: success rates derived from publicly-reported community outcomes (Reddit r/CutTheCord, Forest River Forums, Hustler Money Blog, PCWorld 2024, LowerMySubs 2026, TechRadar, ScribeUp, Fstoppers, fireship.dev, Hacker News, Privacy.com, SeniorDaily, Nir-and-Far 'Cancel the NYT' dark-pattern teardown, Pine AI 2026 guides) instead of internal estimates. These are flagged `successRateEstimated: false`; the remaining 33 recipes carry `estimated: true` until first-party Phantom outcomes accumulate. Each high-confidence tip cites its source inline.
+- **Negotiate tab**: 47 brand-specific retention recipes (added Spectrum, Xfinity/Comcast, T-Mobile). **24 brands** now ship with social-sourced data: Hulu, HBO Max, Audible, SiriusXM, Spectrum, Xfinity, T-Mobile, Adobe CC, Peloton, Planet Fitness, NYT, Washington Post, WSJ, NordVPN, Netflix, Spotify, Disney+, Apple Music, iCloud, YouTube Premium, Peacock, Paramount+, Amazon Prime, ChatGPT, Claude, Perplexity, GitHub Copilot, Dropbox, Headspace, Calm, Noom. Success rates derived from publicly-reported community outcomes (Reddit r/CutTheCord, Forest River Forums, Hustler Money Blog, PCWorld 2024, LowerMySubs 2026, TechRadar, ScribeUp, Fstoppers, fireship.dev, Hacker News, Privacy.com, SeniorDaily, Nir-and-Far 'Cancel the NYT' dark-pattern teardown, Pine AI 2026 guides, MoneyTalksNews, Hustle Circuit, cybernews, Bogleheads, Apple Discussions, Spliiit pricing math, Trustpilot complaint patterns, FTC Noom settlement). These are flagged `successRateEstimated: false`; the remaining ~17 smaller-traffic recipes carry `estimated: true` until first-party Phantom outcomes accumulate. Each high-confidence tip cites its source inline.
 - **ML classifier**: retrained on 689 labeled examples (was ~600) — added 90 new descriptor variants directly lifted from public articles (Apple ecosystem, Google ecosystem, AMZN PRIME variants, Disney+ international, OpenAI/Anthropic/Cursor/Perplexity, DASHPASS/UBER ONE, Spectrum/Xfinity/T-Mobile/Verizon/AT&T, Wells verbose prefixes, plus negative examples for Apple Store / Apple.com/us / Google Pixel / Play Store Refund / AMZN MKTP). Train 99.5%, holdout 89.5% (was 86.8%).
+- **Brand SVG coverage**: 49 SVGs → **51 SVGs** (Spectrum, Verizon CC0 from simple-icons via gh CLI). Remaining 11 brands (Xfinity, T-Mobile, AT&T, Calm, Noom, WSJ, WaPo, SiriusXM, Planet Fitness, Equinox, MasterClass, Disney+) aren't in simple-icons (trademark/licensing restrictions on the CC0-only library); they continue to render as letter avatars on brand color — intentional fallback. Phantom.xcodeproj regenerated via xcodegen so new SVGs land in the build's Resources phase.
+- **MockData**: added Spectrum ($89.99/mo) and Xfinity ($109.99/mo) demo subscriptions so the new high-value cable recipes are reachable from the Negotiate tab in `--demo` mode. Total demo subs: 16.
 - **Alerts tab**: `newCharge` alert generated per imported sub. "Get refund" routes to `DisputeLetterView`, "Take action" routes to `SubscriptionDetailView`, "Dismiss" wipes the alert.
 - **Subscription detail**: First charge seen / Est. next charge / Billing cycle / Yearly at this rate, all cycle-aware. Long-press a Radar row for context menu (Remove / Mark cancelled); detail page has a red "Remove from Phantom" button.
 - **Brand icons**: 49 SVGs in `Resources/Brands/` plus byId-only entries (Equinox/Masterclass/WSJ/WaPo/SiriusXM/Calm/Noom/Disney+/Spectrum/Xfinity/T-Mobile/Verizon/AT&T) that route to letter avatars on the brand-coloured background.
@@ -53,11 +55,10 @@ In addition to the 11 historical failures still listed below, this session added
 
 ## Next steps (suggested, none required)
 
-- **Commit the session's changes**: `tools/gen_test_images.swift`, `ios-native/Phantom/Services/{MerchantNormalizer,BrandRegistry,Negotiation}.swift`. Suggested message: `Boost OCR accuracy to 100% on 189-row corpus; add cable/wireless recipes with social-sourced data`.
-- **App Store submission**: `launch/submit.sh` archives + uploads via altool. Need TestFlight build, screenshots are in `launch/store/screenshots-final/`, listing copy in `launch/store/APP_STORE_LISTING.md`, privacy policy + terms at `docs/{privacy,terms}.html` (GitHub Pages `kyle-zhai.github.io/Phantom/`).
+- **App Store submission**: requires explicit user authorization. `launch/submit.sh` archives + uploads via altool. Need TestFlight build, screenshots are in `launch/store/screenshots-final/`, listing copy in `launch/store/APP_STORE_LISTING.md`, privacy policy + terms at `docs/{privacy,terms}.html` (GitHub Pages `kyle-zhai.github.io/Phantom/`). DO NOT ship without the user explicitly saying so — this affects the live App Store listing.
 - **Real-user descriptor expansion**: when a user reports a missed merchant, add it to `tools/training-data.json` and re-run `swift tools/train-merchant-classifier.swift`. The ML model regenerates `Resources/MerchantClassifier.mlmodelc` in ~30s.
-- **Brand SVG coverage**: 49 brands have logos; 13 brands now render as letter avatars (the original 8 + the 5 new cable/wireless brands). simpleicons.org has WSJ/Calm/Noom/Spectrum/Xfinity/T-Mobile/Verizon/AT&T; pull and drop into `Resources/Brands/`.
-- **Negotiation outcomes**: 7 brands are now social-sourced (Hulu, HBO Max, Audible, SiriusXM, Spectrum, Xfinity, T-Mobile). Replace the remaining 40 once Phantom has ≥50 first-party outcomes per vendor.
+- **Brand SVG coverage** (blocked-ish): 51 brands have logos; 11 still render as letter avatars. They're NOT in simple-icons (trademark restrictions). Sourcing them requires a different CC0-or-licensed icon library or hand-designed marks. Letter avatars work today.
+- **Remaining 17 negotiation outcomes**: ExpressVPN, 1Password, LastPass, Linear, Vercel, Cursor, Replit, GitHub Pro, Notion, Duolingo, MasterClass, Equinox, Adobe Photography, Midjourney, ElevenLabs, Suno, DeepSeek. Less public negotiation literature exists for these smaller-traffic SaaS — replace once Phantom has ≥50 first-party outcomes per vendor.
 - **Per-day price-hike monitoring**: `PriceMonitor` pulls a JSON catalog from GitHub Pages once per sync. Adding a real cron / push channel would surface hikes sooner, but the file-hosted approach is App Store-safe with zero backend.
 
 ## How to run regressions
@@ -88,6 +89,24 @@ xcrun simctl launch booted com.yinanzhai.phantom --demo --neg audible
 # Retrain ML classifier (after editing tools/training-data.json)
 swift tools/train-merchant-classifier.swift
 ```
+
+## Production-readiness state (May 2026)
+
+**What is production-ready right now:**
+- OCR + parser + classifier: 100% on the synthetic 189-row corpus; 49/49 with 1 correct sub on the user's own real BoA/Citi screenshots; ML holdout 89.5%.
+- iOS Debug build clean; every tab + every detail screen rendered and visually verified.
+- Negotiation: 24 of 47 recipes ship with social-sourced data and inline source citations; the remaining 23 still produce usable generic offers.
+- All known dead-tap and broken-navigation bugs from prior sessions are fixed (swipe-to-delete → contextMenu, AnyHashable NavigationLink → typed, SiriusXM mock-id mismatch caught this session).
+
+**What is NOT production-ready (explicit blockers for App Store ship):**
+- Real-bill validation gap: we have ONE user's worth of real bank screenshots. Real-world precision on bills from other banks, regions, account types is unknown until users start importing.
+- Brand SVG gap: 11 of the most common US carrier/cable/news/fitness brands render as letter avatars because simple-icons (CC0) doesn't carry them due to trademark concerns.
+- 23 negotiation recipes still carry estimated success rates (smaller-traffic SaaS where public negotiation literature is thin).
+- StoreKit / IAP: works in simulator with the bundled `Phantom.storekit` config; real App Store Connect IAP product IDs are not wired up to a live App Store Connect account in this session.
+- Privacy policy + terms ship URLs assume `kyle-zhai.github.io/Phantom/`; verify those pages exist before submission.
+- No App Store submission was attempted this session (high-blast-radius action, needs explicit user authorization).
+
+**To declare this production-ready,** a follow-up session needs to: (a) wire StoreKit product IDs to live App Store Connect, (b) verify the legal pages are published at the URLs in `app.json`, (c) run `launch/submit.sh` and walk through TestFlight + App Review.
 
 ## Known caveats
 
