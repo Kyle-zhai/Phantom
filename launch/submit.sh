@@ -39,12 +39,19 @@ EXPORT_OPTIONS="launch/exportOptions.plist"
 cd "$(dirname "$0")/.."
 
 # --- Bump build number ---
-INFO_PLIST="ios-native/Phantom/Info.plist"
-CURRENT_BUILD=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "$INFO_PLIST" 2>/dev/null || echo "0")
+# Build number lives in project.yml's CURRENT_PROJECT_VERSION setting
+# (Info.plist references it via $(CURRENT_PROJECT_VERSION) placeholder).
+# Reading Info.plist directly returns the literal placeholder, not a
+# number — increment in project.yml instead, then regenerate the xcodeproj.
+PROJECT_YML="ios-native/project.yml"
+CURRENT_BUILD=$(awk -F': *"?' '/CURRENT_PROJECT_VERSION:/ {gsub(/"/,""); print $2; exit}' "$PROJECT_YML")
+CURRENT_BUILD=${CURRENT_BUILD:-0}
 NEXT_BUILD=$((CURRENT_BUILD + 1))
 echo "→ Bumping build $CURRENT_BUILD → $NEXT_BUILD"
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEXT_BUILD" "$INFO_PLIST" || \
-  /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $NEXT_BUILD" "$INFO_PLIST"
+# In-place edit: replace `CURRENT_PROJECT_VERSION: "<old>"` with `"<new>"`.
+sed -i '' -E "s/CURRENT_PROJECT_VERSION: \"?[0-9]+\"?/CURRENT_PROJECT_VERSION: \"$NEXT_BUILD\"/" "$PROJECT_YML"
+echo "→ Regenerating xcodeproj…"
+(cd ios-native && xcodegen generate) >/dev/null
 
 # --- Clean previous build artifacts ---
 rm -rf "$ARCHIVE" "$EXPORT_DIR"
