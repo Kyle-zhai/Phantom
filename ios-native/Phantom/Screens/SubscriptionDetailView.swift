@@ -87,7 +87,19 @@ struct SubscriptionDetailView: View {
                     Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, fg: Palette.white, size: 72)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(sub.name).font(AppFont.h2).foregroundStyle(Palette.ink)
-                        Text(sub.vendor).font(AppFont.small).foregroundStyle(Palette.mute)
+                        // Show the raw bank-statement text so the user can
+                        // verify the brand match against their actual bill.
+                        // Falls back to the vendor field for manually-added
+                        // subs that have no rawDescriptor.
+                        if let raw = sub.rawDescriptor, raw != sub.name {
+                            Text("On your statement").font(AppFont.smallB)
+                                .foregroundStyle(Palette.mute)
+                                .padding(.top, 2)
+                            Text(raw).font(AppFont.small).foregroundStyle(Palette.ink)
+                                .fixedSize(horizontal: false, vertical: true)
+                        } else {
+                            Text(sub.vendor).font(AppFont.small).foregroundStyle(Palette.mute)
+                        }
                     }
                     Spacer()
                 }

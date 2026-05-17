@@ -89,11 +89,17 @@ enum RecurrenceDetector {
             let nextBilling = (t.date ?? Date()).addingTimeInterval(30 * 86_400)
             let brandHex = BrandRegistry.brand(for: key, fallbackName: t.merchant)?.hex
                 ?? brandColor(for: key)
+            // Prefer the curated brand display name ("Netflix", "Apple Music",
+            // "Amazon Prime") over the raw bank-statement text. Keep the raw
+            // text in rawDescriptor so the detail view can show "On your
+            // statement: APL*APPLE MUSIC" for verification.
+            let displayName = BrandRegistry.displayName(for: key) ?? t.merchant
             out.append(
                 Subscription(
                     id: key,
-                    name: t.merchant,
+                    name: displayName,
                     vendor: t.merchant,
+                    rawDescriptor: t.merchant,
                     brandHex: brandHex,
                     category: .other,
                     amount: t.amount,
@@ -150,17 +156,21 @@ enum RecurrenceDetector {
             guard let latest = sorted.last?.date, let earliest = sorted.first?.date else { continue }
             let next = latest.addingTimeInterval(TimeInterval(medGap * 86_400))
 
-            // Pick a clean human-readable name from the source merchant text
+            // Pick a clean human-readable name from the source merchant text.
+            // Prefer the curated brand display name; rawDescriptor preserves
+            // the original bank-statement text for the detail view.
             let representative = sorted.last?.merchant ?? key
             let id = slug(key)
             let brandHex = BrandRegistry.brand(for: key, fallbackName: representative)?.hex
                 ?? brandColor(for: key)
+            let displayName = BrandRegistry.displayName(for: key) ?? representative
 
             subs.append(
                 Subscription(
                     id: id,
-                    name: representative,
+                    name: displayName,
                     vendor: representative,
+                    rawDescriptor: representative,
                     brandHex: brandHex,
                     category: .other,
                     amount: (medAmt * 100).rounded() / 100,

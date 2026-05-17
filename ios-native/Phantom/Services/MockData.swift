@@ -23,6 +23,7 @@ enum MockData {
     static let subscriptions: [Subscription] = [
         Subscription(
             id: "netflix", name: "Netflix", vendor: "Netflix, Inc.",
+            rawDescriptor: "NETFLIX.COM LOS GATOS CA",
             brandHex: "E50914", category: .entertainment,
             amount: 22.99, cycle: .monthly,
             nextBilling: daysAhead(8), startedAt: daysAgo(820),

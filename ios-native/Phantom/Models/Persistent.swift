@@ -10,6 +10,10 @@ final class PersistentSubscription {
     @Attribute(.unique) var id: String
     var name: String
     var vendor: String
+    /// Raw merchant text as seen on the bank statement. Optional with a
+    /// default so existing SwiftData stores from before this column existed
+    /// don't break migration — SwiftData treats nil as "missing column".
+    var rawDescriptor: String? = nil
     var brandHex: String
     var categoryRaw: String
     var amount: Double
@@ -32,6 +36,7 @@ final class PersistentSubscription {
         self.id = sub.id
         self.name = sub.name
         self.vendor = sub.vendor
+        self.rawDescriptor = sub.rawDescriptor
         self.brandHex = sub.brandHex
         self.categoryRaw = sub.category.rawValue
         self.amount = sub.amount
@@ -61,7 +66,7 @@ final class PersistentSubscription {
             return nil
         }()
         return Subscription(
-            id: id, name: name, vendor: vendor, brandHex: brandHex,
+            id: id, name: name, vendor: vendor, rawDescriptor: rawDescriptor, brandHex: brandHex,
             category: cat, amount: amount, cycle: cyc,
             nextBilling: nextBilling, startedAt: startedAt,
             lastUsedAt: lastUsedAt, sessionsLast30d: sessionsLast30d,
