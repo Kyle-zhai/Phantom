@@ -29,6 +29,7 @@ final class PurchaseService {
     private var fakeProActive = false
 
     init() {
+        #if DEBUG
         // Debug-only: pretend the user has a live subscription so the
         // Settings "Pro active" + "Switch to Annual" cards can be visually
         // verified without going through a real StoreKit purchase. Set
@@ -44,6 +45,7 @@ final class PurchaseService {
             purchasedProductIds = [AppConfig.proYearlyProductId]
             activeExpirationDate = Calendar.current.date(byAdding: .year, value: 1, to: Date())
         }
+        #endif
         updatesTask = Self.listenForTransactions(receiver: self)
         Task { await refresh() }
     }

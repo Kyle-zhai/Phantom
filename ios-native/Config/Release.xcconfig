@@ -1,10 +1,9 @@
-// Release build — talks to production Vercel deployment.
-// Used for TestFlight and App Store submissions.
-//
-// ⚠️ Set PHANTOM_API_BASE to your deployed Vercel URL once /backend/DEPLOY.md is done.
+// Release build — used for TestFlight and App Store submissions.
+// Phantom is fully on-device (Vision OCR + CoreML + SwiftData); no backend,
+// no Plaid. If a backend integration lands later, add PHANTOM_API_BASE /
+// PLAID_ENVIRONMENT here AND in project.yml's Info.plist properties so they
+// propagate to Bundle.main.
 
-PHANTOM_API_BASE = https:/$()/api.phantom.com
-PLAID_ENVIRONMENT = production
 PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =
 

@@ -95,7 +95,6 @@
 		B9E805C55FFB5761CF1B4F9E /* replit.svg in Resources */ = {isa = PBXBuildFile; fileRef = EAF40175CC21AB322E836C11 /* replit.svg */; };
 		BA5664E23B3FB031C4E4F12F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */; };
 		BD3C9B898E8BFC0A82AE450B /* v0.svg in Resources */ = {isa = PBXBuildFile; fileRef = A7BDF722DFCC1659DBEEC133 /* v0.svg */; };
-		BEEAC775BF28D88B48D8D4A3 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6EF7045A1FA8306036B3F0 /* APIClient.swift */; };
 		C06C28CCA455CC7B0FD20376 /* DisputeLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FDC2506B511B9CC1DA272E /* DisputeLetter.swift */; };
 		C0D7A7A0CC50F6D73156F502 /* ZombieMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */; };
 		C1D0455EB5659E0C988A581D /* lastpass.svg in Resources */ = {isa = PBXBuildFile; fileRef = 28B3CA1BA64FF4AD9A90BA9B /* lastpass.svg */; };
@@ -253,7 +252,6 @@
 		F87298ADC05DDCC32A8E607A /* MailComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailComposer.swift; sourceTree = "<group>"; };
 		FB235C01E4DFAF3C31FEDA90 /* Phantom.storekit */ = {isa = PBXFileReference; path = Phantom.storekit; sourceTree = "<group>"; };
 		FE091922E81767D6905A3863 /* netflix.svg */ = {isa = PBXFileReference; path = netflix.svg; sourceTree = "<group>"; };
-		FF6EF7045A1FA8306036B3F0 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		FFDBC95170D647BCE8F00168 /* wsj-missing.svg */ = {isa = PBXFileReference; path = "wsj-missing.svg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -380,7 +378,6 @@
 		81E6D92938920C2ED494768A /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				FF6EF7045A1FA8306036B3F0 /* APIClient.swift */,
 				68BD5C8FD355095D162ABBAA /* AppConfig.swift */,
 				0388E833EBAE0B3855B90B7F /* BrandRegistry.swift */,
 				6CA9CD13957FE727D1CD1412 /* CancellationRegistry.swift */,
@@ -648,7 +645,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEEAC775BF28D88B48D8D4A3 /* APIClient.swift in Sources */,
 				2BD3C1E438BBB0E704944BB7 /* AlertsView.swift in Sources */,
 				24C9AB4D62C49A8EE815E492 /* AppConfig.swift in Sources */,
 				E968A7E1D9D816C4882EAF10 /* AppStore.swift in Sources */,
@@ -719,8 +715,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PHANTOM_API_BASE = "http://localhost:3000";
-				PLAID_ENVIRONMENT = sandbox;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom;
 				PRODUCT_NAME = Phantom;
 				SDKROOT = iphoneos;
@@ -815,8 +809,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PHANTOM_API_BASE = "http://localhost:3000";
-				PLAID_ENVIRONMENT = sandbox;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom;
 				PRODUCT_NAME = Phantom;
 				SDKROOT = iphoneos;

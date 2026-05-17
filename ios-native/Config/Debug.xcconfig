@@ -1,8 +1,8 @@
-// Debug build — talks to local Express server.
-// Used by Xcode Debug runs in Simulator.
+// Debug build. Phantom is fully on-device (Vision OCR + CoreML + SwiftData);
+// no backend, no Plaid. If a backend integration lands later, re-add
+// PHANTOM_API_BASE / PLAID_ENVIRONMENT here AND in project.yml's Info.plist
+// properties so they propagate to Bundle.main.
 
-PHANTOM_API_BASE = http:/$()/localhost:3000
-PLAID_ENVIRONMENT = sandbox
 PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom.debug
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
 

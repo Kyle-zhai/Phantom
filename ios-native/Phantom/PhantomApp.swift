@@ -39,6 +39,10 @@ struct RootView: View {
     @Environment(AppStore.self) private var store
 
     var body: some View {
+        #if DEBUG
+        // Debug-only launch-arg routing for screenshot testing & visual
+        // verification. Compiled out of Release so the flag strings don't
+        // ship in the App Store binary.
         let args = ProcessInfo.processInfo.arguments
         if let id = debugSubArg(args) {
             NavigationStack { SubscriptionDetailView(subId: id) }
@@ -61,8 +65,16 @@ struct RootView: View {
         } else {
             OnboardingWelcomeView()
         }
+        #else
+        if store.isOnboarded {
+            RootTabView()
+        } else {
+            OnboardingWelcomeView()
+        }
+        #endif
     }
 
+    #if DEBUG
     private func debugSubArg(_ args: [String]) -> String? {
         guard let i = args.firstIndex(of: "--sub"), i + 1 < args.count else { return nil }
         return args[i + 1]
@@ -75,4 +87,5 @@ struct RootView: View {
         guard let i = args.firstIndex(of: "--neg"), i + 1 < args.count else { return nil }
         return args[i + 1]
     }
+    #endif
 }
