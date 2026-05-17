@@ -235,6 +235,11 @@ enum TransactionParser {
         "ytd", "mtd", "ending balance", "beginning balance",
         "purchases", "fees charged", "interest charged",
         "new balance", "this period",
+        // Small-bank summary line patterns found on Impact Bank / CrawfordTech
+        // real-world samples — these are aggregate rows, not merchants.
+        "deposits and other credits", "withdrawals and other debits",
+        "other credits", "other debits", "service charges and fees",
+        "preauthorized credit", "preauthorized debit", "wire transfer",
     ]
 
     private static func isSummary(_ text: String) -> Bool {
