@@ -224,17 +224,73 @@ struct SettingsView: View {
     }
 
     private var proActive: some View {
-        Card {
-            HStack(spacing: 14) {
-                ZStack {
-                    Circle().fill(Palette.success).frame(width: 36, height: 36)
-                    Image(systemName: "checkmark").font(.system(size: 14, weight: .bold)).foregroundStyle(Palette.white)
+        let plan = store.purchaseService.activePlan
+        let exp = store.purchaseService.activeExpirationDate
+        let planLabel: String = {
+            switch plan {
+            case .monthly: return "Monthly"
+            case .yearly:  return "Annual"
+            case .none:    return ""
+            }
+        }()
+        let renewLabel: String = {
+            guard let exp else {
+                return plan == .monthly ? "renews next month" : "renews next year"
+            }
+            let f = DateFormatter()
+            f.dateStyle = .medium
+            return "renews \(f.string(from: exp))"
+        }()
+
+        return VStack(spacing: 12) {
+            Card {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle().fill(Palette.success).frame(width: 36, height: 36)
+                        Image(systemName: "checkmark").font(.system(size: 14, weight: .bold)).foregroundStyle(Palette.white)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Phantom Pro is active").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                        Text("\(planLabel) · \(renewLabel)").font(AppFont.small).foregroundStyle(Palette.mute)
+                    }
+                    Spacer()
                 }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Phantom Pro is active").font(AppFont.bodyB).foregroundStyle(Palette.ink)
-                    Text("Annual · renews next year").font(AppFont.small).foregroundStyle(Palette.mute)
+            }
+
+            // Cross-sell: when on Monthly, surface the savings of switching to
+            // Annual. Tapping opens the system's Manage Subscriptions sheet
+            // where Apple's auto-upgrade flow handles the proration.
+            //
+            // Fall back to the storekit config's listed prices ($3.99/mo,
+            // $29.99/yr) when the live Products aren't loaded yet so the
+            // card always renders for monthly subscribers.
+            if plan == .monthly {
+                let monthlyD = store.purchaseService.monthly.map { NSDecimalNumber(decimal: $0.price).doubleValue } ?? 3.99
+                let yearlyD  = store.purchaseService.yearly.map  { NSDecimalNumber(decimal: $0.price).doubleValue } ?? 29.99
+                let monthlyDisplay = store.purchaseService.monthly?.displayPrice ?? "$3.99"
+                let yearlyDisplay  = store.purchaseService.yearly?.displayPrice  ?? "$29.99"
+                let savings = max(0, monthlyD * 12 - yearlyD)
+                let pct     = monthlyD > 0 ? Int((savings / (monthlyD * 12) * 100).rounded()) : 0
+                if savings > 0.01 {
+                    Button { showManageSubs = true } label: {
+                        Card {
+                            HStack(spacing: 14) {
+                                ZStack {
+                                    Circle().fill(Palette.ink).frame(width: 36, height: 36)
+                                    Image(systemName: "arrow.up.right").font(.system(size: 14, weight: .bold)).foregroundStyle(Palette.white)
+                                }
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Switch to Annual — save \(pct)%").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                    Text("\(yearlyDisplay)/yr vs \(monthlyDisplay)/mo · \(fmtUSD(savings)) less per year")
+                                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").foregroundStyle(Palette.mute)
+                            }
+                        }
+                    }.buttonStyle(.plain)
                 }
-                Spacer()
             }
         }
     }

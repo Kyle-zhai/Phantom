@@ -16,12 +16,34 @@ final class PurchaseService {
 
     private(set) var products: [Product] = []
     private(set) var purchasedProductIds: Set<String> = []
+    /// Renewal / expiration date for the active subscription, if any. Read from
+    /// the current StoreKit entitlement so the UI can show the actual date the
+    /// user's auto-renew next charges, not a guessed "next year".
+    private(set) var activeExpirationDate: Date?
     private(set) var isLoading = false
     private(set) var lastError: String?
 
     private var updatesTask: Task<Void, Never>?
 
+    /// Debug-only: when set, refresh() skips overwriting purchasedProductIds.
+    private var fakeProActive = false
+
     init() {
+        // Debug-only: pretend the user has a live subscription so the
+        // Settings "Pro active" + "Switch to Annual" cards can be visually
+        // verified without going through a real StoreKit purchase. Set
+        // BEFORE refresh() and guarded so the async entitlement scan
+        // doesn't immediately overwrite the fake set.
+        let args = ProcessInfo.processInfo.arguments
+        if args.contains("--fake-pro-monthly") {
+            fakeProActive = true
+            purchasedProductIds = [AppConfig.proMonthlyProductId]
+            activeExpirationDate = Calendar.current.date(byAdding: .month, value: 1, to: Date())
+        } else if args.contains("--fake-pro-yearly") {
+            fakeProActive = true
+            purchasedProductIds = [AppConfig.proYearlyProductId]
+            activeExpirationDate = Calendar.current.date(byAdding: .year, value: 1, to: Date())
+        }
         updatesTask = Self.listenForTransactions(receiver: self)
         Task { await refresh() }
     }
@@ -31,6 +53,16 @@ final class PurchaseService {
             AppConfig.proMonthlyProductId,
             AppConfig.proYearlyProductId,
         ])
+    }
+
+    /// Which plan the user is currently subscribed to, if any. Yearly takes
+    /// precedence over monthly when both are present (StoreKit allows
+    /// crossgrade-in-flight where both entitlements transiently exist).
+    enum ActivePlan { case monthly, yearly }
+    var activePlan: ActivePlan? {
+        if purchasedProductIds.contains(AppConfig.proYearlyProductId)  { return .yearly  }
+        if purchasedProductIds.contains(AppConfig.proMonthlyProductId) { return .monthly }
+        return nil
     }
 
     var monthly: Product? {
@@ -91,13 +123,21 @@ final class PurchaseService {
     }
 
     private func refreshEntitlements() async {
+        if fakeProActive { return }
         var owned: Set<String> = []
+        var nextRenewal: Date?
         for await result in Transaction.currentEntitlements {
             if case .verified(let transaction) = result, transaction.revocationDate == nil {
                 owned.insert(transaction.productID)
+                if let exp = transaction.expirationDate {
+                    // Keep the LATER of the two (covers yearly when both
+                    // monthly + yearly are temporarily present mid-crossgrade).
+                    nextRenewal = max(nextRenewal ?? exp, exp)
+                }
             }
         }
         purchasedProductIds = owned
+        activeExpirationDate = nextRenewal
     }
 
     private static func listenForTransactions(receiver: PurchaseService) -> Task<Void, Never> {
