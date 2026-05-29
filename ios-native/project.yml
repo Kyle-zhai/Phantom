@@ -13,8 +13,8 @@ configs:
 settings:
   base:
     SWIFT_VERSION: "5.10"
-    MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "2"
+    MARKETING_VERSION: "1.1.0"
+    CURRENT_PROJECT_VERSION: "4"
     DEVELOPMENT_TEAM: "7N337R6J9M"
     CODE_SIGN_STYLE: Automatic
     ENABLE_USER_SCRIPT_SANDBOXING: YES
@@ -44,8 +44,15 @@ targets:
       - sdk: UserNotifications.framework
       - sdk: Vision.framework
       - sdk: PhotosUI.framework
+      - sdk: WidgetKit.framework
       - package: SVGView
         product: SVGView
+      - target: PhantomWidget
+    entitlements:
+      path: Phantom/Phantom.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yinanzhai.phantom
     info:
       path: Phantom/Info.plist
       properties:
@@ -62,7 +69,11 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         UIStatusBarStyle: UIStatusBarStyleDarkContent
         UIUserInterfaceStyle: Light
-        NSUserTrackingUsageDescription: "We never track you. This permission is requested only to comply with App Store policies — Phantom does not perform any cross-app tracking."
+        # NSUserTrackingUsageDescription intentionally NOT set.
+        # Phantom performs zero cross-app tracking — declaring this key
+        # would force Apple's "App Tracking Transparency" prompt and
+        # require tracking disclosure in the App Privacy section, which
+        # would contradict the "Nothing leaves your phone" promise.
         # No backend = no PHANTOM_API_BASE / PLAID_ENVIRONMENT shipped.
         # All processing is on-device (Vision OCR, CoreML classifier,
         # SwiftData persistence). Re-add these keys + xcconfig values
@@ -92,6 +103,35 @@ targets:
         # the only API call (POST /account/delete) is dead code because no
         # code path ever populates Keychain.userId. Adding it back is a
         # one-line Info.plist change if a real backend integration lands.
+
+  PhantomWidget:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: PhantomWidget
+      - path: Phantom/Services/SharedStore.swift
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+    entitlements:
+      path: PhantomWidget/PhantomWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yinanzhai.phantom
+    info:
+      path: PhantomWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Phantom
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom.widget
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1"
 
 packages:
   SVGView:

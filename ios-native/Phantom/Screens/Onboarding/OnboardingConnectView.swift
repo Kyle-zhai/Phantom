@@ -4,6 +4,7 @@ struct OnboardingConnectView: View {
     @Environment(AppStore.self) private var store
     @State private var showImport = false
     @State private var showManual = false
+    @State private var showAppleGuide = false
 
     var body: some View {
         ScrollView {
@@ -16,12 +17,12 @@ struct OnboardingConnectView: View {
                 Text("Phantom never talks to your bank or stores your credentials. Pick whichever method you prefer.")
                     .font(AppFont.body).foregroundStyle(Palette.mute).padding(.top, 10)
 
-                // Primary path: screenshots
-                Button { showImport = true } label: {
+                // Fastest path: one screenshot of the user's own Apple subscriptions
+                Button { showAppleGuide = true } label: {
                     methodCard(
-                        icon: "photo.on.rectangle.angled",
-                        title: "Scan from screenshots",
-                        body: "Snap your bank app, Apple Wallet, or credit-card statement. We read it on-device with Vision OCR. Nothing leaves your phone.",
+                        icon: "applelogo",
+                        title: "Start with your Apple subscriptions",
+                        body: "One screenshot of the list iOS already keeps. No bank statements, takes 30 seconds.",
                         accent: Palette.black,
                         accentFg: Palette.white,
                         recommended: true
@@ -29,6 +30,20 @@ struct OnboardingConnectView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.top, 28)
+
+                // Broader path: any statement screenshots
+                Button { showImport = true } label: {
+                    methodCard(
+                        icon: "photo.on.rectangle.angled",
+                        title: "Scan bank / card statements",
+                        body: "Snap your bank app, Apple Wallet, or credit-card statement. We read it on-device with Vision OCR. Nothing leaves your phone.",
+                        accent: Palette.surface,
+                        accentFg: Palette.ink,
+                        recommended: false
+                    )
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 14)
 
                 // Manual fallback
                 Button { showManual = true } label: {
@@ -88,6 +103,10 @@ struct OnboardingConnectView: View {
         }
         .sheet(isPresented: $showManual) {
             ManualAddSubscriptionView()
+                .environment(store)
+        }
+        .sheet(isPresented: $showAppleGuide) {
+            AppleSubscriptionsGuideView()
                 .environment(store)
         }
     }

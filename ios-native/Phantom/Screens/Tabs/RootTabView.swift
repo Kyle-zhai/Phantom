@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootTabView: View {
     @Environment(AppStore.self) private var store
+    @State private var deepLink = DeepLink.shared
 
     private static func computeInitialTab() -> Int {
         #if DEBUG
@@ -16,7 +17,7 @@ struct RootTabView: View {
     var body: some View {
         @Bindable var bindable = store
         return TabView(selection: $bindable.selectedTab) {
-            NavigationStack { RadarView() }
+            NavigationStack(path: $bindable.radarPath) { RadarView() }
                 .tag(0)
                 .tabItem { Label("Radar", systemImage: "dot.radiowaves.left.and.right") }
             NavigationStack { AlertsView() }
@@ -34,6 +35,11 @@ struct RootTabView: View {
             if store.selectedTab == 0 {
                 store.selectedTab = Self.computeInitialTab()
             }
+        }
+        .onChange(of: deepLink.pendingSubId) { _, id in
+            guard let id else { return }
+            store.openSubscription(id)
+            deepLink.pendingSubId = nil
         }
     }
 }

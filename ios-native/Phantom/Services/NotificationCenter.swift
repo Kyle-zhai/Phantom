@@ -73,6 +73,34 @@ enum NotificationService {
         try? await UNUserNotificationCenter.current().add(req)
     }
 
+    /// Verification reminder after the user says they cancelled at the vendor.
+    /// Fires once, ~one billing cycle later, nudging them to re-scan their
+    /// latest statement so Phantom can confirm the charge actually stopped.
+    /// This is the honest version of "did it really go through?" — Phantom
+    /// can't watch the vendor, but it can remind the user to check.
+    static func scheduleCancellationCheck(subscriptionId: String, name: String, afterDays: Int) async {
+        let content = UNMutableNotificationContent()
+        content.title = "Did \(name) actually stop charging?"
+        content.body = "Re-scan your latest statement in Phantom to confirm the cancellation went through. If it didn't, generate a dispute letter."
+        content.sound = .default
+        content.userInfo = ["route": "subscription", "id": subscriptionId]
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: Double(max(1, afterDays)) * 86_400, repeats: false)
+        let req = UNNotificationRequest(
+            identifier: "cancelcheck-\(subscriptionId)",
+            content: content,
+            trigger: trigger
+        )
+        try? await UNUserNotificationCenter.current().add(req)
+    }
+
+    static func cancelCancellationCheck(for subscriptionId: String) async {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["cancelcheck-\(subscriptionId)"])
+    }
+
+    /// Cancels the "nudge" notifications for a sub (trial / hike / zombie). Does
+    /// NOT touch the cancellation verification reminder — that's managed
+    /// independently via `cancelCancellationCheck` so marking a sub cancelled
+    /// doesn't wipe the "did it really stop?" reminder.
     static func cancel(for subscriptionId: String) async {
         let ids = ["trial-\(subscriptionId)", "hike-\(subscriptionId)", "zombie-\(subscriptionId)"]
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)

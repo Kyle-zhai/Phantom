@@ -177,9 +177,16 @@ struct NegotiateDetailView: View {
                     .padding(.top, 24)
                 }
 
-                PrimaryButton("It didn't work — cancel instead", variant: .ghost) { dismiss() }
-                    .padding(.top, 12)
-                    .padding(.bottom, 30)
+                PrimaryButton("It didn't work — cancel instead", variant: .ghost) {
+                    let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
+                    UIApplication.shared.open(path.url)
+                    store.confirmCancellation(sub.id)
+                    dismiss()
+                } leading: {
+                    Image(systemName: "xmark.circle")
+                }
+                .padding(.top, 12)
+                .padding(.bottom, 30)
             }
             .padding(.horizontal, 20)
         }

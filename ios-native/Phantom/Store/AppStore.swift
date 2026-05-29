@@ -2,6 +2,7 @@ import Foundation
 import Observation
 import SwiftData
 import UserNotifications
+import WidgetKit
 
 /// Single source of truth for the app. Persists to SwiftData, pulls real data
 /// from Plaid (via backend) and the price monitor, schedules real notifications.
@@ -21,6 +22,42 @@ final class AppStore {
     var lastSync: Date?
     var selectedTab: Int = 0
     var disputeUsageDates: [Date] = []
+
+    /// Programmatic navigation path for the Radar tab's NavigationStack. Driven
+    /// both by row taps and by notification deep-links (see `openSubscription`).
+    var radarPath: [String] = []
+
+    // MARK: - Notifications
+
+    /// Whether the OS has granted notification authorization. Mirrored into an
+    /// observable property so Settings can reflect the live state.
+    var notificationsAuthorized = false
+    /// Per-category opt-outs, persisted in UserDefaults and honored when
+    /// scheduling. Default on. Toggling reschedules.
+    var notifyHikes = true { didSet { UserDefaults.standard.set(notifyHikes, forKey: NotifKey.hikes) } }
+    var notifyTrials = true { didSet { UserDefaults.standard.set(notifyTrials, forKey: NotifKey.trials) } }
+    var notifyZombies = true { didSet { UserDefaults.standard.set(notifyZombies, forKey: NotifKey.zombies) } }
+
+    private enum NotifKey {
+        static let hikes = "phantom.notif.hikes"
+        static let trials = "phantom.notif.trials"
+        static let zombies = "phantom.notif.zombies"
+        static let didAsk = "phantom.notif.didAsk"
+    }
+
+    // MARK: - Cancellation concierge
+
+    /// A subscription the user said they cancelled at the vendor but Phantom
+    /// hasn't yet confirmed gone from a statement. Surfaced so the user can
+    /// verify on the next import (and backs the verification reminder).
+    struct CancellationAttempt: Codable, Identifiable, Hashable {
+        let id: String
+        let name: String
+        let monthlyAmount: Double
+        let attemptedAt: Date
+    }
+    var cancellationAttempts: [CancellationAttempt] = []
+    private static let attemptsKey = "phantom.cancelAttempts"
 
     private(set) var profile: UserProfile?
     private(set) var purchaseService: PurchaseService
@@ -45,11 +82,34 @@ final class AppStore {
         self.modelContext = modelContext
         loadFromDisk()
         loadDisputeUsage()
+        loadNotificationPrefs()
+        loadCancellationAttempts()
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--demo") && subscriptions.isEmpty {
             seedSampleData()
         }
         #endif
+        updateWidgetSnapshot()
+    }
+
+    private func loadNotificationPrefs() {
+        let d = UserDefaults.standard
+        notifyHikes = d.object(forKey: NotifKey.hikes) as? Bool ?? true
+        notifyTrials = d.object(forKey: NotifKey.trials) as? Bool ?? true
+        notifyZombies = d.object(forKey: NotifKey.zombies) as? Bool ?? true
+    }
+
+    private func loadCancellationAttempts() {
+        guard let data = UserDefaults.standard.data(forKey: Self.attemptsKey),
+              let decoded = try? JSONDecoder().decode([CancellationAttempt].self, from: data)
+        else { return }
+        cancellationAttempts = decoded
+    }
+
+    private func saveCancellationAttempts() {
+        if let data = try? JSONEncoder().encode(cancellationAttempts) {
+            UserDefaults.standard.set(data, forKey: Self.attemptsKey)
+        }
     }
 
     /// Opt-in sample data path. Called from "Browse with sample data" buttons
@@ -111,7 +171,33 @@ final class AppStore {
         activeSubs.filter { (scoresById[$0.id] ?? 0) >= 80 }.count
     }
 
+    /// True annual run-rate of everything still active (uses each sub's real
+    /// billing cycle, so a yearly plan isn't double-counted).
+    var yearlyTotal: Double {
+        activeSubs.reduce(0) { $0 + $1.yearlyAmount }
+    }
+
+    /// Annualized savings still on the table if the user cancels every zombie.
+    var potentialYearlySavings: Double {
+        activeSubs
+            .filter { (scoresById[$0.id] ?? 0) >= 80 }
+            .reduce(0) { $0 + $1.yearlyAmount }
+    }
+
+    /// Annualized savings the user has already claimed by cancelling.
+    var realizedYearlySavings: Double {
+        cancelledSubs.reduce(0) { $0 + $1.yearlyAmount }
+    }
+
     var unreadAlerts: Int { alerts.filter { !$0.read }.count }
+
+    /// Notification deep-link entry point: jump to a subscription's detail from
+    /// a tapped local notification.
+    func openSubscription(_ id: String) {
+        guard subscription(byId: id) != nil else { return }
+        selectedTab = 0
+        radarPath = [id]
+    }
 
     func subscription(byId id: String) -> Subscription? {
         subscriptions.first { $0.id == id }
@@ -209,7 +295,10 @@ final class AppStore {
             }
         }
         save()
-        Task { await refreshPriceAlerts() }
+        Task {
+            await refreshPriceAlerts()
+            await requestNotificationsAfterFirstImport()
+        }
     }
 
     /// Permanently remove a subscription from the user's library. Called when
@@ -232,7 +321,9 @@ final class AppStore {
             }
             try? ctx.save()
         }
+        clearCancellationAttempt(id)
         Task { await NotificationService.cancel(for: id) }
+        updateWidgetSnapshot()
     }
 
     /// Disconnect bank only — keep account, history, ratings.
@@ -256,8 +347,11 @@ final class AppStore {
         alerts = []
         cancelledIds = []
         disputeUsageDates = []
+        cancellationAttempts = []
+        saveCancellationAttempts()
         UserDefaults.standard.removeObject(forKey: "phantom.sampleMode")
         clearAllPersistent()
+        updateWidgetSnapshot()
     }
 
     /// App Store-compliant sign out: clear everything and return to onboarding.
@@ -269,12 +363,15 @@ final class AppStore {
         subscriptions = []
         alerts = []
         cancelledIds = []
+        cancellationAttempts = []
+        saveCancellationAttempts()
         clearAllPersistent()
         if let ctx = modelContext, let p = profile {
             ctx.delete(p)
             profile = nil
             try? ctx.save()
         }
+        updateWidgetSnapshot()
     }
 
     /// Hard delete — same as sign out plus a one-time backend purge. Since
@@ -307,27 +404,82 @@ final class AppStore {
                 alerts.append(a)
                 persist(alert: a)
             }
-            await scheduleNotificationsForUpcomingHikes(catalog: catalog)
         } catch {
             // non-fatal — keep existing alerts
         }
+        await rescheduleAllNotifications()
+        updateWidgetSnapshot()
     }
 
-    private func scheduleNotificationsForUpcomingHikes(catalog: [PriceMonitor.RemotePrice]) async {
+    // MARK: - Notifications
+
+    /// Called once per cold launch from `PhantomApp`. Refreshes the price
+    /// catalog (which also reschedules notifications) and syncs auth state.
+    /// Previously this only ran behind a Plaid token that never existed, so the
+    /// entire alert/notification loop never fired on launch.
+    func onLaunch() async {
+        await refreshNotificationAuthorization()
+        await refreshPriceAlerts()
+        lastSync = Date()
+    }
+
+    func refreshNotificationAuthorization() async {
+        let status = await NotificationService.currentAuthorization()
+        notificationsAuthorized = (status == .authorized || status == .provisional)
+    }
+
+    /// Request OS permission (shows the system prompt if still undetermined).
+    /// Returns whether notifications are now allowed.
+    @discardableResult
+    func enableNotifications() async -> Bool {
+        let granted = await NotificationService.requestPermission()
+        notificationsAuthorized = granted
+        await rescheduleAllNotifications()
+        return granted
+    }
+
+    /// Right after the first import is the highest-intent moment to ask for
+    /// notification permission — the user just saw their subscriptions. Ask at
+    /// most once; afterwards just sync state and reschedule.
+    func requestNotificationsAfterFirstImport() async {
+        let status = await NotificationService.currentAuthorization()
+        if status == .notDetermined && !UserDefaults.standard.bool(forKey: NotifKey.didAsk) {
+            UserDefaults.standard.set(true, forKey: NotifKey.didAsk)
+            await enableNotifications()
+        } else {
+            await refreshNotificationAuthorization()
+            await rescheduleAllNotifications()
+        }
+    }
+
+    /// Single source of truth for what's scheduled. Clears everything and
+    /// re-adds only what the user opted into and what's still relevant. No-op
+    /// scheduling if unauthorized (iOS would drop them anyway).
+    func rescheduleAllNotifications() async {
+        await NotificationService.cancelAll()
+        guard notificationsAuthorized else { return }
         for sub in activeSubs {
-            if let trial = sub.trialEndsAt {
+            if notifyTrials, let trial = sub.trialEndsAt {
                 await NotificationService.scheduleTrialEnd(subscriptionId: sub.id, name: sub.name, trialEndsAt: trial)
             }
-            if let hike = sub.hasPriceHike {
+            if notifyHikes, let hike = sub.hasPriceHike {
                 await NotificationService.schedulePriceHike(
                     subscriptionId: sub.id, name: sub.name,
                     from: hike.from, to: hike.to, effective: hike.effective
                 )
             }
-            let s = score(for: sub.id)
-            if s >= 80 {
-                await NotificationService.scheduleZombieNudge(subscriptionId: sub.id, name: sub.name, score: s)
+            if notifyZombies {
+                let s = score(for: sub.id)
+                if s >= 80 {
+                    await NotificationService.scheduleZombieNudge(subscriptionId: sub.id, name: sub.name, score: s)
+                }
             }
+        }
+        // Verification reminders for pending cancellations survive a reschedule.
+        for attempt in cancellationAttempts {
+            let elapsed = Date().timeIntervalSince(attempt.attemptedAt)
+            let remaining = max(1, 35 - Int(elapsed / 86_400))
+            await NotificationService.scheduleCancellationCheck(subscriptionId: attempt.id, name: attempt.name, afterDays: remaining)
         }
     }
 
@@ -340,6 +492,14 @@ final class AppStore {
             save()
         }
         Task { await NotificationService.cancel(for: id) }
+    }
+
+    /// The concierge path: mark cancelled AND start the verification loop (a
+    /// reminder to re-scan next statement). This is what answers the "they said
+    /// cancel but kept charging me" complaint.
+    func confirmCancellation(_ id: String) {
+        cancel(id)
+        recordCancellationAttempt(for: id)
     }
 
     func reactivate(_ id: String) {
@@ -443,5 +603,54 @@ final class AppStore {
 
     private func save() {
         try? modelContext?.save()
+        updateWidgetSnapshot()
+    }
+
+    // MARK: - Cancellation concierge
+
+    /// Record that the user said they cancelled at the vendor. Schedules a
+    /// one-time verification reminder ~one billing cycle out and surfaces the
+    /// sub in the "pending verification" list until confirmed gone.
+    func recordCancellationAttempt(for id: String) {
+        guard let sub = subscription(byId: id) else { return }
+        let attempt = CancellationAttempt(id: sub.id, name: sub.name, monthlyAmount: sub.monthlyAmount, attemptedAt: Date())
+        cancellationAttempts.removeAll { $0.id == sub.id }
+        cancellationAttempts.append(attempt)
+        saveCancellationAttempts()
+        Task {
+            if notificationsAuthorized {
+                await NotificationService.scheduleCancellationCheck(subscriptionId: sub.id, name: sub.name, afterDays: 35)
+            } else {
+                await requestNotificationsAfterFirstImport()
+            }
+        }
+    }
+
+    func clearCancellationAttempt(_ id: String) {
+        cancellationAttempts.removeAll { $0.id == id }
+        saveCancellationAttempts()
+        Task { await NotificationService.cancelCancellationCheck(for: id) }
+    }
+
+    // MARK: - Widget
+
+    /// Write the denormalized snapshot the Home/Lock Screen widget reads, then
+    /// ask WidgetKit to refresh. Called on every data change via `save()`.
+    func updateWidgetSnapshot() {
+        let next = activeSubs.min { $0.nextBilling < $1.nextBilling }
+        let snapshot = SharedStore.Snapshot(
+            monthlyTotal: monthlyTotal,
+            yearlyTotal: yearlyTotal,
+            activeCount: activeSubs.count,
+            zombieCount: zombieCount,
+            potentialYearlySavings: potentialYearlySavings,
+            realizedYearlySavings: realizedYearlySavings,
+            nextChargeName: next?.name,
+            nextChargeAmount: next?.amount,
+            nextChargeDate: next?.nextBilling,
+            updatedAt: Date()
+        )
+        SharedStore.save(snapshot)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
