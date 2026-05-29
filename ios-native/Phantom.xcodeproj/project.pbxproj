@@ -64,6 +64,7 @@
 		72A84F932F962ACBAA6273ED /* openai.svg in Resources */ = {isa = PBXBuildFile; fileRef = 42A778FE15EE8A0CDE4BC1A1 /* openai.svg */; };
 		77146A88D9A11EB22BE3D81D /* gemini.svg in Resources */ = {isa = PBXBuildFile; fileRef = A606EDBFB658CD086975717C /* gemini.svg */; };
 		779F192085EF3E64C7E2F1C2 /* Phantom.storekit in Resources */ = {isa = PBXBuildFile; fileRef = FB235C01E4DFAF3C31FEDA90 /* Phantom.storekit */; };
+		7838D902E36EF7CCD4AC8FD4 /* PhantomWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82625432BB08EA6E2018B57D /* PhantomWidget.swift */; };
 		794E6EC1B0122CB4EA8C4035 /* ZombieScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5183A18C06B0360D663D7B84 /* ZombieScore.swift */; };
 		7ECCF6BB0D828A28E60C986E /* CancellationRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA9CD13957FE727D1CD1412 /* CancellationRegistry.swift */; };
 		81AC575F548A69BEB80786A8 /* NegotiateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BD9C41552ABABD86EB4D3A /* NegotiateView.swift */; };
@@ -75,6 +76,7 @@
 		89D94EBFC32893C4D4DAAE7D /* calm-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9AD04206903E0C53BC6D29A6 /* calm-missing.svg */; };
 		8B6C06208C913F0916A628F7 /* PhantomMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1B5C7145FAFD37AB96E47A /* PhantomMark.swift */; };
 		8B9E3CA508ACEA260492A55B /* washington-post-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = 25DCAC5F0F5C7767FA90BDA9 /* washington-post-missing.svg */; };
+		90E76167EE01FDBC7E731E0B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A61118BCEE3BD2F1A80DDD38 /* SwiftUI.framework */; };
 		9136FBB60B124D230F3F7893 /* walmart-plus.svg in Resources */ = {isa = PBXBuildFile; fileRef = 92EE88D77F625206EB31C62A /* walmart-plus.svg */; };
 		9313285F4F091D0745432C7D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69E2B4A8387D8F51125F99B /* Theme.swift */; };
 		985092B2E6EEE13253614289 /* vercel.svg in Resources */ = {isa = PBXBuildFile; fileRef = A795CADF5BEE909441DA5322 /* vercel.svg */; };
@@ -89,7 +91,9 @@
 		A64DE2F1D187F1795AD20BC5 /* apple-music.svg in Resources */ = {isa = PBXBuildFile; fileRef = F33FF9C492C468B82A893A00 /* apple-music.svg */; };
 		A68D1EFB05F040E68E122A63 /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1765C8A5DD5FA5BAE1BAFFC6 /* Avatar.swift */; };
 		AFDA429BABBF03F4775D4E38 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90F9AD8B43F35D4D5BA2A5F1 /* UserNotifications.framework */; };
+		B308E02DCD3AAA7D9BE45F90 /* SavingsShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9815C7BF7A8AB8DF5A72BF /* SavingsShareCard.swift */; };
 		B3C44488797EB304EA386760 /* MerchantML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A44E8256E99AEB76343B51 /* MerchantML.swift */; };
+		B51BCDDBC57B9EF445162F69 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C256A5C157E3377342F149E /* SharedStore.swift */; };
 		B755A4052794CF6B04D97ED2 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7808DCA6392DDAF5B3BF75EC /* Vision.framework */; };
 		B9BBAF339C958E2654A93098 /* OnboardingWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */; };
 		B9E805C55FFB5761CF1B4F9E /* replit.svg in Resources */ = {isa = PBXBuildFile; fileRef = EAF40175CC21AB322E836C11 /* replit.svg */; };
@@ -98,22 +102,27 @@
 		C06C28CCA455CC7B0FD20376 /* DisputeLetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FDC2506B511B9CC1DA272E /* DisputeLetter.swift */; };
 		C0D7A7A0CC50F6D73156F502 /* ZombieMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */; };
 		C1D0455EB5659E0C988A581D /* lastpass.svg in Resources */ = {isa = PBXBuildFile; fileRef = 28B3CA1BA64FF4AD9A90BA9B /* lastpass.svg */; };
+		C81D4B323E3BA4D8617A5765 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06D36312B176B9436411D7D6 /* WidgetKit.framework */; };
 		C94E24E58B6B506ADBEA4331 /* SubscriptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A958149F86E9C1F806B44E7 /* SubscriptionRow.swift */; };
+		CEE878A5DC671C8A635F6C08 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06D36312B176B9436411D7D6 /* WidgetKit.framework */; };
 		CF5E2ECF9D78336462EC0FD8 /* RecurrenceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50823962F8013DAFD3823BFD /* RecurrenceDetector.swift */; };
 		D360A535EAE961E4DB79F648 /* youtube-premium.svg in Resources */ = {isa = PBXBuildFile; fileRef = D14D695EF708997503500C44 /* youtube-premium.svg */; };
 		D49510977CFC004EA5818B83 /* noom-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31606DC43639D37256C2E0B2 /* noom-missing.svg */; };
 		D5AD509895262D928301B7E3 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07576F60D08E61EDE129FAB4 /* PurchaseService.swift */; };
 		D5B2EE80669548ADE12336F2 /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3DE3250E337AFD4BE0DA7A /* OCR.swift */; };
 		D8F47F7660EB9CEE5121FD39 /* spectrum.svg in Resources */ = {isa = PBXBuildFile; fileRef = 165FAB727F2994E712714DFD /* spectrum.svg */; };
+		D973E107BADBB43C389BB9F3 /* AppleSubscriptionsGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8700EF0028F5C93A7E141AF0 /* AppleSubscriptionsGuideView.swift */; };
 		DBE36A4E00534978814990C3 /* linear.svg in Resources */ = {isa = PBXBuildFile; fileRef = CA56EA7A127EF77DE710328D /* linear.svg */; };
 		DC1F6274EFFEFADAD9ACD4D9 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC435C44EC9AA0FA37025E1 /* Persistent.swift */; };
 		DC5EE891792F67E06C5D8D60 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29412028E3E9B8CA4E79B285 /* Card.swift */; };
 		DC6C5AE9DCAD81D28D796676 /* youtube-tv.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2C838F0A6D53C7168DFEFE96 /* youtube-tv.svg */; };
 		DD5FB18E478FB032AD150306 /* suno.svg in Resources */ = {isa = PBXBuildFile; fileRef = 80F8DDC13E7F978AE6F130BE /* suno.svg */; };
+		DEC259DBAF040ED83CAE67BF /* PhantomWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3F506D623CBA189E330D7A79 /* PhantomWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E27398144F25E1F407544F6D /* github.svg in Resources */ = {isa = PBXBuildFile; fileRef = F4A2AB3330E72C9428EC3F5E /* github.svg */; };
 		E29C484FB413BC45FE9113F2 /* PhantomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */; };
 		E2C8BB879A1FE0F365844055 /* 1password.svg in Resources */ = {isa = PBXBuildFile; fileRef = 523E4FA8DA3B902209175A41 /* 1password.svg */; };
 		E37A0472885CFF64231C3FF1 /* equinox-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = F18AADA8935CF7D0318484DD /* equinox-missing.svg */; };
+		E491CB110EC601B45C8CDBAF /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C256A5C157E3377342F149E /* SharedStore.swift */; };
 		E4DFE22672D20D3C43FB4A1C /* cursor.svg in Resources */ = {isa = PBXBuildFile; fileRef = 168D3D9FB6D40385E40A5FCB /* cursor.svg */; };
 		E53084A818A50F73CCE9561D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */; };
 		E7F9B82D61A9CFEF78B4736C /* MerchantClassifier.mlmodelc in Resources */ = {isa = PBXBuildFile; fileRef = 997B8A768965386E83F7C202 /* MerchantClassifier.mlmodelc */; };
@@ -130,10 +139,36 @@
 		FEF9A6ECB5AB7B6450749ECA /* icloud.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21CD8D872520F04796933021 /* icloud.svg */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		FE7D6582D91B0619273C7D72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B54B5339E2A187C7A1888953 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C1DE8E161D359E480DE9322F;
+			remoteInfo = PhantomWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		322C5BA2E0A8953322BAAB6F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DEC259DBAF040ED83CAE67BF /* PhantomWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0388E833EBAE0B3855B90B7F /* BrandRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandRegistry.swift; sourceTree = "<group>"; };
 		05DF1B56B6EE38D37CDA07C3 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		06D36312B176B9436411D7D6 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		07576F60D08E61EDE129FAB4 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
+		093F67339D3E8B170D19AAD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0D1D779A4C5715FA08BA6BB8 /* notion.svg */ = {isa = PBXFileReference; path = notion.svg; sourceTree = "<group>"; };
 		0DD600B9162D2DB4ABE815BB /* lovable.svg */ = {isa = PBXFileReference; path = lovable.svg; sourceTree = "<group>"; };
 		0F40C1ABEEF906F815480C43 /* OnboardingValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueView.swift; sourceTree = "<group>"; };
@@ -143,6 +178,7 @@
 		168D3D9FB6D40385E40A5FCB /* cursor.svg */ = {isa = PBXFileReference; path = cursor.svg; sourceTree = "<group>"; };
 		1765C8A5DD5FA5BAE1BAFFC6 /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		1AC2C803D87FA59BD9F5AF57 /* audible.svg */ = {isa = PBXFileReference; path = audible.svg; sourceTree = "<group>"; };
+		1C256A5C157E3377342F149E /* SharedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStore.swift; sourceTree = "<group>"; };
 		21CD8D872520F04796933021 /* icloud.svg */ = {isa = PBXFileReference; path = icloud.svg; sourceTree = "<group>"; };
 		251F818D18623CDE1B2A4487 /* Entitlements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entitlements.swift; sourceTree = "<group>"; };
 		25DCAC5F0F5C7767FA90BDA9 /* washington-post-missing.svg */ = {isa = PBXFileReference; path = "washington-post-missing.svg"; sourceTree = "<group>"; };
@@ -163,6 +199,7 @@
 		398A20068C3B8F964C120FDA /* peloton.svg */ = {isa = PBXFileReference; path = peloton.svg; sourceTree = "<group>"; };
 		3C5DF3525DE79B65D7355DF0 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		3E4BD67B848BF6476869A54B /* TransactionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionParser.swift; sourceTree = "<group>"; };
+		3F506D623CBA189E330D7A79 /* PhantomWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PhantomWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A778FE15EE8A0CDE4BC1A1 /* openai.svg */ = {isa = PBXFileReference; path = openai.svg; sourceTree = "<group>"; };
 		42E5A1FC61151654E4446DCF /* MerchantNormalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantNormalizer.swift; sourceTree = "<group>"; };
 		478815D9E4C62B74A98C1C68 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
@@ -188,12 +225,16 @@
 		6C6B4BC39D13DB61A3BE1150 /* tmobile-missing.svg */ = {isa = PBXFileReference; path = "tmobile-missing.svg"; sourceTree = "<group>"; };
 		6CA9CD13957FE727D1CD1412 /* CancellationRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellationRegistry.swift; sourceTree = "<group>"; };
 		6DD822A61D7A0FB4DFC6DAED /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		77361CB9435A01A22C625AC0 /* PhantomWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhantomWidget.entitlements; sourceTree = "<group>"; };
 		7808DCA6392DDAF5B3BF75EC /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
 		78BFD4A1B020004EB4CDBA07 /* spotify.svg */ = {isa = PBXFileReference; path = spotify.svg; sourceTree = "<group>"; };
 		7B3DE3250E337AFD4BE0DA7A /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		7CA8CAA96AD05D073D030E1B /* google-one.svg */ = {isa = PBXFileReference; path = "google-one.svg"; sourceTree = "<group>"; };
+		7DFB08C4E35F50E118705BC3 /* Phantom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Phantom.entitlements; sourceTree = "<group>"; };
 		80F8DDC13E7F978AE6F130BE /* suno.svg */ = {isa = PBXFileReference; path = suno.svg; sourceTree = "<group>"; };
+		82625432BB08EA6E2018B57D /* PhantomWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomWidget.swift; sourceTree = "<group>"; };
 		828D06226C150068382ED583 /* elevenlabs.svg */ = {isa = PBXFileReference; path = elevenlabs.svg; sourceTree = "<group>"; };
+		8700EF0028F5C93A7E141AF0 /* AppleSubscriptionsGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSubscriptionsGuideView.swift; sourceTree = "<group>"; };
 		886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
 		887C2DDA5BD9DE2C107553E7 /* adobe-cc.svg */ = {isa = PBXFileReference; path = "adobe-cc.svg"; sourceTree = "<group>"; };
 		8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZombieMeter.swift; sourceTree = "<group>"; };
@@ -209,8 +250,10 @@
 		A1C0FC19F5EFB70C9E4F1518 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		A34ECAFDF6CE913819580E5B /* doordash.svg */ = {isa = PBXFileReference; path = doordash.svg; sourceTree = "<group>"; };
 		A606EDBFB658CD086975717C /* gemini.svg */ = {isa = PBXFileReference; path = gemini.svg; sourceTree = "<group>"; };
+		A61118BCEE3BD2F1A80DDD38 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		A795CADF5BEE909441DA5322 /* vercel.svg */ = {isa = PBXFileReference; path = vercel.svg; sourceTree = "<group>"; };
 		A7BDF722DFCC1659DBEEC133 /* v0.svg */ = {isa = PBXFileReference; path = v0.svg; sourceTree = "<group>"; };
+		AA9815C7BF7A8AB8DF5A72BF /* SavingsShareCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingsShareCard.swift; sourceTree = "<group>"; };
 		AB1FC821E462234A77F60C9F /* expressvpn.svg */ = {isa = PBXFileReference; path = expressvpn.svg; sourceTree = "<group>"; };
 		AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceMonitor.swift; sourceTree = "<group>"; };
 		B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -265,7 +308,17 @@
 				AFDA429BABBF03F4775D4E38 /* UserNotifications.framework in Frameworks */,
 				B755A4052794CF6B04D97ED2 /* Vision.framework in Frameworks */,
 				695C1F2740E266B51561EABE /* PhotosUI.framework in Frameworks */,
+				C81D4B323E3BA4D8617A5765 /* WidgetKit.framework in Frameworks */,
 				87D6EC2B325B087309829F30 /* SVGView in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACECEE328475ADED1742D795 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEE878A5DC671C8A635F6C08 /* WidgetKit.framework in Frameworks */,
+				90E76167EE01FDBC7E731E0B /* SwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				125F762194D4BAA2B8B9AB48 /* Info.plist */,
+				7DFB08C4E35F50E118705BC3 /* Phantom.entitlements */,
 				FB235C01E4DFAF3C31FEDA90 /* Phantom.storekit */,
 				EF6CD65CE7AEB338E9148E5B /* PhantomApp.swift */,
 				7C8667A16CBE9D4DC8C25353 /* Components */,
@@ -293,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				109FD842715CF7259792316C /* Phantom.app */,
+				3F506D623CBA189E330D7A79 /* PhantomWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -305,9 +360,20 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		3821372E1567E12A544A4971 /* PhantomWidget */ = {
+			isa = PBXGroup;
+			children = (
+				093F67339D3E8B170D19AAD3 /* Info.plist */,
+				77361CB9435A01A22C625AC0 /* PhantomWidget.entitlements */,
+				82625432BB08EA6E2018B57D /* PhantomWidget.swift */,
+			);
+			path = PhantomWidget;
+			sourceTree = "<group>";
+		};
 		47CC9F584CE4C7E958B96C6D /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				8700EF0028F5C93A7E141AF0 /* AppleSubscriptionsGuideView.swift */,
 				E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */,
 				B5572D4B4F44E161F9D82C86 /* OnboardingProfileView.swift */,
 				0F40C1ABEEF906F815480C43 /* OnboardingValueView.swift */,
@@ -345,8 +411,10 @@
 				05DF1B56B6EE38D37CDA07C3 /* MessageUI.framework */,
 				66C94B9BC810302D424FBBB1 /* PhotosUI.framework */,
 				96B12014B4A8D3FFEF96A7AD /* StoreKit.framework */,
+				A61118BCEE3BD2F1A80DDD38 /* SwiftUI.framework */,
 				90F9AD8B43F35D4D5BA2A5F1 /* UserNotifications.framework */,
 				7808DCA6392DDAF5B3BF75EC /* Vision.framework */,
+				06D36312B176B9436411D7D6 /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -360,6 +428,7 @@
 				29412028E3E9B8CA4E79B285 /* Card.swift */,
 				6A1B5C7145FAFD37AB96E47A /* PhantomMark.swift */,
 				BE806B50D4F4232552080A1E /* ProLock.swift */,
+				AA9815C7BF7A8AB8DF5A72BF /* SavingsShareCard.swift */,
 				528450789CD1A8010E5986A2 /* Section.swift */,
 				2A958149F86E9C1F806B44E7 /* SubscriptionRow.swift */,
 				8BB4A040A99B54781AF8B0BA /* ZombieMeter.swift */,
@@ -394,6 +463,7 @@
 				AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */,
 				07576F60D08E61EDE129FAB4 /* PurchaseService.swift */,
 				50823962F8013DAFD3823BFD /* RecurrenceDetector.swift */,
+				1C256A5C157E3377342F149E /* SharedStore.swift */,
 				3E4BD67B848BF6476869A54B /* TransactionParser.swift */,
 				5183A18C06B0360D663D7B84 /* ZombieScore.swift */,
 			);
@@ -429,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				0785116A2A689821205ACEC6 /* Phantom */,
+				3821372E1567E12A544A4971 /* PhantomWidget */,
 				73CB91A10D943FF6272C9E12 /* Frameworks */,
 				23273BCC88E3B0A84EAC9013 /* Products */,
 			);
@@ -514,10 +585,12 @@
 				F15F12FB23BFC873C716A34E /* Sources */,
 				9BC0DD20A8E7681A61B653B6 /* Resources */,
 				820EFA157B242084CCC88ACA /* Frameworks */,
+				322C5BA2E0A8953322BAAB6F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				17DC4471854F6B27BE86B779 /* PBXTargetDependency */,
 			);
 			name = Phantom;
 			packageProductDependencies = (
@@ -526,6 +599,24 @@
 			productName = Phantom;
 			productReference = 109FD842715CF7259792316C /* Phantom.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C1DE8E161D359E480DE9322F /* PhantomWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3C8509E6EF2B52DD1FB3CA0 /* Build configuration list for PBXNativeTarget "PhantomWidget" */;
+			buildPhases = (
+				D5395FE8CCDDF3C85F8B4A83 /* Sources */,
+				ACECEE328475ADED1742D795 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhantomWidget;
+			packageProductDependencies = (
+			);
+			productName = PhantomWidget;
+			productReference = 3F506D623CBA189E330D7A79 /* PhantomWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -537,6 +628,10 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					12F09A3FE37083A511C002DF = {
+						DevelopmentTeam = 7N337R6J9M;
+						ProvisioningStyle = Automatic;
+					};
+					C1DE8E161D359E480DE9322F = {
 						DevelopmentTeam = 7N337R6J9M;
 						ProvisioningStyle = Automatic;
 					};
@@ -560,6 +655,7 @@
 			projectRoot = "";
 			targets = (
 				12F09A3FE37083A511C002DF /* Phantom */,
+				C1DE8E161D359E480DE9322F /* PhantomWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -641,6 +737,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D5395FE8CCDDF3C85F8B4A83 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7838D902E36EF7CCD4AC8FD4 /* PhantomWidget.swift in Sources */,
+				B51BCDDBC57B9EF445162F69 /* SharedStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F15F12FB23BFC873C716A34E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -648,6 +753,7 @@
 				2BD3C1E438BBB0E704944BB7 /* AlertsView.swift in Sources */,
 				24C9AB4D62C49A8EE815E492 /* AppConfig.swift in Sources */,
 				E968A7E1D9D816C4882EAF10 /* AppStore.swift in Sources */,
+				D973E107BADBB43C389BB9F3 /* AppleSubscriptionsGuideView.swift in Sources */,
 				A68D1EFB05F040E68E122A63 /* Avatar.swift in Sources */,
 				272CA6C43DD46DF6022C67F5 /* Badge.swift in Sources */,
 				4660CFADA525BE9D336C0AF2 /* BrandRegistry.swift in Sources */,
@@ -686,8 +792,10 @@
 				88507986A709AA5DDE89C562 /* RadarView.swift in Sources */,
 				CF5E2ECF9D78336462EC0FD8 /* RecurrenceDetector.swift in Sources */,
 				585429D8082692724D4E8307 /* RootTabView.swift in Sources */,
+				B308E02DCD3AAA7D9BE45F90 /* SavingsShareCard.swift in Sources */,
 				5F849C98BDB01BAD0263B3A7 /* Section.swift in Sources */,
 				58EE7BABE7B46091B5A20715 /* SettingsView.swift in Sources */,
+				E491CB110EC601B45C8CDBAF /* SharedStore.swift in Sources */,
 				EDB25B027B4EBB7B72D538E0 /* SubscriptionDetailView.swift in Sources */,
 				C94E24E58B6B506ADBEA4331 /* SubscriptionRow.swift in Sources */,
 				9313285F4F091D0745432C7D /* Theme.swift in Sources */,
@@ -699,12 +807,39 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		17DC4471854F6B27BE86B779 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C1DE8E161D359E480DE9322F /* PhantomWidget */;
+			targetProxy = FE7D6582D91B0619273C7D72 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		284EA9C1649577782CFD0265 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PhantomWidget/PhantomWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhantomWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom.widget;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
 		7E2311EC918E08E995401D23 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Phantom/Phantom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Phantom/Info.plist;
@@ -758,7 +893,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7N337R6J9M;
 				ENABLE_PREVIEWS = YES;
@@ -780,7 +915,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -799,6 +934,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Phantom/Phantom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Phantom/Info.plist;
@@ -852,7 +988,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7N337R6J9M;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -868,7 +1004,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -878,6 +1014,24 @@
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.10;
 				baseConfiguration = Config/Release.xcconfig;
+			};
+			name = Release;
+		};
+		E0144C7F261B7C29EDD4B968 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PhantomWidget/PhantomWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PhantomWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom.widget;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -898,6 +1052,15 @@
 			buildConfigurations = (
 				8F37D30F286FDFDF84CFB8ED /* Debug */,
 				BDB6A14F1C84542676E2F5C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C3C8509E6EF2B52DD1FB3CA0 /* Build configuration list for PBXNativeTarget "PhantomWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284EA9C1649577782CFD0265 /* Debug */,
+				E0144C7F261B7C29EDD4B968 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

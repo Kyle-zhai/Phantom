@@ -3,12 +3,17 @@ import SwiftUI
 struct SubscriptionDetailView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     let subId: String
 
     @State private var showDispute = false
     @State private var goNegotiate = false
     @State private var showCancelConfirm = false
     @State private var showDeleteConfirm = false
+    /// Set when we send the user to the vendor's cancel page; on return to the
+    /// app we ask whether it worked.
+    @State private var awaitingCancelReturn = false
+    @State private var showReturnConfirm = false
 
     private var sub: Subscription? {
         store.subscription(byId: subId)
@@ -47,13 +52,12 @@ struct SubscriptionDetailView: View {
         .confirmationDialog("Cancel \(sub?.name ?? "this subscription")?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
             if let sub {
                 let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Go to cancel page", role: .destructive) {
+                Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Open cancel page") {
                     openCancelPath(path)
-                    store.cancel(subId)
-                    dismiss()
+                    awaitingCancelReturn = true
                 }
-                Button("Just mark as cancelled (no redirect)") {
-                    store.cancel(subId)
+                Button("I've already cancelled it") {
+                    store.confirmCancellation(subId)
                     dismiss()
                 }
                 Button("Keep it", role: .cancel) {}
@@ -61,7 +65,25 @@ struct SubscriptionDetailView: View {
         } message: {
             if let sub {
                 let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                Text("Saves \(fmtUSD(sub.monthlyAmount)) per month.\n\n\(path.hint ?? "We'll open the vendor's cancel page in Safari.")")
+                Text("Saves \(fmtUSD(sub.monthlyAmount)) per month.\n\n\(path.hint ?? "We'll open \(sub.name)'s official cancel page. Come back when you're done and we'll confirm it.")")
+            }
+        }
+        .confirmationDialog("Did the \(sub?.name ?? "") cancellation go through?", isPresented: $showReturnConfirm, titleVisibility: .visible) {
+            Button("Yes — it's cancelled") {
+                store.confirmCancellation(subId)
+                dismiss()
+            }
+            Button("It didn't work — dispute it") {
+                showDispute = true
+            }
+            Button("Still deciding", role: .cancel) {}
+        } message: {
+            Text("Vendors don't always stop on the first try. If you get charged again, a dispute letter gets your money back — and Phantom will remind you to re-scan your next statement to confirm.")
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active && awaitingCancelReturn {
+                awaitingCancelReturn = false
+                showReturnConfirm = true
             }
         }
     }
@@ -248,16 +270,18 @@ struct SubscriptionDetailView: View {
                         HStack(spacing: 12) {
                             Image(systemName: "checkmark.circle.fill").foregroundStyle(Palette.success).font(.system(size: 20))
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("Cancelled this session").font(AppFont.bodyB).foregroundStyle(Palette.ink)
-                                Text("We'll log you out at the vendor on your behalf shortly.")
+                                Text("Marked as cancelled · saving \(fmtUSD(sub.yearlyAmount))/yr").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                Text("Phantom can't watch the vendor, so re-scan your next statement to confirm it actually stopped — we'll remind you in about 5 weeks.")
                                     .font(AppFont.small).foregroundStyle(Palette.mute)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                             Spacer(minLength: 0)
                         }
                         .padding(16)
                         .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+                        SavingsShareButton(amountYearly: sub.yearlyAmount, kind: .saved)
                         PrimaryButton("Undo cancel", variant: .secondary) { store.reactivate(subId) }
-                        PrimaryButton("Generate dispute letter for past charges", variant: .ghost) {
+                        PrimaryButton("Charged after cancelling? Dispute it", variant: .ghost) {
                             showDispute = true
                         } leading: {
                             Image(systemName: "envelope")

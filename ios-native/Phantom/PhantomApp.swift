@@ -1,9 +1,52 @@
 import SwiftUI
 import SwiftData
+import UIKit
+import UserNotifications
+
+/// Holds a pending notification-tap target until a view can consume it. Written
+/// by `AppDelegate` (which can fire before the UI exists on a cold launch) and
+/// observed by `RootTabView`.
+@MainActor
+@Observable
+final class DeepLink {
+    static let shared = DeepLink()
+    var pendingSubId: String?
+    private init() {}
+}
+
+/// Minimal app delegate purely to own the `UNUserNotificationCenter` delegate so
+/// notification taps route correctly — including taps that cold-launch the app.
+final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .sound, .badge]
+    }
+
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let info = response.notification.request.content.userInfo
+        if let id = info["id"] as? String {
+            await MainActor.run { DeepLink.shared.pendingSubId = id }
+        }
+    }
+}
 
 @main
 @MainActor
 struct PhantomApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var store = AppStore(purchaseService: PurchaseService.shared)
     let modelContainer: ModelContainer
 
@@ -26,9 +69,7 @@ struct PhantomApp: App {
                 .tint(Palette.ink)
                 .task {
                     store.attach(modelContext: modelContainer.mainContext)
-                    if Keychain.get(.plaidAccessToken) != nil {
-                        await store.sync()
-                    }
+                    await store.onLaunch()
                 }
         }
         .modelContainer(modelContainer)

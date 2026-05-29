@@ -1,66 +1,78 @@
 # Phantom — Project Context for Claude Code
 
-> A subscription-management iOS app that surfaces "zombie subscriptions," generates EFTA-compliant dispute letters, warns about price hikes, and helps users negotiate retention discounts. Sees PRD at `Phantom_PRD.md`. Designed to ship on the App Store; UI inspired by Uber (black-and-white, large type, generous spacing).
+> A subscription-management iOS app that surfaces "zombie subscriptions," generates EFTA-compliant dispute letters, warns about price hikes, and helps users negotiate retention discounts. PRD at `Phantom_PRD.md`. Shipping on the App Store; UI inspired by Uber (black-and-white, large type, generous spacing).
+
+## 0. WHICH CODEBASE IS REAL (read this first)
+
+This repo contains **two** codebases:
+
+- **`ios-native/` — the SHIPPED native iOS app. This is the source of truth.** SwiftUI + SwiftData, fully on-device, no backend. All current work happens here.
+- `app/`, `lib/`, `components/`, `package.json` — a **deprecated Expo/React-Native prototype**. Not shipped. Don't edit it unless explicitly asked. (It predates the native rewrite.)
+
+When the user says "the app," they mean `ios-native/`.
 
 ## 1. Product (one-liner per surface)
 
 | Surface | Job-to-be-done |
 |---|---|
-| Onboarding | Sell the value in 3 screens, then connect a bank (mocked Plaid) |
-| Radar (Home) | Show monthly spend + biggest savings opportunity + every subscription, sorted by zombie score |
-| Detail | Explain *why* a subscription is a zombie, expose cancel / negotiate / dispute actions |
-| Dispute Letter | Generate an EFTA-compliant letter; copy/share |
+| Onboarding | Sell the value, then import subscriptions (Apple-subscriptions quick start OR statement screenshots — **no bank login**) |
+| Radar (Home) | Monthly + yearly spend, biggest savings opportunity, every subscription sorted by zombie score |
+| Detail | Explain *why* a sub is a zombie; cancel (jumps to vendor cancel page) / negotiate / dispute |
+| Dispute Letter | Generate an EFTA/ROSCA-compliant letter; mail or copy |
 | Alerts | Price hikes, trial ends, new charges |
-| Negotiate | Per-vendor scripts for retention discounts |
-| Settings / Pro | Plan tiers, three-no privacy promise, account |
+| Negotiate | Per-vendor retention scripts (47 vendors); "cancel instead" jumps to the cancel page |
+| Settings / Pro | Plan tiers, real notification toggles, three-no privacy promise, account |
 
-## 2. Tech stack
+## 2. Tech stack (native app)
 
-- **Expo SDK 54+** with **Expo Router** (file-based routing, App Store-shippable via EAS Build)
-- **TypeScript strict**
-- **NativeWind v4** (Tailwind for RN) — single source of styling truth
-- `@expo/vector-icons` (Feather + Ionicons subsets) for iconography
-- `expo-haptics`, `expo-clipboard`, `expo-sharing` for native polish
-- `zustand` for app state (no Redux — overkill for this surface area)
-- `react-native-svg` for charts and the brand mark
-- `@react-native-async-storage/async-storage` for persistence
-- **No real Plaid integration in this build** — `lib/data/mock.ts` provides deterministic mock data so we can run end-to-end without secrets
+- **Swift 5.10 / SwiftUI**, iOS 17+, iPhone-only (`TARGETED_DEVICE_FAMILY = 1`)
+- **SwiftData** for local persistence (`Models/Persistent.swift`); view-layer structs in `Models/Models.swift`
+- **`@Observable AppStore`** (`Store/AppStore.swift`) is the single source of truth (no Redux/zustand)
+- **Vision** on-device OCR + a **CoreML** merchant classifier to detect subscriptions from screenshots
+- **StoreKit 2** for Pro IAP; **UserNotifications** for local alerts; **WidgetKit** for the home/lock-screen widget
+- **SVGView** (SPM) for brand logos
+- **No backend, no Plaid.** Everything runs on-device. Price catalog is a static `prices.json` fetched from GitHub Pages.
+- **xcodegen** generates the Xcode project from `ios-native/project.yml` — edit the YAML, not the `.xcodeproj`.
 
-## 3. Repo layout
+## 3. Repo layout (`ios-native/Phantom/`)
 
 ```
-Phantom/
-├── app/                       # Expo Router (file-based)
-│   ├── _layout.tsx            # Root stack
-│   ├── index.tsx              # Splash → routes to onboarding or tabs
-│   ├── onboarding/            # 3-screen value pitch + connect
-│   ├── (tabs)/                # Bottom tab nav: Radar / Alerts / Negotiate / Settings
-│   ├── subscription/[id].tsx  # Detail
-│   ├── dispute/[id].tsx       # Dispute letter generator
-│   └── paywall.tsx            # Pro modal
-├── components/                # Reusable: Button, Card, Badge, ZombieMeter, SpendHero…
-├── lib/
-│   ├── theme.ts               # Tokens (colors, type, radii, spacing)
-│   ├── score.ts               # Zombie score algorithm (matches PRD §3.2)
-│   ├── data/mock.ts           # Mock subscriptions, alerts, usage
-│   └── store.ts               # Zustand store
-├── assets/                    # Icons, fonts
-├── Phantom_PRD.md              # Source of truth for product decisions
-└── CLAUDE.md                  # This file
+PhantomApp.swift            # @main App + AppDelegate (notification delegate) + DeepLink holder
+Models/                     # Models.swift (view structs), Persistent.swift (SwiftData)
+Store/AppStore.swift        # @Observable hub: state, scoring, notifications, cancellation, widget snapshot
+Services/
+  OCR.swift                 # Vision text recognition
+  TransactionParser.swift   # OCR lines → transactions
+  MerchantNormalizer.swift  # clean merchant text → brandId
+  MerchantML.swift          # CoreML subscription classifier
+  RecurrenceDetector.swift  # confirmed vs likely subs across months
+  BrandRegistry.swift       # logos + brand colors
+  ZombieScore.swift         # 0–100 score (see §5)
+  DisputeLetter.swift       # EFTA/ROSCA letter generator
+  Negotiation.swift         # 47 vendor retention scripts
+  CancellationRegistry.swift# verified direct cancel URLs (60+) + Apple/phone paths
+  PriceMonitor.swift        # fetch prices.json, detect hikes
+  NotificationCenter.swift  # local notification scheduling (trial/hike/zombie/cancel-check)
+  SharedStore.swift         # App Group bridge — snapshot the widget reads
+  PurchaseService.swift / Entitlements.swift  # StoreKit + free/Pro gating
+  MockData.swift            # opt-in sample data (demo mode only)
+Screens/                    # Onboarding/, Tabs/ (Radar/Alerts/Negotiate/Settings), Detail, Dispute, Import, Paywall, AppleSubscriptionsGuideView
+Components/                 # Button, Card, Badge, ZombieMeter, SavingsShareCard, …
+Theme/Theme.swift           # Palette / Radius / Space / AppFont tokens + fmtUSD
+../PhantomWidget/           # WidgetKit extension (separate target)
 ```
 
-## 4. Design language — "Uber-clean"
+## 4. Design language — "Uber-clean" (tokens in `Theme/Theme.swift`)
 
-- **Palette**: `#000` (primary), `#FFF` (canvas), `#0A0A0A` (ink), `#6B7280` (mute), `#F4F4F5` (surface), `#10B981` (success/save), `#EF4444` (zombie danger), `#F59E0B` (warn)
-- **Type**: SF system font; weights 400 / 600 / 700 / 900. Headlines are oversized and tight (`-0.02em` tracking). Body 16px / 24px line-height.
-- **Spacing**: 4-px base, prefer 8 / 12 / 16 / 24 / 32. Cards have 20px inner padding.
-- **Radius**: 16 for cards, 999 for pills, 28 for primary CTAs.
-- **Buttons**: black-filled, white text, 56-tall, full-bleed for primary actions. Secondary is white with 1px `#E5E7EB` border.
-- **Motion**: tap → 200ms ease-out, haptic light. No flashy transitions.
+- **Palette**: `Palette.ink` `#0A0A0A`, `black`, `white`, `mute` `#6B7280`, `surface` `#F4F4F5`, `border` `#E5E7EB`, `success` `#10B981`, `danger` `#EF4444`, `warn` `#F59E0B` (+ soft variants).
+- **Type** (`AppFont`): SF system; display 44/heavy, h1 32, h2 24, h3 18, body 16, small 13, micro 11. Headlines oversized and tight.
+- **Spacing** (`Space`): 4-pt base (8/12/16/24/32). Cards 20pt inner padding.
+- **Radius** (`Radius`): `md` 16 cards, `pill` 999, `xl` 28 primary CTAs.
+- **Buttons** (`PrimaryButton`): primary = black fill/white text, 56 tall, full-bleed; secondary = white + 1px border; also `ghost`, `danger`, `light`. Light-impact haptic on tap.
 
-## 5. Zombie score (PRD §3.2 → `lib/score.ts`)
+## 5. Zombie score (PRD §3.2 → `Services/ZombieScore.swift`)
 
-Single function `computeZombieScore(sub) → 0–100`. Weights:
+`ZombieScore.compute(sub) → 0–100`. Weights:
 
 ```
 recencyOfLastUse 35%   (days since last open → 0 if today, 100 if 60d+)
@@ -70,52 +82,47 @@ userRating       15%   (1–5 → inverted)
 priceVsMarket     5%   (above-market premium → zombie)
 ```
 
-Score ≥ 80 → flagged + push prompt. Score 50–79 → "review." <50 → keep.
+Score ≥ 80 → zombie (flagged + nudge). 50–79 → review. <50 → keep.
 
-## 6. Conventions
+## 6. Notifications, cancellation, widget (added 2026-05-28 — how they work)
 
-- Never use real PII / real bank tokens. All sample data lives in `lib/data/mock.ts`.
-- Currency formatting: `Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })`.
-- All screens must work on iPhone 14-class viewport (390×844). Verify via Expo web before claiming done.
-- Tap targets ≥ 44pt.
-- Trigger haptics on every destructive or value-changing tap.
-- Keep components stateless when possible; hoist state into Zustand.
-- Do not add comments that restate the code. Only annotate non-obvious invariants (e.g., the score weights cite PRD §3.2).
+- **Notifications are live.** Permission is requested at the highest-intent moment (right after the first import) and from Settings → Notifications. `AppStore.rescheduleAllNotifications()` is the single scheduler; it honors the per-category toggles (`notifyHikes/notifyTrials/notifyZombies`) and only schedules when authorized. `PhantomApp.task` calls `store.onLaunch()` on every cold start (previously gated behind a Plaid token that never existed, so nothing ever fired). Taps route via `AppDelegate` → `DeepLink.shared` → `AppStore.openSubscription` → Radar nav path.
+- **Cancellation concierge.** Detail view's "Cancel" opens the verified `CancellationRegistry` URL (web/`tel:`/iOS Subscriptions). On return from Safari it asks "did it go through?"; confirming calls `AppStore.confirmCancellation` which marks cancelled AND schedules a ~35-day verification reminder (`cancelcheck-…`) to re-scan the next statement. Copy is honest — Phantom can't cancel on the user's behalf.
+- **Savings share card** (`Components/SavingsShareCard.swift`): `ShareLink` of an `ImageRenderer`-rendered card. `.found` (potential) on Radar, `.saved` (realized) after a cancel. The app's only growth loop — keep it.
+- **Widget** (`PhantomWidget` target): reads `SharedStore` snapshot the app writes on every `save()`. ⚠️ **The App Group `group.com.yinanzhai.phantom` must be enabled for BOTH the app and widget targets in the Apple Developer portal before a device/App Store build** (Xcode automatic signing usually registers it on first archive). Simulator builds work without it.
 
-## 7. Skills I should reach for
+## 7. Conventions
 
-These come from this workstation and are relevant here:
+- Never use real PII / bank tokens. Sample data is opt-in only (`MockData`, demo mode), clearly labeled in-app.
+- Currency: always `fmtUSD()` from `Theme.swift`.
+- Design for the 390×844 iPhone viewport. Tap targets ≥ 44pt. Light haptic on destructive/value-changing taps.
+- Keep views thin; hoist state into `AppStore`. Prefer existing `Components/` over new ad-hoc UI.
+- Don't add comments that restate code; only annotate non-obvious invariants (e.g., score weights cite PRD §3.2; the App Group caveat).
 
-- **superpowers:brainstorming / writing-plans** — before any *new* multi-step feature.
-- **superpowers:test-driven-development** — for any pure logic (`lib/score.ts`) where I can write a test before the code.
-- **superpowers:verification-before-completion** — checklist gate before marking a feature done.
-- **frontend-design:frontend-design** — for major visual decisions on a new screen.
-- **design-html / design-shotgun** — if I need design variants on a specific surface.
-- **vercel-plugin:react-best-practices** — after non-trivial TSX changes.
-- **browse / gstack / qa** — to dogfood the running Expo-web build, take screenshots, file regressions.
-- **investigate** — any time something breaks; **never** patch around symptoms.
-- **claude-md-management:revise-claude-md** — keep this file accurate as the codebase evolves.
-
-## 8. Running locally
+## 8. Building & verifying
 
 ```bash
-npm install
-npm run web        # opens Expo web on http://localhost:8081
-npm run ios        # iOS simulator (requires Xcode)
+cd ios-native
+xcodegen generate                       # regenerate the project after ANY project.yml or new-file change
+xcodebuild -project Phantom.xcodeproj -scheme Phantom \
+  -destination 'generic/platform=iOS Simulator' \
+  -configuration Debug build CODE_SIGNING_ALLOWED=NO
+# or: open Phantom.xcodeproj and run on a simulator
 ```
 
-I verify the build by running `npm run web` and driving it with Playwright (via the available browser tools), taking screenshots on each major route, and listening for console errors.
+- **`xcodegen generate` is required whenever you add a Swift file or edit `project.yml`** (folder-based source groups are only picked up on regeneration).
+- Live SourceKit diagnostics in this repo are unreliable (frequent false "Cannot find type / No such module" cascades). **Trust `xcodebuild`, not the editor squiggles.**
+- The native UI can't be driven by the web `browse`/`gstack` tools — those are for the deprecated Expo build. Verify the native app in the iOS Simulator.
 
-## 9. Shipping to the App Store (out of scope for this session, recorded for future runs)
+## 9. Skills to reach for
 
-- EAS Build (`eas build -p ios --profile production`)
-- App Store Connect listing copy lives in `store/` (TBD)
-- Pre-submit: replace mock data adapter with real Plaid Link + server, configure `app.json` bundle identifier `com.yinanzhai.phantom`
+- **superpowers:brainstorming / writing-plans** — before any *new* multi-step feature.
+- **superpowers:verification-before-completion** — gate before marking done.
+- **investigate** — when something breaks; never patch around symptoms.
+- **claude-md-management:revise-claude-md** — keep this file accurate as the app evolves.
 
-## 10. What "done" means for this session
+## 10. Known gaps / next ideas
 
-1. Every PRD §3 feature has a real screen the user can navigate to.
-2. Zombie score, dispute letter generation, and price alerts produce real (mocked but plausible) output.
-3. `npm run web` boots cleanly with zero console errors.
-4. Screenshots of every primary surface have been captured and reviewed.
-5. CLAUDE.md and this list are still accurate at end of session.
+- App Group must be registered before the next release (see §6).
+- No real per-app usage data (`lastUsedAt`/`sessionsLast30d` are 0 on import) — score leans on recency/overlap until the user rates subs.
+- Distribution, not feature count, is the current bottleneck (only 11 users in launch week) — favor activation (low-friction import) and the share loop over new surfaces.

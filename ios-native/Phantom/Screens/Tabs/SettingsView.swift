@@ -4,9 +4,6 @@ import StoreKit
 struct SettingsView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.openURL) private var openURL
-    @State private var hikeAlerts = true
-    @State private var trialAlerts = true
-    @State private var usageAnalysis = true
     @State private var showPaywall = false
     @State private var showManageSubs = false
     @State private var showImport = false
@@ -27,7 +24,8 @@ struct SettingsView: View {
     }
 
     var body: some View {
-        ScrollView {
+        @Bindable var bindable = store
+        return ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("YOU").font(AppFont.smallB).foregroundStyle(Palette.mute)
@@ -80,14 +78,26 @@ struct SettingsView: View {
                 }
                 .padding(.top, 28)
 
-                SectionWrap(title: "Notifications") {
-                    SettingsRow(icon: "chart.line.uptrend.xyaxis", label: "Price-hike alerts", toggle: $hikeAlerts)
+                SectionWrap(
+                    title: "Notifications",
+                    caption: store.notificationsAuthorized ? nil : "Turn these on to catch trials and price hikes before they bill you."
+                ) {
+                    if !store.notificationsAuthorized {
+                        Button { Task { await enableOrOpenSettings() } } label: {
+                            SettingsRow(icon: "bell.badge", label: "Turn on notifications")
+                        }.buttonStyle(.plain)
+                        DividerLine()
+                    }
+                    SettingsRow(icon: "chart.line.uptrend.xyaxis", label: "Price-hike alerts", toggle: $bindable.notifyHikes)
                     DividerLine()
-                    SettingsRow(icon: "clock", label: "Trial-ending alerts", toggle: $trialAlerts)
+                    SettingsRow(icon: "clock", label: "Trial-ending alerts", toggle: $bindable.notifyTrials)
                     DividerLine()
-                    SettingsRow(icon: "moon", label: "Zombie-subscription analysis", toggle: $usageAnalysis)
+                    SettingsRow(icon: "moon", label: "Zombie-subscription analysis", toggle: $bindable.notifyZombies)
                 }
                 .padding(.top, 28)
+                .onChange(of: store.notifyHikes) { _, _ in Task { await store.rescheduleAllNotifications() } }
+                .onChange(of: store.notifyTrials) { _, _ in Task { await store.rescheduleAllNotifications() } }
+                .onChange(of: store.notifyZombies) { _, _ in Task { await store.rescheduleAllNotifications() } }
 
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader("Privacy", caption: "The three things Phantom will never do.")
@@ -137,6 +147,7 @@ struct SettingsView: View {
             .padding(.bottom, 40)
         }
         .background(Palette.white)
+        .task { await store.refreshNotificationAuthorization() }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environment(store)
@@ -192,6 +203,19 @@ struct SettingsView: View {
             Text("Removes every imported subscription, alert, and cancellation record from this device. You stay signed in and your Pro subscription is unaffected. You can re-import by scanning new screenshots.")
         }
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    /// First tap requests OS permission; if previously denied, the system won't
+    /// re-prompt, so deep-link the user into the iOS Settings app instead.
+    private func enableOrOpenSettings() async {
+        let status = await NotificationService.currentAuthorization()
+        if status == .denied {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                await UIApplication.shared.open(url)
+            }
+        } else {
+            await store.enableNotifications()
+        }
     }
 
     private var sampleModeBanner: some View {

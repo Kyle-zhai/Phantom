@@ -54,6 +54,9 @@ struct RadarView: View {
         .background(Palette.white)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
+        .navigationDestination(for: String.self) { id in
+            SubscriptionDetailView(subId: id)
+        }
         .sheet(isPresented: $showImport) {
             ImportScreenshotView().environment(store)
         }
@@ -147,6 +150,10 @@ struct RadarView: View {
         VStack(alignment: .leading, spacing: 0) {
             Text("EVERY MONTH").font(AppFont.smallB).foregroundStyle(Palette.mute2)
             Text(fmtUSD(store.monthlyTotal)).font(AppFont.display).foregroundStyle(Palette.white).padding(.top, 8)
+            if store.monthlyTotal > 0 {
+                Text("\(fmtUSD(store.yearlyTotal)) per year at this rate")
+                    .font(AppFont.smallB).foregroundStyle(Palette.mute2).padding(.top, 6)
+            }
             HStack(spacing: 0) {
                 stat("ACTIVE", "\(store.activeSubs.count)", color: Palette.white)
                 divider
@@ -270,27 +277,33 @@ struct RadarView: View {
 
     private var savingsCard: some View {
         Card {
-            HStack(alignment: .top, spacing: 14) {
-                Image(systemName: "chart.line.downtrend.xyaxis")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(Palette.success)
-                    .frame(width: 44, height: 44)
-                    .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("POTENTIAL MONTHLY SAVINGS").font(AppFont.smallB).foregroundStyle(Palette.success)
-                    Text(fmtUSD(store.potentialSavings)).font(AppFont.h1).foregroundStyle(Palette.ink)
-                    Text("Cancel the \(store.zombieCount) zombie \(store.zombieCount == 1 ? "subscription" : "subscriptions") below to claim it.")
-                        .font(AppFont.small).foregroundStyle(Palette.mute)
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .top, spacing: 14) {
+                    Image(systemName: "chart.line.downtrend.xyaxis")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Palette.success)
+                        .frame(width: 44, height: 44)
+                        .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("POTENTIAL SAVINGS").font(AppFont.smallB).foregroundStyle(Palette.success)
+                        Text("\(fmtUSD(store.potentialSavings))/mo").font(AppFont.h1).foregroundStyle(Palette.ink)
+                        Text("That's \(fmtUSD(store.potentialYearlySavings)) a year across \(store.zombieCount) zombie \(store.zombieCount == 1 ? "subscription" : "subscriptions"). Cancel them below to claim it.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
                 }
-                Spacer(minLength: 0)
+                SavingsShareButton(amountYearly: store.potentialYearlySavings, kind: .found)
             }
         }
     }
 
     private var cancelledSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader("Cancelled this session", caption: "Long-press a row for quick actions.") {
-                Badge(fmtUSD(store.cancelledSubs.reduce(0) { $0 + $1.monthlyAmount }), tone: .keep)
+            SectionHeader("Cancelled this session", caption: "You're saving \(fmtUSD(store.realizedYearlySavings)) a year.") {
+                if store.realizedYearlySavings > 0 {
+                    SavingsShareButton(amountYearly: store.realizedYearlySavings, kind: .saved, compact: true)
+                }
             }
             VStack(spacing: 0) {
                 ForEach(store.cancelledSubs) { sub in
@@ -310,9 +323,6 @@ struct RadarView: View {
             .padding(.horizontal, 12)
             .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
             .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
-        }
-        .navigationDestination(for: String.self) { id in
-            SubscriptionDetailView(subId: id)
         }
     }
 
@@ -366,7 +376,7 @@ private struct ScoreSection: View {
                                 Label("Remove from Phantom", systemImage: "trash")
                             }
                             Button {
-                                store.cancel(sub.id)
+                                store.confirmCancellation(sub.id)
                             } label: {
                                 Label("Mark as cancelled", systemImage: "checkmark.circle")
                             }
@@ -376,9 +386,6 @@ private struct ScoreSection: View {
                 .padding(.horizontal, 12)
                 .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
                 .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
-            }
-            .navigationDestination(for: String.self) { id in
-                SubscriptionDetailView(subId: id)
             }
         }
     }
