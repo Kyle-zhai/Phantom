@@ -8,7 +8,6 @@ struct SettingsView: View {
     @State private var showManageSubs = false
     @State private var showImport = false
     @State private var showManual = false
-    @State private var confirmDisconnect = false
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
     @State private var confirmClearAll = false
@@ -163,16 +162,6 @@ struct SettingsView: View {
         }
         .manageSubscriptionsSheet(isPresented: $showManageSubs)
         .confirmationDialog(
-            "Disconnect from your bank?",
-            isPresented: $confirmDisconnect,
-            titleVisibility: .visible
-        ) {
-            Button("Disconnect", role: .destructive) { store.disconnectBank() }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("We'll stop syncing transactions. Your dispute letters, ratings, and cancelled list stay on this device.")
-        }
-        .confirmationDialog(
             "Sign out?",
             isPresented: $confirmSignOut,
             titleVisibility: .visible
@@ -180,7 +169,7 @@ struct SettingsView: View {
             Button("Sign out", role: .destructive) { Task { await store.signOut() } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This removes the bank connection and clears local data on this device. Your App Store Pro subscription is unaffected.")
+            Text("This clears all local data on this device. Everything in Phantom is stored only on your iPhone. Your App Store Pro subscription is unaffected.")
         }
         .confirmationDialog(
             "Delete your account?",
@@ -190,7 +179,7 @@ struct SettingsView: View {
             Button("Delete forever", role: .destructive) { Task { await store.deleteAccount() } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Permanent — your Plaid item is revoked, server-side data is purged, and you'll be signed out. To stop a paid subscription, also use 'Manage subscription' first.")
+            Text("Permanent — erases every subscription, dispute letter, rating, and setting from this iPhone and signs you out. Everything in Phantom lives only on your device, so there's nothing on a server to delete. To stop a paid Pro subscription, use 'Manage subscription' first.")
         }
         .confirmationDialog(
             "Clear all subscriptions?",

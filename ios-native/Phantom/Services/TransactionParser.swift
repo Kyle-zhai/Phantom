@@ -31,24 +31,57 @@ enum TransactionParser {
         options: []
     )
 
+    // Year-bearing formats are tried FIRST so "Apr 28 2026" matches with its real
+    // year before the year-less "MMM d" fallback. Year-less forms (common on Apple
+    // Wallet and bank mobile apps: "Feb 8", "12/15", "5/8") get the current year
+    // backfilled in parseDate — otherwise DateFormatter defaults them to year 2000,
+    // and bare numeric "M/d" wasn't matched at all (killing recurrence detection).
     private static let dateFormats: [String] = [
         "MMM d, yyyy",
-        "MMM d",
+        "MMMM d, yyyy",
+        "MMM dd yyyy",
+        "MMM d yyyy",
         "M/d/yyyy",
         "M/d/yy",
         "yyyy-MM-dd",
-        "MMM dd yyyy",
-        "MMMM d, yyyy",
+        "MMM d",
+        "M/d",
+        "M-d",
     ]
 
-    private static func parseDate(_ s: String) -> Date? {
+    private static let yearlessFormats: Set<String> = ["MMM d", "M/d", "M-d"]
+
+    // Preconfigured once (DateFormatter init is expensive and this runs per OCR
+    // line). Only `date(from:)` is called afterwards, which is read-only.
+    private static let dateParsers: [(formatter: DateFormatter, yearless: Bool)] = dateFormats.map { fmt in
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
-        for format in dateFormats {
-            f.dateFormat = format
-            if let d = f.date(from: s) { return d }
+        f.dateFormat = fmt
+        return (f, yearlessFormats.contains(fmt))
+    }
+
+    private static func parseDate(_ s: String, now: Date = Date()) -> Date? {
+        for (f, yearless) in dateParsers {
+            guard let d = f.date(from: s) else { continue }
+            return yearless ? backfillYear(d, now: now) : d
         }
         return nil
+    }
+
+    /// Give a year-less parsed date (which DateFormatter pins to year 2000) the
+    /// current year, rolling back one year if that would put it in the future
+    /// (e.g. a "Dec 20" charge read in January belongs to the prior year).
+    private static func backfillYear(_ parsed: Date, now: Date) -> Date {
+        let cal = Calendar.current
+        let md = cal.dateComponents([.month, .day], from: parsed)
+        var comps = cal.dateComponents([.year, .month, .day], from: now)
+        comps.month = md.month
+        comps.day = md.day
+        guard let candidate = cal.date(from: comps) else { return parsed }
+        if candidate > now, let prev = cal.date(byAdding: .year, value: -1, to: candidate) {
+            return prev
+        }
+        return candidate
     }
 
     private static func parseAmount(in line: String) -> Double? {
@@ -56,7 +89,14 @@ enum TransactionParser {
         guard let m = amountRegex.firstMatch(in: line, options: [], range: range),
               let r = Range(m.range(at: 1), in: line) else { return nil }
         let cleaned = String(line[r]).replacingOccurrences(of: ",", with: "")
-        return Double(cleaned)
+        guard let value = Double(cleaned) else { return nil }
+        // Preserve the sign. The leading "-" is matched outside capture group 1,
+        // so a credit/refund like "NETFLIX -$9.99" would otherwise return +9.99
+        // and be counted as a charge. Return it negative; callers reject it.
+        if let full = Range(m.range(at: 0), in: line), String(line[full]).contains("-") {
+            return -value
+        }
+        return value
     }
 
     private static func extractDates(from line: String) -> Date? {
@@ -184,7 +224,11 @@ enum TransactionParser {
         let merged = row.sorted { $0.box.minX < $1.box.minX }
         let combined = merged.map(\.text).joined(separator: " ")
 
-        if let amount = parseAmount(in: combined), amount > 0.10 {
+        if let amount = parseAmount(in: combined) {
+            // Row carries a $ amount. A negative/negligible value is a credit,
+            // refund, or reversal — ignore it outright so it isn't counted as a
+            // charge or mis-paired as a merchant-only row.
+            guard amount > 0.10 else { return .ignored }
             let merchantRaw = combined
                 .replacingOccurrences(of: #"-?\$?\s?[0-9,]+\.[0-9]{2}"#, with: "", options: .regularExpression)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -245,12 +289,16 @@ enum TransactionParser {
         return Array(bestByKey.values)
     }
 
-    private static func dateKey(_ d: Date?) -> String {
-        guard let d else { return "nil" }
+    private static let dayKeyFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: d)
+        return f
+    }()
+
+    private static func dateKey(_ d: Date?) -> String {
+        guard let d else { return "nil" }
+        return dayKeyFormatter.string(from: d)
     }
 
     private static let summaryKeywords: Set<String> = [

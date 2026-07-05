@@ -180,6 +180,40 @@ enum BrandRegistry {
         knownDisplayNames[brandId.lowercased()]
     }
 
+    /// Best-guess product category for a known brand id. Drives same-category
+    /// overlap in the zombie score (e.g. three streaming subs flag each other).
+    /// Unknown brands fall back to `.other`, which is intentionally excluded from
+    /// overlap so we don't imply two unrelated "Other" charges are duplicates.
+    static func category(for brandId: String) -> Category {
+        knownCategories[brandId.lowercased()] ?? .other
+    }
+
+    private static let knownCategories: [String: Category] = [
+        // Entertainment — streaming, music, audio
+        "netflix": .entertainment, "hulu": .entertainment, "spotify": .entertainment,
+        "peacock": .entertainment, "paramount": .entertainment, "paramount-plus": .entertainment,
+        "disney-plus": .entertainment, "hbo-max": .entertainment, "apple-tv": .entertainment,
+        "apple-music": .entertainment, "tidal": .entertainment, "audible": .entertainment,
+        "youtube-premium": .entertainment, "youtube-tv": .entertainment, "sirius-xm": .entertainment,
+        // Tools — software, dev, AI, storage, productivity, security, learning
+        "icloud": .tools, "google-one": .tools, "dropbox": .tools, "adobe-cc": .tools,
+        "adobe-photography": .tools, "github": .tools, "github-copilot": .tools, "chatgpt": .tools,
+        "openai": .tools, "claude": .tools, "anthropic": .tools, "gemini": .tools,
+        "perplexity": .tools, "cursor": .tools, "replit": .tools, "vercel": .tools, "v0": .tools,
+        "bolt": .tools, "lovable": .tools, "linear": .tools, "suno": .tools, "elevenlabs": .tools,
+        "huggingface": .tools, "deepseek": .tools, "notion": .tools, "lastpass": .tools,
+        "1password": .tools, "expressvpn": .tools, "nordvpn": .tools, "microsoft-365": .tools,
+        "duolingo": .tools, "masterclass": .tools,
+        // Health — fitness, wellness
+        "peloton": .health, "headspace": .health, "calm": .health, "noom": .health,
+        "planet-fitness": .health, "equinox": .health,
+        // News
+        "nyt": .news, "wsj": .news, "washington-post": .news,
+        // Shopping — retail memberships, delivery
+        "amazon-prime": .shopping, "walmart-plus": .shopping, "uber-one": .shopping,
+        "lyft-pink": .shopping, "dashpass": .shopping,
+    ]
+
     private static let knownDisplayNames: [String: String] = [
         // Streaming
         "netflix": "Netflix",

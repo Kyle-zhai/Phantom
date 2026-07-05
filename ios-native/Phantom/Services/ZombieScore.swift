@@ -83,11 +83,29 @@ enum ZombieScore {
             : 0
         let priceVsMarket = clamp(premium * 200.0)
 
-        let score = (recencyOfLastUse * 0.35)
-            + (usageVsPrice * 0.25)
-            + (overlap * 0.20)
-            + (userRating * 0.15)
-            + (priceVsMarket * 0.05)
+        // Adaptive weighting. When real usage data exists (demo/rated subs) we use
+        // the full PRD §3.2 weights unchanged. But for an OCR/manually-imported sub
+        // the two usage factors (60% of the weight) carry no signal — pinning them
+        // at neutral 50 caps the max score at 70, so NO imported sub could ever
+        // cross the 80 "zombie" line and the whole product looked empty. Instead,
+        // renormalize over the factors we actually have signal for (overlap, your
+        // rating, and price-vs-market when known). A lone, unrated sub still scores
+        // low, so we don't false-flag; duplicates and low-rated subs can surface.
+        var terms: [(value: Double, weight: Double)] = [
+            (overlap, 0.20),
+            (userRating, 0.15),
+        ]
+        if usageUnknown {
+            if sub.marketAverage > 0 { terms.append((priceVsMarket, 0.05)) }
+        } else {
+            terms.append((recencyOfLastUse, 0.35))
+            terms.append((usageVsPrice, 0.25))
+            terms.append((priceVsMarket, 0.05))
+        }
+        let weightSum = terms.reduce(0) { $0 + $1.weight }
+        let score = weightSum > 0
+            ? terms.reduce(0) { $0 + $1.value * $1.weight } / weightSum
+            : 50
 
         return ScoreBreakdown(
             score: Int(clamp(score.rounded())),

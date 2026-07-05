@@ -3,9 +3,14 @@ import SwiftUI
 struct NegotiateDetailView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     let subId: String
     @State private var copied = false
     @State private var showPaywall = false
+    /// Armed when we send the user to the vendor's cancel page; on return we ask
+    /// whether it actually worked before marking anything cancelled.
+    @State private var awaitingCancelReturn = false
+    @State private var showReturnConfirm = false
 
     private var sub: Subscription? { store.subscription(byId: subId) }
     private var offer: NegotiationOffer? { sub.flatMap { Negotiation.offer(for: $0) } }
@@ -24,6 +29,21 @@ struct NegotiateDetailView: View {
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showPaywall) {
             PaywallView().environment(store)
+        }
+        .confirmationDialog("Did the \(sub?.name ?? "") cancellation go through?", isPresented: $showReturnConfirm, titleVisibility: .visible) {
+            Button("Yes — it's cancelled") {
+                store.confirmCancellation(subId)
+                dismiss()
+            }
+            Button("Not yet", role: .cancel) {}
+        } message: {
+            Text("We'll only mark it cancelled and count the savings once you confirm. If you get charged again, a dispute letter gets your money back.")
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active && awaitingCancelReturn {
+                awaitingCancelReturn = false
+                showReturnConfirm = true
+            }
         }
     }
 
@@ -179,9 +199,15 @@ struct NegotiateDetailView: View {
 
                 PrimaryButton("It didn't work — cancel instead", variant: .ghost) {
                     let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                    UIApplication.shared.open(path.url)
-                    store.confirmCancellation(sub.id)
-                    dismiss()
+                    // Do NOT mark cancelled on tap — the user hasn't cancelled yet.
+                    // Open the vendor page and confirm on return; for in-person-only
+                    // vendors (no URL) ask directly.
+                    if let url = path.url {
+                        UIApplication.shared.open(url)
+                        awaitingCancelReturn = true
+                    } else {
+                        showReturnConfirm = true
+                    }
                 } leading: {
                     Image(systemName: "xmark.circle")
                 }

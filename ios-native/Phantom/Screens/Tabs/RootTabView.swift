@@ -35,11 +35,19 @@ struct RootTabView: View {
             if store.selectedTab == 0 {
                 store.selectedTab = Self.computeInitialTab()
             }
+            // On a cold launch from a notification tap, AppDelegate may set
+            // pendingSubId before this observer exists. onChange won't fire for a
+            // value already present, so consume it here too.
+            consumeDeepLink(deepLink.pendingSubId)
         }
         .onChange(of: deepLink.pendingSubId) { _, id in
-            guard let id else { return }
-            store.openSubscription(id)
-            deepLink.pendingSubId = nil
+            consumeDeepLink(id)
         }
+    }
+
+    private func consumeDeepLink(_ id: String?) {
+        guard let id else { return }
+        store.openSubscription(id)
+        deepLink.pendingSubId = nil
     }
 }
