@@ -76,3 +76,8 @@ test_real/
 # Generated native folders (Expo prebuild)
 /ios
 /android
+
+# Launch-video / marketing scratch (Remotion renders, SFX, duplicated screenshot
+# sets — ~48MB of binary output, not app source; keep out of the repo)
+x_launch_video/
+x_script/

@@ -1,160 +1,108 @@
 # Phantom
 
-> Find the money you're losing. Subscription Radar + Zombie Score + Dispute Letter generator + Price-hike alerts + Negotiation scripts.
+> Find the money you're losing. Surfaces "zombie" subscriptions, generates EFTA-compliant dispute letters, warns about price hikes, and gives per-vendor retention scripts — **100% on-device, no bank login, no backend.**
 
-Two implementations live in this repo:
+## Which codebase is real
 
-| Path | Stack | Purpose |
-|---|---|---|
-| `ios-native/` | SwiftUI + Swift 6.2 + iOS 17+ | **The App Store binary.** |
-| Root (`app/`, `components/`, `lib/`) | Expo + React Native | Cross-platform reference + browser-testable. |
-| `backend/` | Node.js 20 + Express + Plaid SDK | Plaid token exchange, recurring-charge detection, price monitoring. |
+**`ios-native/` is the shipped App Store app and the only thing you build.** It's SwiftUI + SwiftData, fully on-device.
 
-## Quickstart
+A deprecated Expo/React-Native prototype and an old Plaid/Express backend have been moved to `.archive/legacy-expo/`. They are **not** built or shipped — they predate the native rewrite and are kept only for history.
 
-### 1. Start the backend
+## How it works (no servers involved)
 
-```bash
-cd backend
-cp .env.example .env
-# Get free sandbox keys at https://dashboard.plaid.com/signup
-# Fill in PLAID_CLIENT_ID and PLAID_SECRET in .env
-npm install
-npm run dev
-```
+Phantom never talks to your bank and has no backend. You give it screenshots of your bank app / Apple Wallet / statements, and everything runs locally:
 
-Backend listens on `http://localhost:3000`. Confirm with `curl http://localhost:3000/health`.
+1. **Vision OCR** reads the screenshots on-device.
+2. A **CoreML** classifier + heuristics (`MerchantNormalizer`, `TransactionParser`) turn OCR lines into merchant + amount + date.
+3. **`RecurrenceDetector`** finds charges that repeat monthly/yearly.
+4. **`ZombieScore`** ranks each subscription 0–100 (recency, usage, same-category overlap, your rating, price-vs-market).
+5. **SwiftData** persists everything on the device. A **WidgetKit** widget reads a shared snapshot.
 
-### 2. Open the iOS app
+The only network call is fetching a static `prices.json` (hosted on GitHub Pages) to detect price hikes.
+
+## Build & run
+
+Requires Xcode 17+ (iOS 17 SDK). The Xcode project is generated from `project.yml` with [xcodegen](https://github.com/yonaskolb/XcodeGen).
 
 ```bash
-open ios-native/Phantom.xcodeproj
+cd ios-native
+xcodegen generate                      # regenerate after any project.yml or new-file change
+open Phantom.xcodeproj                  # then ⌘R on an iOS 17+ simulator
 ```
 
-In Xcode:
-1. Pick **iPhone 17 Pro** (or any iOS 17+ simulator).
-2. ▶ Run (`⌘R`).
-3. The app opens to the onboarding flow.
-
-### 3. Connect a bank (Plaid sandbox)
-
-1. Tap **Connect with Plaid**.
-2. Plaid Link sheet opens — pick **First Platypus Bank**.
-3. Use sandbox credentials:
-   - Username: `user_good`
-   - Password: `pass_good`
-4. Pick any account → Phantom fetches transactions and auto-detects recurring charges.
-
-Or tap **Skip — explore with demo data** to skip Plaid and use curated samples.
-
-## What is real (vs. mocked)
-
-| Feature | Status |
-|---|---|
-| Plaid Link iOS SDK 5.6+ (`LinkKit`) | Real, sandbox-mode out of the box |
-| Plaid token exchange + transactions/sync | Real backend round-trip |
-| Recurring-charge detection algorithm | Real, median-gap-stability scoring |
-| Zombie Score (5 weighted factors) | Real, matches PRD §3.2 |
-| EFTA-compliant dispute letter generation | Real, 5 reason templates with statute citations |
-| MFMailComposeViewController for sending disputes | Real Mail.app composer + mailto: fallback |
-| Negotiation script registry (10 vendors) | Real, served by backend so it's updatable |
-| Price-hike monitoring (55+ services) | Real catalog + hike detection. Live scraping requires `PRICE_MONITOR_LIVE=true` |
-| Local notifications (trial / hike / zombie nudges) | Real UNUserNotificationCenter |
-| StoreKit 2 in-app purchases | Real, with `Phantom.storekit` local config for sim testing |
-| SwiftData persistence | Real, `@Model` schemas for Subscription / Alert / UserProfile |
-| Keychain for sensitive tokens | Real, `kSecAttrAccessibleAfterFirstUnlock` |
-| Real device install + App Store archive | Verified — `xcodebuild archive` produces a valid `.xcarchive` |
-
-### Genuinely outside the code (you need to provide)
-
-1. **Apple Developer Program account** ($99/yr) — required to sign the binary, ship to TestFlight, list on App Store Connect.
-2. **Plaid Production approval** — sandbox is free and ready; flipping to `production` env needs Plaid's compliance review of your company.
-3. **App Store Connect product configuration** — create two auto-renewing subscriptions matching the product IDs:
-   - `com.yinanzhai.phantom.pro.monthly` ($3.99/mo)
-   - `com.yinanzhai.phantom.pro.yearly` ($29.99/yr)
-4. **Deploy backend** — works locally as-is. For TestFlight/App Store, deploy `backend/` to Vercel (run `vercel deploy` inside it) and set `PHANTOM_API_BASE` in Xcode build settings to the deployed URL.
-
-## Submission checklist
+Or from the command line:
 
 ```bash
-# 1. Set your team in Xcode → Signing & Capabilities
-# 2. Build for archive (signed)
-xcodebuild -project ios-native/Phantom.xcodeproj \
-  -scheme Phantom -configuration Release \
-  -destination 'generic/platform=iOS' \
-  -archivePath /tmp/phantom.xcarchive archive
-
-# 3. Validate with App Store Connect
-xcodebuild -exportArchive \
-  -archivePath /tmp/phantom.xcarchive \
-  -exportPath /tmp/phantom-export \
-  -exportOptionsPlist ios-native/exportOptions.plist
-
-# 4. Upload
-xcrun altool --upload-app -f /tmp/phantom-export/Phantom.ipa \
-  -t ios -u YOUR_APPLE_ID -p YOUR_APP_SPECIFIC_PASSWORD
+xcodebuild -project Phantom.xcodeproj -scheme Phantom \
+  -destination 'generic/platform=iOS Simulator' \
+  -configuration Debug build CODE_SIGNING_ALLOWED=NO
 ```
 
-## Architecture
+**Tests:**
 
-```
-ios-native/Phantom/
-├── PhantomApp.swift               @main, wires SwiftData + AppStore
-├── Phantom.storekit               Local StoreKit config (Pro monthly + yearly)
-├── Theme/Theme.swift             Uber-style design tokens
-├── Models/
-│   ├── Models.swift              Subscription, PriceAlert, Category, BillingCycle
-│   └── Persistent.swift          @Model SwiftData mirrors
-├── Services/
-│   ├── AppConfig.swift           Info.plist-driven env config
-│   ├── APIClient.swift           Generic actor-based HTTP client
-│   ├── Keychain.swift            Plaid token + user id storage
-│   ├── PlaidService.swift        Backend Plaid wrapper + RemoteSubscription→Subscription
-│   ├── PlaidLink.swift           SwiftUI wrapper around LinkKit (Plaid's official iOS SDK)
-│   ├── PriceMonitor.swift        Catalog fetch + hike detection
-│   ├── PurchaseService.swift     StoreKit 2 — products, purchase, restore, entitlement listening
-│   ├── MailComposer.swift        MFMailComposeViewController bridge + mailto: fallback
-│   ├── NotificationCenter.swift  Trial/hike/zombie scheduling
-│   ├── DisputeLetter.swift       EFTA/ROSCA/Reg E template engine
-│   ├── ZombieScore.swift         5-factor weighted algorithm (PRD §3.2)
-│   ├── Negotiation.swift         Per-vendor retention scripts
-│   └── MockData.swift            Curated demo subs (used only when --demo arg passed)
-├── Store/AppStore.swift          @Observable global store wiring everything
-├── Components/                   Button, Card, Badge, Avatar, ZombieMeter, Section, SubscriptionRow
-└── Screens/
-    ├── Onboarding/               Welcome → Value → Connect (Plaid Link)
-    ├── Tabs/                     Radar / Alerts / Negotiate / Settings
-    ├── SubscriptionDetailView.swift
-    ├── DisputeLetterView.swift   3-step flow w/ real Mail composer
-    ├── NegotiateDetailView.swift
-    └── PaywallView.swift         Real StoreKit 2 purchase
+```bash
+xcodebuild test -project Phantom.xcodeproj -scheme Phantom \
+  -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO
 ```
 
+The app opens to onboarding: **Welcome → Value → Connect**, where you import via Apple subscriptions (recommended), statement screenshots, manual entry, or a demo dataset.
+
+## Architecture (`ios-native/Phantom/`)
+
 ```
-backend/
-├── server.js                     Express app
-├── lib/
-│   ├── plaid.js                  Plaid client setup
-│   ├── recurring.js              Recurring-charge detection from Plaid /transactions/sync
-│   ├── prices.js                 Catalog snapshot + monitor (live scraper opt-in)
-│   └── negotiation-scripts.js
-├── data/seed-prices.js           55+ US services with current prices
-└── vercel.json                   For one-command Vercel deploy
+PhantomApp.swift            @main App + AppDelegate (notification delegate) + DeepLink holder
+Models/
+  Models.swift              View-layer structs (Subscription, PriceAlert, Category…)
+  Persistent.swift          @Model SwiftData mirrors
+Store/AppStore.swift        @Observable single source of truth (state, scoring, notifications, widget)
+Services/
+  OCR.swift                 Vision on-device text recognition
+  TransactionParser.swift   OCR lines → transactions
+  MerchantNormalizer.swift  Clean merchant text → brandId
+  MerchantML.swift          CoreML subscription classifier
+  RecurrenceDetector.swift  Confirmed vs likely recurring charges
+  BrandRegistry.swift       Logos, brand colors, category inference
+  ZombieScore.swift         0–100 score with adaptive weighting (PRD §3.2)
+  DisputeLetter.swift       EFTA/ROSCA letter generator
+  Negotiation.swift         47 vendor retention scripts
+  CancellationRegistry.swift Verified cancel URLs + Apple/phone/in-person paths
+  PriceMonitor.swift        Fetch prices.json, detect hikes
+  NotificationCenter.swift  Local notification scheduling (trial/hike/zombie/cancel-check/rate-nudge)
+  SharedStore.swift         App Group bridge — snapshot the widget reads
+  PurchaseService.swift / Entitlements.swift  StoreKit 2 + free/Pro gating
+  MockData.swift            Opt-in sample data (demo mode only)
+Screens/                    Onboarding/, Tabs/ (Radar/Alerts/Negotiate/Settings), Detail, Dispute, Import, Paywall
+Components/                 Button, Card, Badge, ZombieMeter, SavingsShareCard, …
+Theme/Theme.swift           Palette / Radius / Space / AppFont tokens
+../PhantomWidget/           WidgetKit extension (separate target)
+PhantomTests/               Unit tests (ZombieScore, TransactionParser, RecurrenceDetector, BrandRegistry)
 ```
+
+## Tech stack
+
+- **Swift 5.10 / SwiftUI**, iOS 17+, iPhone-only
+- **SwiftData** for local persistence; **`@Observable AppStore`** as the hub
+- **Vision** OCR + **CoreML** merchant classifier
+- **StoreKit 2** for Pro IAP; **UserNotifications** for local alerts; **WidgetKit** for the widget
+- **SVGView** (SPM) for brand logos
+- **No backend, no Plaid** — everything runs on-device
 
 ## Debug launch flags
 
-When running via Xcode you can pass arguments in *Edit Scheme → Arguments*:
+Pass in *Edit Scheme → Arguments*, or `xcrun simctl launch booted com.yinanzhai.phantom <flag>`:
 
 | Flag | Effect |
 |---|---|
-| `--skip-onboarding` | Start at Radar with empty store |
 | `--demo` | Start at Radar with curated sample subscriptions |
-| `--tab-{alerts,negotiate,settings}` | Open a specific tab on launch |
-| `--sub <id>` | Open subscription detail (e.g. `--sub peacock`) |
-| `--dispute <id>` | Open dispute letter generator |
-| `--neg <id>` | Open negotiation detail |
-| `--screen-paywall` | Open paywall |
-| `--screen-{value,connect}` | Open a specific onboarding screen |
+| `--skip-onboarding` | Start at Radar with an empty store |
+| `--tab-{alerts,negotiate,settings}` | Open a specific tab |
+| `--sub <id>` | Open a subscription's detail (e.g. `--sub peacock`) |
+| `--dispute <id>` / `--neg <id>` | Open dispute / negotiate for a sub |
+| `--screen-{paywall,value,connect,import,profile}` | Open a specific screen |
+| `--fake-pro-{monthly,yearly}` | Simulate an active Pro entitlement (DEBUG only) |
 
-These also work via `xcrun simctl launch booted com.yinanzhai.phantom --demo`.
+## App Store notes
+
+- Product IDs: `com.yinanzhai.phantom.pro.monthly`, `com.yinanzhai.phantom.pro.yearly` (configure in App Store Connect; `Phantom.storekit` drives the simulator).
+- The App Group `group.com.yinanzhai.phantom` must be enabled for **both** the app and widget targets before a device/App Store build.
+- See `CLAUDE.md` for the full working agreement and conventions.
