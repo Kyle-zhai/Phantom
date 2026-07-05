@@ -7,12 +7,21 @@ import Foundation
 /// Sources verified by visiting each vendor's official help center.
 enum CancellationRegistry {
     struct CancelPath {
-        /// Universal opener: web URL, deep link, or phone.
-        let url: URL
+        /// Universal opener: web URL, deep link, or phone. `nil` when there is
+        /// nothing to open (in-person / certified-letter-only vendors) — callers
+        /// must render the hint as instructions instead of an "open" button.
+        let url: URL?
         /// Optional human-readable hint shown above the button (e.g. "Call to cancel — no online option").
         let hint: String?
         /// True if cancellation happens through Apple (iOS Settings → Subscriptions).
         let isAppleManaged: Bool
+    }
+
+    /// Vendors that can only be cancelled in person or by certified letter —
+    /// there is no URL or phone number to open. Emitting a bogus `tel://0` here
+    /// would dial an invalid number, so these carry no openable URL at all.
+    static func manualOnly(_ note: String) -> CancelPath {
+        CancelPath(url: nil, hint: note, isAppleManaged: false)
     }
 
     /// iOS Settings deep link to the user's App Store subscriptions.
@@ -89,8 +98,8 @@ enum CancellationRegistry {
         "nyt":               web("https://help.nytimes.com/hc/en-us/articles/115014892048-Cancel-your-subscription"),
         "wsj":               phoneOnly("1-800-369-2834", note: "WSJ requires a phone call. Reps often offer a 50%-off retention deal."),
         "washington-post":   web("https://subscribe.washingtonpost.com/account"),
-        "planet-fitness":    phoneOnly("0", note: "Planet Fitness requires in-person cancellation at your home club OR a certified letter. No online or phone cancel."),
-        "equinox":           phoneOnly("0", note: "Equinox requires a written cancellation request at your home club, 45 days notice."),
+        "planet-fitness":    manualOnly("Planet Fitness requires in-person cancellation at your home club OR a certified letter. No online or phone cancel."),
+        "equinox":           manualOnly("Equinox requires a written cancellation request at your home club, 45 days notice."),
         "peloton":           web("https://onepeloton.com/digital/help/cancel-membership"),
         "headspace":         web("https://www.headspace.com/account"),
         "calm":              web("https://help.calm.com/hc/en-us/articles/115002473248-Cancel-Subscription"),

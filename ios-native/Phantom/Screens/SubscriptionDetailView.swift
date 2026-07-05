@@ -52,9 +52,15 @@ struct SubscriptionDetailView: View {
         .confirmationDialog("Cancel \(sub?.name ?? "this subscription")?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
             if let sub {
                 let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Open cancel page") {
-                    openCancelPath(path)
-                    awaitingCancelReturn = true
+                // Only offer "open" when there's actually a URL/dialer to open.
+                // In-person / certified-letter vendors (url == nil) get instructions
+                // via the message + the manual "I've already cancelled it" action.
+                if path.url != nil {
+                    Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Open cancel page") {
+                        if openCancelPath(path) {
+                            awaitingCancelReturn = true
+                        }
+                    }
                 }
                 Button("I've already cancelled it") {
                     store.confirmCancellation(subId)
@@ -88,8 +94,14 @@ struct SubscriptionDetailView: View {
         }
     }
 
-    private func openCancelPath(_ path: CancellationRegistry.CancelPath) {
-        UIApplication.shared.open(path.url, options: [:]) { _ in }
+    /// Opens the cancel URL if there is one. Returns whether we actually launched
+    /// something — the caller only arms the "did it go through?" return prompt when
+    /// an external app (Safari/dialer/iOS Settings) was opened.
+    @discardableResult
+    private func openCancelPath(_ path: CancellationRegistry.CancelPath) -> Bool {
+        guard let url = path.url else { return false }
+        UIApplication.shared.open(url, options: [:]) { _ in }
+        return true
     }
 
     @ViewBuilder
@@ -194,6 +206,15 @@ struct SubscriptionDetailView: View {
                     .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
                 }
                 .padding(.top, 28)
+
+                // Let the user supply the single strongest score signal we can
+                // collect on-device. Two taps here move a flat import into a real
+                // ranking (and feed the zombie flag).
+                VStack(alignment: .leading, spacing: 12) {
+                    SectionHeader("How much do you use it?", caption: "Rate it to sharpen the zombie score.")
+                    RatingControl(rating: sub.userRating) { store.setRating($0, for: sub.id) }
+                }
+                .padding(.top, 24)
 
                 if let hike = sub.hasPriceHike {
                     HStack(spacing: 12) {
@@ -329,6 +350,35 @@ struct SubscriptionDetailView: View {
             Color.clear.frame(width: 40, height: 40)
         }
         .padding(.top, 4)
+    }
+}
+
+/// Compact 1–5 rating. Low stars = "barely use it" (more zombie); tapping the
+/// current rating again clears it. Writes straight through to the store.
+private struct RatingControl: View {
+    let rating: Int?
+    let onChange: (Int?) -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            ForEach(1...5, id: \.self) { i in
+                let filled = (rating ?? 0) >= i
+                Button {
+                    onChange(rating == i ? nil : i)
+                } label: {
+                    Image(systemName: filled ? "star.fill" : "star")
+                        .font(.system(size: 26))
+                        .foregroundStyle(filled ? Palette.warn : Palette.mute2)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 10)
+        .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md))
     }
 }
 

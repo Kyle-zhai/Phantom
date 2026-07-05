@@ -147,8 +147,17 @@ final class PurchaseService {
             for await result in Transaction.updates {
                 if case .verified(let transaction) = result {
                     let id = transaction.productID
+                    // Transaction.updates also delivers REVOCATIONS (refund,
+                    // family-sharing removal, billing dispute) — those carry a
+                    // non-nil revocationDate. Mirror refreshEntitlements and drop
+                    // the entitlement instead of re-granting it.
+                    let revoked = transaction.revocationDate != nil
                     await MainActor.run {
-                        receiver?.purchasedProductIds.insert(id)
+                        if revoked {
+                            receiver?.purchasedProductIds.remove(id)
+                        } else {
+                            receiver?.purchasedProductIds.insert(id)
+                        }
                     }
                     await transaction.finish()
                 }

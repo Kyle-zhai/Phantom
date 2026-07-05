@@ -59,8 +59,12 @@ struct OnboardingValueView: View {
             .padding(.bottom, 40)
         }
         .background(Palette.white)
+        // Straight to the import step — we no longer gate activation behind a
+        // name+email form. That data is only needed to sign dispute letters, so
+        // it's collected at that moment instead (DisputeLetterView), keeping the
+        // pre-value funnel friction-free.
         .navigationDestination(isPresented: $goNext) {
-            OnboardingProfileView()
+            OnboardingConnectView()
         }
         .toolbar(.hidden, for: .navigationBar)
     }

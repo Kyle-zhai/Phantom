@@ -3,9 +3,12 @@ import Observation
 import SwiftData
 import UserNotifications
 import WidgetKit
+import StoreKit
+import UIKit
 
-/// Single source of truth for the app. Persists to SwiftData, pulls real data
-/// from Plaid (via backend) and the price monitor, schedules real notifications.
+/// Single source of truth for the app. Fully on-device: persists to SwiftData,
+/// derives subscriptions from Vision OCR + on-device parsing, watches the static
+/// price catalog, and schedules real local notifications. No backend, no Plaid.
 @MainActor
 @Observable
 final class AppStore {
@@ -58,6 +61,14 @@ final class AppStore {
     }
     var cancellationAttempts: [CancellationAttempt] = []
     private static let attemptsKey = "phantom.cancelAttempts"
+
+    /// Cached — DateFormatter init is expensive and this was allocated once per
+    /// new sub inside the import loop.
+    private static let mediumDateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateStyle = .medium
+        return f
+    }()
 
     private(set) var profile: UserProfile?
     private(set) var purchaseService: PurchaseService
@@ -139,6 +150,8 @@ final class AppStore {
         subscriptions = []
         alerts = []
         cancelledIds = []
+        cancellationAttempts = []
+        saveCancellationAttempts()
         clearAllPersistent()
         UserDefaults.standard.removeObject(forKey: "phantom.sampleMode")
         // Keep the profile and onboardedAt — user gets to skip onboarding
@@ -229,9 +242,9 @@ final class AppStore {
         subscriptions = []
         alerts = []
         cancelledIds = []
+        cancellationAttempts = []
+        saveCancellationAttempts()
         clearAllPersistent()
-        Keychain.clear(.plaidAccessToken)
-        Keychain.clear(.plaidItemId)
         save()
     }
 
@@ -268,6 +281,7 @@ final class AppStore {
             }
         }
         subscriptions = merged
+        recomputeOverlaps()
         persistAllSubscriptions()
         ensureProfile()
         profile?.onboardedAt = profile?.onboardedAt ?? Date()
@@ -275,11 +289,7 @@ final class AppStore {
         // Surface the new subs in the Alerts tab so the user has something
         // to act on (and so the tab isn't empty right after their first import).
         for sub in newlyAdded {
-            let dateStr: String = {
-                let f = DateFormatter()
-                f.dateStyle = .medium
-                return f.string(from: sub.startedAt)
-            }()
+            let dateStr = Self.mediumDateFormatter.string(from: sub.startedAt)
             let alert = PriceAlert(
                 id: "newcharge-\(sub.id)-\(Int(sub.startedAt.timeIntervalSince1970))",
                 subscriptionId: sub.id,
@@ -326,14 +336,6 @@ final class AppStore {
         updateWidgetSnapshot()
     }
 
-    /// Disconnect bank only — keep account, history, ratings.
-    func disconnectBank() {
-        Keychain.clear(.plaidAccessToken)
-        Keychain.clear(.plaidItemId)
-        profile?.plaidConnected = false
-        save()
-    }
-
     /// One-button data wipe — clears all imported subscriptions, alerts,
     /// cancellation history, dispute-letter usage, and the sample-mode flag,
     /// then drops the persistent SwiftData rows. Keeps the user signed in
@@ -357,9 +359,6 @@ final class AppStore {
     /// App Store-compliant sign out: clear everything and return to onboarding.
     func signOut() async {
         await NotificationService.cancelAll()
-        Keychain.clear(.plaidAccessToken)
-        Keychain.clear(.plaidItemId)
-        Keychain.clear(.userId)
         subscriptions = []
         alerts = []
         cancelledIds = []
@@ -374,14 +373,12 @@ final class AppStore {
         updateWidgetSnapshot()
     }
 
-    /// Hard delete — same as sign out plus a one-time backend purge. Since
-    /// the current shipping app does not create server-side accounts (OCR
-    /// runs entirely on-device, no signup flow populates Keychain.userId),
-    /// there's nothing to purge server-side; this collapses to the local
-    /// wipe. Kept as a separate method so the Settings UX language ("Delete
-    /// account") matches App Store Review Guideline 5.1.1(v) terminology
-    /// for any user-visible "account" concept. If a real backend lands,
-    /// re-add an APIClient.post("/account/delete", …) call here.
+    /// Hard delete. The shipping app is fully on-device — there are no
+    /// server-side accounts to purge — so this collapses to the local wipe.
+    /// Kept as a separate method so the Settings UX language ("Delete account")
+    /// matches App Store Review Guideline 5.1.1(v) terminology for any
+    /// user-visible "account" concept. If a real backend lands, re-add the
+    /// server-side purge call here.
     func deleteAccount() async {
         await signOut()
     }
@@ -452,17 +449,27 @@ final class AppStore {
         }
     }
 
-    /// Single source of truth for what's scheduled. Clears everything and
-    /// re-adds only what the user opted into and what's still relevant. No-op
-    /// scheduling if unauthorized (iOS would drop them anyway).
+    /// Single source of truth for what's scheduled. RECONCILES (adds missing,
+    /// removes stale) rather than wiping and re-adding everything: relative-
+    /// countdown triggers (zombie nudge, cancellation check) are left alone when
+    /// already pending, so their clocks aren't reset on every launch/toggle —
+    /// which previously meant they never fired. No-op if unauthorized.
     func rescheduleAllNotifications() async {
-        await NotificationService.cancelAll()
-        guard notificationsAuthorized else { return }
+        guard notificationsAuthorized else {
+            await NotificationService.cancelAll()
+            return
+        }
+        let pending = await NotificationService.pendingIdentifiers()
+        var desired = Set<String>()
+
         for sub in activeSubs {
             if notifyTrials, let trial = sub.trialEndsAt {
+                desired.insert("trial-\(sub.id)")
+                // Absolute-date trigger — safe to re-add (replaces in place).
                 await NotificationService.scheduleTrialEnd(subscriptionId: sub.id, name: sub.name, trialEndsAt: trial)
             }
             if notifyHikes, let hike = sub.hasPriceHike {
+                desired.insert("hike-\(sub.id)")
                 await NotificationService.schedulePriceHike(
                     subscriptionId: sub.id, name: sub.name,
                     from: hike.from, to: hike.to, effective: hike.effective
@@ -471,16 +478,43 @@ final class AppStore {
             if notifyZombies {
                 let s = score(for: sub.id)
                 if s >= 80 {
-                    await NotificationService.scheduleZombieNudge(subscriptionId: sub.id, name: sub.name, score: s)
+                    let id = "zombie-\(sub.id)"
+                    desired.insert(id)
+                    // Only arm a NEW nudge; leave a running countdown intact.
+                    if !pending.contains(id) {
+                        await NotificationService.scheduleZombieNudge(subscriptionId: sub.id, name: sub.name, score: s)
+                    }
                 }
             }
         }
-        // Verification reminders for pending cancellations survive a reschedule.
+        // Verification reminders for pending cancellations, anchored to their
+        // absolute ~35-day target so a reschedule doesn't slide them forward.
         for attempt in cancellationAttempts {
-            let elapsed = Date().timeIntervalSince(attempt.attemptedAt)
-            let remaining = max(1, 35 - Int(elapsed / 86_400))
-            await NotificationService.scheduleCancellationCheck(subscriptionId: attempt.id, name: attempt.name, afterDays: remaining)
+            let id = "cancelcheck-\(attempt.id)"
+            desired.insert(id)
+            if !pending.contains(id) {
+                let target = attempt.attemptedAt.addingTimeInterval(35 * 86_400)
+                await NotificationService.scheduleCancellationCheck(subscriptionId: attempt.id, name: attempt.name, fireAt: target)
+            }
         }
+
+        // Re-engagement: nudge imported-but-unrated users to rate their subs (the
+        // signal the score needs). Drops out the moment anything is rated.
+        if notifyZombies, !activeSubs.isEmpty, activeSubs.allSatisfy({ $0.userRating == nil }) {
+            desired.insert("ratenudge")
+            if !pending.contains("ratenudge") {
+                await NotificationService.scheduleRatingNudge()
+            }
+        }
+
+        // Drop anything we scheduled before that's no longer wanted (sub cancelled,
+        // toggle turned off, hike/trial cleared, a sub got rated). Leaves
+        // unrelated ids untouched.
+        let managedPrefixes = ["trial-", "hike-", "zombie-", "cancelcheck-"]
+        let stale = pending.filter { id in
+            (id == "ratenudge" || managedPrefixes.contains(where: { id.hasPrefix($0) })) && !desired.contains(id)
+        }
+        await NotificationService.remove(identifiers: Array(stale))
     }
 
     // MARK: - Mutations
@@ -500,6 +534,21 @@ final class AppStore {
     func confirmCancellation(_ id: String) {
         cancel(id)
         recordCancellationAttempt(for: id)
+        // A realized cancel is a genuine win — the right (and only) moment to ask
+        // for a rating. Fires at most once, never on launch or mid-flow.
+        maybeRequestReview()
+    }
+
+    private static let didAskReviewKey = "phantom.didAskReview"
+
+    /// Ask for an App Store rating once, after a positive outcome. Guarded by a
+    /// one-time flag like the notification ask, so we never burn the prompt.
+    private func maybeRequestReview() {
+        guard !UserDefaults.standard.bool(forKey: Self.didAskReviewKey) else { return }
+        UserDefaults.standard.set(true, forKey: Self.didAskReviewKey)
+        guard let scene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene else { return }
+        SKStoreReviewController.requestReview(in: scene)
     }
 
     func reactivate(_ id: String) {
@@ -508,6 +557,47 @@ final class AppStore {
             persistentSubs?[idx].cancelled = false
             save()
         }
+    }
+
+    /// Recompute same-category overlap across the whole library. Two or more
+    /// active subs sharing a real (non-`.other`) category flag each other — this
+    /// is what lets the zombie score actually surface duplicate streaming / AI /
+    /// news subscriptions instead of scoring every import identically.
+    func recomputeOverlaps() {
+        let active = subscriptions.filter { !cancelledIds.contains($0.id) }
+        var byCategory: [Category: [String]] = [:]
+        for s in active where s.category != .other {
+            byCategory[s.category, default: []].append(s.id)
+        }
+        for i in subscriptions.indices {
+            let s = subscriptions[i]
+            if s.category != .other, let peers = byCategory[s.category] {
+                subscriptions[i].hasOverlapWith = peers.filter { $0 != s.id }
+            } else {
+                subscriptions[i].hasOverlapWith = []
+            }
+        }
+    }
+
+    /// Persist the user's 1–5 rating for a sub. This is the strongest signal the
+    /// zombie score has on imported subs (usage data is unavailable on-device),
+    /// so collecting it is what turns a flat import into a real ranking.
+    func setRating(_ rating: Int?, for id: String) {
+        guard let i = subscriptions.firstIndex(where: { $0.id == id }) else { return }
+        let s = subscriptions[i]
+        subscriptions[i] = Subscription(
+            id: s.id, name: s.name, vendor: s.vendor, rawDescriptor: s.rawDescriptor,
+            brandHex: s.brandHex, category: s.category, amount: s.amount, cycle: s.cycle,
+            nextBilling: s.nextBilling, startedAt: s.startedAt, lastUsedAt: s.lastUsedAt,
+            sessionsLast30d: s.sessionsLast30d, userRating: rating, marketAverage: s.marketAverage,
+            trialEndsAt: s.trialEndsAt, hasPriceHike: s.hasPriceHike,
+            hasOverlapWith: s.hasOverlapWith, notes: s.notes
+        )
+        if let idx = persistentSubs?.firstIndex(where: { $0.id == id }) {
+            persistentSubs?[idx].userRating = rating
+        }
+        save()
+        Task { await rescheduleAllNotifications() }
     }
 
     func markAlertRead(_ id: String) {
@@ -547,6 +637,7 @@ final class AppStore {
         persistentSubs = subs
         subscriptions = subs.map { $0.toDomain() }
         cancelledIds = Set(subs.filter { $0.cancelled }.map { $0.id })
+        recomputeOverlaps()
         // Alerts
         let alertFetch = FetchDescriptor<PersistentAlert>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         let aRows = (try? ctx.fetch(alertFetch)) ?? []
@@ -619,7 +710,8 @@ final class AppStore {
         saveCancellationAttempts()
         Task {
             if notificationsAuthorized {
-                await NotificationService.scheduleCancellationCheck(subscriptionId: sub.id, name: sub.name, afterDays: 35)
+                let target = attempt.attemptedAt.addingTimeInterval(35 * 86_400)
+                await NotificationService.scheduleCancellationCheck(subscriptionId: sub.id, name: sub.name, fireAt: target)
             } else {
                 await requestNotificationsAfterFirstImport()
             }
@@ -637,7 +729,12 @@ final class AppStore {
     /// Write the denormalized snapshot the Home/Lock Screen widget reads, then
     /// ask WidgetKit to refresh. Called on every data change via `save()`.
     func updateWidgetSnapshot() {
-        let next = activeSubs.min { $0.nextBilling < $1.nextBilling }
+        // Soonest UPCOMING charge — filter out dates already in the past, else the
+        // widget headlines the oldest (overdue) sub once a billing cycle elapses.
+        let now = Date()
+        let next = activeSubs
+            .filter { $0.nextBilling >= now }
+            .min { $0.nextBilling < $1.nextBilling }
         let snapshot = SharedStore.Snapshot(
             monthlyTotal: monthlyTotal,
             yearlyTotal: yearlyTotal,

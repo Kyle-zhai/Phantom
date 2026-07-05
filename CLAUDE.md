@@ -4,10 +4,8 @@
 
 ## 0. WHICH CODEBASE IS REAL (read this first)
 
-This repo contains **two** codebases:
-
-- **`ios-native/` — the SHIPPED native iOS app. This is the source of truth.** SwiftUI + SwiftData, fully on-device, no backend. All current work happens here.
-- `app/`, `lib/`, `components/`, `package.json` — a **deprecated Expo/React-Native prototype**. Not shipped. Don't edit it unless explicitly asked. (It predates the native rewrite.)
+- **`ios-native/` — the SHIPPED native iOS app. This is the source of truth.** SwiftUI + SwiftData, fully on-device, no backend. All work happens here.
+- The old Expo/React-Native prototype and Plaid/Express backend were moved to `.archive/legacy-expo/` on 2026-07-04. Not shipped, not built. Ignore unless doing history archaeology.
 
 When the user says "the app," they mean `ios-native/`.
 
@@ -84,6 +82,8 @@ priceVsMarket     5%   (above-market premium → zombie)
 
 Score ≥ 80 → zombie (flagged + nudge). 50–79 → review. <50 → keep.
 
+**Adaptive weighting (2026-07-04).** On an imported sub there is no usage data (`lastUsedAt`/`sessionsLast30d` are 0), so those two factors carry no signal. Pinning them at neutral 50 capped every import at 70 — no sub could ever reach 80 and the app never surfaced a zombie. `compute` now **renormalizes over the factors it actually has signal for** when usage is unknown (overlap always; rating; price-vs-market when known), so a duplicate/low-rated sub can reach "zombie" while a lone, unrated sub stays "keep". When real usage data exists (demo/rated), the full PRD §3.2 weights are used unchanged. Two inputs that were dead are now live: `hasOverlapWith` is recomputed by `AppStore.recomputeOverlaps()` (same-category peers) on every import/launch, and `category` is inferred via `BrandRegistry.category(for:)` instead of always `.other`. Users set `userRating` via the star control in `SubscriptionDetailView` (`AppStore.setRating`). This tuning is the one deliberate product judgment — adjust the renormalization if flagging feels too aggressive/timid.
+
 ## 6. Notifications, cancellation, widget (added 2026-05-28 — how they work)
 
 - **Notifications are live.** Permission is requested at the highest-intent moment (right after the first import) and from Settings → Notifications. `AppStore.rescheduleAllNotifications()` is the single scheduler; it honors the per-category toggles (`notifyHikes/notifyTrials/notifyZombies`) and only schedules when authorized. `PhantomApp.task` calls `store.onLaunch()` on every cold start (previously gated behind a Plaid token that never existed, so nothing ever fired). Taps route via `AppDelegate` → `DeepLink.shared` → `AppStore.openSubscription` → Radar nav path.
@@ -124,5 +124,8 @@ xcodebuild -project Phantom.xcodeproj -scheme Phantom \
 ## 10. Known gaps / next ideas
 
 - App Group must be registered before the next release (see §6).
-- No real per-app usage data (`lastUsedAt`/`sessionsLast30d` are 0 on import) — score leans on recency/overlap until the user rates subs.
+- No real per-app usage data (`lastUsedAt`/`sessionsLast30d` are 0 on import) — the score now leans on computed category-overlap + user rating (see §5 adaptive weighting) since neither usage factor has signal on import.
 - Distribution, not feature count, is the current bottleneck (only 11 users in launch week) — favor activation (low-friction import) and the share loop over new surfaces.
+- **Unit tests exist now** (`PhantomTests/`): ZombieScore, TransactionParser, RecurrenceDetector, BrandRegistry category. Run `xcodebuild test -scheme Phantom -destination 'platform=iOS Simulator,name=<sim>'`. Highest-value place to add coverage next: MerchantNormalizer.
+- Done in the 2026-07-04 pass: archived the Expo/backend trees to `.archive/legacy-expo/` + rewrote `README.md`; deleted dead `Keychain.swift` + `SandboxRelease.xcconfig`; removed the unused `.debug` bundle-id suffix from `Debug.xcconfig` (a distinct id would force a matching per-config widget-extension id — not worth the churn); onboarding no longer gates on name/email (collected at dispute time); added a "rate your subs" re-engagement notification + Radar prompt + App Store review request on cancel.
+- Still-open follow-ups (deliberately deferred): decompose the `AppStore` god-object (large refactor — do once it has direct test coverage); loosen the free-tier paywall / add referral attribution (product/business decisions).

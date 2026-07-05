@@ -42,13 +42,20 @@ struct MailComposer: UIViewControllerRepresentable {
 }
 
 enum MailFallback {
-    static func openMailto(subject: String, body: String, to: String?) {
+    /// Opens the system `mailto:` handler (Gmail/Outlook/Spark all register for it,
+    /// even with no Apple Mail account). Returns whether a handler was actually
+    /// launched, so the caller doesn't show a false "Mail isn't set up" alert when
+    /// a third-party mail app opened successfully.
+    @discardableResult
+    static func openMailto(subject: String, body: String, to: String?) -> Bool {
         let s = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let b = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         let recipient = to ?? ""
-        let url = URL(string: "mailto:\(recipient)?subject=\(s)&body=\(b)")
-        if let url, UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
+        guard let url = URL(string: "mailto:\(recipient)?subject=\(s)&body=\(b)"),
+              UIApplication.shared.canOpenURL(url) else {
+            return false
         }
+        UIApplication.shared.open(url)
+        return true
     }
 }

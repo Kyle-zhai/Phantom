@@ -16,6 +16,9 @@ struct DisputeLetterView: View {
     @State private var showMail = false
     @State private var mailUnavailable = false
     @State private var showPaywall = false
+    /// One letter counts once against the free monthly limit no matter how it's
+    /// delivered (Mail, mailto, copy, or "I've sent it").
+    @State private var usageRecorded = false
 
     init(subId: String) {
         self.subId = subId
@@ -172,19 +175,26 @@ struct DisputeLetterView: View {
                     if MailComposer.canSendMail {
                         showMail = true
                     } else {
-                        // Fall back to the system mailto: handler
-                        MailFallback.openMailto(
+                        // Fall back to the system mailto: handler. Only warn if NO
+                        // handler opened — Gmail/Outlook handle mailto: even with no
+                        // Apple Mail account, and warning then is a false alarm.
+                        let opened = MailFallback.openMailto(
                             subject: "Refund request — \(sub.name)",
                             body: DisputeLetter.generate(for: sub, form: form),
                             to: nil
                         )
-                        mailUnavailable = true
+                        if opened {
+                            markDisputeUsed()
+                        } else {
+                            mailUnavailable = true
+                        }
                     }
                 } leading: {
                     Image(systemName: "envelope")
                 }
                 PrimaryButton(copied ? "Copied!" : "Copy to clipboard", variant: .secondary) {
                     UIPasteboard.general.string = DisputeLetter.generate(for: sub, form: form)
+                    markDisputeUsed()
                     copied = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) { copied = false }
                 } leading: {
@@ -200,7 +210,7 @@ struct DisputeLetterView: View {
                     to: []
                 ) { result, _ in
                     if result == .sent {
-                        store.recordDisputeUsage()
+                        markDisputeUsed()
                         step = .sent
                     }
                 }
@@ -216,6 +226,7 @@ struct DisputeLetterView: View {
             }
 
             Button {
+                markDisputeUsed()
                 step = .sent
             } label: {
                 HStack(spacing: 8) {
@@ -311,6 +322,21 @@ struct DisputeLetterView: View {
             Text("Step \(active) of 3").font(AppFont.smallB).foregroundStyle(Palette.mute).padding(.leading, 8)
         }
         .padding(.top, 22)
+    }
+
+    /// Count this letter against the free monthly limit exactly once, regardless
+    /// of how many delivery buttons the user taps for the same letter.
+    private func markDisputeUsed() {
+        // Persist the name/email the user typed here so we don't ask again — this
+        // is where we now collect it (onboarding no longer gates on it).
+        let name = form.fullName.trimmingCharacters(in: .whitespaces)
+        let email = form.email.trimmingCharacters(in: .whitespaces)
+        if (store.profile?.fullName.isEmpty ?? true), !name.isEmpty, email.contains("@") {
+            store.setProfile(name: name, email: email)
+        }
+        guard !usageRecorded else { return }
+        usageRecorded = true
+        store.recordDisputeUsage()
     }
 
     private func amountBinding() -> Binding<String> {

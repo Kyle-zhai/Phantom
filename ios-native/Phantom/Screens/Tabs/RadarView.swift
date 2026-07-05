@@ -17,8 +17,10 @@ struct RadarView: View {
                 if store.subscriptions.isEmpty {
                     emptyStateCard.padding(.top, 16)
                 }
-                if store.potentialSavings > 0 {
+                if shownPotentialMonthly > 0 {
                     savingsCard.padding(.top, 16)
+                } else if showRatePrompt {
+                    ratePromptCard.padding(.top, 16)
                 }
                 if !store.subscriptions.isEmpty {
                     longPressTip.padding(.top, 16)
@@ -65,6 +67,38 @@ struct RadarView: View {
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView().environment(store)
+        }
+    }
+
+    /// Hero/savings figures computed over the SAME set the Zombies section shows
+    /// (free tier is capped to the top-N by spend), so the "N zombies / cancel
+    /// them below" copy never references rows that aren't on screen.
+    private var shownZombies: [Subscription] { zombies() }
+    private var shownPotentialMonthly: Double { shownZombies.reduce(0) { $0 + $1.monthlyAmount } }
+    private var shownPotentialYearly: Double { shownZombies.reduce(0) { $0 + $1.yearlyAmount } }
+
+    /// When we have subs but nothing's flagged yet and the user hasn't rated
+    /// anything, point them at the one action that makes the score meaningful.
+    private var showRatePrompt: Bool {
+        !store.activeSubs.isEmpty && store.activeSubs.allSatisfy { $0.userRating == nil }
+    }
+
+    private var ratePromptCard: some View {
+        Card {
+            HStack(alignment: .top, spacing: 14) {
+                Image(systemName: "star.leadinghalf.filled")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Palette.warn)
+                    .frame(width: 44, height: 44)
+                    .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Find your zombies").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                    Text("Open a subscription and rate how much you use it. Low-rated and duplicate subs surface here as zombies you can cancel.")
+                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
         }
     }
 
@@ -157,7 +191,7 @@ struct RadarView: View {
             HStack(spacing: 0) {
                 stat("ACTIVE", "\(store.activeSubs.count)", color: Palette.white)
                 divider
-                stat("ZOMBIES", "\(store.zombieCount)", color: Palette.danger)
+                stat("ZOMBIES", "\(shownZombies.count)", color: Palette.danger)
                 divider
                 stat("ALERTS", "\(store.unreadAlerts)", color: Palette.white)
             }
@@ -286,14 +320,14 @@ struct RadarView: View {
                         .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
                     VStack(alignment: .leading, spacing: 4) {
                         Text("POTENTIAL SAVINGS").font(AppFont.smallB).foregroundStyle(Palette.success)
-                        Text("\(fmtUSD(store.potentialSavings))/mo").font(AppFont.h1).foregroundStyle(Palette.ink)
-                        Text("That's \(fmtUSD(store.potentialYearlySavings)) a year across \(store.zombieCount) zombie \(store.zombieCount == 1 ? "subscription" : "subscriptions"). Cancel them below to claim it.")
+                        Text("\(fmtUSD(shownPotentialMonthly))/mo").font(AppFont.h1).foregroundStyle(Palette.ink)
+                        Text("That's \(fmtUSD(shownPotentialYearly)) a year across \(shownZombies.count) zombie \(shownZombies.count == 1 ? "subscription" : "subscriptions"). Cancel them below to claim it.")
                             .font(AppFont.small).foregroundStyle(Palette.mute)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     Spacer(minLength: 0)
                 }
-                SavingsShareButton(amountYearly: store.potentialYearlySavings, kind: .found)
+                SavingsShareButton(amountYearly: shownPotentialYearly, kind: .found)
             }
         }
     }

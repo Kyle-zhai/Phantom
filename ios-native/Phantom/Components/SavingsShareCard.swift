@@ -86,7 +86,12 @@ struct SavingsShareButton: View {
                 ShareLink(item: message) { labelView }
             }
         }
-        .task { rendered = Self.render(amountYearly: amountYearly, kind: kind) }
+        // Re-render whenever the amount (or kind) changes — a plain `.task {}`
+        // runs once for the view's lifetime, so the shared image would freeze at
+        // the first value and contradict the live caption text.
+        .task(id: "\(amountYearly)-\(kind.headline)") {
+            rendered = Self.render(amountYearly: amountYearly, kind: kind)
+        }
     }
 
     @ViewBuilder private var labelView: some View {

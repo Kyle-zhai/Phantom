@@ -46,7 +46,9 @@ struct Subscription: Identifiable, Codable, Hashable {
     let marketAverage: Double
     let trialEndsAt: Date?
     let hasPriceHike: PriceHike?
-    let hasOverlapWith: [String]
+    /// Ids of other subscriptions in the same category — recomputed by the store
+    /// whenever the library changes, so the zombie score can surface duplicates.
+    var hasOverlapWith: [String]
     let notes: String?
 
     var brandColor: Color {

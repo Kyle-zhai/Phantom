@@ -36,10 +36,16 @@ enum PriceMonitor {
     static func detectHikes(in subs: [Subscription], catalog: [RemotePrice]) -> [PriceAlert] {
         var alerts: [PriceAlert] = []
         for sub in subs {
-            // Loose name match: substring, case-insensitive
+            // Loose name match: substring, case-insensitive.
+            // Require a meaningful token on BOTH sides before the substring test —
+            // otherwise a blank/very-short catalog name (e.g. "") matches EVERY sub
+            // (Swift's `"x".contains("")` is true) and false-flags the whole user base
+            // if a malformed prices.json entry ever ships.
             let target = sub.name.lowercased()
+            guard target.count >= 3 else { continue }
             guard let hit = catalog.first(where: {
                 let n = $0.name.lowercased()
+                guard n.count >= 3 else { return false }
                 return (target.contains(n) || n.contains(target)) && $0.prevPrice != nil
             }) else { continue }
             guard let prev = hit.prevPrice, hit.priceMonthly > prev + 0.01 else { continue }

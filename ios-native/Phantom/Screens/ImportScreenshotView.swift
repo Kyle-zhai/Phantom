@@ -361,7 +361,11 @@ struct ImportScreenshotView: View {
     private func processPicked(_ items: [PhotosPickerItem]) async {
         step = .processing
         error = nil
-        var all: [ParsedTransaction] = []
+        // Seed with what we already scanned so "Scan more screenshots" ACCUMULATES
+        // across batches. Transactions aren't persisted (existingTxs() is empty),
+        // so replacing here would throw away earlier months and make cross-month
+        // recurrence confirmation impossible — exactly what the UI promises.
+        var all: [ParsedTransaction] = parsedTxs
         for item in items {
             do {
                 guard let data = try await item.loadTransferable(type: Data.self),

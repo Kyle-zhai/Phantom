@@ -20,8 +20,15 @@ struct AlertsView: View {
     @Environment(AppStore.self) private var store
     @State private var showPaywall = false
 
+    // Newest first. `store.alerts` is only sorted at load time; alerts appended
+    // during a live session (new-charge, price-hike) go to the end, so sort here
+    // before slicing — otherwise the free "most recent alert" can show an old one.
+    private var sortedAlerts: [PriceAlert] {
+        store.alerts.sorted { $0.createdAt > $1.createdAt }
+    }
+
     private var visibleAlerts: [PriceAlert] {
-        store.isPro ? store.alerts : Array(store.alerts.prefix(1))
+        store.isPro ? sortedAlerts : Array(sortedAlerts.prefix(1))
     }
 
     private var lockedCount: Int {
