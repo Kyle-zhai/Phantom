@@ -164,7 +164,7 @@ struct SubscriptionDetailView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Score is approximate")
                                 .font(AppFont.bodyB).foregroundStyle(Palette.ink)
-                            Text("Add your last-used date and rating below to refine it.")
+                            Text("Rate how much you use it below to sharpen it.")
                                 .font(AppFont.small).foregroundStyle(Palette.mute)
                                 .fixedSize(horizontal: false, vertical: true)
                         }

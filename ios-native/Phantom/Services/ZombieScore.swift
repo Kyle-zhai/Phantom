@@ -44,11 +44,14 @@ enum ZombieScore {
     ///   - `lastUsedAt == nil` AND `sessionsLast30d == 0` → unknown,
     ///     use NEUTRAL 50 for recency + usage factors (instead of 100)
     ///   - `userRating == nil` → already neutral 50 (unchanged)
-    ///   - Score gets flagged `hasUnknowns: true` so UI can prompt for input
+    ///   - `hasUnknowns` flags the *rating* specifically — it's the one signal
+    ///     the detail view can still collect (imported usage data is never
+    ///     available on-device), so the UI shows an "approximate" nudge until
+    ///     the user rates, then stops.
     static func compute(_ sub: Subscription, now: Date = Date()) -> ScoreBreakdown {
         let usageUnknown = sub.lastUsedAt == nil && sub.sessionsLast30d == 0
         let ratingUnknown = sub.userRating == nil
-        let hasUnknowns = usageUnknown || ratingUnknown
+        let hasUnknowns = ratingUnknown
 
         // Recency factor: 0 days → 0 (keep), 60+ days → 100 (zombie).
         // If we don't know, use 50 (neutral) so we don't false-flag.

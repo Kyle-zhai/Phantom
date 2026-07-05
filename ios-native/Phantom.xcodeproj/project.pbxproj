@@ -41,7 +41,6 @@
 		415B2F21BC2665F762A9BCD0 /* disney-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = F619B4E3FA87E699DDAD6004 /* disney-missing.svg */; };
 		4164000717484FC6F79F6721 /* nordvpn.svg in Resources */ = {isa = PBXBuildFile; fileRef = 681AB1DE4B2254525163A97A /* nordvpn.svg */; };
 		4660CFADA525BE9D336C0AF2 /* BrandRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0388E833EBAE0B3855B90B7F /* BrandRegistry.swift */; };
-		4986782828F1631918058E6C /* OnboardingProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5572D4B4F44E161F9D82C86 /* OnboardingProfileView.swift */; };
 		4CF7C168054E2F72CBBA65B3 /* nyt.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4BC7B695B6F35B2F6187FD78 /* nyt.svg */; };
 		4FF37FB5CCF7581A77697F97 /* perplexity.svg in Resources */ = {isa = PBXBuildFile; fileRef = 2CC108C43E3E769F6355BB8A /* perplexity.svg */; };
 		507050E56C349B3D1524E00E /* wsj-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = FFDBC95170D647BCE8F00168 /* wsj-missing.svg */; };
@@ -270,7 +269,6 @@
 		AC0EBC864B1CB76759C751E9 /* PriceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceMonitor.swift; sourceTree = "<group>"; };
 		B090CC83CFFBF56CBBF7C15C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B49971A2E95FCA075C378F8D /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		B5572D4B4F44E161F9D82C86 /* OnboardingProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProfileView.swift; sourceTree = "<group>"; };
 		B5B0C4BECA60274D2EBF3E81 /* hbo-max.svg */ = {isa = PBXFileReference; path = "hbo-max.svg"; sourceTree = "<group>"; };
 		B6A534FE45D40BD9FD4D4B3A /* paramount.svg */ = {isa = PBXFileReference; path = paramount.svg; sourceTree = "<group>"; };
 		B803826E320BB4121C8FD568 /* sirius-missing.svg */ = {isa = PBXFileReference; path = "sirius-missing.svg"; sourceTree = "<group>"; };
@@ -388,7 +386,6 @@
 			children = (
 				8700EF0028F5C93A7E141AF0 /* AppleSubscriptionsGuideView.swift */,
 				E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */,
-				B5572D4B4F44E161F9D82C86 /* OnboardingProfileView.swift */,
 				0F40C1ABEEF906F815480C43 /* OnboardingValueView.swift */,
 				886D89C63177E91CFC5253F5 /* OnboardingWelcomeView.swift */,
 			);
@@ -834,7 +831,6 @@
 				081EC1AB08FB4352C99EAD4E /* NotificationCenter.swift in Sources */,
 				D5B2EE80669548ADE12336F2 /* OCR.swift in Sources */,
 				06517D3D642900B611B91546 /* OnboardingConnectView.swift in Sources */,
-				4986782828F1631918058E6C /* OnboardingProfileView.swift in Sources */,
 				A34ECD292186144283B2E9EE /* OnboardingValueView.swift in Sources */,
 				B9BBAF339C958E2654A93098 /* OnboardingWelcomeView.swift in Sources */,
 				5A76D0B4D307F0E6648A816B /* PaywallView.swift in Sources */,

@@ -11,6 +11,10 @@ import UserNotifications
 final class DeepLink {
     static let shared = DeepLink()
     var pendingSubId: String?
+    /// Set by a notification whose target is a tab, not a specific sub (the
+    /// "rate your subs" re-engagement nudge routes here). `RootTabView` selects
+    /// Radar and clears it.
+    var pendingRadar: Bool = false
     private init() {}
 }
 
@@ -39,6 +43,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         let info = response.notification.request.content.userInfo
         if let id = info["id"] as? String {
             await MainActor.run { DeepLink.shared.pendingSubId = id }
+        } else if info["route"] as? String == "radar" {
+            // Tab-level target (e.g. the rating re-engagement nudge) — no sub to open.
+            await MainActor.run { DeepLink.shared.pendingRadar = true }
         }
     }
 }
@@ -97,8 +104,6 @@ struct RootView: View {
             NavigationStack { OnboardingValueView() }
         } else if args.contains("--screen-connect") {
             NavigationStack { OnboardingConnectView() }
-        } else if args.contains("--screen-profile") {
-            NavigationStack { OnboardingProfileView() }
         } else if args.contains("--screen-import") {
             ImportScreenshotView()
         } else if store.isOnboarded {
