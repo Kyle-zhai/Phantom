@@ -39,9 +39,13 @@ struct RootTabView: View {
             // pendingSubId before this observer exists. onChange won't fire for a
             // value already present, so consume it here too.
             consumeDeepLink(deepLink.pendingSubId)
+            consumeRadar(deepLink.pendingRadar)
         }
         .onChange(of: deepLink.pendingSubId) { _, id in
             consumeDeepLink(id)
+        }
+        .onChange(of: deepLink.pendingRadar) { _, flag in
+            consumeRadar(flag)
         }
     }
 
@@ -49,5 +53,13 @@ struct RootTabView: View {
         guard let id else { return }
         store.openSubscription(id)
         deepLink.pendingSubId = nil
+    }
+
+    /// A tab-level notification target (the rating re-engagement nudge) just
+    /// wants Radar, where the rate prompt lives — not a specific subscription.
+    private func consumeRadar(_ flag: Bool) {
+        guard flag else { return }
+        store.selectedTab = 0
+        deepLink.pendingRadar = false
     }
 }
