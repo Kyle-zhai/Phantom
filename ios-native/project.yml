@@ -104,6 +104,21 @@ targets:
         # code path ever populates Keychain.userId. Adding it back is a
         # one-line Info.plist change if a real backend integration lands.
 
+  PhantomTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: PhantomTests
+    dependencies:
+      - target: Phantom
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom.tests
+        # xcodegen auto-wires TEST_HOST/BUNDLE_LOADER to the Phantom app because
+        # this target depends on it — needed for `@testable import Phantom`.
+
   PhantomWidget:
     type: app-extension
     platform: iOS
@@ -148,6 +163,8 @@ schemes:
       storeKitConfiguration: Phantom/Phantom.storekit
     test:
       config: Debug
+      targets:
+        - PhantomTests
     profile:
       config: Release
     analyze:

@@ -1,9 +1,0 @@
-// "Sandbox release" — Release build that still talks to Plaid sandbox.
-// Use this for TestFlight builds before Plaid Production is approved.
-
-PHANTOM_API_BASE = https:/$()/phantom-backend-staging.vercel.app
-PLAID_ENVIRONMENT = sandbox
-PRODUCT_BUNDLE_IDENTIFIER = com.yinanzhai.phantom.sandbox
-SWIFT_ACTIVE_COMPILATION_CONDITIONS =
-
-DEVELOPMENT_TEAM = 7N337R6J9M
