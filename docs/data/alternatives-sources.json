@@ -1,0 +1,2831 @@
+{
+ "service:1password": {
+  "sources": [
+   "https://1password.com/sign-up",
+   "https://www.macrumors.com/2026/02/24/1password-march-price-increase/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:adobe": {
+  "sources": [
+   "https://www.adobe.com/creativecloud/plans.html",
+   "https://xodo.com/blog/adobe-acrobat-pricing-explained"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:adobe-cc": {
+  "sources": [
+   "https://www.adobe.com/creativecloud/plans.html",
+   "https://weandthecolor.com/adobe-creative-cloud-pro-vs-standard-who-should-upgrade-in-2026/209911"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:adobe-photography": {
+  "sources": [
+   "https://www.adobe.com/creativecloud/photography.html",
+   "https://petapixel.com/2024/12/18/adobe-is-ditching-their-cheapest-photography-plan-for-new-customers-now-what/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:amazon-music": {
+  "sources": [
+   "https://www.musicbusinessworldwide.com/amazon-music-raises-subscription-prices-in-the-us-and-uk/",
+   "https://www.dealnews.com/features/amazon-music/cost/",
+   "https://www.amazon.com/music/unlimited/family"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:amc-plus": {
+  "sources": [
+   "https://support.amcplus.com/kb/guide/en/how-much-does-amc-cost-U5e3Em4jJs/Steps/3677985",
+   "https://support.amcplus.com/kb/guide/en/amc-pricing-changes-9mvvjdclyq/Steps/3990039"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:apple-fitness": {
+  "sources": [
+   "https://www.apple.com/apple-fitness-plus/",
+   "https://exercisepick.com/how-much-is-apple-fitness-plus-per-month/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:apple-music": {
+  "sources": [
+   "https://www.apple.com/apple-music/",
+   "https://variety.com/2026/music/news/apple-music-raises-prices-licensing-fees-1236814878/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:apple-news": {
+  "sources": [
+   "https://www.apple.com/apple-news/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:apple-passwords": {
+  "sources": [
+   "https://www.macworld.com/article/2583512/apple-passwords-review-free-and-simple-password-manager.html",
+   "https://www.techradar.com/pro/vpn/ios-18s-new-password-manager-is-a-big-deal-for-privacy-heres-why"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:apple-tv": {
+  "sources": [
+   "https://www.apple.com/apple-tv-app/",
+   "https://9to5mac.com/2026/08/28/apple-announces-price-increase-for-apple-tv-and-apple-one-subscriptions/",
+   "https://variety.com/2026/tv/news/apple-tv-price-increase-streaming-service-monthly-plan-1236845906/",
+   "https://www.cnbc.com/2026/08/28/apple-tv-one-price-hike-us.html"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:audible": {
+  "sources": [
+   "https://www.audible.com/membership",
+   "https://techcrunch.com/2026/03/03/audible-launches-a-cheaper-standard-subscription-plan-challenging-spotify/",
+   "https://www.amazon.com/hz/audible/mlp/membership/premiumplus/annual"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:bitwarden": {
+  "sources": [
+   "https://bitwarden.com/pricing/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:calm": {
+  "sources": [
+   "https://www.choosingtherapy.com/calm-app-review/",
+   "https://carepaths.com/calm-app-pricing/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:chatgpt": {
+  "sources": [
+   "https://www.cometapi.com/chatgpt-pricing-2026-free-vs-go-vs-plus-vs-pro/",
+   "https://www.aipricing.guru/chatgpt-subscription-pricing/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:claude": {
+  "sources": [
+   "https://claude.com/pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:crunchyroll": {
+  "sources": [
+   "https://www.animenewsnetwork.com/news/2026-02-02/crunchyroll-increases-subscription-prices-for-all-tiers/.233751",
+   "https://www.thewrap.com/media-platforms/tv/crunchyroll-subscription-price-increase/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:cursor": {
+  "sources": [
+   "https://www.lowcode.agency/blog/cursor-ai-pricing",
+   "https://www.eesel.ai/blog/cursor-pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:dashpass": {
+  "sources": [
+   "https://www.dealnews.com/features/doordash/cost/",
+   "https://www.billboard.com/culture/product-recommendations/doordash-dashpass-signup-buy-online-1236276012/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:disney-plus": {
+  "sources": [
+   "https://www.dealnews.com/features/disney-plus-bundle/",
+   "https://www.disneyplus.com/welcome/filter-plans",
+   "https://www.dealnews.com/features/disney-plus-subscription-cost/",
+   "https://thestreamable.com/how-to-pause-disney-plus-subscription",
+   "https://www.budgetseniors.com/telecom-streaming/disney-plus-cost-per-month/",
+   "https://www.groupon.com/coupons/blog/disney-plus-bundles-price"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:dropbox": {
+  "sources": [
+   "https://www.dropbox.com/plans",
+   "https://www.cloudwards.net/dropbox-pricing/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:duolingo": {
+  "sources": [
+   "https://www.dealnews.com/features/duolingo/cost/",
+   "https://duolingo.fandom.com/wiki/Duolingo_Max"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:equinox": {
+  "sources": [
+   "https://luxe.digital/scene/equinox-membership-cost/",
+   "https://equinomembershippricing.com/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "low"
+ },
+ "service:espn-plus": {
+  "sources": [
+   "https://support.espn.com/hc/en-us/articles/40375475974036-ESPN-Select-or-Unlimited-Plans-and-Prices",
+   "https://support.espn.com/hc/en-us/articles/45978937580948-Can-I-pause-the-ESPN-Unlimited-plan-or-MLB-TV-plan-during-or-after-the-MLB-Season",
+   "https://www.antennaland.com/espn-unlimited-vs-espn-select/",
+   "https://www.sportsmediawatch.com/2026/08/espn-unlimited-first-price-increase-september/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:expressvpn": {
+  "sources": [
+   "https://cybernews.com/best-vpn/expressvpn-review/expressvpn-cost/",
+   "https://www.security.org/vpn/expressvpn/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:fubo": {
+  "sources": [
+   "https://streamingpricetracker.com/fubo/",
+   "https://www.dealnews.com/features/how-much-is-fubo/",
+   "https://support.fubo.tv/hc/en-us/articles/360042530471-Can-I-pause-my-Fubo-subscription"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:gemini": {
+  "sources": [
+   "https://one.google.com/about/plans",
+   "https://www.androidcentral.com/apps-software/google-ai-pro-just-got-a-massive-storage-upgrade-for-free",
+   "https://www.ghacks.net/2026/04/03/google-increases-ai-pro-cloud-storage-from-2tb-to-5tb-at-no-extra-cost-for-subscribers/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:github-copilot": {
+  "sources": [
+   "https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/",
+   "https://automationatlas.io/answers/github-copilot-pricing-explained-2026/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:google-one": {
+  "sources": [
+   "https://one.google.com/about/plans"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:grubhub-plus": {
+  "sources": [
+   "https://www.aboutamazon.com/news/retail/amazon-prime-grubhub",
+   "https://www.amazon.com/prime/offer/grubhub/prime-deal/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:hbo-max": {
+  "sources": [
+   "https://www.tvguide.com/news/hbo-max-price-and-bundles/",
+   "https://www.dealnews.com/features/hbo-max-subscription-cost/",
+   "https://www.cnbc.com/2025/10/21/hbo-max-raising-prices-all-plans.html",
+   "https://help.hbomax.com/US/Answer/Detail/000002580",
+   "https://thestreamable.com/how-to-pause-hbo-max-subscription",
+   "https://thehill.com/homenews/media/5565397-hbo-max-raising-prices/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:headspace": {
+  "sources": [
+   "https://lifestack.ai/blog/headspace-pricing",
+   "https://carepaths.com/headspace-pricing/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:hulu": {
+  "sources": [
+   "https://www.dealnews.com/features/hulu/monthly-cost/",
+   "https://cordcuttersnews.com/live-tv-costs-climb-higher-hulu-live-tv-raises-prices-to-90-per-month/",
+   "https://www.yardbarker.com/entertainment/streaming/articles/hulu_review_plans_pricing_channels_bundles_and_more/s1_17261_42225127",
+   "https://help.hulu.com/article/hulu-subscription-hold",
+   "https://smarttvs.org/hulu-plans-2026/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:icloud": {
+  "sources": [
+   "https://www.apple.com/icloud/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:instacart-plus": {
+  "sources": [
+   "https://www.instacart.com/instacart-plus",
+   "https://www.sprouts.com/faqs/how-much-does-an-instacart-express-membership-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:kindle-unlimited": {
+  "sources": [
+   "https://www.engadget.com/2193475/kindle-unlimited-cheaper-pay-less/",
+   "https://www.dealnews.com/features/kindle-unlimited/cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:lastpass": {
+  "sources": [
+   "https://www.securden.com/blog/lastpass-pricing-review.html",
+   "https://comparedge.com/tools/lastpass/pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:lyft-pink": {
+  "sources": [
+   "https://www.lyft.com/memberships/lyft-pink-monthly/faq?embeddedView=true",
+   "https://getridewise.com/blog/what-is-lyft-pink-2026"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:masterclass": {
+  "sources": [
+   "https://upskillwise.com/masterclass-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:microsoft-365": {
+  "sources": [
+   "https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products",
+   "https://support.microsoft.com/en-us/accounts-billing/subscriptions/frequently-asked-questions-about-microsoft-365-basic"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:netflix": {
+  "sources": [
+   "https://help.netflix.com/en/node/24926",
+   "https://help.netflix.com/en/node/2070",
+   "https://www.hollywoodreporter.com/tv/tv-news/netflix-price-hike-2026-all-plans-1236548184/",
+   "https://www.nbcnews.com/business/consumer/netflix-hike-prices-standard-ad-supported-streaming-plans-rcna188716",
+   "https://www.dealnews.com/features/netflix-price-breakdown/",
+   "https://www.digitaltrends.com/movies/netflix-cost-pricing-plan-breakdown/",
+   "https://www.today.com/popculture/news/netflix-price-raise-2026-rcna265461"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:noom": {
+  "sources": [
+   "https://www.noom.com/blog/weight-management/noom-cost/",
+   "https://prettysweet.com/noom-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:nordvpn": {
+  "sources": [
+   "https://allaboutcookies.org/nordvpn-price",
+   "https://www.security.org/vpn/nordvpn/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:notion": {
+  "sources": [
+   "https://www.notion.com/pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:nyt": {
+  "sources": [
+   "https://apps.apple.com/us/app/the-new-york-times/id284862083",
+   "https://www.thepricer.org/how-much-does-a-new-york-times-subscription-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:paramount": {
+  "sources": [
+   "https://www.cbsnews.com/essentials/paramount-plus-price-increase-monthly-plans-august/",
+   "https://www.dealnews.com/features/Paramount-Plus/Cost/",
+   "https://variety.com/2025/tv/news/paramount-to-hike-prices-in-early-2026-1236574467/",
+   "https://www.itechguides.com/paramount-plans-and-pricing-which-plan-should-you-choose/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:peacock": {
+  "sources": [
+   "https://www.peacocktv.com/help/article/price-increase",
+   "https://techcrunch.com/2026/08/18/peacock-is-raising-prices-across-all-of-its-streaming-plans/",
+   "https://www.tvline.com/2238983/peacock-price-increase-august-2026-subscription-cost/",
+   "https://variety.com/2026/tv/news/peacock-raises-prices-fourth-time-in-four-years-1236837016/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:peloton": {
+  "sources": [
+   "https://support.onepeloton.com/s/article/Peloton-Membership-Membership-Fee-Changes",
+   "https://www.cbsnews.com/news/peloton-ai-product-line-revamp/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:perplexity": {
+  "sources": [
+   "https://www.finout.io/blog/perplexity-pricing-in-2026",
+   "https://screenapp.io/blog/perplexity-pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:philo": {
+  "sources": [
+   "https://www.philo.com/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:planet-fitness": {
+  "sources": [
+   "https://www.planetfitness.com/gym-memberships",
+   "https://athletechnews.com/planet-fitness-black-card-price-hike-premium-wellness-amenities/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:prime-video": {
+  "sources": [
+   "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription",
+   "https://www.cnbc.com/2026/03/13/amazon-to-hike-price-of-ad-free-prime-video-tier-by-2-a-month.html",
+   "https://www.dealnews.com/features/amazon/prime-video-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:proton-vpn": {
+  "sources": [
+   "https://cybernews.com/best-vpn/protonvpn-review/pricing/",
+   "https://vpnoverview.com/best-vpn/proton-vpn-cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:sirius-xm": {
+  "sources": [
+   "https://www.siriusxm.com/plans/streaming",
+   "https://www.siriusxm.com/help/temporarily-suspend-service"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:sling": {
+  "sources": [
+   "https://www.sling.com/",
+   "https://www.cabletv.com/sling-tv",
+   "https://support.getsling.com/en/articles/9703476-pause-subscription"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:spotify": {
+  "sources": [
+   "https://www.spotify.com/us/premium/",
+   "https://www.dealnews.com/features/spotify/cost/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:starz": {
+  "sources": [
+   "https://www.starz.com/us/en/buy",
+   "https://support.starz.com/en_us/categories/cancellation-Sy7qzEZys"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:tidal": {
+  "sources": [
+   "https://www.ecoustics.com/news/tidal-price-increase-2026/",
+   "https://support.tidal.com/hc/en-us/articles/115003662825-Subscription-Types"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:uber-one": {
+  "sources": [
+   "https://getridewise.com/blog/what-is-uber-one-membership-guide",
+   "https://www.dealnews.com/features/uber-one/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:washington-post": {
+  "sources": [
+   "https://www.washingtonpost.com/subscribe/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "service:wsj": {
+  "sources": [
+   "https://www.wsj.com/subscribe"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:youtube-premium": {
+  "sources": [
+   "https://www.techspot.com/news/112670-youtube-premium-gets-pricier-now-starts-16-individuals.html",
+   "https://support.google.com/youtube/answer/6307365",
+   "https://variety.com/2026/digital/news/youtube-premium-pirce-increase-youtube-music-us-1236713223/",
+   "https://www.techtimes.com/articles/317883/20260605/youtube-premiums-june-2026-price-hike-raises-subscription-costs-several-plans.htm"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "service:youtube-tv": {
+  "sources": [
+   "https://tv.youtube.com/welcome/",
+   "https://support.google.com/youtubetv/answer/7129668"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:amazon-prime": {
+  "sources": [
+   "https://www.aboutamazon.com/news/entertainment/amazon-music-price",
+   "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription",
+   "https://www.cnbc.com/2026/03/13/amazon-to-hike-price-of-ad-free-prime-video-tier-by-2-a-month.html",
+   "https://www.musicbusinessworldwide.com/amazon-music-raises-subscription-prices-in-the-us-and-uk/",
+   "https://www.dealnews.com/features/amazon/prime-video-cost/",
+   "https://www.aboutamazon.com/news/retail/amazon-prime-grubhub",
+   "https://www.amazon.com/prime/offer/grubhub/prime-deal/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:amex-gold": {
+  "sources": [
+   "https://upgradedpoints.com/credit-cards/reviews/american-express-gold-card/resy-credit/",
+   "https://upgradedpoints.com/credit-cards/reviews/american-express-gold-card/uber-credit/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:amex-platinum": {
+  "sources": [
+   "https://www.americanexpress.com/en-us/credit-cards/credit-intel/how-does-the-amex-platinum-digital-entertainment-credit-work/",
+   "https://www.cnbc.com/select/amex-platinum-card-2025-changes/",
+   "https://global.americanexpress.com/card-benefits/detail/uber-one-credit/platinum",
+   "https://upgradedpoints.com/credit-cards/reviews/american-express-platinum-card/equinox-credit/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:apple-one-family": {
+  "sources": [
+   "https://www.apple.com/apple-one/",
+   "https://9to5mac.com/2026/08/28/apple-announces-price-increase-for-apple-tv-and-apple-one-subscriptions/",
+   "https://www.digitalmusicnews.com/2026/07/17/apple-music-price-increase-2026/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:apple-one-individual": {
+  "sources": [
+   "https://www.apple.com/apple-one/",
+   "https://9to5mac.com/2026/08/28/apple-announces-price-increase-for-apple-tv-and-apple-one-subscriptions/",
+   "https://www.digitalmusicnews.com/2026/07/17/apple-music-price-increase-2026/",
+   "https://qz.com/apple-tv-streaming-price-hike-1499-082826"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:apple-one-premier": {
+  "sources": [
+   "https://www.apple.com/apple-one/",
+   "https://9to5mac.com/2026/08/28/apple-announces-price-increase-for-apple-tv-and-apple-one-subscriptions/",
+   "https://www.digitalmusicnews.com/2026/07/17/apple-music-price-increase-2026/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:capital-one-venture-x": {
+  "sources": [
+   "https://awardwallet.com/news/credit-cards/capital-one-uber-one/",
+   "https://www.cnbc.com/select/capital-one-uber-partnership/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "bundle:chase-sapphire-preferred": {
+  "sources": [
+   "https://www.nerdwallet.com/credit-cards/news/chase-sapphire-preferred-june-2026-update-new-benefits",
+   "https://awardwallet.com/credit-cards/chase-instacart-credit/",
+   "https://www.joinkudos.com/blog/doordash-dashpass-free-with-chase-cards"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:chase-sapphire-reserve": {
+  "sources": [
+   "https://www.cnbc.com/select/chase-sapphire-reserve-2025-overhaul/",
+   "https://9to5mac.com/2025/06/25/chase-debuts-new-reserve-card-with-apple-music-and-apple-tv-benefit/",
+   "https://www.joinkudos.com/blog/chase-2025-partnership-expansion"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:google-ai-pro": {
+  "sources": [
+   "https://one.google.com/about/plans",
+   "https://www.ghacks.net/2026/04/03/google-increases-ai-pro-cloud-storage-from-2tb-to-5tb-at-no-extra-cost-for-subscribers/",
+   "https://www.androidcentral.com/apps-software/google-ai-pro-just-got-a-massive-storage-upgrade-for-free"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:instacart-plus": {
+  "sources": [
+   "https://www.instacart.com/instacart-plus",
+   "https://www.instacart.com/p/peacock",
+   "https://www.instacart.com/help/section/639415266/3326275464"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:microsoft-365": {
+  "sources": [
+   "https://www.microsoft.com/en-us/microsoft-365-copilot/pricing",
+   "https://geotoolbox.ai/blog/copilot-pricing"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:t-mobile": {
+  "sources": [
+   "https://www.t-mobile.com/news/un-carrier/t-mobile-and-metro-unveil-new-plans-with-more-value-and-a-5-year-price-guarantee",
+   "https://wellkeptwallet.com/t-mobile-experience-beyond-plan/",
+   "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/best-t-mobile-streaming-deal-plans-free-netflix-hulu-apple-tv-1236419303/",
+   "https://saveonphone.com/compare/tmobile-experience-more-vs-beyond/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "medium"
+ },
+ "bundle:verizon": {
+  "sources": [
+   "https://www.verizon.com/support/youtube-premium-perk-faqs/",
+   "https://www.verizon.com/support/walmart-perk-faqs/",
+   "https://www.verizon.com/support/apple-music-perk-faqs/",
+   "https://www.verizon.com/support/apple-one-perk-faqs/",
+   "https://www.androidauthority.com/verizon-disney-bundle-price-hike-3701755/",
+   "https://rottenwifi.com/verizon-myplan-explained-2026-pricing-and-perks-comparison/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:walmart-plus": {
+  "sources": [
+   "https://corporate.walmart.com/news/2026/08/14/discover-the-walmart-plus-in-store-perks-built-for-everyday-life",
+   "https://www.hollywoodreporter.com/business/digital/walmart-peacock-video-choice-option-1236358545/",
+   "https://variety.com/2025/shopping/news/walmart-plus-membership-peacock-paramount-plus-1236519766/",
+   "https://www.billboard.com/shop/walmart-plus-membership-deal-how-to-subscribe-1235367883/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:xfinity": {
+  "sources": [
+   "https://www.xfinity.com/hub/tv-video/peacock-premium",
+   "https://variety.com/2026/tv/news/comcast-xfinity-streamsaver-disney-plus-hulu-hbo-max-bundles-1236712773/",
+   "https://www.streamtvinsider.com/content/comcasts-streamsaver-bundle-ups-price-18-month",
+   "https://deadline.com/2026/04/comcast-xfinity-streamsaver-bundle-adds-hulu-disney-plus-hbo-max-1236786025/"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "bundle:youtube-premium": {
+  "sources": [
+   "https://www.youtube.com/premium"
+  ],
+  "verifiedAt": "2026-09-10",
+  "confidence": "high"
+ },
+ "alternatives": {
+  "1password": {
+   "bitwarden": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "apple-passwords": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "nordpass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "dashlane": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ]
+  },
+  "apple-passwords": {
+   "1password": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "bitwarden": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "nordpass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "proton-pass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ]
+  },
+  "bitwarden": {
+   "1password": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "apple-passwords": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "nordpass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "proton-pass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ]
+  },
+  "lastpass": {
+   "bitwarden": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "1password": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "apple-passwords": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ],
+   "nordpass": [
+    "https://tech-insider.org/1password-vs-bitwarden-vs-dashlane-2026/",
+    "https://checkthat.ai/brands/nordpass/pricing",
+    "https://proton.me/pass"
+   ]
+  },
+  "adobe": {
+   "affinity": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "canva": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "capcut": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "pixelmator": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ]
+  },
+  "adobe-cc": {
+   "affinity": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "canva": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "capcut": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "davinci-resolve": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ]
+  },
+  "adobe-photography": {
+   "affinity": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "pixelmator": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ],
+   "canva": [
+    "https://colorlib.com/wp/free-photoshop-alternatives/",
+    "https://www.lemon-web.net/lemon-blog/designs-artworks/canva-makes-affinity-free-a-true-photoshop-and-illustrator-alternative",
+    "https://www.makeuseof.com/pixelmator-vs-affinity-vs-photoshop/"
+   ]
+  },
+  "spotify": {
+   "apple-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "youtube-premium": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "amazon-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "pandora": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "apple-music": {
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "amazon-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "youtube-premium": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "pandora": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "amazon-music": {
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "apple-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "youtube-premium": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "pandora": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "tidal": {
+   "apple-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "amazon-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "youtube-premium": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "sirius-xm": {
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "apple-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "iheartradio": [
+    "https://www.siriusxm.com/rates/2026/feb",
+    "https://www.cartalk.com/cars-content/siriusxm-prices-and-packages"
+   ],
+   "pandora": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "youtube-premium": {
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "apple-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "amazon-music": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "tidal": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ]
+  },
+  "amc-plus": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "philo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/"
+   ]
+  },
+  "apple-tv": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "prime-video": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "crunchyroll": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "hulu": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ]
+  },
+  "disney-plus": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "hbo-max": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "prime-video": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "espn-plus": {
+   "fubo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "youtube-tv": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "paramount": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "hbo-max": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "philo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/"
+   ],
+   "disney-plus": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "hulu": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "peacock": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "prime-video": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "netflix": {
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "hulu": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "hbo-max": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "prime-video": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "paramount": {
+   "peacock": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "peacock": {
+   "paramount": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "prime-video": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "apple-tv": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ]
+  },
+  "starz": {
+   "netflix": [
+    "https://www.tomsguide.com/entertainment/streaming/what-streaming-costs-in-2026-the-price-of-netflix-disney-plus-max-and-more",
+    "https://www.techradar.com/streaming/paramount-plus/paramount-plus-is-hiking-prices-again-but-its-still-cheaper-than-netflix-disney-plus-and-max",
+    "https://www.tomsguide.com/news/peacock-price-hike-just-announced-heres-how-much-more-youll-pay",
+    "https://www.dealnews.com/features/disney-plus-subscription-cost/"
+   ],
+   "tubi": [
+    "https://cordcuttersnews.com/the-roku-channel-vs-pluto-tv-vs-tubi-the-3-largest-free-streaming-services-go-head-to-head/",
+    "https://apps.apple.com/us/app/plutotv-stream-free-movies-tv/id751712884"
+   ],
+   "amc-plus": [
+    "https://www.thewrap.com/media-platforms/streaming/starz-crunchyroll-bundle-launch-prime-video/",
+    "https://www.dealnews.com/features/crunchyroll/cost/",
+    "https://cordcuttersnews.com/two-more-major-streaming-services-are-raising-their-prices-next-month/"
+   ]
+  },
+  "apple-fitness": {
+   "nike-training-club": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "peloton": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "planet-fitness": [
+    "https://www.planetfitness.com/gym-memberships",
+    "https://www.ritfitsports.com/blogs/article/gym-membership-prices"
+   ]
+  },
+  "equinox": {
+   "planet-fitness": [
+    "https://www.planetfitness.com/gym-memberships",
+    "https://www.ritfitsports.com/blogs/article/gym-membership-prices"
+   ],
+   "peloton": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "apple-fitness": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "nike-training-club": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ]
+  },
+  "noom": {
+   "weightwatchers": [
+    "https://www.garagegymreviews.com/noom-vs-weight-watchers",
+    "https://www.groupon.com/coupons/blog/weightwatchers-vs-noom-pricing-comparison"
+   ],
+   "myfitnesspal": [
+    "https://www.garagegymreviews.com/noom-vs-weight-watchers",
+    "https://www.groupon.com/coupons/blog/weightwatchers-vs-noom-pricing-comparison"
+   ]
+  },
+  "peloton": {
+   "apple-fitness": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "nike-training-club": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "planet-fitness": [
+    "https://www.planetfitness.com/gym-memberships",
+    "https://www.ritfitsports.com/blogs/article/gym-membership-prices"
+   ]
+  },
+  "planet-fitness": {
+   "peloton": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "nike-training-club": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ],
+   "apple-fitness": [
+    "https://www.nike.com/ntc-app",
+    "https://www.pelobuddy.com/new-year-app-2026/",
+    "https://9to5mac.com/2026/01/05/you-can-get-apple-fitness-plus-for-free-heres-how/"
+   ]
+  },
+  "apple-news": {
+   "nyt": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "washington-post": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "google-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ]
+  },
+  "nyt": {
+   "washington-post": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "wsj": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "apple-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "google-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ]
+  },
+  "washington-post": {
+   "nyt": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "wsj": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "apple-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "google-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ]
+  },
+  "wsj": {
+   "apple-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "nyt": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "washington-post": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ],
+   "google-news": [
+    "https://subger.com/en/service/new-york-times",
+    "https://www.ipsinternational.org/the-cost-of-a-digital-subscription-to-the-washington-post-what-you-need-to-know/",
+    "https://prettysweet.com/wsj-subscription-deals/",
+    "https://www.ofzenandcomputing.com/is-apple-news-worth-it-in/"
+   ]
+  },
+  "expressvpn": {
+   "nordvpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "proton-vpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "mullvad": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ]
+  },
+  "nordvpn": {
+   "proton-vpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "expressvpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "mullvad": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ]
+  },
+  "proton-vpn": {
+   "nordvpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "expressvpn": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ],
+   "mullvad": [
+    "https://toolradar.com/tools/nordvpn/pricing",
+    "https://toolradar.com/tools/proton-vpn/pricing",
+    "https://thebestvpn.com/expressvpn-vs-nordvpn-compared/",
+    "https://apps.apple.com/us/app/mullvad-vpn/id1488466513"
+   ]
+  },
+  "chatgpt": {
+   "claude": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "gemini": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "perplexity": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "microsoft-copilot": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ]
+  },
+  "gemini": {
+   "chatgpt": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "claude": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "perplexity": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "microsoft-copilot": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ]
+  },
+  "perplexity": {
+   "chatgpt": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "gemini": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "claude": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "microsoft-copilot": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ]
+  },
+  "claude": {
+   "chatgpt": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "gemini": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "perplexity": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ],
+   "microsoft-copilot": [
+    "https://sureprompts.com/blog/ai-subscription-plans-compared-2026",
+    "https://findskill.ai/blog/ai-pricing-comparison-2026/",
+    "https://www.dailyliving.ai/p/where-to-download-chatgpt-google-gemini-microsoft-copilot"
+   ]
+  },
+  "cursor": {
+   "github-copilot": [
+    "https://devtoolsreview.com/pricing/copilot-pricing/",
+    "https://www.cloudzero.com/blog/windsurf-pricing/",
+    "https://tech-insider.org/windsurf-vs-cursor-vs-github-copilot-2026/"
+   ],
+   "windsurf": [
+    "https://devtoolsreview.com/pricing/copilot-pricing/",
+    "https://www.cloudzero.com/blog/windsurf-pricing/",
+    "https://tech-insider.org/windsurf-vs-cursor-vs-github-copilot-2026/"
+   ]
+  },
+  "github-copilot": {
+   "cursor": [
+    "https://devtoolsreview.com/pricing/copilot-pricing/",
+    "https://www.cloudzero.com/blog/windsurf-pricing/",
+    "https://tech-insider.org/windsurf-vs-cursor-vs-github-copilot-2026/"
+   ],
+   "windsurf": [
+    "https://devtoolsreview.com/pricing/copilot-pricing/",
+    "https://www.cloudzero.com/blog/windsurf-pricing/",
+    "https://tech-insider.org/windsurf-vs-cursor-vs-github-copilot-2026/"
+   ]
+  },
+  "dropbox": {
+   "google-one": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "icloud": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "microsoft-365": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ]
+  },
+  "google-one": {
+   "icloud": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "dropbox": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "microsoft-365": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ]
+  },
+  "icloud": {
+   "google-one": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "dropbox": [
+    "https://allcloudhub.com/best-cloud-storage-comparison/",
+    "https://cleanor.app/blog/cloud-storage-price-index-2026-what-a-gigabyte-costs"
+   ],
+   "microsoft-365": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ]
+  },
+  "microsoft-365": {
+   "google-workspace": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ],
+   "notion": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ],
+   "dropbox": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ]
+  },
+  "notion": {
+   "google-workspace": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ],
+   "microsoft-365": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ],
+   "obsidian": [
+    "https://office-watch.com/2026/microsoft-365-plans-overview/",
+    "https://www.nerdused.com/blogs/guides/how-much-does-microsoft-365-personal-cost",
+    "https://www.getmonetizely.com/articles/is-notions-all-in-one-pricing-strategy-disrupting-microsoft-365-and-google-workspace",
+    "https://qualtir.com/blog/google-workspace-vs-microsoft-365"
+   ]
+  },
+  "duolingo": {
+   "babbel": [
+    "https://www.hellonabu.com/blog/en/how-much-do-language-learning-apps-cost/",
+    "https://www.papora.com/learn-english/super-duolingo-prices/",
+    "https://makeheadway.com/blog/skillshare-cost/",
+    "https://www.myengineeringbuddy.com/blog/masterclass-review-pricing-features-alternatives/"
+   ],
+   "busuu": [
+    "https://www.hellonabu.com/blog/en/how-much-do-language-learning-apps-cost/",
+    "https://www.papora.com/learn-english/super-duolingo-prices/",
+    "https://makeheadway.com/blog/skillshare-cost/",
+    "https://www.myengineeringbuddy.com/blog/masterclass-review-pricing-features-alternatives/"
+   ]
+  },
+  "masterclass": {
+   "skillshare": [
+    "https://www.hellonabu.com/blog/en/how-much-do-language-learning-apps-cost/",
+    "https://www.papora.com/learn-english/super-duolingo-prices/",
+    "https://makeheadway.com/blog/skillshare-cost/",
+    "https://www.myengineeringbuddy.com/blog/masterclass-review-pricing-features-alternatives/"
+   ]
+  },
+  "calm": {
+   "headspace": [
+    "https://www.completewellnesshub.com/headspace-vs-calm-vs-insight-timer-best-meditation-apps/",
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ],
+   "insight-timer": [
+    "https://www.completewellnesshub.com/headspace-vs-calm-vs-insight-timer-best-meditation-apps/",
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ]
+  },
+  "headspace": {
+   "calm": [
+    "https://www.completewellnesshub.com/headspace-vs-calm-vs-insight-timer-best-meditation-apps/",
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ],
+   "insight-timer": [
+    "https://www.completewellnesshub.com/headspace-vs-calm-vs-insight-timer-best-meditation-apps/",
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ]
+  },
+  "dashpass": {
+   "uber-one": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "grubhub-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "walmart-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ]
+  },
+  "grubhub-plus": {
+   "dashpass": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "uber-one": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "walmart-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ]
+  },
+  "instacart-plus": {
+   "walmart-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "dashpass": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "uber-one": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ]
+  },
+  "lyft-pink": {
+   "uber-one": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ]
+  },
+  "uber-one": {
+   "dashpass": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "grubhub-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ],
+   "walmart-plus": [
+    "https://dailycashback.com/blog/uber-one-vs-dashpass-vs-grubhub-plus/",
+    "https://www.lowermysubs.com/blog/uber-one-vs-doordash-dashpass-vs-instacart-plus",
+    "https://grocerychop.com/blog/best-same-day-grocery-delivery-apps-2026"
+   ]
+  },
+  "fubo": {
+   "youtube-tv": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "sling": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "philo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ]
+  },
+  "philo": {
+   "sling": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "youtube-tv": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "fubo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ]
+  },
+  "sling": {
+   "philo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "youtube-tv": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "fubo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ]
+  },
+  "youtube-tv": {
+   "sling": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "philo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ],
+   "fubo": [
+    "https://cordcuttersnews.com/youtube-tv-vs-directv-vs-fubo-vs-hulu-vs-sling-tv-vs-philo-which-streaming-service-is-best-for-2026/",
+    "https://www.techtimes.com/articles/318236/20260611/youtube-tv-drops-base-plan-price-through-june-30-cable-still-costs-30-more-monthly.htm",
+    "https://www.cabletv.com/fubotv"
+   ]
+  },
+  "audible": {
+   "libby": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ],
+   "kindle-unlimited": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ],
+   "spotify": [
+    "https://www.audioendgame.com/articles/2026-music-streaming-price-hikes",
+    "https://checkthat.ai/brands/spotify/pricing",
+    "https://www.ecoustics.com/news/tidal-price-increase-2026/"
+   ],
+   "everand": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ]
+  },
+  "kindle-unlimited": {
+   "libby": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ],
+   "audible": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ],
+   "everand": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ],
+   "libro-fm": [
+    "https://bestwriting.com/best-audiobook-subscriptions",
+    "https://readiolist.com/compare/best-audiobook-apps-2026/",
+    "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+   ]
+  },
+  "tinder": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "hinge": [
+    "https://www.swipestats.io/blog/hinge-x-vs-hinge-plus"
+   ],
+   "bumble": [
+    "https://www.datingapps.com/cost/bumble/"
+   ]
+  },
+  "hinge": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "coffee-meets-bagel": [
+    "https://www.datingapps.com/cost/tinder/"
+   ],
+   "bumble": [
+    "https://www.datingapps.com/cost/bumble/"
+   ]
+  },
+  "bumble": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "hinge": [
+    "https://www.swipestats.io/blog/hinge-x-vs-hinge-plus"
+   ],
+   "tinder": [
+    "https://www.datingapps.com/cost/tinder/"
+   ]
+  },
+  "grindr": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "scruff": [
+    "https://apps.apple.com/us/app/scruff-gay-dating-chat/id380015247"
+   ],
+   "feeld": [
+    "https://apps.apple.com/us/app/feeld-dating-for-the-curious/id887914690"
+   ]
+  },
+  "match": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "hinge": [
+    "https://www.swipestats.io/blog/hinge-x-vs-hinge-plus"
+   ],
+   "bumble": [
+    "https://www.datingapps.com/cost/bumble/"
+   ]
+  },
+  "coffee-meets-bagel": {
+   "okcupid": [
+    "https://apps.apple.com/us/app/okcupid-dating-date-singles/id338701294"
+   ],
+   "hinge": [
+    "https://www.swipestats.io/blog/hinge-x-vs-hinge-plus"
+   ],
+   "bumble": [
+    "https://www.datingapps.com/cost/bumble/"
+   ]
+  },
+  "x-premium": {
+   "bluesky": [
+    "https://apps.apple.com/us/app/bluesky-social/id6444370199"
+   ],
+   "threads": [
+    "https://apps.apple.com/us/app/threads/id6446901002"
+   ],
+   "mastodon": [
+    "https://apps.apple.com/us/app/mastodon/id1571998974"
+   ]
+  },
+  "linkedin-premium": {
+   "indeed": [
+    "https://apps.apple.com/us/app/indeed-job-search/id309735670"
+   ],
+   "glassdoor": [
+    "https://apps.apple.com/us/app/glassdoor-jobs-careers/id589698942"
+   ]
+  },
+  "reddit-premium": {
+   "brave-browser": [
+    "https://apps.apple.com/us/app/brave-browser-search-engine/id1052879175"
+   ],
+   "discord": [
+    "https://apps.apple.com/us/app/discord-talk-play-hang-out/id985746746"
+   ]
+  },
+  "discord-nitro": {
+   "telegram-premium": [
+    "https://apps.apple.com/us/app/telegram-messenger/id686449807"
+   ],
+   "slack": [
+    "https://apps.apple.com/us/app/slack/id618783545"
+   ]
+  },
+  "snapchat-plus": {
+   "instagram": [
+    "https://apps.apple.com/us/app/instagram/id389801252"
+   ],
+   "bereal": [
+    "https://apps.apple.com/us/app/bereal-photos-friends-daily/id1459645446"
+   ]
+  },
+  "meta-verified": {
+   "x-premium": [
+    "https://help.x.com/en/using-x/x-premium"
+   ],
+   "snapchat-plus": [
+    "https://accounts.snapchat.com/plus/plans"
+   ]
+  },
+  "telegram-premium": {
+   "signal": [
+    "https://apps.apple.com/us/app/signal-private-messenger/id874139669"
+   ],
+   "whatsapp": [
+    "https://apps.apple.com/us/app/whatsapp-messenger/id310633997"
+   ]
+  },
+  "patreon": {
+   "youtube": [
+    "https://apps.apple.com/us/app/youtube/id544007664"
+   ],
+   "ko-fi": [
+    "https://www.ruzuku.com/learn/articles/ko-fi-pricing"
+   ],
+   "substack": [
+    "https://apps.apple.com/us/app/substack/id1581650857"
+   ]
+  },
+  "substack": {
+   "feedly": [
+    "https://apps.apple.com/us/app/feedly-smart-news-reader/id396069556"
+   ],
+   "medium": [
+    "https://help.medium.com/hc/en-us/articles/115004545567-Become-a-Medium-Member"
+   ],
+   "patreon": [
+    "https://apps.apple.com/us/app/patreon/id1044456188"
+   ]
+  },
+  "twitch": {
+   "prime-video": [
+    "https://gaming.amazon.com"
+   ],
+   "youtube": [
+    "https://apps.apple.com/us/app/youtube/id544007664"
+   ],
+   "kick": [
+    "https://apps.apple.com/us/app/kick-live-streaming/id6446202561"
+   ]
+  },
+  "medium": {
+   "substack": [
+    "https://apps.apple.com/us/app/substack/id1581650857"
+   ],
+   "feedly": [
+    "https://apps.apple.com/us/app/feedly-smart-news-reader/id396069556"
+   ]
+  },
+  "ko-fi": {
+   "youtube": [
+    "https://apps.apple.com/us/app/youtube/id544007664"
+   ],
+   "patreon": [
+    "https://apps.apple.com/us/app/patreon/id1044456188"
+   ],
+   "buy-me-a-coffee": [
+    "https://apps.apple.com/us/app/buy-me-a-coffee/id1480229954"
+   ]
+  },
+  "betterhelp": {
+   "open-path-collective": [
+    "https://openpathcollective.org/pricing-and-eligibility-for-affordable-therapy/"
+   ],
+   "talkspace": [
+    "https://www.talkspace.com/mental-health-plans"
+   ],
+   "psychology-today-finder": [
+    "https://www.psychologytoday.com/us/therapists"
+   ]
+  },
+  "talkspace": {
+   "betterhelp": [
+    "https://www.betterhelp.com/faq/"
+   ],
+   "open-path-collective": [
+    "https://openpathcollective.org/pricing-and-eligibility-for-affordable-therapy/"
+   ],
+   "psychology-today-finder": [
+    "https://www.psychologytoday.com/us/therapists"
+   ]
+  },
+  "hims": {
+   "goodrx": [
+    "https://www.goodrx.com"
+   ],
+   "cost-plus-drugs": [
+    "https://www.costplusdrugs.com/"
+   ],
+   "hers": [
+    "https://www.forhers.com"
+   ]
+  },
+  "hers": {
+   "goodrx": [
+    "https://www.goodrx.com"
+   ],
+   "cost-plus-drugs": [
+    "https://www.costplusdrugs.com/"
+   ],
+   "hims": [
+    "https://www.hims.com"
+   ]
+  },
+  "one-medical": {
+   "amazon-prime": [
+    "https://www.onemedical.com/mediacenter/one-medical-amazon-prime-benefit/",
+    "https://www.amazon.com/gp/help/customer/display.html?nodeId=TjqvKqjxQH0HOams6s"
+   ],
+   "cvs-minuteclinic": [
+    "https://www.cvs.com/minuteclinic"
+   ]
+  },
+  "weight-watchers": {
+   "noom": [
+    "https://www.noom.com"
+   ],
+   "myfitnesspal": [
+    "https://apps.apple.com/us/app/myfitnesspal-calorie-counter/id341232718"
+   ]
+  },
+  "whoop": {
+   "oura": [
+    "https://ouraring.com"
+   ],
+   "apple-watch": [
+    "https://www.apple.com/watch/"
+   ],
+   "google-health-premium": [
+    "https://www.ghacks.net/2026/05/10/fitbit-app-becomes-google-health-on-may-19-with-annual-subscription-price-increase/"
+   ]
+  },
+  "oura": {
+   "whoop": [
+    "https://www.whoop.com/us/en/membership/"
+   ],
+   "apple-watch": [
+    "https://www.apple.com/watch/"
+   ],
+   "google-health-premium": [
+    "https://www.ghacks.net/2026/05/10/fitbit-app-becomes-google-health-on-may-19-with-annual-subscription-price-increase/"
+   ]
+  },
+  "strava": {
+   "nike-run-club": [
+    "https://apps.apple.com/us/app/nike-run-club-running-coach/id387771637"
+   ],
+   "apple-watch": [
+    "https://www.apple.com/watch/"
+   ],
+   "garmin-connect": [
+    "https://connect.garmin.com"
+   ]
+  },
+  "classpass": {
+   "nike-training-club": [
+    "https://apps.apple.com/us/app/nike-training-club/id301521403"
+   ],
+   "planet-fitness": [
+    "https://www.planetfitness.com"
+   ],
+   "peloton-app": [
+    "https://apps.apple.com/us/app/peloton-fitness-workouts/id792750948"
+   ]
+  },
+  "insight-timer": {
+   "calm": [
+    "https://apps.apple.com/us/app/calm/id571800810"
+   ],
+   "headspace": [
+    "https://apps.apple.com/us/app/headspace-sleep-meditation/id493145008"
+   ]
+  },
+  "waking-up": {
+   "insight-timer": [
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ],
+   "ten-percent-happier": [
+    "https://apps.apple.com/us/app/happier-meditation/id992210239"
+   ],
+   "calm": [
+    "https://apps.apple.com/us/app/calm/id571800810"
+   ]
+  },
+  "ten-percent-happier": {
+   "insight-timer": [
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ],
+   "waking-up": [
+    "https://apps.apple.com/app/id1307736395"
+   ],
+   "calm": [
+    "https://apps.apple.com/us/app/calm/id571800810"
+   ]
+  },
+  "balance": {
+   "insight-timer": [
+    "https://apps.apple.com/us/app/insight-timer-meditate-sleep/id337472899"
+   ],
+   "calm": [
+    "https://apps.apple.com/us/app/calm/id571800810"
+   ],
+   "headspace": [
+    "https://apps.apple.com/us/app/headspace-sleep-meditation/id493145008"
+   ]
+  },
+  "hellofresh": {
+   "home-chef": [
+    "https://support.homechef.com/hc/en-us/articles/210097763-How-much-does-Home-Chef-cost"
+   ],
+   "everyplate": [
+    "https://apps.apple.com/us/app/everyplate-cooking-simplified/id1471311837"
+   ],
+   "tasty": [
+    "https://apps.apple.com/us/app/tasty-recipes-cooking-videos/id1217456898"
+   ]
+  },
+  "factor": {
+   "cookunity": [
+    "https://apps.apple.com/us/app/cookunity-meals-by-top-chefs/id1103061273"
+   ],
+   "home-chef": [
+    "https://support.homechef.com/hc/en-us/articles/210097763-How-much-does-Home-Chef-cost"
+   ]
+  },
+  "home-chef": {
+   "hellofresh": [
+    "https://www.nerdwallet.com/finance/learn/how-much-does-hello-fresh-cost"
+   ],
+   "dinnerly": [
+    "https://apps.apple.com/us/app/dinnerly-meal-kit/id1415694682"
+   ],
+   "blue-apron": [
+    "https://apps.apple.com/us/app/blue-apron-meal-kit-delivery/id976642810"
+   ]
+  },
+  "blue-apron": {
+   "hellofresh": [
+    "https://www.nerdwallet.com/finance/learn/how-much-does-hello-fresh-cost"
+   ],
+   "home-chef": [
+    "https://support.homechef.com/hc/en-us/articles/210097763-How-much-does-Home-Chef-cost"
+   ],
+   "dinnerly": [
+    "https://apps.apple.com/us/app/dinnerly-meal-kit/id1415694682"
+   ]
+  },
+  "tubi": {
+   "pluto-tv": [
+    "https://pluto.tv"
+   ],
+   "kanopy": [
+    "https://www.kanopy.com"
+   ]
+  },
+  "pluto-tv": {
+   "tubi": [
+    "https://tubitv.com"
+   ],
+   "roku-channel": [
+    "https://therokuchannel.roku.com"
+   ]
+  },
+  "roku-channel": {
+   "tubi": [
+    "https://tubitv.com"
+   ],
+   "pluto-tv": [
+    "https://pluto.tv"
+   ]
+  },
+  "kanopy": {
+   "hoopla": [
+    "https://www.hoopladigital.com"
+   ],
+   "criterion-channel": [
+    "https://www.criterionchannel.com"
+   ]
+  },
+  "hoopla": {
+   "kanopy": [
+    "https://www.kanopy.com"
+   ],
+   "libby": [
+    "https://libbyapp.com"
+   ]
+  },
+  "shudder": {
+   "tubi": [
+    "https://tubitv.com"
+   ],
+   "amc-plus": [
+    "https://www.amcplus.com"
+   ],
+   "hoopla": [
+    "https://www.hoopladigital.com"
+   ]
+  },
+  "britbox": {
+   "acorn-tv": [
+    "https://acorn.tv"
+   ],
+   "roku-channel": [
+    "https://therokuchannel.roku.com"
+   ],
+   "hoopla": [
+    "https://www.hoopladigital.com"
+   ]
+  },
+  "acorn-tv": {
+   "britbox": [
+    "https://www.britbox.com/us/"
+   ],
+   "hoopla": [
+    "https://www.hoopladigital.com"
+   ],
+   "tubi": [
+    "https://tubitv.com"
+   ]
+  },
+  "mubi": {
+   "kanopy": [
+    "https://www.kanopy.com"
+   ],
+   "criterion-channel": [
+    "https://www.criterionchannel.com"
+   ]
+  },
+  "criterion-channel": {
+   "kanopy": [
+    "https://www.kanopy.com"
+   ],
+   "mubi": [
+    "https://mubi.com/en/us/memberships"
+   ]
+  },
+  "curiositystream": {
+   "magellantv": [
+    "https://www.magellantv.com"
+   ],
+   "kanopy": [
+    "https://www.kanopy.com"
+   ],
+   "tubi": [
+    "https://tubitv.com"
+   ]
+  },
+  "magellantv": {
+   "curiositystream": [
+    "https://curiositystream.com"
+   ],
+   "kanopy": [
+    "https://www.kanopy.com"
+   ]
+  },
+  "dropout": {
+   "youtube-premium": [
+    "https://www.youtube.com/premium"
+   ]
+  },
+  "hallmark-plus": {
+   "peacock": [
+    "https://www.peacocktv.com"
+   ],
+   "tubi": [
+    "https://tubitv.com"
+   ]
+  },
+  "ring-home": {
+   "eufy": [
+    "https://www.security.org/security-cameras/eufy/",
+    "https://www.eufy.com/local-secure-system"
+   ],
+   "wyze": [
+    "https://www.wyze.com/products/cam-plus",
+    "https://www.wyze.com/pages/cam-plus-lite"
+   ],
+   "adt": [
+    "https://www.security.org/home-security-systems/adt/"
+   ]
+  },
+  "nest-aware": {
+   "eufy": [
+    "https://www.security.org/security-cameras/eufy/"
+   ],
+   "wyze": [
+    "https://www.wyze.com/products/cam-plus"
+   ],
+   "ring-home": [
+    "https://ring.com/protect-plans"
+   ]
+  },
+  "simplisafe": {
+   "ring-home": [
+    "https://ring.com/protect-plans",
+    "https://www.security.org/home-security-systems/simplisafe/"
+   ],
+   "eufy": [
+    "https://www.security.org/security-cameras/eufy/"
+   ],
+   "adt": [
+    "https://www.security.org/home-security-systems/adt/"
+   ]
+  },
+  "arlo": {
+   "eufy": [
+    "https://www.security.org/security-cameras/eufy/"
+   ],
+   "wyze": [
+    "https://www.wyze.com/products/cam-plus"
+   ],
+   "ring-home": [
+    "https://ring.com/protect-plans"
+   ]
+  },
+  "mister-car-wash": {
+   "zips-car-wash": [
+    "https://zipscarwash.com/",
+    "https://mycarwashguide.com/zips-car-wash-prices/"
+   ],
+   "take-5-car-wash": [
+    "https://www.take5carwash.com/"
+   ]
+  },
+  "take-5-car-wash": {
+   "zips-car-wash": [
+    "https://zipscarwash.com/"
+   ],
+   "mister-car-wash": [
+    "https://mistercarwash.com/join-unlimited-wash-club/"
+   ]
+  },
+  "zips-car-wash": {
+   "mister-car-wash": [
+    "https://mistercarwash.com/join-unlimited-wash-club/"
+   ],
+   "take-5-car-wash": [
+    "https://www.take5carwash.com/"
+   ]
+  },
+  "tesla-premium-connectivity": {
+   "tesla-standard-connectivity": [
+    "https://www.notateslaapp.com/tesla-reference/551/what-is-tesla-premium-connectivity-what-is-included-and-what-is-not-how-much-does-it-cost"
+   ],
+   "onstar": [
+    "https://gmauthority.com/blog/2025/05/gm-revises-onstar-plans-and-pricing/"
+   ]
+  },
+  "onstar": {
+   "aaa": [
+    "https://www.ampauto.io/aaa-membership-cost-by-state"
+   ],
+   "tesla-premium-connectivity": [
+    "https://www.notateslaapp.com/tesla-reference/551/what-is-tesla-premium-connectivity-what-is-included-and-what-is-not-how-much-does-it-cost"
+   ]
+  },
+  "abcmouse": {
+   "khan-academy-kids": [
+    "https://www.khanacademy.org/kids/schools-districts",
+    "https://blog.khanacademy.org/best-early-learning-apps-for-kids/"
+   ],
+   "pbs-kids": [
+    "https://help.pbs.org/support/solutions/articles/12000078204-is-there-a-fee-to-download-and-use-the-pbs-kids-video-app-"
+   ],
+   "epic-books": [
+    "https://support.getepic.com/hc/en-us/articles/204259899-How-much-does-Epic-Family-cost"
+   ]
+  },
+  "epic-books": {
+   "khan-academy-kids": [
+    "https://www.khanacademy.org/kids/schools-districts"
+   ],
+   "pbs-kids": [
+    "https://help.pbs.org/support/solutions/articles/12000078204-is-there-a-fee-to-download-and-use-the-pbs-kids-video-app-"
+   ],
+   "abcmouse": [
+    "https://support.abcmouse.com/hc/en-us/articles/360048176173-Subscription-Pricing-Options-for-ABCmouse-Classic"
+   ]
+  },
+  "lingokids": {
+   "duolingo": [
+    "https://www.duolingo.com"
+   ],
+   "khan-academy-kids": [
+    "https://www.khanacademy.org/kids/schools-districts"
+   ]
+  },
+  "homer": {
+   "khan-academy-kids": [
+    "https://www.khanacademy.org/kids/schools-districts"
+   ],
+   "abcmouse": [
+    "https://support.abcmouse.com/hc/en-us/articles/360048176173-Subscription-Pricing-Options-for-ABCmouse-Classic"
+   ]
+  },
+  "costco": {
+   "sams-club": [
+    "https://www.samsclub.com/membership"
+   ],
+   "bjs": [
+    "https://www.bjs.com/membership/"
+   ]
+  },
+  "sams-club": {
+   "costco": [
+    "https://www.fool.com/investing/2026/01/16/costco-gold-star-members-upgrade-executive-3-perks/"
+   ],
+   "bjs": [
+    "https://www.bjs.com/membership/"
+   ],
+   "walmart-plus": [
+    "https://www.walmart.com/plus"
+   ]
+  },
+  "bjs": {
+   "costco": [
+    "https://www.fool.com/investing/2026/01/16/costco-gold-star-members-upgrade-executive-3-perks/"
+   ],
+   "sams-club": [
+    "https://www.samsclub.com/membership"
+   ]
+  },
+  "cvs-carepass": {
+   "cvs-extracare": [
+    "https://thekrazycouponlady.com/tips/couponing/cvs-carepass-program"
+   ],
+   "amazon-prime": [
+    "https://querysprout.com/what-is-cvs-carepass/"
+   ]
+  },
+  "target-circle-360": {
+   "target-circle": [
+    "https://www.target.com/help/articles/target-circle/about-target-circle-360"
+   ],
+   "amazon-prime": [
+    "https://www.target.com/help/articles/target-circle/about-target-circle-360"
+   ],
+   "walmart-plus": [
+    "https://www.walmart.com/plus"
+   ]
+  },
+  "ynab": {
+   "copilot-money": [
+    "https://copilot.money/pricing"
+   ],
+   "monarch-money": [
+    "https://www.monarch.com/pricing"
+   ],
+   "empower": [
+    "https://www.empower.com/tools"
+   ]
+  },
+  "copilot-money": {
+   "ynab": [
+    "https://www.ynab.com/pricing"
+   ],
+   "monarch-money": [
+    "https://www.monarch.com/pricing"
+   ],
+   "empower": [
+    "https://www.empower.com/tools"
+   ]
+  },
+  "monarch-money": {
+   "copilot-money": [
+    "https://copilot.money/pricing"
+   ],
+   "ynab": [
+    "https://www.ynab.com/pricing"
+   ],
+   "empower": [
+    "https://www.empower.com/tools"
+   ]
+  },
+  "rocket-money": {
+   "monarch-money": [
+    "https://www.monarch.com/pricing"
+   ],
+   "credit-karma": [
+    "https://www.creditkarma.com"
+   ],
+   "empower": [
+    "https://www.empower.com/tools"
+   ]
+  },
+  "quicken-simplifi": {
+   "monarch-money": [
+    "https://www.monarch.com/pricing"
+   ],
+   "empower": [
+    "https://www.empower.com/tools"
+   ],
+   "ynab": [
+    "https://www.ynab.com/pricing"
+   ]
+  },
+  "turbotax": {
+   "freetaxusa": [
+    "https://www.freetaxusa.com"
+   ],
+   "cash-app-taxes": [
+    "https://www.forbes.com/advisor/taxes/cash-app-taxes-review/"
+   ],
+   "irs-free-file": [
+    "https://www.irs.gov/filing/free-file-do-your-federal-taxes-for-free"
+   ]
+  },
+  "morningstar": {
+   "yahoo-finance": [
+    "https://finance.yahoo.com"
+   ],
+   "fidelity": [
+    "https://www.fidelity.com"
+   ]
+  },
+  "norton": {
+   "builtin-os-protection": [
+    "https://support.microsoft.com/en-us/windows/stay-protected-with-windows-security-2ae0363d-0ada-c064-8b56-6a39afb6a963"
+   ],
+   "bitdefender": [
+    "https://www.bitdefender.com/en-us/consumer/individual"
+   ],
+   "malwarebytes": [
+    "https://www.security.org/antivirus/malwarebytes/"
+   ]
+  },
+  "mcafee": {
+   "builtin-os-protection": [
+    "https://support.microsoft.com/en-us/windows/stay-protected-with-windows-security-2ae0363d-0ada-c064-8b56-6a39afb6a963"
+   ],
+   "bitdefender": [
+    "https://www.bitdefender.com/en-us/consumer/individual"
+   ],
+   "malwarebytes": [
+    "https://www.security.org/antivirus/malwarebytes/"
+   ]
+  },
+  "lifelock": {
+   "free-credit-freeze": [
+    "https://consumer.ftc.gov/articles/what-know-about-credit-freezes-and-fraud-alerts"
+   ],
+   "credit-karma": [
+    "https://www.creditkarma.com"
+   ],
+   "aura": [
+    "https://www.aura.com/pricing"
+   ]
+  },
+  "aura": {
+   "free-credit-freeze": [
+    "https://consumer.ftc.gov/articles/what-know-about-credit-freezes-and-fraud-alerts"
+   ],
+   "lifelock": [
+    "https://lifelock.norton.com/plans"
+   ],
+   "norton": [
+    "https://us.norton.com/norton-360"
+   ]
+  },
+  "bitdefender": {
+   "builtin-os-protection": [
+    "https://support.microsoft.com/en-us/windows/stay-protected-with-windows-security-2ae0363d-0ada-c064-8b56-6a39afb6a963"
+   ],
+   "malwarebytes": [
+    "https://www.security.org/antivirus/malwarebytes/"
+   ],
+   "norton": [
+    "https://us.norton.com/products"
+   ]
+  },
+  "deleteme": {
+   "incogni": [
+    "https://incogni.com/pricing"
+   ],
+   "ca-drop": [
+    "https://privacy.ca.gov/drop/personal-information-and-data-brokers/"
+   ]
+  },
+  "fastmail": {
+   "proton-mail": [
+    "https://proton.me/mail/pricing"
+   ],
+   "tuta": [
+    "https://tuta.com/pricing"
+   ],
+   "gmail": [
+    "https://mail.google.com"
+   ]
+  },
+  "proton-mail": {
+   "tuta": [
+    "https://tuta.com/pricing"
+   ],
+   "fastmail": [
+    "https://www.fastmail.com/pricing/"
+   ],
+   "icloud": [
+    "https://www.icloud.com/mail"
+   ]
+  },
+  "hey": {
+   "proton-mail": [
+    "https://proton.me/mail/pricing"
+   ],
+   "fastmail": [
+    "https://www.fastmail.com/pricing/"
+   ],
+   "tuta": [
+    "https://tuta.com/pricing"
+   ]
+  },
+  "tuta": {
+   "proton-mail": [
+    "https://proton.me/mail/pricing"
+   ],
+   "fastmail": [
+    "https://www.fastmail.com/pricing/"
+   ],
+   "gmail": [
+    "https://mail.google.com"
+   ]
+  },
+  "simplelogin": {
+   "proton-mail": [
+    "https://proton.me/mail/pricing"
+   ],
+   "firefox-relay": [
+    "https://relay.firefox.com/"
+   ],
+   "icloud": [
+    "https://support.apple.com/guide/icloud/what-you-can-do-with-icloud-and-hide-my-email-mme38e1602db/icloud"
+   ]
+  }
+ },
+ "suggestions": {
+  "fitness-nutrition": [
+   "https://apps.apple.com/us/app/myfitnesspal/id341232718",
+   "https://apps.apple.com/us/app/lose-it-calorie-counter/id297368629",
+   "https://apps.apple.com/us/app/cronometer-calorie-counter/id1145935738"
+  ],
+  "fitness-meditation-sleep": [
+   "https://apps.apple.com/us/app/sleep-cycle-sleep-tracker/id320606217",
+   "https://apps.apple.com/us/app/autosleep-track-sleep-on-watch/id1164801111",
+   "https://apps.apple.com/us/app/rise-sleep-tracker/id1453884781"
+  ],
+  "meditation-journaling": [
+   "https://apps.apple.com/us/app/day-one-daily-journal-diary/id1044867788",
+   "https://apps.apple.com/us/app/streaks/id963034692",
+   "https://apps.apple.com/us/app/finch-self-care-pet/id1528595748"
+  ],
+  "news-readlater": [
+   "https://apps.apple.com/us/app/matter-reading-app/id1501592184",
+   "https://apps.apple.com/us/app/readwise-reader/id1567599761"
+  ],
+  "audio-podcasts": [
+   "https://apps.apple.com/us/app/pocket-casts-podcast-player/id414834813",
+   "https://apps.apple.com/us/app/overcast/id888422857"
+  ],
+  "music-live-and-identify": [
+   "https://apps.apple.com/us/app/bandsintown-concerts/id471394851",
+   "https://apps.apple.com/us/app/shazam-find-music-concerts/id284993459"
+  ],
+  "multi-video-guide": [
+   "https://apps.apple.com/us/app/justwatch-movies-tv-shows/id979227482",
+   "https://apps.apple.com/us/app/reelgood-streaming-guide/id1031391869"
+  ],
+  "multi-video-watchlist": [
+   "https://apps.apple.com/us/app/letterboxd/id1054271011"
+  ],
+  "cloud-password-manager": [
+   "https://support.apple.com/en-us/120758",
+   "https://apps.apple.com/us/app/bitwarden-password-manager/id1137397744",
+   "https://apps.apple.com/us/app/1password-password-manager/id1511601750"
+  ],
+  "password-2fa-backup": [
+   "https://apps.apple.com/us/app/2fa-authenticator-2fas/id1217793794",
+   "https://apps.apple.com/us/app/ente-auth/id6444121398",
+   "https://apps.apple.com/us/app/backblaze/id628638330"
+  ],
+  "vpn-email-privacy": [
+   "https://apps.apple.com/us/app/simplelogin-email-alias/id1494359858",
+   "https://apps.apple.com/us/app/proton-mail-encrypted-email/id979659905"
+  ],
+  "ai-notes-knowledge": [
+   "https://apps.apple.com/us/app/obsidian-connected-notes/id1557175442",
+   "https://www.notion.com/pricing"
+  ],
+  "ai-voice-reading": [
+   "https://apps.apple.com/us/app/whisper-memos-speech-to-text/id6443658039",
+   "https://apps.apple.com/us/app/readwise/id1476885528"
+  ],
+  "devtools-workflow": [
+   "https://apps.apple.com/us/app/figma/id1152747299",
+   "https://apps.apple.com/us/app/better-stack-on-call/id6739978181"
+  ],
+  "learning-recall": [
+   "https://apps.apple.com/us/app/ankimobile-flashcards/id373493387",
+   "https://apps.apple.com/us/app/amazon-kindle/id302584613"
+  ],
+  "learning-summaries": [
+   "https://apps.apple.com/us/app/blinkist-book-summaries-daily/id568839295",
+   "https://apps.apple.com/us/app/shortform-daily-book-summaries/id1489472007"
+  ],
+  "delivery-grocery-list": [
+   "https://apps.apple.com/us/app/anylist-grocery-shopping-list/id522167641"
+  ],
+  "delivery-food-waste": [
+   "https://apps.apple.com/us/app/too-good-to-go-end-food-waste/id1060683933"
+  ],
+  "retail-price-tracking": [
+   "https://apps.apple.com/us/app/paypal-honey-coupons-rewards/id1358499588"
+  ],
+  "retail-order-tracking": [
+   "https://apps.apple.com/us/app/deliveries-a-package-tracker/id290986013"
+  ],
+  "telecom-speedtest-negotiate": [
+   "https://apps.apple.com/us/app/speedtest-by-ookla/id300704847"
+  ],
+  "many-subs-bundle-audit": [
+   "internal"
+  ],
+  "many-subs-budgeting": [
+   "https://apps.apple.com/us/app/copilot-track-budget-money/id1447330651",
+   "https://apps.apple.com/us/app/monarch-budget-track-money/id1459319842",
+   "https://apps.apple.com/us/app/ynab-you-need-a-budget/id1010865877"
+  ],
+  "creative-free-assets": [
+   "https://apps.apple.com/us/app/unsplash/id1290631746"
+  ],
+  "creative-editing-tools": [
+   "https://apps.apple.com/us/app/procreate/id425073498",
+   "https://apps.apple.com/us/app/affinity-photo-2-for-ipad/id1616823773"
+  ],
+  "audiobooks-library": [
+   "https://apps.apple.com/us/app/libby-the-library-app/id1076402606"
+  ],
+  "audiobooks-tracker": [
+   "https://apps.apple.com/us/app/storygraph-reading-tracker/id1570489264",
+   "https://apps.apple.com/us/app/goodreads-book-reviews/id355833469"
+  ],
+  "gaming-backlog": [
+   "https://apps.apple.com/us/app/gametrack/id1136800740"
+  ]
+ },
+ "updatedAt": "2026-09-11"
+}
