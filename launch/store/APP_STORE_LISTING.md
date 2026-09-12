@@ -36,7 +36,7 @@ GET YOUR MONEY BACK
 
 4. Fight the charge. Generate an EFTA/ROSCA-compliant dispute letter for silent auto-renewals, trial traps, and billing after you already cancelled. If the merchant won't refund, Phantom builds a chargeback packet with a Regulation E/Z script you can read to your bank.
 
-5. Don't get surprised twice. Price-hike and trial-end alerts, plus a reminder to re-scan your next statement. For 47 services, keep the sub and call in a retention discount instead.
+5. Don't get surprised twice. Price-hike and trial-end alerts, plus a reminder to re-scan your next statement. For 64 services Phantom has a researched, service-specific retention script, and a proven general one for everything else, so you can keep the subscription for less.
 
 PRIVATE BY DESIGN
 
@@ -49,7 +49,7 @@ Phantom has no servers of its own and no bank connection. Statements and cancel 
 PRICING
 
 Free — track up to 5 subscriptions and send 1 dispute letter a month.
-Phantom Pro — $3.99/month or $29.99/year (save 37%): unlimited subscriptions, unlimited dispute letters and chargeback packets, cancel checklists, the on-device evidence locker, every alert, and all 47 negotiation scripts.
+Phantom Pro — $3.99/month or $29.99/year (save 37%): unlimited subscriptions, unlimited dispute letters and chargeback packets, cancel checklists, the on-device evidence locker, every alert, and the complete negotiation-script catalog.
 
 Pro pays for itself the first time it catches a charge you would have missed.
 
@@ -72,7 +72,7 @@ Cancel forgotten charges without a bank login. Keep proof on your iPhone. If the
 ## Keywords (max 100 chars, comma-separated, no spaces after commas)
 
 ```
-subscription,manage,cancel,save,money,bank,plaid,refund,bill,track,budget,spending,unsubscribe,zombie
+subscription,manage,cancel,save,money,refund,bill,track,budget,spending,unsubscribe,dispute,zombie
 ```
 
 ---
@@ -112,7 +112,7 @@ https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 | Field | Value |
 |---|---|
 | Sign-in required | ❌ No — Sign in with Apple is optional (step 3 of onboarding has "Continue without an account"); demo data path available |
-| Demo account | N/A — reviewer uses Plaid sandbox: First Platypus Bank / user_good / pass_good |
+| Demo account | N/A — no account or bank connection is required; use “Browse with sample data” during onboarding |
 | Notes for reviewer | See below |
 
 ### Notes for reviewer
@@ -187,15 +187,15 @@ deletion (Settings → Account → Delete account & data) removes device
 above; full source: github.com/Kyle-zhai/Phantom
 
 Thanks!
-[Your name]
+Yinan Zhai
 ```
 
 | Field | Value |
 |---|---|
-| First name | **[Your name]** |
-| Last name | — |
-| Phone | **[+1 ...]** |
-| Email | **[yn.zhai0205@gmail.com]** |
+| First name | **Yinan** |
+| Last name | **Zhai** |
+| Phone | **REQUIRED — enter the reachable phone number for App Review before submission** |
+| Email | **yn.zhai0205@gmail.com** |
 
 ---
 

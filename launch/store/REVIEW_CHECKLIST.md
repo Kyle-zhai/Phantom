@@ -11,8 +11,8 @@ Common rejection reasons for finance apps, mapped to the actual code in this rep
 | **3.1.3(b)** — Reader Apps exception N/A | N/A | We are not a reader app — IAP is the only way to upgrade. ✅ |
 | **4.2** — Minimum functionality | Low | App offers core value (subscription scan, score, dispute letter) free without Pro. ✅ |
 | **5.1.1(i)** — Data collection disclosed | High | App Store Privacy Labels must match the Privacy Policy exactly. Use the mapping below. |
-| **5.1.1(v)** — Account deletion in-app | **Very high** | Settings → Account → "Delete account" with confirmation dialog. Calls `/account/delete` backend endpoint + `Plaid /item/remove`. ✅ Already implemented. |
-| **5.1.2** — Sharing data with third parties | High | Privacy Policy explicitly names every recipient (Plaid, Vercel, Apple). Privacy Labels section "Data Linked to You" needs to mirror this. |
+| **5.1.1(v)** — Account deletion in-app | **Very high** | Settings → Account → "Delete account & data" with confirmation. Deletes local SwiftData and the user's private CloudKit records, then signs out. ✅ Implemented. |
+| **5.1.2** — Sharing data with third parties | High | Privacy Policy names Apple (IAP, Sign in with Apple, private CloudKit) and GitHub (public catalog hosting). Phantom has no backend, advertising, or analytics SDK. |
 | **5.1.4** — Children | Low | Age gate 18+ via app icon settings rating (4+ in the App Store but ToS limits to 18+). |
 
 ---
@@ -23,13 +23,13 @@ Apple asks you to declare each data category. Fill in App Store Connect → App 
 
 | Category | Used? | Linked to user? | Used for tracking? | Purposes |
 |---|---|---|---|---|
-| **Financial Info — Other Financial Info** (transactions) | Yes | Yes | No | App Functionality |
-| **Contact Info — Email Address** | Yes | Yes | No | App Functionality, Customer Support |
-| **Contact Info — Name** | Yes | Yes | No | App Functionality |
-| **Identifiers — User ID** | Yes | Yes | No | App Functionality |
-| **Usage Data — Product Interaction** | Yes | **No** (anonymized) | No | Analytics |
-| **Diagnostics — Crash Data** | Yes | **No** | No | App Functionality |
-| **Diagnostics — Performance Data** | Yes | **No** | No | App Functionality |
+| **Financial Info — Other Financial Info** (transactions) | No | — | No | Processed on-device or in the user's private iCloud; not collected by Phantom |
+| **Contact Info — Email Address** | No | — | No | Optional Sign in with Apple value stays on-device/private iCloud |
+| **Contact Info — Name** | No | — | No | Stored on-device/private iCloud only |
+| **Identifiers — User ID** | No | — | No | Apple sign-in identifier is not sent to a Phantom server |
+| **Usage Data — Product Interaction** | No | — | No | No analytics SDK |
+| **Diagnostics — Crash Data** | No | — | No | No third-party crash SDK |
+| **Diagnostics — Performance Data** | No | — | No | No third-party performance SDK |
 
 Categories we do **NOT** collect (be explicit — selecting "Data Not Collected" reduces friction):
 
@@ -57,9 +57,9 @@ Even though we do not track, we must declare it:
 
 ## Other common rejection patterns
 
-### 1. Plaid Link inside webview / external browser
+### 1. No bank-link flow
 
-❌ **Don't** open Plaid in a Safari view. Plaid Link's iOS SDK opens it natively, which is what we use (LinkKit framework). ✅
+✅ Phantom does not connect to banks or include a bank-link SDK. Users add data manually or explicitly import a screenshot, statement image, or CSV file. OCR runs on-device.
 
 ### 2. Dispute letters that imply legal advice
 
@@ -87,13 +87,13 @@ Even though we do not track, we must declare it:
 
 ✅ Top right of `PaywallView`. Required by guideline 3.1.1.
 
-### 7. Plaid attribution
+### 7. Import disclosure
 
-When Plaid Link is presented, Plaid's own UI handles attribution. No extra disclosure is needed beyond what we already say in the onboarding screen ("Read-only via Plaid…").
+✅ Onboarding and import screens state that Phantom never asks for bank credentials and that Apple Vision OCR runs on-device.
 
 ### 8. Demo data + bank-connect optional
 
-✅ Users can skip Plaid and use demo data — App Review **strongly** prefers a no-signup path. We have this.
+✅ Users can continue without an account and use sample data, so App Review can inspect all core flows without credentials or personal documents.
 
 ---
 
@@ -124,7 +124,7 @@ Should output `** BUILD SUCCEEDED **`. Then run smoke flows:
 ## TestFlight before submission
 
 Distribute via TestFlight to ≥ 5 testers (yourself + 4 others) for 2–7 days:
-- Real-bank Plaid connection (production env)
+- Screenshot/CSV import using non-sensitive test data
 - StoreKit purchase ($0.99 sandbox account)
 - Real dispute email send
 - Sign-out, sign-in across devices

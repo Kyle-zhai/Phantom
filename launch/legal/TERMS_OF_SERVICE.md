@@ -1,9 +1,7 @@
 # Phantom Terms of Service
 
-**Effective date: [DATE OF FIRST RELEASE]**
-**Last updated: [DATE]**
-
-> ⚠️ **Template — replace bracketed items before publishing.** Have a US-licensed attorney review before public release.
+**Effective date: 2026-05-14**
+**Last updated: 2026-09-11**
 
 These Terms of Service (the "**Terms**") form a binding contract between you and **Yinan Zhai** ("**Phantom**", "**we**", "**us**", or "**our**") governing your use of the **Phantom** iOS application and any related services (collectively, the "**Service**").
 
@@ -21,7 +19,7 @@ You must be at least 18 years old and a US resident to use Phantom. By using the
 
 Phantom is a **subscription management** tool. We help you:
 
-- Identify recurring charges in your bank accounts (via Plaid).
+- Identify recurring charges from screenshots, statement images, CSV files, or manual entry.
 - Score those subscriptions on usage signals.
 - Draft dispute letters in your name that you may send to merchants.
 - Receive notifications about price changes and trial endings.
@@ -42,20 +40,17 @@ We do **not** make subscription cancellation decisions for you. We do **not** se
 ## 3. Your account
 
 - You are responsible for all activity that occurs under your account.
-- Keep your credentials confidential. Notify us immediately at **[yn.zhai0205@gmail.com]** if you suspect unauthorized access.
+- Keep your device and Apple ID credentials confidential. Notify us immediately at **yn.zhai0205@gmail.com** if you suspect unauthorized access.
 - You may not transfer your account or share login credentials.
 - We may suspend or terminate your account if you violate these Terms, with notice except where notice is impractical (e.g., investigation of fraud).
 
 ---
 
-## 4. Bank connection via Plaid
+## 4. Local data and optional iCloud sync
 
-To use most of Phantom's features, you connect your bank account using **Plaid Inc.**'s service. By doing so:
+Phantom does not connect to your bank and never asks for bank credentials. You add subscriptions manually or explicitly import screenshots, statement images, or CSV files. Image text recognition runs on-device with Apple Vision.
 
-- You authorize Plaid to share read-only transaction data with us.
-- You acknowledge Plaid's separate [Privacy Policy](https://plaid.com/legal/#consumers) and [End User Privacy Policy](https://plaid.com/legal/).
-- You may revoke this authorization at any time in **Settings → Account → Disconnect bank**.
-- We are not responsible for outages, errors, or inaccuracies in data provided by Plaid or your bank.
+Without Sign in with Apple, your data stays in Phantom's local app container. If you choose Sign in with Apple, Phantom syncs supported app data through your private CloudKit database so it is available on your devices. Phantom does not operate a backend that receives this data.
 
 ---
 
@@ -94,7 +89,7 @@ You agree **not** to:
 - Use the Service for any illegal purpose, including filing fraudulent dispute letters.
 - Misrepresent facts in dispute letters generated through Phantom.
 - Reverse-engineer, decompile, or attempt to extract source code (except as permitted by law).
-- Scrape, automate, or attempt to overload our servers.
+- Automate or interfere with the Service in a way that harms its operation or third-party services it accesses.
 - Use Phantom to access accounts that are not your own.
 - Resell, sublicense, or commercially exploit the Service.
 
@@ -125,7 +120,7 @@ You grant us a **non-exclusive, royalty-free, worldwide license** to use the con
 
 THE SERVICE IS PROVIDED **"AS IS"** AND **"AS AVAILABLE"**. TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND ACCURACY OF DATA.
 
-We do not warrant that the Service will be uninterrupted, error-free, or that transaction data from Plaid will be complete or current.
+We do not warrant that the Service will be uninterrupted or error-free, or that text extracted from imported images or data supplied by you will be complete or accurate.
 
 ---
 
@@ -153,7 +148,7 @@ You may terminate by deleting your account. We may terminate or suspend for caus
 
 These Terms are governed by the laws of **Delaware** without regard to conflict-of-laws principles.
 
-**Binding arbitration**: any dispute will be resolved by binding arbitration under the AAA Consumer Arbitration Rules, on an individual basis (no class actions, no consolidated proceedings). You may opt out within 30 days of first creating an account by emailing **[yn.zhai0205@gmail.com]** with the subject "Arbitration opt-out".
+**Binding arbitration**: any dispute will be resolved by binding arbitration under the AAA Consumer Arbitration Rules, on an individual basis (no class actions, no consolidated proceedings). You may opt out within 30 days of first creating an account by emailing **yn.zhai0205@gmail.com** with the subject "Arbitration opt-out".
 
 Small-claims court is permitted for individual claims within its jurisdiction.
 
@@ -169,8 +164,8 @@ We may update these Terms. Material changes will be notified at least 30 days in
 
 **Yinan Zhai**
 **Address available on request**
-Email: **[yn.zhai0205@gmail.com]**
-Legal: **[yn.zhai0205@gmail.com]**
+Email: **yn.zhai0205@gmail.com**
+Legal: **yn.zhai0205@gmail.com**
 
 ---
 
