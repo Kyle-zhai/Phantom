@@ -3,17 +3,14 @@ import SwiftUI
 struct SubscriptionDetailView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.scenePhase) private var scenePhase
     let subId: String
 
     @State private var showDispute = false
     @State private var goNegotiate = false
-    @State private var showCancelConfirm = false
+    @State private var showCancelFlow = false
+    @State private var showChargeback = false
     @State private var showDeleteConfirm = false
-    /// Set when we send the user to the vendor's cancel page; on return to the
-    /// app we ask whether it worked.
-    @State private var awaitingCancelReturn = false
-    @State private var showReturnConfirm = false
+    @State private var showPaywall = false
 
     private var sub: Subscription? {
         store.subscription(byId: subId)
@@ -40,6 +37,21 @@ struct SubscriptionDetailView: View {
             DisputeLetterView(subId: subId)
                 .environment(store)
         }
+        .sheet(isPresented: $showCancelFlow) {
+            CancelFlowView(subId: subId)
+                .environment(store)
+        }
+        .sheet(isPresented: $showChargeback) {
+            ChargebackGuideView(subId: subId)
+                .environment(store)
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environment(store)
+        }
+        .onAppear { consumePendingDispute() }
+        .onChange(of: DeepLink.shared.pendingDisputeId) { _, _ in
+            consumePendingDispute()
+        }
         .confirmationDialog("Delete this subscription?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 if let sub { store.removeSubscription(sub.id) }
@@ -49,64 +61,17 @@ struct SubscriptionDetailView: View {
         } message: {
             Text("Removes \(sub?.name ?? "this subscription") from Phantom. It will reappear if Phantom detects it again on a future import. This does NOT cancel the underlying subscription.")
         }
-        .confirmationDialog("Cancel \(sub?.name ?? "this subscription")?", isPresented: $showCancelConfirm, titleVisibility: .visible) {
-            if let sub {
-                let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                // Only offer "open" when there's actually a URL/dialer to open.
-                // In-person / certified-letter vendors (url == nil) get instructions
-                // via the message + the manual "I've already cancelled it" action.
-                if path.url != nil {
-                    Button(path.isAppleManaged ? "Open iOS Subscriptions" : "Open cancel page") {
-                        if openCancelPath(path) {
-                            awaitingCancelReturn = true
-                        }
-                    }
-                }
-                Button("I've already cancelled it") {
-                    store.confirmCancellation(subId)
-                    dismiss()
-                }
-                Button("Keep it", role: .cancel) {}
-            }
-        } message: {
-            if let sub {
-                let path = CancellationRegistry.path(forSubscriptionId: sub.id, fallbackName: sub.name)
-                Text("Saves \(fmtUSD(sub.monthlyAmount)) per month.\n\n\(path.hint ?? "We'll open \(sub.name)'s official cancel page. Come back when you're done and we'll confirm it.")")
-            }
-        }
-        .confirmationDialog("Did the \(sub?.name ?? "") cancellation go through?", isPresented: $showReturnConfirm, titleVisibility: .visible) {
-            Button("Yes — it's cancelled") {
-                store.confirmCancellation(subId)
-                dismiss()
-            }
-            Button("It didn't work — dispute it") {
-                showDispute = true
-            }
-            Button("Still deciding", role: .cancel) {}
-        } message: {
-            Text("Vendors don't always stop on the first try. If you get charged again, a dispute letter gets your money back — and Phantom will remind you to re-scan your next statement to confirm.")
-        }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .active && awaitingCancelReturn {
-                awaitingCancelReturn = false
-                showReturnConfirm = true
-            }
-        }
     }
 
-    /// Opens the cancel URL if there is one. Returns whether we actually launched
-    /// something — the caller only arms the "did it go through?" return prompt when
-    /// an external app (Safari/dialer/iOS Settings) was opened.
-    @discardableResult
-    private func openCancelPath(_ path: CancellationRegistry.CancelPath) -> Bool {
-        guard let url = path.url else { return false }
-        UIApplication.shared.open(url, options: [:]) { _ in }
-        return true
+    private func consumePendingDispute() {
+        guard DeepLink.shared.pendingDisputeId == subId else { return }
+        DeepLink.shared.pendingDisputeId = nil
+        showDispute = true
     }
 
     @ViewBuilder
     private func content(for sub: Subscription) -> some View {
-        let breakdown = ZombieScore.compute(sub)
+        let breakdown = store.breakdown(for: sub.id) ?? ZombieScore.compute(sub)
         let tier = ZombieScore.tier(for: breakdown.score)
         let monthly = sub.monthlyAmount
         let yearly = sub.yearlyAmount
@@ -176,36 +141,28 @@ struct SubscriptionDetailView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 12) {
-                    SectionHeader("Why this score")
+                    SectionHeader("Why this score", caption: breakdown.usageKnown
+                        ? "Full weighting — real usage data is available."
+                        : "Weighted over the signals Phantom has for an imported charge.")
                     VStack(spacing: 0) {
-                        BreakdownRow(label: "Last opened",
-                                     value: sub.lastUsedAt != nil ? "\(since)d ago" : "Never",
-                                     weight: "35%", score: breakdown.recencyOfLastUse)
-                        DividerH()
-                        BreakdownRow(label: "Use vs price",
-                                     value: "\(sub.sessionsLast30d) sessions / 30d",
-                                     weight: "25%", score: breakdown.usageVsPrice)
-                        DividerH()
-                        BreakdownRow(label: "Overlap",
-                                     value: sub.hasOverlapWith.isEmpty ? "None detected" : "\(sub.hasOverlapWith.count) similar subs",
-                                     weight: "20%", score: breakdown.overlap)
-                        DividerH()
-                        BreakdownRow(label: "Your rating",
-                                     value: sub.userRating.map { "\($0)/5" } ?? "Not rated",
-                                     weight: "15%", score: breakdown.userRating)
-                        DividerH()
-                        BreakdownRow(label: "Vs market",
-                                     value: sub.marketAverage > 0
-                                        ? (monthly > sub.marketAverage
-                                            ? "+\(fmtUSD(monthly - sub.marketAverage)) above avg"
-                                            : "At or below market")
-                                        : "—",
-                                     weight: "5%", score: breakdown.priceVsMarket)
+                        let factors = ScoreFactor.allCases.filter { breakdown.weight($0) > 0 }
+                        ForEach(Array(factors.enumerated()), id: \.element) { i, factor in
+                            if i > 0 { DividerH() }
+                            BreakdownRow(
+                                label: factor.label,
+                                value: factorValueText(factor, sub: sub, breakdown: breakdown, since: since),
+                                weight: "\(Int((breakdown.weight(factor) * 100).rounded()))%",
+                                score: breakdown.value(factor)
+                            )
+                        }
                     }
                     .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
                     .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
                 }
                 .padding(.top, 28)
+
+                coverageSection(for: sub)
+                cheaperSection(for: sub)
 
                 // Let the user supply the single strongest score signal we can
                 // collect on-device. Two taps here move a flat import into a real
@@ -273,7 +230,7 @@ struct SubscriptionDetailView: View {
                 VStack(spacing: 12) {
                     if !cancelled {
                         PrimaryButton("Cancel — save \(fmtUSD(monthly))/mo", variant: .danger) {
-                            showCancelConfirm = true
+                            showCancelFlow = true
                         } leading: {
                             Image(systemName: "xmark.circle.fill")
                         }
@@ -300,13 +257,20 @@ struct SubscriptionDetailView: View {
                         }
                         .padding(16)
                         .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+                        EvidenceLockerView(subId: subId)
+                            .padding(.top, 8)
                         SavingsShareButton(amountYearly: sub.yearlyAmount, kind: .saved)
-                        PrimaryButton("Undo cancel", variant: .secondary) { store.reactivate(subId) }
-                        PrimaryButton("Charged after cancelling? Dispute it", variant: .ghost) {
+                        PrimaryButton("Charged after cancelling? Dispute it", variant: .secondary) {
                             showDispute = true
                         } leading: {
                             Image(systemName: "envelope")
                         }
+                        PrimaryButton("If they ignore you — chargeback packet", variant: .ghost) {
+                            showChargeback = true
+                        } leading: {
+                            Image(systemName: "creditcard")
+                        }
+                        PrimaryButton("Undo cancel", variant: .ghost) { store.reactivate(subId) }
                     }
 
                     // Always-available "remove from Phantom" — separate from the
@@ -332,6 +296,196 @@ struct SubscriptionDetailView: View {
                 .padding(.bottom, 30)
             }
             .padding(.horizontal, 20)
+        }
+    }
+
+    private func factorValueText(_ factor: ScoreFactor, sub: Subscription, breakdown: ScoreBreakdown, since: Int) -> String {
+        switch factor {
+        case .recency: return sub.lastUsedAt != nil ? "\(since)d ago" : "Never"
+        case .usage: return "\(sub.sessionsLast30d) sessions / 30d"
+        case .overlap:
+            let n = sub.hasOverlapWith.count
+            return n == 0 ? "No duplicates" : "\(n) other \(sub.kind.label.lowercased()) sub\(n == 1 ? "" : "s")"
+        case .rating: return sub.userRating.map { "\($0)/5" } ?? "Not rated"
+        case .price:
+            if let d = store.downgrade(for: sub) {
+                return "\(fmtUSD(d.cheaper.priceMonthly)) tier exists"
+            }
+            if sub.marketAverage > 0 {
+                return sub.monthlyAmount > sub.marketAverage ? "+\(fmtUSD(sub.monthlyAmount - sub.marketAverage)) above avg" : "At or below market"
+            }
+            return "vs similar services"
+        case .coverage: return store.coverageHit(for: sub.id).map { "In \($0.bundleName)" } ?? "—"
+        case .hike: return sub.hasPriceHike.map { "\(fmtUSD($0.from)) → \(fmtUSD($0.to))" } ?? "—"
+        }
+    }
+
+    /// "You already pay for this" — the first finding is free, the rest are Pro.
+    @ViewBuilder
+    private func coverageSection(for sub: Subscription) -> some View {
+        if let hit = store.coverageHit(for: sub.id) {
+            if let visible = store.visibleCoverageHit(for: sub.id) {
+                VStack(alignment: .leading, spacing: 12) {
+                    SectionHeader("Already covered", caption: visible.level.label)
+                    Card(background: Palette.successSoft, borderColor: Palette.successSoft) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "checkmark.seal.fill").foregroundStyle(Palette.success).font(.system(size: 20))
+                                Text(visible.headline(subName: sub.name))
+                                    .font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            if let note = visible.note, !note.isEmpty {
+                                Text(note).font(AppFont.small).foregroundStyle(Palette.mute)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            if visible.inferred {
+                                Text("Detected from your own imports. Confirm the exact plan in Settings › What you already have.")
+                                    .font(AppFont.small).foregroundStyle(Palette.mute2)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            Text(visible.level == .discounted && visible.inferred
+                                 ? "Up to \(fmtUSD(visible.valueYearly)) a year if your plan includes it."
+                                 : "Worth \(fmtUSD(visible.valueYearly)) a year.")
+                                .font(AppFont.h3).foregroundStyle(Palette.keepFg).padding(.top, 4)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                .padding(.top, 28)
+            } else {
+                VStack(alignment: .leading, spacing: 12) {
+                    SectionHeader("Already covered?")
+                    ProLockOverlay(
+                        title: "Something you already pay for may include \(sub.name)",
+                        subtitle: "Worth about \(fmtUSD(hit.valueYearly)) a year. Free shows the single biggest finding; Pro shows every one.",
+                        showPaywall: $showPaywall
+                    )
+                }
+                .padding(.top, 28)
+            }
+        }
+    }
+
+    /// Cheaper tier / pause / like-for-like alternatives. Pro; free sees the
+    /// headline saving.
+    @ViewBuilder
+    private func cheaperSection(for sub: Subscription) -> some View {
+        let downgrade = store.downgrade(for: sub)
+        let alternatives = store.alternatives(for: sub)
+        let pause = store.catalog.pause(for: sub)
+        if sub.kind == .platformBilled || sub.billedVia == .apple {
+            VStack(alignment: .leading, spacing: 12) {
+                SectionHeader("Billed through the App Store",
+                              caption: sub.kind == .platformBilled
+                                ? "The statement only shows the biller, not the app. Scan your Apple subscriptions list to name it."
+                                : "\(sub.name) is on your Apple subscriptions list.")
+                Card {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(sub.kind == .platformBilled
+                             ? "Open Settings › Subscriptions to see which app this is, cancel it there, or ask Apple for a refund — Apple, not the app maker, handles both."
+                             : "Cancel it in Settings › Subscriptions, or ask Apple for a refund — Apple handles both, not \(sub.name).")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                        HStack(spacing: 10) {
+                            Link(destination: URL(string: "https://apps.apple.com/account/subscriptions")!) {
+                                Text("Apple subscriptions").font(AppFont.smallB)
+                                    .foregroundStyle(Palette.white)
+                                    .padding(.horizontal, 14).padding(.vertical, 9)
+                                    .background(Palette.ink, in: Capsule())
+                            }
+                            Link(destination: URL(string: "https://reportaproblem.apple.com")!) {
+                                Text("Request a refund").font(AppFont.smallB)
+                                    .foregroundStyle(Palette.ink)
+                                    .padding(.horizontal, 14).padding(.vertical, 9)
+                                    .background(Palette.surface, in: Capsule())
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .padding(.top, 28)
+        }
+        if sub.kind != .platformBilled && (downgrade != nil || !alternatives.isEmpty) {
+            VStack(alignment: .leading, spacing: 12) {
+                SectionHeader("Keep it for less", caption: "Same service, cheaper plan — or a like-for-like swap. Phantom takes no commission.")
+                if store.isPro {
+                    if let d = downgrade {
+                        Card {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("You look to be on \(d.current.name) at \(fmtUSD(d.current.priceMonthly))/mo.")
+                                    .font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Text("\(d.cheaper.name) is \(fmtUSD(d.cheaper.priceMonthly))/mo" + (d.cheaper.note.map { " — \($0)" } ?? ""))
+                                    .font(AppFont.small).foregroundStyle(Palette.mute)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Text("Save \(fmtUSD(d.savesYearly)) a year")
+                                    .font(AppFont.h3).foregroundStyle(Palette.keepFg)
+                                if let pause, pause.supported, let note = pause.note {
+                                    Text("Or pause: " + note).font(AppFont.small).foregroundStyle(Palette.mute)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    } else if let pause, pause.supported, let note = pause.note {
+                        Card {
+                            Text("Pause instead of cancelling: " + note)
+                                .font(AppFont.small).foregroundStyle(Palette.mute)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    if !alternatives.isEmpty {
+                        VStack(spacing: 0) {
+                            ForEach(Array(alternatives.enumerated()), id: \.element) { i, alt in
+                                if i > 0 { DividerH() }
+                                HStack(alignment: .top, spacing: 12) {
+                                    Avatar(label: alt.name, subscriptionId: alt.brandId, size: 36)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        HStack {
+                                            Text(alt.name).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                            Spacer()
+                                            if let p = alt.priceMonthly {
+                                                Text(p == 0 ? "Free" : "\(fmtUSD(p))/mo").font(AppFont.smallB).foregroundStyle(Palette.ink)
+                                            }
+                                        }
+                                        if let why = alt.why {
+                                            Text(why).font(AppFont.small).foregroundStyle(Palette.mute)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                        }
+                                    }
+                                }
+                                .padding(14)
+                            }
+                        }
+                        .background(Palette.white, in: RoundedRectangle(cornerRadius: Radius.md))
+                        .overlay(RoundedRectangle(cornerRadius: Radius.md).stroke(Palette.border, lineWidth: 1))
+                    }
+                } else {
+                    ProLockOverlay(
+                        title: downgrade.map { "A cheaper \(sub.name) plan could save \(fmtUSD($0.savesYearly)) a year" }
+                            ?? "\(alternatives.count) like-for-like alternative\(alternatives.count == 1 ? "" : "s") found",
+                        subtitle: "Pro shows the exact plan to switch to, pause options, and alternatives at the same or lower price.",
+                        showPaywall: $showPaywall
+                    )
+                }
+                if sub.kind == .video {
+                    Link(destination: URL(string: "https://www.justwatch.com/us")!) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "tv")
+                            Text("See what's streaming where (JustWatch)").font(AppFont.smallB)
+                            Spacer()
+                            Image(systemName: "arrow.up.right").font(.system(size: 12, weight: .semibold))
+                        }
+                        .foregroundStyle(Palette.ink)
+                        .padding(14)
+                        .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.md))
+                    }
+                }
+            }
+            .padding(.top, 28)
         }
     }
 

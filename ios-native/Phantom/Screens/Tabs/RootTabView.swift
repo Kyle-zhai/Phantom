@@ -3,13 +3,15 @@ import SwiftUI
 struct RootTabView: View {
     @Environment(AppStore.self) private var store
     @State private var deepLink = DeepLink.shared
+    @State private var showImport = false
 
     private static func computeInitialTab() -> Int {
         #if DEBUG
         let args = ProcessInfo.processInfo.arguments
         if args.contains("--tab-alerts") { return 1 }
         if args.contains("--tab-negotiate") { return 2 }
-        if args.contains("--tab-settings") { return 3 }
+        if args.contains("--tab-foryou") || args.contains("--tab-picks") { return 3 }
+        if args.contains("--tab-settings") { return 4 }
         #endif
         return 0
     }
@@ -26,8 +28,13 @@ struct RootTabView: View {
             NavigationStack { NegotiateView() }
                 .tag(2)
                 .tabItem { Label("Negotiate", systemImage: "bubble.left") }
-            NavigationStack { SettingsView() }
+            // The public Picks leaderboard (Screens/Picks) is parked; this
+            // slot is the on-device "For you" recommendations page.
+            NavigationStack { ForYouView() }
                 .tag(3)
+                .tabItem { Label("For you", systemImage: "sparkles") }
+            NavigationStack { SettingsView() }
+                .tag(4)
                 .tabItem { Label("Settings", systemImage: "person") }
         }
         .tint(Palette.ink)
@@ -35,17 +42,21 @@ struct RootTabView: View {
             if store.selectedTab == 0 {
                 store.selectedTab = Self.computeInitialTab()
             }
-            // On a cold launch from a notification tap, AppDelegate may set
-            // pendingSubId before this observer exists. onChange won't fire for a
-            // value already present, so consume it here too.
             consumeDeepLink(deepLink.pendingSubId)
             consumeRadar(deepLink.pendingRadar)
+            consumeImport(deepLink.pendingImport)
         }
         .onChange(of: deepLink.pendingSubId) { _, id in
             consumeDeepLink(id)
         }
         .onChange(of: deepLink.pendingRadar) { _, flag in
             consumeRadar(flag)
+        }
+        .onChange(of: deepLink.pendingImport) { _, flag in
+            consumeImport(flag)
+        }
+        .sheet(isPresented: $showImport) {
+            ImportScreenshotView().environment(store)
         }
     }
 
@@ -55,11 +66,16 @@ struct RootTabView: View {
         deepLink.pendingSubId = nil
     }
 
-    /// A tab-level notification target (the rating re-engagement nudge) just
-    /// wants Radar, where the rate prompt lives — not a specific subscription.
     private func consumeRadar(_ flag: Bool) {
         guard flag else { return }
         store.selectedTab = 0
         deepLink.pendingRadar = false
+    }
+
+    private func consumeImport(_ flag: Bool) {
+        guard flag else { return }
+        store.selectedTab = 0
+        deepLink.pendingImport = false
+        showImport = true
     }
 }

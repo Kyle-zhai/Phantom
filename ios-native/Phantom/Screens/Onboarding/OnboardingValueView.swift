@@ -8,14 +8,14 @@ private struct ValueItem: Identifiable {
 }
 
 private let items: [ValueItem] = [
-    ValueItem(icon: "dot.radiowaves.left.and.right", title: "Subscription Radar",
-             body: "We scan every recurring charge — Netflix, Hulu, that gym you forgot about."),
-    ValueItem(icon: "waveform.path.ecg", title: "Zombie Score",
-             body: "0–100 score per subscription. You see exactly which ones are bleeding you dry."),
-    ValueItem(icon: "envelope", title: "Dispute Letters",
-             body: "One tap = an EFTA-compliant letter to claim back wrongful charges."),
-    ValueItem(icon: "bell", title: "Price-Hike Alerts",
-             body: "7 days before any price increase. No more surprise charges."),
+    ValueItem(icon: "applelogo", title: "Find them in about a minute",
+             body: "Start from the Apple subscriptions list iOS already keeps, or scan a statement / CSV. No bank login."),
+    ValueItem(icon: "checklist", title: "Cancel with a checklist",
+             body: "Verified cancel pages, phone numbers, and in-person instructions — then save the confirmation on this iPhone."),
+    ValueItem(icon: "envelope", title: "Fight the charge",
+             body: "EFTA/ROSCA letter first. If they ignore you, a chargeback script for the number on the back of your card."),
+    ValueItem(icon: "bell", title: "Don't get surprised again",
+             body: "Trial endings, price hikes, and a reminder to re-scan next month's statement."),
 ]
 
 struct OnboardingValueView: View {
@@ -24,8 +24,8 @@ struct OnboardingValueView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text("2 / 3").font(AppFont.smallB).foregroundStyle(Palette.mute).padding(.top, 12)
-                Text("Here's what you\nget.")
+                Text("2 / 4").font(AppFont.smallB).foregroundStyle(Palette.mute).padding(.top, 12)
+                Text("Here's how you\nget the money back.")
                     .font(AppFont.h1)
                     .foregroundStyle(Palette.ink)
                     .padding(.top, 8)
@@ -64,7 +64,7 @@ struct OnboardingValueView: View {
         // it's collected at that moment instead (DisputeLetterView), keeping the
         // pre-value funnel friction-free.
         .navigationDestination(isPresented: $goNext) {
-            OnboardingConnectView()
+            OnboardingSignInView()
         }
         .toolbar(.hidden, for: .navigationBar)
     }

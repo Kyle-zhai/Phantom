@@ -15,6 +15,47 @@ enum CancellationRegistry {
         let hint: String?
         /// True if cancellation happens through Apple (iOS Settings → Subscriptions).
         let isAppleManaged: Bool
+
+        var isPhone: Bool { url?.scheme == "tel" }
+
+        var actionLabel: String {
+            if isAppleManaged { return "Open iOS Subscriptions" }
+            if isPhone { return "Call to cancel" }
+            if url == nil { return "I've followed the instructions" }
+            return "Open cancel page"
+        }
+
+        func checklist(name: String) -> [String] {
+            if isAppleManaged {
+                return [
+                    "Open the list iOS already keeps.",
+                    "Find \(name) and tap Cancel Subscription.",
+                    "Screenshot the confirmation screen.",
+                    "Come back and save the proof in Phantom.",
+                ]
+            }
+            if isPhone {
+                return [
+                    "Call and ask for cancellations — not retention, not billing.",
+                    hint ?? "Get a confirmation number before you hang up.",
+                    "Write the number down or screenshot the chat transcript.",
+                    "Come back and save the proof in Phantom.",
+                ]
+            }
+            if url == nil {
+                return [
+                    hint ?? "This vendor has no online cancel.",
+                    "Keep a copy of whatever you hand in or mail.",
+                    "Come back and save the date and any confirmation in Phantom.",
+                ]
+            }
+            return [
+                "Open \(name)'s official cancel page.",
+                hint ?? "Finish their flow. Don't stop at “are you sure?”",
+                "Screenshot the confirmation screen.",
+                "Come back and save the proof in Phantom.",
+            ]
+        }
     }
 
     /// Vendors that can only be cancelled in person or by certified letter —
@@ -112,7 +153,10 @@ enum CancellationRegistry {
 
     /// Resolve a cancel path for a given subscription. Falls back to a Google
     /// search for "cancel <vendor>" when unknown.
-    static func path(forSubscriptionId id: String, fallbackName: String) -> CancelPath {
+    static func path(forSubscriptionId id: String, fallbackName: String, billedViaApple: Bool = false) -> CancelPath {
+        // Whatever the brand, a subscription bought through the App Store can
+        // only be cancelled (and refunded) through Apple.
+        if billedViaApple { return appleSubscriptions }
         if let known = byId[id.lowercased()] { return known }
         // Try matching on the normalized name (helps when id was auto-generated)
         let normalized = MerchantNormalizer.brandId(forNormalized: fallbackName)

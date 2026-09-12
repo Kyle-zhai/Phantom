@@ -2,12 +2,12 @@ import SwiftUI
 import StoreKit
 
 private let perks = [
-    "Unlimited subscription scans",
-    "Zombie Score on every subscription",
-    "7-day price-hike alerts",
-    "Unlimited dispute letters",
-    "Retention negotiation scripts",
-    "Priority chat support",
+    "Unlimited dispute letters and chargeback packets",
+    "Cancel checklists for 60+ vendors",
+    "On-device evidence locker",
+    "Already-covered & cheaper-plan finder for every subscription",
+    "Price-hike, trial, and re-scan alerts",
+    "Unlimited tracked subscriptions",
 ]
 
 struct PaywallView: View {
@@ -49,7 +49,7 @@ struct PaywallView: View {
                         Image(systemName: "sparkles").font(.system(size: 26, weight: .bold)).foregroundStyle(Palette.white)
                     }
                     Text("Phantom Pro").font(AppFont.h1).foregroundStyle(Palette.ink).padding(.top, 22)
-                    Text("Most Pro users save $47/month on average. Pro pays for itself in week one.")
+                    Text("Pro is the cancel-and-clawback kit. It pays for itself the first time it catches a charge you would have missed.")
                         .font(AppFont.body).foregroundStyle(Palette.mute)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: 320).padding(.top, 8)
@@ -119,7 +119,16 @@ struct PaywallView: View {
                 Text("Auto-renews. Cancel any time in Settings.")
                     .font(AppFont.small).foregroundStyle(Palette.mute2)
                     .padding(.top, 16)
-                    .padding(.bottom, 20)
+
+                HStack(spacing: 8) {
+                    Link("Terms of Use", destination: AppConfig.termsOfUseURL)
+                    Text("·").foregroundStyle(Palette.mute2)
+                    Link("Privacy Policy", destination: AppConfig.privacyPolicyURL)
+                }
+                .font(AppFont.small)
+                .foregroundStyle(Palette.ink)
+                .padding(.top, 10)
+                .padding(.bottom, 20)
             }
             .padding(.horizontal, 20)
         }

@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import UniformTypeIdentifiers
 import UIKit
 
 /// The end-to-end "snap your bank statement → Phantom figures it out" flow.
@@ -9,10 +10,15 @@ struct ImportScreenshotView: View {
 
     @State private var pickedItems: [PhotosPickerItem] = []
     @State private var parsedTxs: [ParsedTransaction] = []
+    /// Subscriptions read from a screenshot of Settings › Subscriptions (the
+    /// Apple list). Kept apart from bank charges: they have no transaction rows.
+    @State private var appleSubs: [Subscription] = []
     @State private var step: Step = .pick
     @State private var error: String?
     @State private var showDiagnostic = false
     @State private var copiedAt: Date?
+    @State private var showFilePicker = false
+    @State private var ingestedInbox = false
 
     enum Step {
         case pick, processing, review
@@ -38,6 +44,19 @@ struct ImportScreenshotView: View {
             guard !newItems.isEmpty else { return }
             Task { await processPicked(newItems) }
         }
+        .fileImporter(
+            isPresented: $showFilePicker,
+            allowedContentTypes: [.commaSeparatedText, .tabSeparatedText, .plainText, .utf8PlainText],
+            allowsMultipleSelection: true
+        ) { result in
+            switch result {
+            case .success(let urls):
+                Task { await processFiles(urls) }
+            case .failure(let err):
+                error = err.localizedDescription
+            }
+        }
+        .onAppear { ingestPending() }
     }
 
     private var topBar: some View {
@@ -50,7 +69,7 @@ struct ImportScreenshotView: View {
                     .background(Palette.surface, in: Circle())
             }
             Spacer()
-            Text("IMPORT FROM SCREENSHOTS").font(AppFont.smallB).foregroundStyle(Palette.mute)
+            Text("IMPORT").font(AppFont.smallB).foregroundStyle(Palette.mute)
             Spacer()
             Color.clear.frame(width: 40, height: 40)
         }
@@ -59,10 +78,10 @@ struct ImportScreenshotView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Snap your statement.\nPhantom reads it.")
+            Text("Find the charges.\nKeep the proof on this phone.")
                 .font(AppFont.h1).foregroundStyle(Palette.ink)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("Take screenshots of your bank app, Apple Wallet, or credit-card statement. We'll OCR them on-device and detect every recurring charge. **Nothing leaves your phone.**")
+            Text("Screenshot a statement, share a CSV from your bank app, or start with the Apple subscriptions list iOS already keeps. Vision reads it here. Nothing is uploaded.")
                 .font(AppFont.body).foregroundStyle(Palette.mute)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -90,9 +109,15 @@ struct ImportScreenshotView: View {
             }
             .padding(.top, 16)
 
-            PrimaryButton("Enter manually instead", variant: .secondary) {
+            PrimaryButton("Import a bank CSV", variant: .secondary) {
+                showFilePicker = true
+            } leading: {
+                Image(systemName: "tablecells")
+            }
+            .padding(.top, 8)
+
+            PrimaryButton("Enter manually instead", variant: .ghost) {
                 dismiss()
-                // The settings/manual entry route can be opened from the radar
             } leading: {
                 Image(systemName: "pencil")
             }
@@ -133,7 +158,8 @@ struct ImportScreenshotView: View {
             tipRow(icon: "wallet.bifold", text: "Apple Wallet → tap card → screenshot transactions")
             tipRow(icon: "building.columns", text: "Chase / BofA / Wells Fargo / Amex app — transactions tab")
             tipRow(icon: "camera.viewfinder", text: "Screenshot (Power + Vol Up), don't photograph the screen with another phone.")
-            tipRow(icon: "envelope", text: "Email receipts work too (Netflix charge confirmation, etc.)")
+            tipRow(icon: "square.and.arrow.down", text: "From your bank's website: download transactions as CSV, then import here or share the file to Phantom.")
+            tipRow(icon: "square.and.arrow.up", text: "In Photos or Files, tap Share → Phantom. The screenshot never leaves the phone.")
             tipRow(icon: "shield.lefthalf.filled", text: "Vision OCR runs entirely on your iPhone. No upload.")
         }
         .padding(16)
@@ -167,14 +193,21 @@ struct ImportScreenshotView: View {
         let confirmedIds = Set(confirmed.map { $0.id })
         let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
             .filter { !confirmedIds.contains($0.id) }
-        let subs = confirmed + likely
+        let subs = combinedSubs(confirmed: confirmed, likely: likely)
 
         return VStack(alignment: .leading, spacing: 20) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("SCAN COMPLETE").font(AppFont.smallB).foregroundStyle(Palette.success)
-                    Text("\(parsedTxs.count) charges · \(subs.count) subscriptions")
+                    Text(parsedTxs.isEmpty
+                         ? "\(subs.count) subscriptions"
+                         : "\(parsedTxs.count) charges · \(subs.count) subscriptions")
                         .font(AppFont.h2).foregroundStyle(Palette.ink)
+                    if !appleSubs.isEmpty {
+                        Text("\(appleSubs.count) from your Apple subscriptions list — these are billed by Apple, so cancel or refund through Apple.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     if !likely.isEmpty {
                         Text("\(confirmed.count) confirmed (repeat charges) · \(likely.count) likely (1 sighting — upload next month to confirm)")
                             .font(AppFont.small).foregroundStyle(Palette.mute)
@@ -187,7 +220,9 @@ struct ImportScreenshotView: View {
 
             subscriptionsBox(subs)
 
-            allChargesBox
+            if !parsedTxs.isEmpty {
+                allChargesBox
+            }
 
             PrimaryButton("Scan more screenshots", variant: .secondary) {
                 pickedItems = []
@@ -330,7 +365,10 @@ struct ImportScreenshotView: View {
         f.dateFormat = "yyyy-MM-dd HH:mm"
         out += "When: \(f.string(from: Date()))\n"
         out += "Total charges: \(parsedTxs.count)\n"
-        out += "Subscriptions detected: \(subIds.count)\n"
+        out += "Subscriptions detected: \(subIds.count) (+\(appleSubs.count) from the Apple subscriptions list)\n"
+        for a in appleSubs {
+            out += "APPLE LIST: \(a.name) | $\(String(format: "%.2f", a.amount)) \(a.cycle.label.lowercased()) | \(a.rawDescriptor ?? "")\n"
+        }
         out += "------------------------------\n"
         for (i, tx) in parsedTxs.enumerated() {
             let key = MerchantNormalizer.brandId(forNormalized: tx.merchant)
@@ -351,10 +389,93 @@ struct ImportScreenshotView: View {
     }
 
     private func cycleLabel(_ cycle: BillingCycle) -> String {
-        switch cycle {
-        case .monthly: return "Monthly"
-        case .yearly:  return "Yearly"
-        case .weekly:  return "Weekly"
+        cycle.label
+    }
+
+    private func ingestPending() {
+        guard !ingestedInbox else { return }
+        ingestedInbox = true
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--demo-csv") {
+            let sample = Data(StatementCSV.debugChaseCSV.utf8)
+            applyTransactions(StatementCSV.parse(sample))
+            return
+        }
+        #endif
+        let payload = IncomingInbox.consume()
+        guard !payload.isEmpty else { return }
+        Task { await processInbox(payload) }
+    }
+
+    private func processInbox(_ payload: IncomingInbox.Payload) async {
+        step = .processing
+        error = nil
+        var all = parsedTxs
+        for data in payload.csvs {
+            all.append(contentsOf: StatementCSV.parse(data))
+        }
+        for data in payload.images {
+            guard let img = UIImage(data: data) else { continue }
+            do {
+                let lines = try await OCR.recognizeText(in: img)
+                ingest(lines: lines, into: &all)
+            } catch {
+                self.error = "Couldn't read a shared image: \(error.localizedDescription)"
+            }
+        }
+        applyTransactions(all)
+    }
+
+    private func processFiles(_ urls: [URL]) async {
+        step = .processing
+        error = nil
+        var all = parsedTxs
+        for url in urls {
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            guard let data = try? Data(contentsOf: url) else { continue }
+            let ext = url.pathExtension.lowercased()
+            if ["png", "jpg", "jpeg", "heic", "webp"].contains(ext), let img = UIImage(data: data) {
+                do {
+                    let lines = try await OCR.recognizeText(in: img)
+                    ingest(lines: lines, into: &all)
+                } catch {
+                    self.error = "Couldn't read \(url.lastPathComponent): \(error.localizedDescription)"
+                }
+            } else {
+                all.append(contentsOf: StatementCSV.parse(data))
+            }
+        }
+        applyTransactions(all)
+    }
+
+    /// Route one screenshot's OCR lines: the Apple subscriptions list has its
+    /// own parser; everything else is a bank statement.
+    private func ingest(lines: [OCR.Line], into all: inout [ParsedTransaction]) {
+        if AppleSubscriptionsParser.looksLikeAppleList(lines) {
+            let found = AppleSubscriptionsParser.parse(lines: lines)
+            for sub in found where !appleSubs.contains(where: { $0.id == sub.id }) {
+                appleSubs.append(sub)
+            }
+        } else {
+            all.append(contentsOf: TransactionParser.parse(lines: lines))
+        }
+    }
+
+    /// Apple-list subs join the detected ones unless a bank charge already
+    /// confirmed the same id (the store reconciles amounts on commit).
+    private func combinedSubs(confirmed: [Subscription], likely: [Subscription]) -> [Subscription] {
+        let taken = Set((confirmed + likely).map(\.id))
+        return confirmed + likely + appleSubs.filter { !taken.contains($0.id) }
+    }
+
+    private var nothingFound: Bool { parsedTxs.isEmpty && appleSubs.isEmpty }
+
+    private func applyTransactions(_ txs: [ParsedTransaction]) {
+        parsedTxs = dedupe(txs)
+        step = nothingFound ? .pick : .review
+        if nothingFound {
+            error = "No charges detected. Try a CSV with Date, Description, and Amount columns, or a screenshot that shows merchant names and amounts."
         }
     }
 
@@ -362,24 +483,22 @@ struct ImportScreenshotView: View {
         step = .processing
         error = nil
         // Seed with what we already scanned so "Scan more screenshots" ACCUMULATES
-        // across batches. Transactions aren't persisted (existingTxs() is empty),
-        // so replacing here would throw away earlier months and make cross-month
-        // recurrence confirmation impossible — exactly what the UI promises.
+        // across batches within this session. Earlier imports come back through
+        // existingTxs() (the on-device ledger) when recurrence is computed.
         var all: [ParsedTransaction] = parsedTxs
         for item in items {
             do {
                 guard let data = try await item.loadTransferable(type: Data.self),
                       let img = UIImage(data: data) else { continue }
                 let lines = try await OCR.recognizeText(in: img)
-                let txs = TransactionParser.parse(lines: lines)
-                all.append(contentsOf: txs)
+                ingest(lines: lines, into: &all)
             } catch {
                 self.error = "Couldn't read one of the images: \(error.localizedDescription)"
             }
         }
         parsedTxs = dedupe(all)
-        step = parsedTxs.isEmpty ? .pick : .review
-        if parsedTxs.isEmpty {
+        step = nothingFound ? .pick : .review
+        if nothingFound {
             error = "No charges detected. Try a screenshot that shows merchant names + amounts clearly (Apple Wallet works best)."
         }
     }
@@ -392,9 +511,10 @@ struct ImportScreenshotView: View {
         }
     }
 
+    /// Everything imported before, from the on-device ledger — this is what
+    /// lets a charge seen last month confirm the one seen this month.
     private func existingTxs() -> [ParsedTransaction] {
-        // Future: pull from PersistentTransaction. Empty for v1 (first import).
-        []
+        store.ledgerTransactions()
     }
 
     private func commit() {
@@ -402,7 +522,7 @@ struct ImportScreenshotView: View {
         let confirmedIds = Set(confirmed.map { $0.id })
         let likely = RecurrenceDetector.detectLikelyFromSingle(parsedTxs)
             .filter { !confirmedIds.contains($0.id) }
-        store.mergeImported(subs: confirmed + likely, transactions: parsedTxs)
+        store.mergeImported(subs: combinedSubs(confirmed: confirmed, likely: likely), transactions: parsedTxs)
         dismiss()
     }
 }

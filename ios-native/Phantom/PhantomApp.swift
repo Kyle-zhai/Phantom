@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import CoreData
 import UIKit
 import UserNotifications
 
@@ -15,6 +16,10 @@ final class DeepLink {
     /// "rate your subs" re-engagement nudge routes here). `RootTabView` selects
     /// Radar and clears it.
     var pendingRadar: Bool = false
+    /// Share extension / Open-in dropped files into the App Group inbox.
+    var pendingImport: Bool = false
+    /// After the cancel flow, open the dispute sheet on the same subscription.
+    var pendingDisputeId: String?
     private init() {}
 }
 
@@ -44,8 +49,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         if let id = info["id"] as? String {
             await MainActor.run { DeepLink.shared.pendingSubId = id }
         } else if info["route"] as? String == "radar" {
-            // Tab-level target (e.g. the rating re-engagement nudge) — no sub to open.
             await MainActor.run { DeepLink.shared.pendingRadar = true }
+        } else if info["route"] as? String == "import" {
+            await MainActor.run { DeepLink.shared.pendingImport = true }
         }
     }
 }
@@ -54,16 +60,35 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
 @MainActor
 struct PhantomApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
     @State private var store = AppStore(purchaseService: PurchaseService.shared)
     let modelContainer: ModelContainer
 
+    static let schema = Schema([
+        PersistentSubscription.self, PersistentAlert.self, UserProfile.self,
+        PersistentTransaction.self, PersistentEvidence.self, PersistentSetting.self,
+    ])
+
     init() {
+        // `.automatic` syncs to the user's private iCloud database when the
+        // iCloud entitlement is present (device/App Store builds) and stays
+        // local when it isn't (unsigned simulator builds, tests). Same store
+        // file as before, so existing users keep their data.
         do {
-            modelContainer = try ModelContainer(
-                for: PersistentSubscription.self, PersistentAlert.self, UserProfile.self
-            )
+            guard CloudEntitlements.hasCloudKit else {
+                throw NSError(domain: "Phantom", code: 1, userInfo: [NSLocalizedDescriptionKey: "no iCloud entitlement in this build"])
+            }
+            let cloud = ModelConfiguration(schema: Self.schema, cloudKitDatabase: .automatic)
+            modelContainer = try ModelContainer(for: Self.schema, configurations: [cloud])
+            CloudSyncState.shared.mode = .cloud
         } catch {
-            fatalError("Failed to set up SwiftData: \(error)")
+            do {
+                let local = ModelConfiguration(schema: Self.schema, cloudKitDatabase: .none)
+                modelContainer = try ModelContainer(for: Self.schema, configurations: [local])
+                CloudSyncState.shared.mode = .local(error.localizedDescription)
+            } catch {
+                fatalError("Failed to set up SwiftData: \(error)")
+            }
         }
     }
 
@@ -76,7 +101,23 @@ struct PhantomApp: App {
                 .tint(Palette.ink)
                 .task {
                     store.attach(modelContext: modelContainer.mainContext)
+                    await AccountService.shared.refresh()
                     await store.onLaunch()
+                    store.flagIncomingImportIfNeeded()
+                }
+                .onOpenURL { url in
+                    Task { await store.handleIncomingURL(url) }
+                }
+                // CloudKit imported changes from another device → re-read the
+                // store. Coalesced so a burst of records reloads once.
+                .onReceive(NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange).receive(on: RunLoop.main)) { _ in
+                    store.scheduleReload()
+                }
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .active {
+                        Task { await AccountService.shared.refresh() }
+                        store.scheduleReload()
+                    }
                 }
         }
         .modelContainer(modelContainer)
@@ -92,7 +133,13 @@ struct RootView: View {
         // verification. Compiled out of Release so the flag strings don't
         // ship in the App Store binary.
         let args = ProcessInfo.processInfo.arguments
-        if let id = debugSubArg(args) {
+        if args.contains("--screen-cancel") {
+            NavigationStack { CancelFlowView(subId: debugSubArg(args) ?? "peacock") }
+        } else if args.contains("--screen-chargeback") {
+            ChargebackGuideView(subId: debugSubArg(args) ?? "peacock")
+        } else if args.contains("--screen-apple") {
+            AppleSubscriptionsGuideView()
+        } else if let id = debugSubArg(args) {
             NavigationStack { SubscriptionDetailView(subId: id) }
         } else if let id = debugDisputeArg(args) {
             DisputeLetterView(subId: id)
@@ -100,6 +147,12 @@ struct RootView: View {
             NavigationStack { NegotiateDetailView(subId: id) }
         } else if args.contains("--screen-paywall") {
             PaywallView()
+        } else if args.contains("--screen-signin") {
+            NavigationStack { OnboardingSignInView() }
+        } else if args.contains("--screen-picks") {
+            NavigationStack { PicksView() }
+        } else if args.contains("--screen-foryou") {
+            NavigationStack { ForYouView() }
         } else if args.contains("--screen-value") {
             NavigationStack { OnboardingValueView() }
         } else if args.contains("--screen-connect") {

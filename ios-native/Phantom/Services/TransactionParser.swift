@@ -15,12 +15,17 @@ struct ParsedTransaction: Identifiable, Hashable {
     /// captured so the import screen can show users (and the developer)
     /// exactly what Vision read — invaluable when a charge looks wrong.
     let rawRow: String
+    /// The statement row itself said "recurring" / "membership" / "subscription"
+    /// (or was billed via APPLE.COM/BILL). Set by the parser from the raw row
+    /// before any normalization strips those words.
+    let recurringHint: Bool
 
-    init(merchant: String, amount: Double, date: Date?, rawRow: String = "") {
+    init(merchant: String, amount: Double, date: Date?, rawRow: String = "", recurringHint: Bool? = nil) {
         self.merchant = merchant
         self.amount = amount
         self.date = date
         self.rawRow = rawRow
+        self.recurringHint = recurringHint ?? MerchantNormalizer.hasSubscriptionHint(rawRow.isEmpty ? merchant : rawRow)
         self.id = "\(merchant.lowercased())-\(amount)-\(date?.timeIntervalSince1970 ?? 0)"
     }
 }
@@ -274,10 +279,21 @@ enum TransactionParser {
     /// Per-merchant collapse: keep only the smallest amount per (merchant + date).
     /// Running-balance / daily-total rows are always larger than the individual
     /// transaction, so the smallest is the safe choice.
+    ///
+    /// Exception: multi-charge billers (APPLE.COM/BILL, GOOGLE *) legitimately
+    /// post several different subscription-sized amounts on the same day
+    /// (iCloud $2.99 + a $12.99 app). Those keep every distinct sub-shaped
+    /// amount; only exact duplicates and non-sub-shaped larger amounts collapse.
     private static func collapseByMerchantPreferSmaller(_ txs: [ParsedTransaction]) -> [ParsedTransaction] {
         var bestByKey: [String: ParsedTransaction] = [:]
         for t in txs {
-            let key = "\(t.merchant.lowercased())|\(dateKey(t.date))"
+            let brand = MerchantNormalizer.brandId(forNormalized: t.merchant)
+            let multi = MerchantNormalizer.isMultiChargeBiller(brand)
+                && MerchantNormalizer.isLikelySubscriptionAmount(t.amount)
+            let cents = Int((t.amount * 100).rounded())
+            let key = multi
+                ? "\(t.merchant.lowercased())|\(dateKey(t.date))|\(cents)"
+                : "\(t.merchant.lowercased())|\(dateKey(t.date))"
             if let existing = bestByKey[key] {
                 if t.amount < existing.amount {
                     bestByKey[key] = t

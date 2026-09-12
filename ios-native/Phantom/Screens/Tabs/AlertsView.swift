@@ -13,6 +13,8 @@ private func style(for type: AlertType) -> AlertStyle {
     case .trialEnding: return AlertStyle(icon: "clock", bg: Palette.warnSoft, fg: Palette.reviewFg, chip: "Trial ending")
     case .newCharge:   return AlertStyle(icon: "creditcard", bg: Palette.infoSoft, fg: Palette.infoFg, chip: "New charge")
     case .unused:      return AlertStyle(icon: "moon", bg: Palette.surface, fg: Palette.ink, chip: "Unused")
+    case .covered:     return AlertStyle(icon: "checkmark.seal", bg: Palette.successSoft, fg: Palette.keepFg, chip: "Already covered")
+    case .cheaperTier: return AlertStyle(icon: "arrow.down.circle", bg: Palette.infoSoft, fg: Palette.infoFg, chip: "Cheaper plan")
     }
 }
 
@@ -42,7 +44,7 @@ struct AlertsView: View {
                     Text("ALERTS").font(AppFont.smallB).foregroundStyle(Palette.mute)
                     Text("\(store.unreadAlerts) need your attention")
                         .font(AppFont.h1).foregroundStyle(Palette.ink)
-                    Text("We monitor 50+ services and ping you 7 days before any price hike.")
+                    Text("Price hikes, trials ending, subscriptions you already get through a bundle, and cheaper plans that keep what you use.")
                         .font(AppFont.small).foregroundStyle(Palette.mute)
                 }
                 .padding(.top, 4)

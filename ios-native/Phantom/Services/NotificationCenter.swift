@@ -125,6 +125,59 @@ enum NotificationService {
         try? await UNUserNotificationCenter.current().add(req)
     }
 
+    static func scheduleRescan(fireAt: Date) async {
+        let content = UNMutableNotificationContent()
+        content.title = "Time to re-scan your statement"
+        content.body = "About 10 seconds. Catch anything new — or still charging after a cancel."
+        content.sound = .default
+        content.userInfo = ["route": "import"]
+        let trigger: UNNotificationTrigger
+        if fireAt > Date() {
+            let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fireAt)
+            trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+        } else {
+            trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        }
+        let req = UNNotificationRequest(identifier: "rescan", content: content, trigger: trigger)
+        try? await UNUserNotificationCenter.current().add(req)
+    }
+
+    static func scheduleDisputeFollowUp(subscriptionId: String, name: String, fireAt: Date) async {
+        let content = UNMutableNotificationContent()
+        content.title = "Did \(name) refund you?"
+        content.body = "If not, Phantom has a chargeback packet ready for your card issuer."
+        content.sound = .default
+        content.userInfo = ["route": "subscription", "id": subscriptionId]
+        let trigger: UNNotificationTrigger
+        if fireAt > Date() {
+            let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fireAt)
+            trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+        } else {
+            trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        }
+        let req = UNNotificationRequest(
+            identifier: "disputefollow-\(subscriptionId)",
+            content: content,
+            trigger: trigger
+        )
+        try? await UNUserNotificationCenter.current().add(req)
+    }
+
+    /// One-shot notice delivered in about a minute — used when the thing to
+    /// announce has already happened (a catalog price hike observed today).
+    static func postNow(identifier: String, title: String, body: String, route: String, id: String?) async {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        var info: [String: Any] = ["route": route]
+        if let id { info["id"] = id }
+        content.userInfo = info
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        let req = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        try? await UNUserNotificationCenter.current().add(req)
+    }
+
     static func cancelCancellationCheck(for subscriptionId: String) async {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["cancelcheck-\(subscriptionId)"])
     }

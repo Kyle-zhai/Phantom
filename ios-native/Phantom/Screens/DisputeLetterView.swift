@@ -16,6 +16,7 @@ struct DisputeLetterView: View {
     @State private var showMail = false
     @State private var mailUnavailable = false
     @State private var showPaywall = false
+    @State private var showChargeback = false
     /// One letter counts once against the free monthly limit no matter how it's
     /// delivered (Mail, mailto, copy, or "I've sent it").
     @State private var usageRecorded = false
@@ -224,6 +225,9 @@ struct DisputeLetterView: View {
             .sheet(isPresented: $showPaywall) {
                 PaywallView().environment(store)
             }
+            .sheet(isPresented: $showChargeback) {
+                ChargebackGuideView(subId: subId).environment(store)
+            }
 
             Button {
                 markDisputeUsed()
@@ -247,7 +251,7 @@ struct DisputeLetterView: View {
                 Image(systemName: "checkmark").font(.system(size: 38, weight: .bold)).foregroundStyle(Palette.white)
             )
             Text("Letter sent.").font(AppFont.h1).foregroundStyle(Palette.ink).padding(.top, 24)
-            Text("Most companies respond within 10 business days. We'll remind you in 7 days if you haven't heard back.")
+            Text("Most companies respond within 10 business days. We'll remind you in 14 days if you haven't heard back. If they ignore the letter, use the chargeback packet — it's a script for the number on the back of your card.")
                 .font(AppFont.body).foregroundStyle(Palette.mute)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 320).padding(.top, 8)
@@ -282,8 +286,12 @@ struct DisputeLetterView: View {
             .padding(.top, 12)
 
             VStack(spacing: 12) {
-                PrimaryButton("Done") { dismiss() }
-                PrimaryButton("Track this dispute", variant: .secondary) { dismiss() }
+                PrimaryButton("If they ignore you — chargeback packet") {
+                    showChargeback = true
+                } leading: {
+                    Image(systemName: "creditcard")
+                }
+                PrimaryButton("Done", variant: .secondary) { dismiss() }
             }
             .padding(.top, 24)
         }
@@ -337,6 +345,15 @@ struct DisputeLetterView: View {
         guard !usageRecorded else { return }
         usageRecorded = true
         store.recordDisputeUsage()
+        if let sub = store.subscription(byId: subId) {
+            store.recordDisputeSent(
+                for: subId,
+                reason: form.reason,
+                amount: form.amount,
+                chargeDate: form.chargeDate,
+                letter: DisputeLetter.generate(for: sub, form: form)
+            )
+        }
     }
 
     private func amountBinding() -> Binding<String> {

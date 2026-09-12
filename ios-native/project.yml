@@ -13,8 +13,8 @@ configs:
 settings:
   base:
     SWIFT_VERSION: "5.10"
-    MARKETING_VERSION: "1.1.1"
-    CURRENT_PROJECT_VERSION: "4"
+    MARKETING_VERSION: "1.2.0"
+    CURRENT_PROJECT_VERSION: "6"
     DEVELOPMENT_TEAM: "7N337R6J9M"
     CODE_SIGN_STYLE: Automatic
     ENABLE_USER_SCRIPT_SANDBOXING: YES
@@ -45,18 +45,36 @@ targets:
       - sdk: Vision.framework
       - sdk: PhotosUI.framework
       - sdk: WidgetKit.framework
+      - sdk: AuthenticationServices.framework
+      - sdk: CloudKit.framework
       - package: SVGView
         product: SVGView
       - target: PhantomWidget
+      - target: PhantomShare
     entitlements:
       path: Phantom/Phantom.entitlements
       properties:
         com.apple.security.application-groups:
           - group.com.yinanzhai.phantom
+        # Sign in with Apple + iCloud (CloudKit) must ALSO be enabled on the
+        # App ID in the Apple Developer portal; see docs/CLOUDKIT_SETUP.md.
+        com.apple.developer.applesignin:
+          - Default
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.yinanzhai.phantom
+        com.apple.developer.icloud-services:
+          - CloudKit
+        # Debug builds talk to the CloudKit Development environment; the
+        # Release archive uses Phantom/Phantom.release.entitlements (Production).
+        com.apple.developer.icloud-container-environment: Development
+        aps-environment: development
     info:
       path: Phantom/Info.plist
       properties:
         CFBundleDisplayName: Phantom
+        # Silent pushes let CloudKit tell the app another device changed data.
+        UIBackgroundModes:
+          - remote-notification
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen:
@@ -69,6 +87,27 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         UIStatusBarStyle: UIStatusBarStyleDarkContent
         UIUserInterfaceStyle: Light
+        CFBundleURLTypes:
+          - CFBundleURLName: com.yinanzhai.phantom
+            CFBundleTypeRole: Editor
+            CFBundleURLSchemes:
+              - phantom
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Bank statement CSV
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes:
+              - public.comma-separated-values-text
+              - public.delimited-values-text
+              - public.plain-text
+          - CFBundleTypeName: Statement image
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes:
+              - public.image
+              - public.png
+              - public.jpeg
+        LSSupportsOpeningDocumentsInPlace: false
         # NSUserTrackingUsageDescription intentionally NOT set.
         # Phantom performs zero cross-app tracking — declaring this key
         # would force Apple's "App Tracking Transparency" prompt and
@@ -79,6 +118,9 @@ targets:
         # SwiftData persistence). Re-add these keys + xcconfig values
         # if a real backend integration lands.
     settings:
+      configs:
+        Release:
+          CODE_SIGN_ENTITLEMENTS: Phantom/Phantom.release.entitlements
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
@@ -145,6 +187,37 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom.widget
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1"
+
+  PhantomShare:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: PhantomShare
+      - path: Phantom/Services/IncomingInbox.swift
+    entitlements:
+      path: PhantomShare/PhantomShare.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yinanzhai.phantom
+    info:
+      path: PhantomShare/Info.plist
+      properties:
+        CFBundleDisplayName: Phantom
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsImageWithMaxCount: 10
+              NSExtensionActivationSupportsFileWithMaxCount: 5
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yinanzhai.phantom.share
         GENERATE_INFOPLIST_FILE: NO
         TARGETED_DEVICE_FAMILY: "1"
 

@@ -1,5 +1,6 @@
 import SwiftUI
 import StoreKit
+import AuthenticationServices
 
 struct SettingsView: View {
     @Environment(AppStore.self) private var store
@@ -12,6 +13,9 @@ struct SettingsView: View {
     @State private var confirmDelete = false
     @State private var confirmClearAll = false
     @State private var showEditProfile = false
+    @State private var showAppleGuide = false
+    @State private var showOwnedBundles = false
+    @State private var account = AccountService.shared
 
     private var profileDisplayName: String {
         let n = store.profile?.fullName ?? ""
@@ -61,8 +65,12 @@ struct SettingsView: View {
                 }
 
                 SectionWrap(title: "Subscriptions") {
+                    Button { showAppleGuide = true } label: {
+                        SettingsRow(icon: "applelogo", label: "Apple subscriptions")
+                    }.buttonStyle(.plain)
+                    DividerLine()
                     Button { showImport = true } label: {
-                        SettingsRow(icon: "photo.on.rectangle.angled", label: "Scan from screenshots")
+                        SettingsRow(icon: "photo.on.rectangle.angled", label: "Screenshot or CSV")
                     }.buttonStyle(.plain)
                     DividerLine()
                     Button { showManual = true } label: {
@@ -74,6 +82,22 @@ struct SettingsView: View {
                             SettingsRow(icon: "trash", label: "Clear all subscriptions", destructive: true)
                         }.buttonStyle(.plain)
                     }
+                }
+                .padding(.top, 28)
+
+                SectionWrap(
+                    title: "Already covered",
+                    caption: "Tell Phantom what you already pay for — Prime, Apple One, your carrier plan, a premium card — and it flags subscriptions those already include."
+                ) {
+                    Button { showOwnedBundles = true } label: {
+                        SettingsRow(
+                            icon: "checkmark.seal",
+                            label: "What you already have",
+                            value: store.ownedBundleIds.union(store.inferredBundleIds).isEmpty
+                                ? nil
+                                : "\(store.ownedBundleIds.union(store.inferredBundleIds).count) selected"
+                        )
+                    }.buttonStyle(.plain)
                 }
                 .padding(.top, 28)
 
@@ -92,11 +116,14 @@ struct SettingsView: View {
                     SettingsRow(icon: "clock", label: "Trial-ending alerts", toggle: $bindable.notifyTrials)
                     DividerLine()
                     SettingsRow(icon: "moon", label: "Zombie-subscription analysis", toggle: $bindable.notifyZombies)
+                    DividerLine()
+                    SettingsRow(icon: "arrow.clockwise", label: "Monthly re-scan reminder", toggle: $bindable.notifyRescan)
                 }
                 .padding(.top, 28)
                 .onChange(of: store.notifyHikes) { _, _ in Task { await store.rescheduleAllNotifications() } }
                 .onChange(of: store.notifyTrials) { _, _ in Task { await store.rescheduleAllNotifications() } }
                 .onChange(of: store.notifyZombies) { _, _ in Task { await store.rescheduleAllNotifications() } }
+                .onChange(of: store.notifyRescan) { _, _ in Task { await store.rescheduleAllNotifications() } }
 
                 VStack(alignment: .leading, spacing: 12) {
                     SectionHeader("Privacy", caption: "The three things Phantom will never do.")
@@ -112,32 +139,74 @@ struct SettingsView: View {
                 .padding(.top, 28)
 
                 SectionWrap(title: "Support") {
-                    SettingsRow(icon: "questionmark.circle", label: "Help center")
+                    Button { openURL(AppConfig.websiteURL) } label: {
+                        SettingsRow(icon: "questionmark.circle", label: "Help center")
+                    }.buttonStyle(.plain)
                     DividerLine()
-                    SettingsRow(icon: "ellipsis.message", label: "Contact us")
+                    Button { openURL(AppConfig.supportEmailURL) } label: {
+                        SettingsRow(icon: "ellipsis.message", label: "Contact us")
+                    }.buttonStyle(.plain)
                     DividerLine()
-                    SettingsRow(icon: "doc.text", label: "Terms & Privacy")
+                    Button { openURL(AppConfig.termsOfUseURL) } label: {
+                        SettingsRow(icon: "doc.text", label: "Terms of Use")
+                    }.buttonStyle(.plain)
+                    DividerLine()
+                    Button { openURL(AppConfig.privacyPolicyURL) } label: {
+                        SettingsRow(icon: "lock.shield", label: "Privacy Policy")
+                    }.buttonStyle(.plain)
                 }
                 .padding(.top, 28)
 
-                SectionWrap(title: "Account") {
+                SectionWrap(
+                    title: "Account",
+                    caption: account.isSignedIn
+                        ? "Everything is saved to your own iCloud. Phantom has no server and never sees it."
+                        : "Sign in with Apple to keep your data on every iPhone. Nothing is uploaded to Phantom — it stays in your iCloud."
+                ) {
+                    if account.isSignedIn {
+                        SettingsRow(icon: "person.crop.circle.badge.checkmark",
+                                    label: account.displayName.isEmpty ? "Signed in with Apple" : account.displayName,
+                                    value: account.email.isEmpty ? nil : account.email)
+                        DividerLine()
+                        SettingsRow(icon: account.syncActive ? "icloud.fill" : "icloud.slash", label: account.syncStatusText)
+                        DividerLine()
+                    } else {
+                        VStack(alignment: .leading, spacing: 12) {
+                            SignInWithAppleButton(.signIn) { request in
+                                account.configure(request)
+                            } onCompletion: { result in
+                                if account.handle(result) { prefillProfileFromAccount() }
+                            }
+                            .signInWithAppleButtonStyle(.black)
+                            .frame(height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+                            if let err = account.lastError {
+                                Text(err).font(AppFont.small).foregroundStyle(Palette.danger)
+                            }
+                            Text(account.syncStatusText).font(AppFont.small).foregroundStyle(Palette.mute)
+                        }
+                        .padding(16)
+                        DividerLine()
+                    }
                     if store.isPro {
                         Button { showManageSubs = true } label: {
                             SettingsRow(icon: "creditcard", label: "Manage subscription")
                         }.buttonStyle(.plain)
                         DividerLine()
                     }
-                    Button { confirmSignOut = true } label: {
-                        SettingsRow(icon: "rectangle.portrait.and.arrow.right", label: "Sign out")
-                    }.buttonStyle(.plain)
-                    DividerLine()
+                    if account.isSignedIn {
+                        Button { confirmSignOut = true } label: {
+                            SettingsRow(icon: "rectangle.portrait.and.arrow.right", label: "Sign out")
+                        }.buttonStyle(.plain)
+                        DividerLine()
+                    }
                     Button { confirmDelete = true } label: {
-                        SettingsRow(icon: "trash", label: "Delete account", destructive: true)
+                        SettingsRow(icon: "trash", label: "Delete account & data", destructive: true)
                     }.buttonStyle(.plain)
                 }
                 .padding(.top, 28)
 
-                Text("Phantom · v1.0 · Made for people who hate losing money.")
+                Text("Phantom · v1.2.0 · Made for people who hate losing money.")
                     .font(AppFont.small).foregroundStyle(Palette.mute2)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 24)
@@ -146,7 +215,10 @@ struct SettingsView: View {
             .padding(.bottom, 40)
         }
         .background(Palette.white)
-        .task { await store.refreshNotificationAuthorization() }
+        .task {
+            await store.refreshNotificationAuthorization()
+            await account.refresh()
+        }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
                 .environment(store)
@@ -160,6 +232,12 @@ struct SettingsView: View {
         .sheet(isPresented: $showEditProfile) {
             EditProfileView().environment(store)
         }
+        .sheet(isPresented: $showAppleGuide) {
+            AppleSubscriptionsGuideView().environment(store)
+        }
+        .sheet(isPresented: $showOwnedBundles) {
+            OwnedBundlesView().environment(store)
+        }
         .manageSubscriptionsSheet(isPresented: $showManageSubs)
         .confirmationDialog(
             "Sign out?",
@@ -169,7 +247,7 @@ struct SettingsView: View {
             Button("Sign out", role: .destructive) { Task { await store.signOut() } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This clears all local data on this device. Everything in Phantom is stored only on your iPhone. Your App Store Pro subscription is unaffected.")
+            Text("Signs you out of your Apple account inside Phantom. Your subscriptions and proof are NOT deleted — they stay on this iPhone and in your iCloud. Your App Store Pro subscription is unaffected.")
         }
         .confirmationDialog(
             "Delete your account?",
@@ -179,7 +257,7 @@ struct SettingsView: View {
             Button("Delete forever", role: .destructive) { Task { await store.deleteAccount() } }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Permanent — erases every subscription, dispute letter, rating, and setting from this iPhone and signs you out. Everything in Phantom lives only on your device, so there's nothing on a server to delete. To stop a paid Pro subscription, use 'Manage subscription' first.")
+            Text("Permanent — erases every subscription, dispute letter, rating, cancel proof and setting from this iPhone and from your iCloud (the deletion syncs to your other devices), then signs you out. Phantom has no server, so nothing else exists to delete. To stop a paid Pro subscription, use 'Manage subscription' first.")
         }
         .confirmationDialog(
             "Clear all subscriptions?",
@@ -192,6 +270,12 @@ struct SettingsView: View {
             Text("Removes every imported subscription, alert, and cancellation record from this device. You stay signed in and your Pro subscription is unaffected. You can re-import by scanning new screenshots.")
         }
         .toolbar(.hidden, for: .navigationBar)
+    }
+
+    private func prefillProfileFromAccount() {
+        let name = (store.profile?.fullName ?? "").isEmpty ? account.displayName : (store.profile?.fullName ?? "")
+        let email = (store.profile?.email ?? "").isEmpty ? account.email : (store.profile?.email ?? "")
+        if !name.isEmpty || !email.isEmpty { store.setProfile(name: name, email: email) }
     }
 
     /// First tap requests OS permission; if previously denied, the system won't
@@ -242,8 +326,8 @@ struct SettingsView: View {
                 .padding(.horizontal, 10).padding(.vertical, 5)
                 .background(Color.white.opacity(0.12), in: Capsule())
 
-                Text("Save $47/mo on average.").font(AppFont.h2).foregroundStyle(Palette.white).padding(.top, 12)
-                Text("Unlimited dispute letters, price-hike alerts, negotiation scripts.")
+                Text("The cancel-and-clawback kit.").font(AppFont.h2).foregroundStyle(Palette.white).padding(.top, 12)
+                Text("Dispute letters, chargeback packets, cancel checklists, evidence locker.")
                     .font(AppFont.small).foregroundStyle(Palette.mute2).padding(.top, 8)
 
                 PrimaryButton("See plans", variant: .light, fullWidth: false) { showPaywall = true }

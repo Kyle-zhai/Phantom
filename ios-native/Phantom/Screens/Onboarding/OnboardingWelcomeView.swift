@@ -17,12 +17,12 @@ struct OnboardingWelcomeView: View {
                     Spacer()
 
                     VStack(alignment: .leading, spacing: 20) {
-                        Text("Find the\nmoney\nyou're losing.")
+                        Text("Get your\nmoney\nback.")
                             .font(AppFont.display)
                             .foregroundStyle(Palette.white)
                             .multilineTextAlignment(.leading)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text("The average American pays for 4.5 subscriptions they never use. Phantom finds them, scores them, and helps you cancel — in seconds.")
+                        Text("Phantom finds forgotten charges, walks you through cancel, and writes the dispute letter if they keep billing you — without ever asking for your bank login.")
                             .font(AppFont.body)
                             .foregroundStyle(Palette.mute2)
                             .frame(maxWidth: 320, alignment: .leading)
@@ -34,7 +34,7 @@ struct OnboardingWelcomeView: View {
                         PrimaryButton("Get started", variant: .light) {
                             goNext = true
                         }
-                        Text("We don't sell your data. We don't push loans.")
+                        Text("No bank login. No loans. Proof stays on this iPhone.")
                             .font(AppFont.small)
                             .foregroundStyle(Palette.mute)
                     }

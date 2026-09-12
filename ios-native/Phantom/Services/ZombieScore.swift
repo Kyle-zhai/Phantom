@@ -1,5 +1,57 @@
 import Foundation
 
+/// How strongly something the user already pays for covers this subscription.
+enum CoverageLevel: Int, Comparable, Codable {
+    case none = 0
+    /// A perk you own makes it cheaper (carrier $10 add-on, member price).
+    case discounted
+    /// A card statement credit reimburses part or all of it.
+    case credit
+    /// It is literally included in a bundle you already pay for.
+    case included
+
+    static func < (a: CoverageLevel, b: CoverageLevel) -> Bool { a.rawValue < b.rawValue }
+
+    var label: String {
+        switch self {
+        case .none: return "Not covered"
+        case .discounted: return "Cheaper through a perk you have"
+        case .credit: return "Reimbursed by a card credit"
+        case .included: return "Already included in something you pay for"
+        }
+    }
+}
+
+/// Signals the store knows about a sub that the sub itself doesn't carry:
+/// bundle coverage and catalog prices. Tests and previews pass `.none`.
+struct ScoreContext {
+    var coverage: CoverageLevel = .none
+    /// Cheapest paid tier of the SAME service (e.g. Netflix with ads). When the
+    /// user pays well above it, they're overpaying for features they may not use.
+    var cheapestTierMonthly: Double? = nil
+    /// Median price of same-kind services in the catalog — fallback market
+    /// comparison when the service has no tier data.
+    var kindMedianMonthly: Double? = nil
+
+    static let none = ScoreContext()
+}
+
+enum ScoreFactor: String, CaseIterable, Hashable {
+    case recency, usage, overlap, rating, price, coverage, hike
+
+    var label: String {
+        switch self {
+        case .recency: return "Last opened"
+        case .usage: return "Use vs price"
+        case .overlap: return "Overlap"
+        case .rating: return "Your rating"
+        case .price: return "Vs cheaper plan"
+        case .coverage: return "Already covered"
+        case .hike: return "Recent price hike"
+        }
+    }
+}
+
 struct ScoreBreakdown {
     let score: Int
     let recencyOfLastUse: Int
@@ -7,9 +59,31 @@ struct ScoreBreakdown {
     let overlap: Int
     let userRating: Int
     let priceVsMarket: Int
-    /// True when the score is degraded because we don't have user-provided
-    /// usage or rating data yet. The UI should prompt for input.
+    let coverage: Int
+    let priceHike: Int
+    /// True when the score is degraded because we don't have the user's rating
+    /// yet. The UI should prompt for input.
     let hasUnknowns: Bool
+    /// True when real usage data exists (demo / future integrations) and the
+    /// full PRD §3.2 weights apply.
+    let usageKnown: Bool
+    /// Effective (renormalized) weight of every factor that carried signal.
+    /// Sums to 1. Factors absent from the map contributed nothing.
+    let weights: [ScoreFactor: Double]
+
+    func weight(_ factor: ScoreFactor) -> Double { weights[factor] ?? 0 }
+
+    func value(_ factor: ScoreFactor) -> Int {
+        switch factor {
+        case .recency: return recencyOfLastUse
+        case .usage: return usageVsPrice
+        case .overlap: return overlap
+        case .rating: return userRating
+        case .price: return priceVsMarket
+        case .coverage: return coverage
+        case .hike: return priceHike
+        }
+    }
 }
 
 enum Tier: String {
@@ -35,26 +109,38 @@ enum ZombieScore {
         return max(0, Int(secs / 86_400))
     }
 
-    /// Compute the zombie score with graceful degradation when usage data is
-    /// unknown. For a real OCR-imported sub the user hasn't yet provided
-    /// "last opened" or "personal rating" — penalizing those as if the user
-    /// said "never" would over-flag every imported sub as a zombie.
+    /// A hike counts while it is recent enough that the user may not have
+    /// reacted yet: announced up to 30 days ahead, or effective within 180 days.
+    static func hikeIsRelevant(_ hike: PriceHike, now: Date) -> Bool {
+        let delta = hike.effective.timeIntervalSince(now) / 86_400
+        return delta <= 30 && delta >= -180 && hike.to > hike.from
+    }
+
+    /// Compute the zombie score.
     ///
-    /// New rules:
-    ///   - `lastUsedAt == nil` AND `sessionsLast30d == 0` → unknown,
-    ///     use NEUTRAL 50 for recency + usage factors (instead of 100)
-    ///   - `userRating == nil` → already neutral 50 (unchanged)
-    ///   - `hasUnknowns` flags the *rating* specifically — it's the one signal
-    ///     the detail view can still collect (imported usage data is never
-    ///     available on-device), so the UI shows an "approximate" nudge until
-    ///     the user rates, then stops.
-    static func compute(_ sub: Subscription, now: Date = Date()) -> ScoreBreakdown {
+    /// Two regimes:
+    ///   - **Usage known** (demo data / future integrations): the full PRD §3.2
+    ///     weights, unchanged — recency 35, use-vs-price 25, overlap 20, rating
+    ///     15, price 5.
+    ///   - **Usage unknown** (every real import — iOS gives an app no usage data
+    ///     for other apps): renormalize over the signals we actually have.
+    ///     Overlap (same-kind duplicates) and the user's rating are always in;
+    ///     a neutral 50 stands in for an unrated sub so a lone unrated import
+    ///     stays "keep". Bundle coverage ("you already pay for this"), the gap
+    ///     to the service's cheapest tier, and a recent hike join only when
+    ///     present. Weights when everything is present: overlap 25, coverage 30,
+    ///     rating 35, price 10, hike 5.
+    ///
+    /// Calibration points (usage unknown): lone unrated → keep; two same-kind
+    /// duplicates → review; duplicates + rated 1★ → zombie; rated 1★ alone →
+    /// review; covered by an owned bundle → review; covered + 1★ → zombie;
+    /// rated 5★ stays keep even with duplicates.
+    static func compute(_ sub: Subscription, context: ScoreContext = .none, now: Date = Date()) -> ScoreBreakdown {
         let usageUnknown = sub.lastUsedAt == nil && sub.sessionsLast30d == 0
         let ratingUnknown = sub.userRating == nil
-        let hasUnknowns = ratingUnknown
+        let monthly = sub.monthlyAmount
 
         // Recency factor: 0 days → 0 (keep), 60+ days → 100 (zombie).
-        // If we don't know, use 50 (neutral) so we don't false-flag.
         let recencyOfLastUse: Double
         if usageUnknown {
             recencyOfLastUse = 50
@@ -64,8 +150,6 @@ enum ZombieScore {
         }
 
         // Usage-vs-price: <0.05 sessions/$ → 100, >2 → 0.
-        // Neutral 50 when usage is unknown.
-        let monthly = sub.monthlyAmount
         let usageVsPrice: Double
         if usageUnknown {
             usageVsPrice = 50
@@ -74,41 +158,68 @@ enum ZombieScore {
             usageVsPrice = clamp(100.0 - clamp(ratio / 2.0 * 100.0))
         }
 
-        let overlapCount = Double(sub.hasOverlapWith.count)
-        let overlap = clamp(overlapCount * 50.0)
+        // Overlap: each same-kind duplicate adds 50. A bundle that already
+        // includes this sub counts as one more duplicate — you hold it twice.
+        let peerCount = Double(sub.hasOverlapWith.count) + (context.coverage == .included ? 1 : 0)
+        let overlap = clamp(peerCount * 50.0)
 
         let userRating: Double = ratingUnknown
             ? 50
             : clamp(Double(5 - (sub.userRating ?? 3)) * 25.0)
 
-        let premium: Double = sub.marketAverage > 0
-            ? (monthly - sub.marketAverage) / sub.marketAverage
-            : 0
-        let priceVsMarket = clamp(premium * 200.0)
+        // Price: prefer the gap to the same service's cheapest paid tier; fall
+        // back to the legacy market-average premium, then to the kind median.
+        var priceVsMarket: Double = 0
+        var priceHasSignal = false
+        if let cheapest = context.cheapestTierMonthly, cheapest > 0, monthly > cheapest + 0.5 {
+            priceVsMarket = clamp((monthly - cheapest) / monthly * 150.0)
+            priceHasSignal = true
+        } else if context.cheapestTierMonthly != nil && context.cheapestTierMonthly! > 0 {
+            priceVsMarket = 0
+            priceHasSignal = true
+        } else if sub.marketAverage > 0 {
+            priceVsMarket = clamp((monthly - sub.marketAverage) / sub.marketAverage * 200.0)
+            priceHasSignal = true
+        } else if let median = context.kindMedianMonthly, median > 0 {
+            priceVsMarket = clamp((monthly - median) / median * 200.0)
+            priceHasSignal = true
+        }
 
-        // Adaptive weighting. When real usage data exists (demo/rated subs) we use
-        // the full PRD §3.2 weights unchanged. But for an OCR/manually-imported sub
-        // the two usage factors (60% of the weight) carry no signal — pinning them
-        // at neutral 50 caps the max score at 70, so NO imported sub could ever
-        // cross the 80 "zombie" line and the whole product looked empty. Instead,
-        // renormalize over the factors we actually have signal for (overlap, your
-        // rating, and price-vs-market when known). A lone, unrated sub still scores
-        // low, so we don't false-flag; duplicates and low-rated subs can surface.
-        var terms: [(value: Double, weight: Double)] = [
-            (overlap, 0.20),
-            (userRating, 0.15),
-        ]
+        let coverage: Double
+        switch context.coverage {
+        case .none: coverage = 0
+        case .discounted: coverage = 40
+        case .credit: coverage = 70
+        case .included: coverage = 100
+        }
+
+        var priceHike: Double = 0
+        var hikeHasSignal = false
+        if let hike = sub.hasPriceHike, hikeIsRelevant(hike, now: now), hike.from > 0 {
+            priceHike = clamp((hike.to - hike.from) / hike.from * 400.0)
+            hikeHasSignal = true
+        }
+
+        var terms: [(factor: ScoreFactor, value: Double, weight: Double)] = []
         if usageUnknown {
-            if sub.marketAverage > 0 { terms.append((priceVsMarket, 0.05)) }
+            terms.append((.overlap, overlap, 0.25))
+            if context.coverage != .none { terms.append((.coverage, coverage, 0.30)) }
+            terms.append((.rating, userRating, 0.35))
+            if priceHasSignal { terms.append((.price, priceVsMarket, 0.10)) }
+            if hikeHasSignal { terms.append((.hike, priceHike, 0.05)) }
         } else {
-            terms.append((recencyOfLastUse, 0.35))
-            terms.append((usageVsPrice, 0.25))
-            terms.append((priceVsMarket, 0.05))
+            terms.append((.recency, recencyOfLastUse, 0.35))
+            terms.append((.usage, usageVsPrice, 0.25))
+            terms.append((.overlap, overlap, 0.20))
+            terms.append((.rating, userRating, 0.15))
+            terms.append((.price, priceVsMarket, 0.05))
         }
         let weightSum = terms.reduce(0) { $0 + $1.weight }
         let score = weightSum > 0
             ? terms.reduce(0) { $0 + $1.value * $1.weight } / weightSum
             : 50
+        var weights: [ScoreFactor: Double] = [:]
+        for t in terms { weights[t.factor] = weightSum > 0 ? t.weight / weightSum : 0 }
 
         return ScoreBreakdown(
             score: Int(clamp(score.rounded())),
@@ -117,7 +228,11 @@ enum ZombieScore {
             overlap: Int(overlap.rounded()),
             userRating: Int(userRating.rounded()),
             priceVsMarket: Int(priceVsMarket.rounded()),
-            hasUnknowns: hasUnknowns
+            coverage: Int(coverage.rounded()),
+            priceHike: Int(priceHike.rounded()),
+            hasUnknowns: ratingUnknown,
+            usageKnown: !usageUnknown,
+            weights: weights
         )
     }
 

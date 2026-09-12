@@ -170,6 +170,49 @@ enum MockData {
             marketAverage: 80.0, trialEndsAt: nil, hasPriceHike: nil,
             hasOverlapWith: [], notes: nil
         ),
+        // Added 2026-09-11 so the sample stack exercises the verticals beyond
+        // streaming and software — the ones a real household actually carries
+        // and forgets: a dating renewal, a camera plan, a meal kit, a car wash.
+        Subscription(
+            id: "tinder", name: "Tinder Gold", vendor: "Match Group",
+            rawDescriptor: "TINDER GOLD",
+            brandHex: "FD5564", category: .other,
+            amount: 39.99, cycle: .monthly,
+            nextBilling: daysAhead(5), startedAt: daysAgo(400),
+            lastUsedAt: daysAgo(74), sessionsLast30d: 0, userRating: 2,
+            marketAverage: 29.99, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
+        Subscription(
+            id: "ring-home", name: "Ring Home", vendor: "Ring LLC",
+            rawDescriptor: "RING YEARLY PLAN",
+            brandHex: "1D95D2", category: .shopping,
+            amount: 9.99, cycle: .monthly,
+            nextBilling: daysAhead(21), startedAt: daysAgo(640),
+            lastUsedAt: daysAgo(12), sessionsLast30d: 4, userRating: 3,
+            marketAverage: 8.0, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
+        Subscription(
+            id: "hellofresh", name: "HelloFresh", vendor: "HelloFresh SE",
+            rawDescriptor: "HELLOFRESH",
+            brandHex: "91C11E", category: .shopping,
+            amount: 333.0, cycle: .monthly,
+            nextBilling: daysAhead(3), startedAt: daysAgo(210),
+            lastUsedAt: daysAgo(9), sessionsLast30d: 4, userRating: 4,
+            marketAverage: 280.0, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
+        Subscription(
+            id: "mister-car-wash", name: "Mister Car Wash Unlimited", vendor: "Mister Car Wash",
+            rawDescriptor: "MISTER CAR WASH",
+            brandHex: "0C4DA2", category: .shopping,
+            amount: 24.99, cycle: .monthly,
+            nextBilling: daysAhead(14), startedAt: daysAgo(520),
+            lastUsedAt: daysAgo(51), sessionsLast30d: 0, userRating: 2,
+            marketAverage: 21.99, trialEndsAt: nil, hasPriceHike: nil,
+            hasOverlapWith: [], notes: nil
+        ),
     ]
 
     static let alerts: [PriceAlert] = [

@@ -170,186 +170,564 @@ enum MerchantNormalizer {
         // (rawPattern, strippedPattern, id) — strippedPattern checked when raw misses.
         // Bank-statement descriptors known to occur in the wild: keep this list
         // up to date as users report unfamiliar formats.
-        let aliases: [(String, String, String)] = [
-            // Streaming
-            ("netflix",         "netflix",       "netflix"),
-            ("hulu",            "hulu",          "hulu"),
-            ("spotify",         "spotify",       "spotify"),
-            ("peacock",         "peacock",       "peacock"),
-            ("paramount",       "paramount",     "paramount"),
-            ("disney",          "disney",        "disney-plus"),
-            ("hbo",             "hbomax",        "hbo-max"),
-            ("max ",            "hbomax",        "hbo-max"),
-            ("max*",            "hbomax",        "hbo-max"),
-            ("youtubepre",      "youtubepre",    "youtube-premium"),
-            ("youtube tv",      "youtubetv",     "youtube-tv"),
-            ("youtube",         "youtube",       "youtube-premium"),
-            // Apple — check iCloud first so "APL*ICLOUD" doesn't fall into the
-            // generic "apl*" → apple-music bucket.
-            ("icloud",          "icloud",        "icloud"),
-            ("apple tv",        "appletv",       "apple-tv"),
-            ("apple music",     "applemusic",    "apple-music"),
-            ("apple one",       "appleone",      "apple-music"),
-            ("apple.com/bill",  "applecombill",  "apple-music"),
-            ("apl*itunes",      "aplitunes",     "apple-music"),
-            ("apl itunes",      "aplitunes",     "apple-music"),
-            ("itunes.com/bill", "itunescombill", "apple-music"),
-            ("itunes",          "itunes",        "apple-music"),
-            ("apl*",            "apl",           "apple-music"),
-            ("apple",           "apple",         "apple-music"),
-            // Music & audio
-            ("tidal",           "tidal",         "tidal"),
-            ("sirius",          "sirius",        "sirius-xm"),
-            ("audible",         "audible",       "audible"),
-            // Amazon — only the membership tier names map to the brand. The
-            // bare "amazon" / "walmart" aliases used to send every marketplace
-            // / store charge to Prime / Walmart+ as a false-positive sub. The
-            // transactional keyword blacklist still handles "amazon.com*",
-            // "amzn mktpl", "walmart store", "walmart.com".
-            ("amazon prime",    "amazonprime",   "amazon-prime"),
-            ("amzn prime",      "amznprime",     "amazon-prime"),
-            ("amazon+",         "amazonplus",    "amazon-prime"),
-            ("amzn digital",    "amzndigital",   "audible"),
-            ("amazon digital",  "amazondigital", "audible"),
-            ("kindle unlimited","kindleunlim",   "audible"),
-            ("walmart plus",    "walmartplus",   "walmart-plus"),
-            ("walmart+",        "walmartplus",   "walmart-plus"),
-            // Google — Specific Google product aliases MUST come before the
-            // generic "google" / "googl*" fallback. Otherwise "GOOGLE *Gemini"
-            // or "GOOGL*YouTube TV" would match the catch-all → google-one.
-            ("google *youtube tv",  "googleyoutubetv",  "youtube-tv"),
-            ("googl*youtube tv",    "googleyoutubetv",  "youtube-tv"),
-            ("google *youtube",     "googleyoutube",    "youtube-premium"),
-            ("googl*youtube",       "googleyoutube",    "youtube-premium"),
-            ("google *gemini",      "googlegemini",     "gemini"),
-            ("googl*gemini",        "googlegemini",     "gemini"),
-            ("google ai pro",       "googleaipro",      "gemini"),
-            ("google one",          "googleone",        "google-one"),
-            ("google storage",      "googlestorage",    "google-one"),
-            ("google workspace",    "googleworkspace",  "google-one"),
-            ("google *workspace",   "googleworkspace",  "google-one"),
-            ("google",              "google",           "google-one"),
-            ("googl*",              "google",           "google-one"),
-            // Cloud storage / productivity
-            ("dropbox",         "dropbox",       "dropbox"),
-            ("adobe creative",  "adobecreative", "adobe-cc"),
-            ("adobe *cre",      "adobecre",      "adobe-cc"),
-            ("adobe",           "adobe",         "adobe-photography"),
-            ("microsoft 365",   "microsoft365",  "github"),
-            ("microsoft*office","microsoftoffice","github"),
-            ("microsoft*store", "microsoftstore","github"),
-            ("microsoft",       "microsoft",     "github"),
-            ("msft*office",     "msftoffice",    "github"),
-            ("msft *office",    "msftoffice",    "github"),
-            ("msft*",           "msft",          "github"),
-            ("msft ",           "msft",          "github"),
-            ("msft",            "msft",          "github"),
-            // GitHub & Copilot
-            ("github copilot",  "githubcopilot", "github-copilot"),
-            ("github *copilot", "githubcopilot", "github-copilot"),
-            ("github",          "github",        "github"),
-            // AI / chat
-            ("chatgpt",         "chatgpt",       "chatgpt"),
-            ("openai",          "openai",        "chatgpt"),
-            ("anthropic",       "anthropic",     "anthropic"),
-            ("claude",          "claude",        "claude"),
-            ("gemini",          "gemini",        "gemini"),
-            ("google ai pro",   "googleaipro",   "gemini"),
-            ("ai premium",      "aipremium",     "gemini"),
-            ("perplexity",      "perplexity",    "perplexity"),
-            // Dev tools
-            ("cursor",          "cursor",        "cursor"),
-            ("anyspher",        "anyspher",      "cursor"),
-            ("replit",          "replit",        "replit"),
-            ("v0.dev",          "v0dev",         "v0"),
-            ("v0 *",            "v0",            "v0"),
-            ("v0*",             "v0",            "v0"),
-            ("vo *",            "vo",            "v0"),   // OCR misreads "V0" as "VO"
-            ("vo*",             "vo",            "v0"),
-            ("vercel",          "vercel",        "vercel"),
-            ("bolt.new",        "boltnew",       "bolt"),
-            ("stackblitz",      "stackblitz",    "bolt"),
-            ("lovable",         "lovable",       "lovable"),
-            ("linear.app",      "linearapp",     "linear"),
-            ("linear orbit",    "linearorbit",   "linear"),
-            ("linear inc",      "linearinc",     "linear"),
-            // AI media
-            ("midjourney",      "midjourney",    "openai"),
-            ("runway",          "runway",        "openai"),
-            ("suno",            "suno",          "suno"),
-            ("elevenlabs",      "elevenlabs",    "elevenlabs"),
-            ("eleven labs",     "elevenlabs",    "elevenlabs"),
-            ("huggingface",     "huggingface",   "huggingface"),
-            ("hugging face",    "huggingface",   "huggingface"),
-            ("deepseek",        "deepseek",      "deepseek"),
-            ("mistral",         "mistral",       "anthropic"),
-            ("cohere",          "cohere",        "anthropic"),
-            ("together ai",     "togetherai",    "anthropic"),
-            ("groq",            "groq",          "anthropic"),
-            // Notes / language / learning
-            ("notion",          "notion",        "notion"),
-            ("duolingo",        "duolingo",      "duolingo"),
-            ("masterclass",     "masterclass",   "masterclass"),
-            // Password / VPN
-            ("lastpass",        "lastpass",      "lastpass"),
-            ("logmein*lastpass","logmeinlastpass","lastpass"),
-            ("1password",       "1password",     "1password"),
-            ("expressvpn",      "expressvpn",    "expressvpn"),
-            ("express vpn",     "expressvpn",    "expressvpn"),
-            ("nordvpn",         "nordvpn",       "nordvpn"),
-            ("nord vpn",        "nordvpn",       "nordvpn"),
-            // News
-            ("new york times",  "newyorktimes",  "nyt"),
-            ("nytimes",         "nytimes",       "nyt"),
-            ("nyt ",            "nyt",           "nyt"),
-            ("wsj",             "wsj",           "wsj"),
-            ("washington post", "washingtonpost","washington-post"),
-            // Fitness
-            ("planet fitness",  "planetfitness", "planet-fitness"),
-            ("planet fit",      "planetfit",     "planet-fitness"),
-            ("equinox",         "equinox",       "equinox"),
-            ("peloton",         "peloton",       "peloton"),
-            // Wellness
-            ("headspace",       "headspace",     "headspace"),
-            ("calm",            "calm",          "calm"),
-            ("noom",            "noom",          "noom"),
-            // Cable / internet / wireless — biggest negotiation wins live here.
-            ("spectrum",        "spectrum",      "spectrum"),
-            ("charter comm",    "chartercomm",   "spectrum"),
-            ("xfinity",         "xfinity",       "xfinity"),
-            ("comcast",         "comcast",       "xfinity"),
-            ("t-mobile",        "tmobile",       "t-mobile"),
-            ("tmobile",         "tmobile",       "t-mobile"),
-            ("t mobile",        "tmobile",       "t-mobile"),
-            ("verizon wireless","verizonwireless","verizon"),
-            ("verizon ",        "verizon",       "verizon"),
-            ("at&t ",           "att",           "att"),
-            ("at and t",        "att",           "att"),
-            // Third-party processors that wrap subs
-            ("paypal *netflix", "paypalnetflix", "netflix"),
-            ("paypal *spotify", "paypalspotify", "spotify"),
-            ("paypal *hulu",    "paypalhulu",    "hulu"),
-            // Mobility / delivery memberships (subs that ride on transactional apps)
-            ("uber one",        "uberone",       "uber-one"),
-            ("uber *one",       "uberone",       "uber-one"),
-            ("uber*one",        "uberone",       "uber-one"),
-            ("lyft pink",       "lyftpink",      "lyft-pink"),
-            ("lyft *pink",      "lyftpink",      "lyft-pink"),
-            ("dashpass",        "dashpass",      "dashpass"),
-            ("doordash dashpass","doordashdashpass","dashpass"),
-        ]
+        let aliases = brandAliases
         for (pattern, _, id) in aliases {
-            if lower.contains(pattern) { return id }
+            if wholeWordAliases.contains(pattern) {
+                if matchesWholeWord(pattern, in: lower) { return id }
+            } else if lower.contains(pattern) {
+                return id
+            }
         }
         // Fuzzy fallback: try stripped pattern against stripped name
         // (handles "APL*ITUNES", "AMZN  DIGITAL" with double space, etc.)
-        for (_, strippedPattern, id) in aliases where strippedPattern.count >= 5 {
+        for (pattern, strippedPattern, id) in aliases where strippedPattern.count >= 5 && !wholeWordAliases.contains(pattern) {
             if stripped.contains(strippedPattern) { return id }
         }
-        // Last resort: slug the name
+        return fallbackSlug(lower)
+    }
+
+    /// Generic aliases that are real English words / common fragments; these
+    /// only match as whole words so "PINEAPPLE THAI" isn't Apple and
+    /// "PHILOSOPHY" isn't Philo.
+    private static let wholeWordAliases: Set<String> = [
+        "apple", "google", "max ", "max*", "adobe", "proton", "kindle", "espn",
+        "sling", "fubo", "starz", "philo", "calm", "runway", "linear", "cursor", "bolt",
+        // Short 2026-09-11 additions: these appear inside unrelated merchant
+        // names ("aura" in "laura", "epic!" in "epicurean"), so they only count
+        // as a whole word.
+        "arlo", "aura", "canva", "dazn", "epic!", "figma", "hinge", "ko-fi", "mlb.tv", "mubi", "nfl+", "oura", "qobuz", "whoop", "ww int", "wyze", "ynab",
+        "roku", "tubi",
+        "1life", "hers", "hims", "ko fi",
+        "epic", "homer", "tesla",
+        "tuta",
+    ]
+
+    private static func matchesWholeWord(_ pattern: String, in text: String) -> Bool {
+        let word = pattern.trimmingCharacters(in: CharacterSet(charactersIn: " *"))
+        let escaped = NSRegularExpression.escapedPattern(for: word)
+        return text.range(of: "(^|[^a-z0-9])" + escaped + "($|[^a-z0-9])", options: .regularExpression) != nil
+    }
+
+    /// Unknown merchant → stable slug. Drops digit-heavy tokens (store numbers,
+    /// phone fragments, transaction ids) and keeps the first three words so the
+    /// same vendor groups across OCR variants ("ROCK SPOT CLIMBING 401-555" and
+    /// "ROCK SPOT CLIMBING" both → "rock-spot-climbing").
+    static func fallbackSlug(_ lower: String) -> String {
+        let tokens = lower
+            .replacingOccurrences(of: #"[^a-z0-9]+"#, with: " ", options: .regularExpression)
+            .split(separator: " ")
+            .map(String.init)
+            .filter { tok in
+                let digits = tok.filter(\.isNumber).count
+                return tok.count > 1 && digits < 3 && !(digits > 0 && digits == tok.count)
+            }
+        let kept = tokens.prefix(3).joined(separator: "-")
+        if !kept.isEmpty { return kept }
         return lower.replacingOccurrences(of: #"[^a-z0-9]+"#, with: "-", options: .regularExpression)
             .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
     }
+
+    /// Multi-charge billers: one statement line can be any of several products
+    /// (APPLE.COM/BILL is iCloud, a game, a news app…). The pipeline keeps one
+    /// sub per distinct amount for these instead of collapsing them.
+    static func isMultiChargeBiller(_ brandId: String) -> Bool {
+        ["apple-services", "google-play", "amazon-digital"].contains(brandId)
+    }
+
+    /// Subscription ids for multi-charge billers carry an amount suffix
+    /// ("apple-services-1299c"). Strip it to get the brand id back.
+    static func brandId(fromSubscriptionId id: String) -> String {
+        id.replacingOccurrences(of: #"-\d+c$"#, with: "", options: .regularExpression)
+    }
+
+    private static let subscriptionHintRegex = try! NSRegularExpression(
+        pattern: #"(?i)(^|[^a-z])(recurring|subscription|subscr|membership|renewal|auto-?renew|monthly|annual)([^a-z]|$)|\.com/bill|\*bill([^a-z]|$)"#
+    )
+
+    /// True when the raw statement row itself says this is a recurring charge
+    /// ("RECURRING CARD PURCHASE", "AUDIBLE*MEMBERSHIP", "NFLX*SUBSCRIPTION",
+    /// "APPLE.COM/BILL"). Banks label recurring authorizations explicitly on
+    /// Chase / Wells / BoA rows — a strong signal the normalizer used to strip.
+    static func hasSubscriptionHint(_ raw: String) -> Bool {
+        let range = NSRange(raw.startIndex..., in: raw)
+        return subscriptionHintRegex.firstMatch(in: raw, options: [], range: range) != nil
+    }
+
+    /// (rawPattern, strippedPattern, id) — strippedPattern checked when raw misses.
+    /// Ordered: specific product aliases MUST precede their generic biller
+    /// ("apple music" before "apple", "google *youtube" before "google").
+    /// Bank-statement descriptors known to occur in the wild: keep this list
+    /// up to date as users report unfamiliar formats.
+    static let brandAliases: [(String, String, String)] = [
+        // Streaming video
+        ("netflix",         "netflix",       "netflix"),
+        ("hulu",            "hulu",          "hulu"),
+        ("peacock",         "peacock",       "peacock"),
+        ("paramount",       "paramount",     "paramount"),
+        ("disney",          "disney",        "disney-plus"),
+        ("hbo",             "hbomax",        "hbo-max"),
+        ("max ",            "hbomax",        "hbo-max"),
+        ("max*",            "hbomax",        "hbo-max"),
+        ("crunchyroll",     "crunchyroll",   "crunchyroll"),
+        ("espn+",           "espnplus",      "espn-plus"),
+        ("espnplus",        "espnplus",      "espn-plus"),
+        ("espn",            "espnplus",      "espn-plus"),
+        ("starz",           "starzent",      "starz"),
+        ("amc+",            "amcplus",       "amc-plus"),
+        ("amc plus",        "amcplus",       "amc-plus"),
+        ("amc networks",    "amcnetworks",   "amc-plus"),
+        ("fubotv",          "fubotv",        "fubo"),
+        ("fubo",            "fubotv",        "fubo"),
+        ("sling tv",        "slingtv",       "sling"),
+        ("slingtv",         "slingtv",       "sling"),
+        ("sling",           "slingtv",       "sling"),
+        ("philo",           "philotv",       "philo"),
+        ("prime video",     "primevideo",    "prime-video"),
+        // YouTube — Music before the generic Premium fallback
+        ("youtube music",   "youtubemusic",  "youtube-music"),
+        ("google *youtube music", "googleyoutubemusic", "youtube-music"),
+        ("googl*youtube music",   "googleyoutubemusic", "youtube-music"),
+        ("youtubepre",      "youtubepre",    "youtube-premium"),
+        ("youtube tv",      "youtubetv",     "youtube-tv"),
+        ("google *youtube tv",  "googleyoutubetv",  "youtube-tv"),
+        ("googl*youtube tv",    "googleyoutubetv",  "youtube-tv"),
+        ("google *youtube",     "googleyoutube",    "youtube-premium"),
+        ("googl*youtube",       "googleyoutube",    "youtube-premium"),
+        ("youtube",         "youtube",       "youtube-premium"),
+        // Apple — named products first; anything else billed through the App
+        // Store is "apple-services" (product unknown from the statement).
+        ("icloud",          "icloud",        "icloud"),
+        ("apple tv",        "appletv",       "apple-tv"),
+        ("apple music",     "applemusic",    "apple-music"),
+        ("apple arcade",    "applearcade",   "apple-arcade"),
+        ("apple news",      "applenews",     "apple-news"),
+        ("apple fitness",   "applefitness",  "apple-fitness"),
+        ("apple one",       "appleone",      "apple-one"),
+        ("apple.com/bill",  "applecombill",  "apple-services"),
+        ("apl*itunes",      "aplitunes",     "apple-services"),
+        ("apl itunes",      "aplitunes",     "apple-services"),
+        ("itunes.com/bill", "itunescombill", "apple-services"),
+        ("itunes",          "itunes",        "apple-services"),
+        ("apl*",            "apl",           "apple-services"),
+        ("apple",           "apple",         "apple-services"),
+        // Music & audio
+        ("spotify",         "spotify",       "spotify"),
+        ("tidal",           "tidal",         "tidal"),
+        ("sirius",          "sirius",        "sirius-xm"),
+        ("pandora media",   "pandoramedia",  "pandora"),
+        ("pandora*",        "pandoramedia",  "pandora"),
+        ("audible",         "audible",       "audible"),
+        // Amazon — only membership / digital tier names map to a brand. Bare
+        // "amazon" is a marketplace one-off and is left to the blacklist / ML.
+        ("amazon prime",    "amazonprime",   "amazon-prime"),
+        ("amzn prime",      "amznprime",     "amazon-prime"),
+        ("amazon+",         "amazonplus",    "amazon-prime"),
+        ("amazon music",    "amazonmusic",   "amazon-music"),
+        ("amzn music",      "amznmusic",     "amazon-music"),
+        ("kindle unlimited","kindleunlim",   "kindle-unlimited"),
+        ("kindle unltd",    "kindleunltd",   "kindle-unlimited"),
+        ("kindle",          "kindleunlim",   "kindle-unlimited"),
+        ("amzn digital",    "amzndigital",   "amazon-digital"),
+        ("amazon digital",  "amazondigital", "amazon-digital"),
+        ("walmart plus",    "walmartplus",   "walmart-plus"),
+        ("walmart+",        "walmartplus",   "walmart-plus"),
+        // Google — product aliases before the generic Play biller
+        ("google *gemini",      "googlegemini",     "gemini"),
+        ("googl*gemini",        "googlegemini",     "gemini"),
+        ("google ai pro",       "googleaipro",      "gemini"),
+        ("gemini",              "gemini",           "gemini"),
+        ("ai premium",          "aipremium",        "gemini"),
+        ("google one",          "googleone",        "google-one"),
+        ("google storage",      "googlestorage",    "google-one"),
+        ("google workspace",    "googleworkspace",  "google-workspace"),
+        ("google *workspace",   "googleworkspace",  "google-workspace"),
+        ("google",              "google",           "google-play"),
+        ("googl*",              "googleplay",       "google-play"),
+        // Cloud storage / productivity / creative
+        ("dropbox",         "dropbox",       "dropbox"),
+        ("adobe creative",  "adobecreative", "adobe-cc"),
+        ("adobe *cre",      "adobecre",      "adobe-cc"),
+        ("adobe cc",        "adobecc",       "adobe-cc"),
+        ("adobe photo",     "adobephoto",    "adobe-photography"),
+        ("adobe *photo",    "adobephoto",    "adobe-photography"),
+        ("lightroom",       "lightroom",     "adobe-photography"),
+        ("adobe",           "adobeinc",      "adobe"),
+        ("microsoft 365",   "microsoft365",  "microsoft-365"),
+        ("microsoft*office","microsoftoffice","microsoft-365"),
+        ("microsoft*store", "microsoftstore","microsoft-365"),
+        ("microsoft",       "microsoft",     "microsoft-365"),
+        ("msft*office",     "msftoffice",    "microsoft-365"),
+        ("msft *office",    "msftoffice",    "microsoft-365"),
+        ("msft*",           "msft",          "microsoft-365"),
+        ("msft ",           "msft",          "microsoft-365"),
+        ("msft",            "msft",          "microsoft-365"),
+        // GitHub & Copilot
+        ("github copilot",  "githubcopilot", "github-copilot"),
+        ("github *copilot", "githubcopilot", "github-copilot"),
+        ("github",          "github",        "github"),
+        // AI / chat
+        ("chatgpt",         "chatgpt",       "chatgpt"),
+        ("openai",          "openai",        "chatgpt"),
+        ("anthropic",       "anthropic",     "anthropic"),
+        ("claude",          "claude",        "claude"),
+        ("perplexity",      "perplexity",    "perplexity"),
+        // Dev tools
+        ("cursor",          "cursorai",      "cursor"),
+        ("anyspher",        "anyspher",      "cursor"),
+        ("replit",          "replit",        "replit"),
+        ("v0.dev",          "v0dev",         "v0"),
+        ("v0 *",            "v0",            "v0"),
+        ("v0*",             "v0",            "v0"),
+        ("vo *",            "vo",            "v0"),   // OCR misreads "V0" as "VO"
+        ("vo*",             "vo",            "v0"),
+        ("vercel",          "vercel",        "vercel"),
+        ("bolt.new",        "boltnew",       "bolt"),
+        ("stackblitz",      "stackblitz",    "bolt"),
+        ("bolt",            "boltnew",       "bolt"),
+        ("lovable",         "lovable",       "lovable"),
+        ("linear.app",      "linearapp",     "linear"),
+        ("linear orbit",    "linearorbit",   "linear"),
+        ("linear inc",      "linearinc",     "linear"),
+        ("linear",          "linearapp",     "linear"),
+        // AI media
+        ("midjourney",      "midjourney",    "midjourney"),
+        ("runwayml",        "runwayml",      "runway"),
+        ("runway ml",       "runwayml",      "runway"),
+        ("runway",          "runwayml",      "runway"),
+        ("suno",            "suno",          "suno"),
+        ("elevenlabs",      "elevenlabs",    "elevenlabs"),
+        ("eleven labs",     "elevenlabs",    "elevenlabs"),
+        ("huggingface",     "huggingface",   "huggingface"),
+        ("hugging face",    "huggingface",   "huggingface"),
+        ("deepseek",        "deepseek",      "deepseek"),
+        ("mistral",         "mistral",       "mistral"),
+        ("cohere",          "cohere",        "cohere"),
+        // Notes / language / learning
+        ("notion",          "notion",        "notion"),
+        ("duolingo",        "duolingo",      "duolingo"),
+        ("masterclass",     "masterclass",   "masterclass"),
+        // Password / VPN
+        ("lastpass",        "lastpass",      "lastpass"),
+        ("logmein*lastpass","logmeinlastpass","lastpass"),
+        ("1password",       "1password",     "1password"),
+        ("bitwarden",       "bitwarden",     "bitwarden"),
+        ("expressvpn",      "expressvpn",    "expressvpn"),
+        ("express vpn",     "expressvpn",    "expressvpn"),
+        ("nordvpn",         "nordvpn",       "nordvpn"),
+        ("nord vpn",        "nordvpn",       "nordvpn"),
+        ("proton vpn",      "protonvpn",     "proton-vpn"),
+        ("protonvpn",       "protonvpn",     "proton-vpn"),
+        ("protonmail",      "protonmail",    "proton"),
+        ("proton",          "protonag",      "proton"),
+        // News
+        ("new york times",  "newyorktimes",  "nyt"),
+        ("nytimes",         "nytimes",       "nyt"),
+        ("nyt ",            "nyt",           "nyt"),
+        ("wsj",             "wsj",           "wsj"),
+        ("washington post", "washingtonpost","washington-post"),
+        // Fitness
+        ("planet fitness",  "planetfitness", "planet-fitness"),
+        ("planet fit",      "planetfit",     "planet-fitness"),
+        ("equinox",         "equinox",       "equinox"),
+        ("peloton",         "peloton",       "peloton"),
+        // Wellness
+        ("headspace",       "headspace",     "headspace"),
+        ("calm",            "calmcom",       "calm"),
+        ("noom",            "noom",          "noom"),
+        // Cable / internet / wireless — biggest negotiation wins live here.
+        ("spectrum",        "spectrum",      "spectrum"),
+        ("charter comm",    "chartercomm",   "spectrum"),
+        ("xfinity",         "xfinity",       "xfinity"),
+        ("comcast",         "comcast",       "xfinity"),
+        ("t-mobile",        "tmobile",       "t-mobile"),
+        ("tmobile",         "tmobile",       "t-mobile"),
+        ("t mobile",        "tmobile",       "t-mobile"),
+        ("verizon wireless","verizonwireless","verizon"),
+        ("verizon ",        "verizon",       "verizon"),
+        ("at&t ",           "att",           "att"),
+        ("at and t",        "att",           "att"),
+        // Third-party processors that wrap subs
+        ("paypal *netflix", "paypalnetflix", "netflix"),
+        ("paypal *spotify", "paypalspotify", "spotify"),
+        ("paypal *hulu",    "paypalhulu",    "hulu"),
+        // Mobility / delivery memberships (subs that ride on transactional apps)
+        ("uber one",        "uberone",       "uber-one"),
+        ("uber *one",       "uberone",       "uber-one"),
+        ("uber*one",        "uberone",       "uber-one"),
+        ("lyft pink",       "lyftpink",      "lyft-pink"),
+        ("lyft *pink",      "lyftpink",      "lyft-pink"),
+        ("dashpass",        "dashpass",      "dashpass"),
+        ("doordash dashpass","doordashdashpass","dashpass"),
+        ("instacart+",      "instacartplus", "instacart-plus"),
+        ("instacart plus",  "instacartplus", "instacart-plus"),
+        ("instacart *plus", "instacartplus", "instacart-plus"),
+        ("instacart*plus",  "instacartplus", "instacart-plus"),
+        ("grubhub+",        "grubhubplus",   "grubhub-plus"),
+        ("grubhub plus",    "grubhubplus",   "grubhub-plus"),
+        ("grubhub *plus",   "grubhubplus",   "grubhub-plus"),
+        ("grubhub*plus",    "grubhubplus",   "grubhub-plus"),
+        // Verticals added 2026-09-11 (dating, social, creators, home security,
+        // meal kits, health, money, identity, hosting, sports, kids, car).
+        ("you need a budget", "youneedabudget", "ynab"),
+        ("intuit *turbotax", "intuitturbotax", "turbotax"),
+        ("weight watchers", "weightwatchers", "weight-watchers"),
+        ("nba league pass", "nbaleaguepass", "nba-league-pass"),
+        ("curiositystream", "curiositystream", "curiositystream"),
+        ("financial times", "financialtimes", "financial-times"),
+        ("mister car wash", "mistercarwash", "mister-car-wash"),
+        ("nortonlifelock", "nortonlifelock", "norton"),
+        ("xbox game pass", "xboxgamepass", "xbox-game-pass"),
+        ("copilot money", "copilotmoney", "copilot-money"),
+        ("monarch money", "monarchmoney", "monarch-money"),
+        ("seeking alpha", "seekingalpha", "seeking-alpha"),
+        ("zips car wash", "zipscarwash", "zips-car-wash"),
+        ("coffee meets", "coffeemeets", "coffee-meets-bagel"),
+        ("ring monthly", "ringmonthly", "ring-home"),
+        ("marley spoon", "marleyspoon", "marley-spoon"),
+        ("rocket money", "rocketmoney", "rocket-money"),
+        ("malwarebytes", "malwarebytes", "malwarebytes"),
+        ("the athletic", "theathletic", "the-athletic"),
+        ("the atlantic", "theatlantic", "the-atlantic"),
+        ("ring yearly", "ringyearly", "ring-home"),
+        ("hello fresh", "hellofresh", "hellofresh"),
+        ("one medical", "onemedical", "one-medical"),
+        ("rocketmoney", "rocketmoney", "rocket-money"),
+        ("morningstar", "morningstar", "morningstar"),
+        ("bitdefender", "bitdefender", "bitdefender"),
+        ("proton mail", "protonmail", "proton-mail"),
+        ("squarespace", "squarespace", "squarespace"),
+        ("playstation", "playstation", "playstation-plus"),
+        ("geforce now", "geforcenow", "geforce-now"),
+        ("simplisafe", "simplisafe", "simplisafe"),
+        ("nest aware", "nestaware", "nest-aware"),
+        ("hellofresh", "hellofresh", "hellofresh"),
+        ("blue apron", "blueapron", "blue-apron"),
+        ("green chef", "greenchef", "green-chef"),
+        ("betterhelp", "betterhelp", "betterhelp"),
+        ("quickbooks", "quickbooks", "quickbooks"),
+        ("superhuman", "superhuman", "superhuman"),
+        ("pixelmator", "pixelmator", "pixelmator"),
+        ("new yorker", "newyorker", "the-new-yorker"),
+        ("sam's club", "samsclub", "sams-club"),
+        ("take 5 car", "take5car", "take-5-car-wash"),
+        ("match.com", "matchcom", "match"),
+        ("home chef", "homechef", "home-chef"),
+        ("cookunity", "cookunity", "cookunity"),
+        ("talkspace", "talkspace", "talkspace"),
+        ("classpath", "classpath", "classpass"),
+        ("classpass", "classpass", "classpass"),
+        ("namecheap", "namecheap", "namecheap"),
+        ("wordpress", "wordpress", "wordpress"),
+        ("hostinger", "hostinger", "hostinger"),
+        ("grammarly", "grammarly", "grammarly"),
+        ("game pass", "gamepass", "xbox-game-pass"),
+        ("criterion", "criterion", "criterion-channel"),
+        ("speechify", "speechify", "speechify"),
+        ("bloomberg", "bloomberg", "bloomberg"),
+        ("economist", "economist", "the-economist"),
+        ("sams club", "samsclub", "sams-club"),
+        ("linkedin", "linkedin", "linkedin-premium"),
+        ("snapchat", "snapchat", "snapchat-plus"),
+        ("substack", "substack", "substack"),
+        ("ring.com", "ringcom", "ring-home"),
+        ("truebill", "truebill", "rocket-money"),
+        ("turbotax", "turbotax", "turbotax"),
+        ("simplifi", "simplifi", "quicken-simplifi"),
+        ("lifelock", "lifelock", "lifelock"),
+        ("deleteme", "deleteme", "deleteme"),
+        ("fastmail", "fastmail", "fastmail"),
+        ("bluehost", "bluehost", "bluehost"),
+        ("evernote", "evernote", "evernote"),
+        ("otter.ai", "otterai", "otter-ai"),
+        ("calendly", "calendly", "calendly"),
+        ("descript", "descript", "descript"),
+        ("readwise", "readwise", "readwise"),
+        ("nintendo", "nintendo", "nintendo-switch-online"),
+        ("acorn tv", "acorntv", "acorn-tv"),
+        ("libro.fm", "librofm", "libro-fm"),
+        ("blinkist", "blinkist", "blinkist"),
+        ("abcmouse", "abcmouse", "abcmouse"),
+        ("carepass", "carepass", "cvs-carepass"),
+        ("discord", "discord", "discord-nitro"),
+        ("patreon", "patreon", "patreon"),
+        ("forhims", "forhims", "hims"),
+        ("forhers", "forhers", "hers"),
+        ("incogni", "incogni", "incogni"),
+        ("wix.com", "wixcom", "wix"),
+        ("godaddy", "godaddy", "godaddy"),
+        ("webflow", "webflow", "webflow"),
+        ("shopify", "shopify", "shopify"),
+        ("todoist", "todoist", "todoist"),
+        ("shudder", "shudder", "shudder"),
+        ("britbox", "britbox", "britbox"),
+        ("everand", "everand", "everand"),
+        ("tinder", "tinder", "tinder"),
+        ("bumble", "bumble", "bumble"),
+        ("grindr", "grindr", "grindr"),
+        ("reddit", "reddit", "reddit-premium"),
+        ("twitch", "twitch", "twitch"),
+        ("factor", "factor", "factor"),
+        ("ww int", "wwint", "weight-watchers"),
+        ("strava", "strava", "strava"),
+        ("fitbit", "fitbit", "fitbit-premium"),
+        ("norton", "norton", "norton"),
+        ("mcafee", "mcafee", "mcafee"),
+        ("framer", "framer", "framer"),
+        ("capcut", "capcut", "capcut"),
+        ("mlb.tv", "mlbtv", "mlb-tv"),
+        ("roblox", "roblox", "roblox-premium"),
+        ("nebula", "nebula", "nebula"),
+        ("deezer", "deezer", "deezer"),
+        ("scribd", "scribd", "everand"),
+        ("noggin", "noggin", "noggin"),
+        ("costco", "costco", "costco"),
+        ("onstar", "onstar", "onstar"),
+        ("hinge", "hinge", "hinge"),
+        ("ko-fi", "kofi", "ko-fi"),
+        ("whoop", "whoop", "whoop"),
+        ("canva", "canva", "canva"),
+        ("figma", "figma", "figma"),
+        ("qobuz", "qobuz", "qobuz"),
+        ("epic!", "epic", "epic-books"),
+        ("arlo", "arlo", "arlo"),
+        ("wyze", "wyze", "wyze"),
+        ("oura", "oura", "oura"),
+        ("ynab", "ynab", "ynab"),
+        ("aura", "aura", "aura"),
+        ("dazn", "dazn", "dazn"),
+        ("nfl+", "nflplus", "nfl-plus"),
+        ("mubi", "mubi", "mubi"),
+        // Catalog merge 2026-09-11.
+        ("amc networks shudder", "amcnetworksshudder", "shudder"),
+        ("hallmark movies now", "hallmarkmoviesnow", "hallmark-plus"),
+        ("amc networks acorn", "amcnetworksacorn", "acorn-tv"),
+        ("criterion channel", "criterionchannel", "criterion-channel"),
+        ("curiosity stream", "curiositystream", "curiositystream"),
+        ("hoopla digital", "hoopladigital", "hoopla"),
+        ("hallmark plus", "hallmarkplus", "hallmark-plus"),
+        ("roku channel", "rokuchannel", "roku-channel"),
+        ("magellan tv", "magellantv", "magellantv"),
+        ("magellantv", "magellantv", "magellantv"),
+        ("dropout tv", "dropouttv", "dropout"),
+        ("pluto tv", "plutotv", "pluto-tv"),
+        ("hallmark", "hallmark", "hallmark-plus"),
+        ("tubi tv", "tubitv", "tubi"),
+        ("plutotv", "plutotv", "pluto-tv"),
+        ("acorntv", "acorntv", "acorn-tv"),
+        ("dropout", "dropout", "dropout"),
+        ("kanopy", "kanopy", "kanopy"),
+        ("hoopla", "hoopla", "hoopla"),
+        ("tubi", "tubi", "tubi"),
+        ("roku", "roku", "roku-channel"),
+        // Catalog merge 2026-09-11.
+        ("ten percent happier", "tenpercenthappier", "ten-percent-happier"),
+        ("patreon* membership", "patreonmembership", "patreon"),
+        ("happier meditation", "happiermeditation", "ten-percent-happier"),
+        ("coffee meets bagel", "coffeemeetsbagel", "coffee-meets-bagel"),
+        ("twitch interactive", "twitchinteractive", "twitch"),
+        ("ww international", "wwinternational", "weight-watchers"),
+        ("linkedin premium", "linkedinpremium", "linkedin-premium"),
+        ("telegram premium", "telegrampremium", "telegram-premium"),
+        ("insight network", "insightnetwork", "insight-timer"),
+        ("weightwatchers", "weightwatchers", "weight-watchers"),
+        ("bumble holding", "bumbleholding", "bumble"),
+        ("reddit premium", "redditpremium", "reddit-premium"),
+        ("meta platforms", "metaplatforms", "meta-verified"),
+        ("classpass com", "classpasscom", "classpass"),
+        ("insight timer", "insighttimer", "insight-timer"),
+        ("hf*hellofresh", "hfhellofresh", "hellofresh"),
+        ("blueapron com", "blueaproncom", "blue-apron"),
+        ("meta verified", "metaverified", "meta-verified"),
+        ("wakingup com", "wakingupcom", "waking-up"),
+        ("elevate labs", "elevatelabs", "balance"),
+        ("factor meals", "factormeals", "factor"),
+        ("homechef com", "homechefcom", "home-chef"),
+        ("match*tinder", "matchtinder", "tinder"),
+        ("linkedin com", "linkedincom", "linkedin-premium"),
+        ("substack com", "substackcom", "substack"),
+        ("forhims com", "forhimscom", "hims"),
+        ("forhers com", "forherscom", "hers"),
+        ("oura health", "ourahealth", "oura"),
+        ("balance app", "balanceapp", "balance"),
+        ("twitter inc", "twitterinc", "x-premium"),
+        ("discord com", "discordcom", "discord-nitro"),
+        ("discord inc", "discordinc", "discord-nitro"),
+        ("patreon com", "patreoncom", "patreon"),
+        ("strava com", "stravacom", "strava"),
+        ("tenpercent", "tenpercent", "ten-percent-happier"),
+        ("tinder com", "tindercom", "tinder"),
+        ("bumble com", "bumblecom", "bumble"),
+        ("grindr llc", "grindrllc", "grindr"),
+        ("reddit inc", "redditinc", "reddit-premium"),
+        ("medium com", "mediumcom", "medium"),
+        ("whoop com", "whoopcom", "whoop"),
+        ("waking up", "wakingup", "waking-up"),
+        ("match com", "matchcom", "match"),
+        ("twitch tv", "twitchtv", "twitch"),
+        ("factor75", "factor75", "factor"),
+        ("hinge co", "hingeco", "hinge"),
+        ("snap inc", "snapinc", "snapchat-plus"),
+        ("telegram", "telegram", "telegram-premium"),
+        ("kofi com", "koficom", "ko-fi"),
+        ("ww com", "wwcom", "weight-watchers"),
+        ("x corp", "xcorp", "x-premium"),
+        ("1life", "1life", "one-medical"),
+        ("ko fi", "kofi", "ko-fi"),
+        ("hims", "hims", "hims"),
+        ("hers", "hers", "hers"),
+        // Catalog merge 2026-09-11.
+        ("google *nest aware", "googlenestaware", "nest-aware"),
+        ("bjs wholesale club", "bjswholesaleclub", "bjs"),
+        ("cvs extracare plus", "cvsextracareplus", "cvs-carepass"),
+        ("target circle 360", "targetcircle360", "target-circle-360"),
+        ("learn with homer", "learnwithhomer", "homer"),
+        ("take 5 car wash", "take5carwash", "take-5-car-wash"),
+        ("age of learning", "ageoflearning", "abcmouse"),
+        ("simplisafe com", "simplisafecom", "simplisafe"),
+        ("costco member", "costcomember", "costco"),
+        ("bjs wholesale", "bjswholesale", "bjs"),
+        ("google store", "googlestore", "nest-aware"),
+        ("cvs carepass", "cvscarepass", "cvs-carepass"),
+        ("getepic com", "getepiccom", "epic-books"),
+        ("costco whse", "costcowhse", "costco"),
+        ("target com", "targetcom", "target-circle-360"),
+        ("lingokids", "lingokids", "lingokids"),
+        ("ring com", "ringcom", "ring-home"),
+        ("arlo com", "arlocom", "arlo"),
+        ("tesla", "tesla", "tesla-premium-connectivity"),
+        ("homer", "homer", "homer"),
+        ("epic", "epic", "epic-books"),
+        // Catalog merge 2026-09-11.
+        ("morningstar investor", "morningstarinvestor", "morningstar"),
+        ("quicken simplifi", "quickensimplifi", "quicken-simplifi"),
+        ("joindeleteme com", "joindeletemecom", "deleteme"),
+        ("rocketmoney com", "rocketmoneycom", "rocket-money"),
+        ("morningstar com", "morningstarcom", "morningstar"),
+        ("norton lifelock", "nortonlifelock", "lifelock"),
+        ("bitdefender com", "bitdefendercom", "bitdefender"),
+        ("abine deleteme", "abinedeleteme", "deleteme"),
+        ("simplelogin io", "simpleloginio", "simplelogin"),
+        ("monarchmoney", "monarchmoney", "monarch-money"),
+        ("turbotax com", "turbotaxcom", "turbotax"),
+        ("lifelock com", "lifelockcom", "lifelock"),
+        ("fastmail com", "fastmailcom", "fastmail"),
+        ("fastmail pty", "fastmailpty", "fastmail"),
+        ("monarch com", "monarchcom", "monarch-money"),
+        ("quicken inc", "quickeninc", "quicken-simplifi"),
+        ("gen digital", "gendigital", "norton"),
+        ("simplelogin", "simplelogin", "simplelogin"),
+        ("norton 360", "norton360", "norton"),
+        ("mcafee com", "mcafeecom", "mcafee"),
+        ("tutao gmbh", "tutaogmbh", "tuta"),
+        ("proton ag", "protonag", "proton-mail"),
+        ("proton me", "protonme", "proton-mail"),
+        ("37signals", "37signals", "hey"),
+        ("ynab com", "ynabcom", "ynab"),
+        ("aura com", "auracom", "aura"),
+        ("tutanota", "tutanota", "tuta"),
+        ("hey com", "heycom", "hey"),
+        ("tuta", "tuta", "tuta"),
+    ]
 
     /// Three-tier check: hard rejection → known brand → ML × price gate.
     ///
@@ -358,7 +736,7 @@ enum MerchantNormalizer {
     /// the amount matches that pattern, we trust mid-confidence ML predictions.
     /// When the amount is random ($24.50, $6.75 — classic restaurant/ride),
     /// we require ML to be very confident before saying "subscription".
-    static func looksLikeSubscription(name: String, amount: Double) -> Bool {
+    static func looksLikeSubscription(name: String, amount: Double, recurringHint: Bool = false) -> Bool {
         // 1. Hard transactional rejection (keyword blacklist + ML, but ML
         //    only fires when there's no known brand — see isLikelyTransactional).
         if isLikelyTransactional(name) { return false }
@@ -366,7 +744,10 @@ enum MerchantNormalizer {
         if BrandRegistry.brand(for: brandId(forNormalized: name), fallbackName: name) != nil {
             return true
         }
-        // 3. ML + price gate for unknown brands at typical sub pricing.
+        // 3. The bank or the merchant descriptor itself said "recurring" /
+        //    "membership" / "subscription". That beats any model guess.
+        if recurringHint || hasSubscriptionHint(name) { return true }
+        // 4. ML + price gate for unknown brands at typical sub pricing.
         let mlScore = MerchantML.subscriptionProbability(for: name)
         if mlScore >= 0.80 { return true }
         if mlScore >= 0.50 && isLikelySubscriptionAmount(amount) { return true }
@@ -464,8 +845,10 @@ enum MerchantNormalizer {
         "dashpass", "doordash dashpass", "doordash*dashpass",
         "uber one", "uber *one", "uber*one",
         "lyft pink", "lyft *pink", "lyft*pink",
-        "instacart+", "instacart plus", "grubhub+", "grubhub plus",
+        "instacart+", "instacart plus", "instacart *plus", "instacart*plus",
+        "grubhub+", "grubhub plus", "grubhub *plus", "grubhub*plus",
         "amazon prime", "amzn prime", "walmart+", "walmart plus",
+        "prime video", "amazon music", "amzn music", "kindle", "amzn digital", "amazon digital",
         "netflix", "spotify", "hulu", "disney+", "disneyplus", "peacock", "paramount+",
         "hbo max", "max *", "max*sub", "apple tv+", "apple one", "apple music",
         "icloud+", "icloud storage",
@@ -523,6 +906,14 @@ enum MerchantNormalizer {
         "wegmans", "h-e-b", "stop & shop", "shoprite", "albertsons",
         "7-eleven", "wawa", "cvs ", "walgreens", "rite aid", "duane reade",
         "aldi ", "sprouts", "fresh market",
+        // Amazon marketplace one-offs (Prime / Music / Kindle / Digital have
+        // their own descriptors and are allowlisted above)
+        "amzn mktp", "amazon mktp", "amazon.com*", "amazon tips", "amazon fresh", "prime now",
+        // Parking / tolls / shipping / tickets — never subscriptions
+        "parking", " toll ", "usps ", "fedex", "ups store", "ticketmaster", "stubhub",
+        "eventbrite", "fandango", "amc theat", "regal cinema", "cinemark",
+        "costco whse", "costco gas", "sam's club", "dollar tree", "dollar general",
+        "office depot", "staples ", "gamestop", "petsmart", "petco ",
         // Big-box retail (one-off purchases)
         "target.com", "target store", "walmart store", "walmart.com",
         "best buy", "home depot", "lowe's", "marshalls", "tjmaxx",

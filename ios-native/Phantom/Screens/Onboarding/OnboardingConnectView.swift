@@ -9,12 +9,12 @@ struct OnboardingConnectView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text("3 / 3").font(AppFont.smallB).foregroundStyle(Palette.mute).padding(.top, 12)
-                Text("How should we find\nyour subscriptions?")
+                Text("4 / 4").font(AppFont.smallB).foregroundStyle(Palette.mute).padding(.top, 12)
+                Text("How should we find\nthe charges?")
                     .font(AppFont.h1).foregroundStyle(Palette.ink)
                     .padding(.top, 8)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Phantom never talks to your bank or stores your credentials. Pick whichever method you prefer.")
+                Text("Fastest path first. Phantom never asks for a bank login and never stores the screenshot.")
                     .font(AppFont.body).foregroundStyle(Palette.mute).padding(.top, 10)
 
                 // Fastest path: one screenshot of the user's own Apple subscriptions
@@ -36,7 +36,7 @@ struct OnboardingConnectView: View {
                     methodCard(
                         icon: "photo.on.rectangle.angled",
                         title: "Scan bank / card statements",
-                        body: "Snap your bank app, Apple Wallet, or credit-card statement. We read it on-device with Vision OCR. Nothing leaves your phone.",
+                        body: "Snap your bank app, Apple Wallet, or a CSV export. We read it on-device. Nothing is uploaded.",
                         accent: Palette.surface,
                         accentFg: Palette.ink,
                         recommended: false

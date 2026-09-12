@@ -5,6 +5,7 @@ struct RadarView: View {
     @State private var showImport = false
     @State private var showManual = false
     @State private var showPaywall = false
+    @State private var showAppleGuide = false
 
     var body: some View {
         ScrollView {
@@ -16,11 +17,22 @@ struct RadarView: View {
                 heroPanel.padding(.top, 20)
                 if store.subscriptions.isEmpty {
                     emptyStateCard.padding(.top, 16)
+                } else if let days = store.daysSinceLastImport, days >= 21 {
+                    rescanBanner.padding(.top, 16)
                 }
                 if shownPotentialMonthly > 0 {
                     savingsCard.padding(.top, 16)
                 } else if showRatePrompt {
                     ratePromptCard.padding(.top, 16)
+                }
+                if showSignInNudge {
+                    signInNudge.padding(.top, 16)
+                }
+                if !store.coverageHits.isEmpty {
+                    coverageCard.padding(.top, 16)
+                }
+                if store.cheaperPlanYearlySavings > 0 {
+                    cheaperPlansCard.padding(.top, 16)
                 }
                 if !store.subscriptions.isEmpty {
                     longPressTip.padding(.top, 16)
@@ -64,6 +76,9 @@ struct RadarView: View {
         }
         .sheet(isPresented: $showManual) {
             ManualAddSubscriptionView().environment(store)
+        }
+        .sheet(isPresented: $showAppleGuide) {
+            AppleSubscriptionsGuideView().environment(store)
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView().environment(store)
@@ -144,9 +159,15 @@ struct RadarView: View {
                 Menu {
                     Button {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        showAppleGuide = true
+                    } label: {
+                        Label("Apple subscriptions", systemImage: "applelogo")
+                    }
+                    Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         showImport = true
                     } label: {
-                        Label("Scan from screenshots", systemImage: "photo.on.rectangle.angled")
+                        Label("Screenshot or CSV", systemImage: "photo.on.rectangle.angled")
                     }
                     Button {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -165,7 +186,7 @@ struct RadarView: View {
 
                 Button {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    store.selectedTab = 3
+                    store.selectedTab = 4
                 } label: {
                     Image(systemName: "person")
                         .font(.system(size: 18, weight: .medium))
@@ -187,6 +208,11 @@ struct RadarView: View {
             if store.monthlyTotal > 0 {
                 Text("\(fmtUSD(store.yearlyTotal)) per year at this rate")
                     .font(AppFont.smallB).foregroundStyle(Palette.mute2).padding(.top, 6)
+            }
+            if store.payingTwiceMonthly > 0 {
+                Text("\(fmtUSD(store.payingTwiceMonthly))/mo may be paid twice — already in a bundle you own")
+                    .font(AppFont.smallB).foregroundStyle(Palette.warn).padding(.top, 6)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             HStack(spacing: 0) {
                 stat("ACTIVE", "\(store.activeSubs.count)", color: Palette.white)
@@ -250,6 +276,28 @@ struct RadarView: View {
         .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.md))
     }
 
+    private var rescanBanner: some View {
+        Button { showImport = true } label: {
+            HStack(alignment: .top, spacing: 14) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Palette.ink)
+                    .frame(width: 44, height: 44)
+                    .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.sm))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Re-scan your latest statement").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                    Text("Last import was \(store.daysSinceLastImport ?? 0) days ago. A new screenshot or CSV catches charges that started — or didn't stop — after a cancel.")
+                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+            .padding(16)
+            .background(Palette.warnSoft, in: RoundedRectangle(cornerRadius: Radius.md))
+        }
+        .buttonStyle(.plain)
+    }
+
     private var emptyStateCard: some View {
         Card {
             VStack(alignment: .leading, spacing: 12) {
@@ -259,28 +307,39 @@ struct RadarView: View {
                 Text("Nothing here yet")
                     .font(AppFont.h3)
                     .foregroundStyle(Palette.ink)
-                Text("Snap a screenshot of your bank app or Apple Wallet — we'll auto-detect every recurring charge.")
+                Text("Start with the Apple subscriptions list iOS already keeps — about 30 seconds — or scan a statement / CSV. No bank login.")
                     .font(AppFont.small)
                     .foregroundStyle(Palette.mute)
                     .fixedSize(horizontal: false, vertical: true)
-                HStack(spacing: 10) {
-                    Button { showImport = true } label: {
+                VStack(alignment: .leading, spacing: 10) {
+                    Button { showAppleGuide = true } label: {
                         HStack(spacing: 8) {
-                            Image(systemName: "photo.on.rectangle.angled")
-                            Text("Scan").font(AppFont.smallB)
+                            Image(systemName: "applelogo")
+                            Text("Apple subscriptions").font(AppFont.smallB)
                         }
                         .foregroundStyle(Palette.white)
                         .padding(.horizontal, 14).padding(.vertical, 9)
                         .background(Palette.ink, in: Capsule())
                     }
-                    Button { showManual = true } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "pencil.line")
-                            Text("Add manually").font(AppFont.smallB)
+                    HStack(spacing: 10) {
+                        Button { showImport = true } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "photo.on.rectangle.angled")
+                                Text("Screenshot / CSV").font(AppFont.smallB)
+                            }
+                            .foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 14).padding(.vertical, 9)
+                            .background(Palette.surface, in: Capsule())
                         }
-                        .foregroundStyle(Palette.ink)
-                        .padding(.horizontal, 14).padding(.vertical, 9)
-                        .background(Palette.surface, in: Capsule())
+                        Button { showManual = true } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "pencil.line")
+                                Text("Add manually").font(AppFont.smallB)
+                            }
+                            .foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 14).padding(.vertical, 9)
+                            .background(Palette.surface, in: Capsule())
+                        }
                     }
                 }
                 .padding(.top, 4)
@@ -328,6 +387,155 @@ struct RadarView: View {
                     Spacer(minLength: 0)
                 }
                 SavingsShareButton(amountYearly: shownPotentialYearly, kind: .found)
+            }
+        }
+    }
+
+    @State private var account = AccountService.shared
+    @State private var signInNudgeDismissed = UserDefaults.standard.bool(forKey: "phantom.signinNudgeDismissed")
+
+    private var showSignInNudge: Bool {
+        !account.isSignedIn && !store.activeSubs.isEmpty && !signInNudgeDismissed && !store.isSampleMode
+    }
+
+    /// Data only exists on this phone until the user signs in.
+    private var signInNudge: some View {
+        Card {
+            HStack(alignment: .top, spacing: 14) {
+                Image(systemName: "icloud.and.arrow.up")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(Palette.ink)
+                    .frame(width: 44, height: 44)
+                    .background(Palette.surface, in: RoundedRectangle(cornerRadius: Radius.sm))
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("This only lives on this iPhone").font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                    Text("Sign in with Apple to save your subscriptions, ratings and cancel proof to your iCloud.")
+                        .font(AppFont.small).foregroundStyle(Palette.mute)
+                        .fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 8) {
+                        Button { store.selectedTab = 4 } label: {
+                            Text("Sign in").font(AppFont.smallB)
+                                .foregroundStyle(Palette.white)
+                                .padding(.horizontal, 14).padding(.vertical, 8)
+                                .background(Palette.ink, in: Capsule())
+                        }
+                        Button {
+                            signInNudgeDismissed = true
+                            UserDefaults.standard.set(true, forKey: "phantom.signinNudgeDismissed")
+                        } label: {
+                            Text("Not now").font(AppFont.smallB).foregroundStyle(Palette.mute)
+                                .padding(.horizontal, 10).padding(.vertical, 8)
+                        }
+                    }
+                    .padding(.top, 2)
+                }
+                Spacer(minLength: 0)
+            }
+        }
+    }
+
+    /// "You already pay for this elsewhere" — free sees the biggest finding.
+    private var coverageCard: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top, spacing: 14) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Palette.success)
+                        .frame(width: 44, height: 44)
+                        .background(Palette.successSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("ALREADY COVERED").font(AppFont.smallB).foregroundStyle(Palette.success)
+                        Text("\(fmtUSD(store.coverageValueMonthly * 12))/yr").font(AppFont.h1).foregroundStyle(Palette.ink)
+                        Text("\(store.coverageHits.count) subscription\(store.coverageHits.count == 1 ? " is" : "s are") included in — or reimbursed by — something you already pay for.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
+                }
+                VStack(spacing: 0) {
+                    ForEach(store.visibleCoverageHits) { hit in
+                        if let sub = store.subscription(byId: hit.subId) {
+                            NavigationLink(value: sub.id) {
+                                HStack(spacing: 12) {
+                                    Avatar(label: sub.name, subscriptionId: sub.id, bg: sub.brandColor, size: 36)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(sub.name).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                        Text(hit.summary)
+                                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+                                    Spacer()
+                                    Text("\(fmtUSD(hit.valueYearly))/yr").font(AppFont.smallB).foregroundStyle(Palette.keepFg)
+                                }
+                                .padding(.vertical, 10)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                if store.hiddenCoverageCount > 0 {
+                    Button { showPaywall = true } label: {
+                        HStack(spacing: 8) {
+                            ProTag()
+                            Text("\(store.hiddenCoverageCount) more finding\(store.hiddenCoverageCount == 1 ? "" : "s") — unlock with Pro")
+                                .font(AppFont.smallB).foregroundStyle(Palette.ink)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    /// "Keep it for less" summary. Pro sees the list; free sees the total.
+    private var cheaperPlansCard: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top, spacing: 14) {
+                    Image(systemName: "arrow.down.circle.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Palette.info)
+                        .frame(width: 44, height: 44)
+                        .background(Palette.infoSoft, in: RoundedRectangle(cornerRadius: Radius.sm))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("KEEP IT FOR LESS").font(AppFont.smallB).foregroundStyle(Palette.infoFg)
+                        Text("\(fmtUSD(store.cheaperPlanYearlySavings))/yr").font(AppFont.h1).foregroundStyle(Palette.ink)
+                        Text("Cheaper plans of the same services you already use. Most people who dropped a tier kept the service.")
+                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: 0)
+                }
+                if store.isPro {
+                    VStack(spacing: 0) {
+                        ForEach(store.downgradeCandidates, id: \.sub.id) { item in
+                            NavigationLink(value: item.sub.id) {
+                                HStack(spacing: 12) {
+                                    Avatar(label: item.sub.name, subscriptionId: item.sub.id, bg: item.sub.brandColor, size: 36)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(item.sub.name).font(AppFont.bodyB).foregroundStyle(Palette.ink)
+                                        Text("\(item.downgrade.current.name) → \(item.downgrade.cheaper.name)")
+                                            .font(AppFont.small).foregroundStyle(Palette.mute)
+                                    }
+                                    Spacer()
+                                    Text("\(fmtUSD(item.downgrade.savesYearly))/yr").font(AppFont.smallB).foregroundStyle(Palette.keepFg)
+                                }
+                                .padding(.vertical, 10)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                } else {
+                    Button { showPaywall = true } label: {
+                        HStack(spacing: 8) {
+                            ProTag()
+                            Text("See which plan to switch to — unlock with Pro")
+                                .font(AppFont.smallB).foregroundStyle(Palette.ink)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }

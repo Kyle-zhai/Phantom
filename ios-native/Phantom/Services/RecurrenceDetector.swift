@@ -1,16 +1,62 @@
 import Foundation
 
-/// On-device version of the recurring-charge detector that previously lived in
-/// `backend/lib/recurring.js`. Works on `ParsedTransaction` from OCR plus any
-/// existing transactions the user has already accumulated.
+/// On-device recurring-charge detector. Works on `ParsedTransaction` from OCR /
+/// CSV plus the on-device `TransactionLedger` of everything imported before, so
+/// a charge seen in two different months is confirmed as recurring.
 enum RecurrenceDetector {
-    private static let cycleRules: [(min: Int, max: Int, cycle: BillingCycle)] = [
-        (6, 9,    .weekly),
-        (13, 16,  .weekly), // biweekly counted as weekly for display
-        (28, 32,  .monthly),
-        (88, 95,  .monthly), // quarterly counted as monthly
-        (363, 368, .yearly),
+    /// Candidate billing periods. A gap between two charges matches a rule when
+    /// it is close to the period or a small multiple of it (a missed / skipped
+    /// month still reads as monthly). Shortest period first.
+    struct CycleRule {
+        let cycle: BillingCycle
+        let period: Double
+        let tolerance: Double
+    }
+
+    static let cycleRules: [CycleRule] = [
+        CycleRule(cycle: .weekly,    period: 7,      tolerance: 2),
+        CycleRule(cycle: .biweekly,  period: 14,     tolerance: 3),
+        CycleRule(cycle: .monthly,   period: 30.44,  tolerance: 5),
+        CycleRule(cycle: .quarterly, period: 91.3,   tolerance: 8),
+        CycleRule(cycle: .yearly,    period: 365.25, tolerance: 12),
     ]
+
+    /// Infer the billing cycle from the day-gaps between consecutive charges.
+    /// Picks the rule matching the most gaps (allowing 1×–3× multiples for a
+    /// missed charge), tie-breaking toward the rule with more exact (1×) hits.
+    /// Returns nil when fewer than half the gaps fit any rule.
+    static func inferCycle(gaps: [Int]) -> BillingCycle? {
+        guard !gaps.isEmpty else { return nil }
+        var best: (rule: CycleRule, matched: Int, exact: Int)? = nil
+        for rule in cycleRules {
+            var matched = 0
+            var exact = 0
+            for gap in gaps {
+                let g = Double(gap)
+                var hit = false
+                for k in 1...3 where abs(g - Double(k) * rule.period) <= rule.tolerance * Double(k) {
+                    hit = true
+                    if k == 1 { exact += 1 }
+                    break
+                }
+                if hit { matched += 1 }
+            }
+            guard matched > 0 else { continue }
+            if let b = best {
+                if matched > b.matched || (matched == b.matched && exact > b.exact) {
+                    best = (rule, matched, exact)
+                }
+            } else {
+                best = (rule, matched, exact)
+            }
+        }
+        guard let b = best, b.matched * 2 >= gaps.count else { return nil }
+        return b.rule.cycle
+    }
+
+    static func period(for cycle: BillingCycle) -> Double {
+        cycleRules.first { $0.cycle == cycle }?.period ?? 30.44
+    }
 
     private static func median(_ values: [Double]) -> Double {
         guard !values.isEmpty else { return 0 }
@@ -19,22 +65,26 @@ enum RecurrenceDetector {
         return sorted.count.isMultiple(of: 2) ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid]
     }
 
-    private static func medianInt(_ values: [Int]) -> Int {
-        Int(median(values.map(Double.init)))
-    }
-
-    private static func normalize(_ s: String) -> String {
-        s.lowercased()
-            .replacingOccurrences(of: #"\s+(inc|llc|ltd|corp|co)\.?$"#, with: "", options: .regularExpression)
-            .replacingOccurrences(of: #"[^a-z0-9\s]"#, with: " ", options: .regularExpression)
-            .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    private static func slug(_ s: String) -> String {
+    static func slug(_ s: String) -> String {
         s.lowercased()
             .replacingOccurrences(of: #"[^a-z0-9]+"#, with: "-", options: .regularExpression)
             .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+    }
+
+    /// Grouping key for a transaction. Normally the brand id; for multi-charge
+    /// billers (Apple / Google Play) the amount is part of the key so each
+    /// distinct product becomes its own subscription line.
+    static func groupKey(for tx: ParsedTransaction) -> String {
+        let brand = MerchantNormalizer.brandId(forNormalized: tx.merchant)
+        guard MerchantNormalizer.isMultiChargeBiller(brand) else { return brand }
+        let cents = Int((tx.amount * 100).rounded())
+        return "\(brand)-\(cents)c"
+    }
+
+    private static func displayName(brandId: String, key: String, fallback: String, amount: Double) -> String {
+        let base = BrandRegistry.displayName(for: brandId) ?? fallback
+        guard MerchantNormalizer.isMultiChargeBiller(brandId) else { return base }
+        return base + " · " + String(format: "$%.2f", amount)
     }
 
     private static func brandColor(for key: String) -> String {
@@ -66,13 +116,40 @@ enum RecurrenceDetector {
         return String(format: "%02X%02X%02X", r, g, b)
     }
 
+    /// A price change observed on the statement itself: the newest charge is
+    /// at least 5% (and 50¢) above the amount charged before it.
+    struct ObservedHike: Equatable {
+        let from: Double
+        let to: Double
+        let effective: Date
+    }
+
+    /// Detect a hike from a date-sorted run of charges (oldest first).
+    static func observedHike(sortedAmounts: [(amount: Double, date: Date)]) -> ObservedHike? {
+        guard let latest = sortedAmounts.last else { return nil }
+        // Walk back over the run of charges at the current amount to find when
+        // it started, then look at the amount charged right before that run.
+        var firstAtCurrent = latest
+        var i = sortedAmounts.count - 1
+        while i > 0, abs(sortedAmounts[i - 1].amount - latest.amount) < 0.01 {
+            i -= 1
+            firstAtCurrent = sortedAmounts[i]
+        }
+        guard i > 0 else { return nil }
+        let previous = sortedAmounts[i - 1].amount
+        guard previous > 0, latest.amount > previous + 0.5, (latest.amount - previous) / previous >= 0.05 else { return nil }
+        return ObservedHike(from: (previous * 100).rounded() / 100,
+                            to: (latest.amount * 100).rounded() / 100,
+                            effective: firstAtCurrent.date)
+    }
+
     /// Single-screenshot mode: surface charges that LOOK subscription-shaped
-    /// (known brand OR common price pattern) even with only 1 occurrence.
-    /// Useful when the user uploaded just one statement.
+    /// (known brand, bank "recurring" label, or common price pattern) even with
+    /// only 1 occurrence. Useful when the user uploaded just one statement.
     static func detectLikelyFromSingle(_ txs: [ParsedTransaction]) -> [Subscription] {
         var grouped: [String: ParsedTransaction] = [:]
         for t in txs where t.amount > 0 {
-            let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
+            let key = groupKey(for: t)
             if let existing = grouped[key] {
                 let existingDate = existing.date ?? .distantPast
                 let tDate = t.date ?? .distantPast
@@ -85,23 +162,23 @@ enum RecurrenceDetector {
         }
         var out: [Subscription] = []
         for (key, t) in grouped {
-            guard MerchantNormalizer.looksLikeSubscription(name: t.merchant, amount: t.amount) else { continue }
+            guard MerchantNormalizer.looksLikeSubscription(name: t.merchant, amount: t.amount, recurringHint: t.recurringHint) else { continue }
+            let brandId = MerchantNormalizer.brandId(forNormalized: t.merchant)
             let nextBilling = (t.date ?? Date()).addingTimeInterval(30 * 86_400)
-            let brandHex = BrandRegistry.brand(for: key, fallbackName: t.merchant)?.hex
+            let brandHex = BrandRegistry.brand(for: brandId, fallbackName: t.merchant)?.hex
                 ?? brandColor(for: key)
             // Prefer the curated brand display name ("Netflix", "Apple Music",
             // "Amazon Prime") over the raw bank-statement text. Keep the raw
             // text in rawDescriptor so the detail view can show "On your
             // statement: APL*APPLE MUSIC" for verification.
-            let displayName = BrandRegistry.displayName(for: key) ?? t.merchant
             out.append(
                 Subscription(
-                    id: key,
-                    name: displayName,
+                    id: slug(key),
+                    name: displayName(brandId: brandId, key: key, fallback: t.merchant, amount: t.amount),
                     vendor: t.merchant,
                     rawDescriptor: t.merchant,
                     brandHex: brandHex,
-                    category: BrandRegistry.category(for: key),
+                    category: BrandRegistry.category(for: brandId),
                     amount: t.amount,
                     cycle: .monthly,
                     nextBilling: nextBilling,
@@ -109,11 +186,13 @@ enum RecurrenceDetector {
                     lastUsedAt: nil,
                     sessionsLast30d: 0,
                     userRating: nil,
-                    marketAverage: 0,   // unknown until we have a catalog entry
+                    marketAverage: 0,   // filled from the catalog by the store
                     trialEndsAt: nil,
                     hasPriceHike: nil,
                     hasOverlapWith: [],
-                    notes: "Detected from a single charge — upload next month to confirm."
+                    notes: t.recurringHint
+                        ? "Your bank labelled this charge as recurring. Upload next month's statement to confirm the cycle."
+                        : "Detected from a single charge — upload next month to confirm."
                 )
             )
         }
@@ -121,7 +200,7 @@ enum RecurrenceDetector {
     }
 
     /// Detect recurring subscriptions in a list of parsed transactions.
-    /// - Parameter txs: All transactions known to the app (current OCR + previous imports).
+    /// - Parameter txs: All transactions known to the app (current OCR + the ledger of previous imports).
     /// - Returns: One subscription per detected merchant whose charges look periodic.
     static func detect(in txs: [ParsedTransaction]) -> [Subscription] {
         // Group by brand id (so "POS DEBIT NETFLIX", "SP*NETFLIX", "NETFLIX.COM" all collapse).
@@ -130,61 +209,79 @@ enum RecurrenceDetector {
         var groups: [String: [ParsedTransaction]] = [:]
         for t in txs where t.amount > 0 && t.date != nil {
             guard !MerchantNormalizer.isLikelyTransactional(t.merchant) else { continue }
-            let key = MerchantNormalizer.brandId(forNormalized: t.merchant)
+            let key = groupKey(for: t)
             guard !key.isEmpty else { continue }
             groups[key, default: []].append(t)
         }
 
         var subs: [Subscription] = []
         for (key, items) in groups where items.count >= 2 {
-            let sorted = items.sorted { ($0.date ?? .distantPast) < ($1.date ?? .distantPast) }
+            // Same merchant, same day, same amount = the same charge read twice.
+            var seen = Set<String>()
+            let unique = items.filter { t in
+                let cents = Int((t.amount * 100).rounded())
+                let day = Int((t.date ?? .distantPast).timeIntervalSince1970 / 86_400)
+                return seen.insert("\(cents)|\(day)").inserted
+            }
+            guard unique.count >= 2 else { continue }
+            let sorted = unique.sorted { ($0.date ?? .distantPast) < ($1.date ?? .distantPast) }
             var gaps: [Int] = []
             for i in 1..<sorted.count {
                 guard let a = sorted[i - 1].date, let b = sorted[i].date else { continue }
                 gaps.append(Int(b.timeIntervalSince(a) / 86_400))
             }
-            guard !gaps.isEmpty else { continue }
-            let medGap = medianInt(gaps)
-            guard let rule = cycleRules.first(where: { medGap >= $0.min && medGap <= $0.max }) else { continue }
+            guard !gaps.isEmpty, let cycle = inferCycle(gaps: gaps) else { continue }
 
-            // Amount stability check
-            let amounts = sorted.map(\.amount)
-            let medAmt = median(amounts)
-            let stable = amounts.filter { abs($0 - medAmt) / medAmt < 0.15 }
+            let run = sorted.compactMap { t -> (amount: Double, date: Date)? in
+                guard let d = t.date else { return nil }
+                return (t.amount, d)
+            }
+            let hike = observedHike(sortedAmounts: run)
+            let current = sorted.last!.amount
+            // Amount stability: charges must sit near the current price, or —
+            // when a hike was observed — near the pre-hike price.
+            let stable = sorted.filter { t in
+                let nearCurrent = abs(t.amount - current) / current < 0.15
+                let nearPrevious = hike.map { abs(t.amount - $0.from) / $0.from < 0.15 } ?? false
+                return nearCurrent || nearPrevious
+            }
             guard stable.count >= 2 else { continue }
 
             guard let latest = sorted.last?.date, let earliest = sorted.first?.date else { continue }
-            let next = latest.addingTimeInterval(TimeInterval(medGap * 86_400))
+            let next = latest.addingTimeInterval(period(for: cycle) * 86_400)
+            let amount = hike != nil
+                ? current
+                : median(stable.map(\.amount))
 
-            // Pick a clean human-readable name from the source merchant text.
-            // Prefer the curated brand display name; rawDescriptor preserves
-            // the original bank-statement text for the detail view.
+            let brandId = MerchantNormalizer.brandId(forNormalized: sorted.last!.merchant)
             let representative = sorted.last?.merchant ?? key
-            let id = slug(key)
-            let brandHex = BrandRegistry.brand(for: key, fallbackName: representative)?.hex
+            let brandHex = BrandRegistry.brand(for: brandId, fallbackName: representative)?.hex
                 ?? brandColor(for: key)
-            let displayName = BrandRegistry.displayName(for: key) ?? representative
+            var note = "Detected from \(sorted.count) charges in your statements (\(cycle.label.lowercased()))."
+            if let hike {
+                note += " Price went from \(String(format: "$%.2f", hike.from)) to \(String(format: "$%.2f", hike.to))."
+            }
 
             subs.append(
                 Subscription(
-                    id: id,
-                    name: displayName,
+                    id: slug(key),
+                    name: displayName(brandId: brandId, key: key, fallback: representative, amount: amount),
                     vendor: representative,
                     rawDescriptor: representative,
                     brandHex: brandHex,
-                    category: BrandRegistry.category(for: key),
-                    amount: (medAmt * 100).rounded() / 100,
-                    cycle: rule.cycle,
+                    category: BrandRegistry.category(for: brandId),
+                    amount: (amount * 100).rounded() / 100,
+                    cycle: cycle,
                     nextBilling: next,
                     startedAt: earliest,
                     lastUsedAt: nil,
                     sessionsLast30d: 0,
                     userRating: nil,
-                    marketAverage: 0,  // unknown until catalog provides a comparison
+                    marketAverage: 0,  // filled from the catalog by the store
                     trialEndsAt: nil,
-                    hasPriceHike: nil,
+                    hasPriceHike: hike.map { PriceHike(from: $0.from, to: $0.to, effective: $0.effective) },
                     hasOverlapWith: [],
-                    notes: "Detected from \(sorted.count) charges in your screenshots."
+                    notes: note
                 )
             )
         }
