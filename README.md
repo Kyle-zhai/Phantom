@@ -98,7 +98,9 @@ Pass in *Edit Scheme → Arguments*, or `xcrun simctl launch booted com.yinanzha
 | `--tab-{alerts,negotiate,settings}` | Open a specific tab |
 | `--sub <id>` | Open a subscription's detail (e.g. `--sub peacock`) |
 | `--dispute <id>` / `--neg <id>` | Open dispute / negotiate for a sub |
-| `--screen-{paywall,value,connect,import,profile}` | Open a specific screen |
+| `--screen-{paywall,value,connect,import,profile,apple}` | Open a specific screen |
+| `--screen-cancel` / `--screen-chargeback` | Cancel checklist / chargeback packet (pair with `--sub <id>`) |
+| `--demo-csv` | Seed the import review step with a Chase-style CSV fixture |
 | `--fake-pro-{monthly,yearly}` | Simulate an active Pro entitlement (DEBUG only) |
 
 ## App Store notes

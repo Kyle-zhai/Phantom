@@ -1,0 +1,64 @@
+DEFINE SCHEMA
+
+    RECORD TYPE AppPick (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        name              STRING,
+        category          STRING QUERYABLE,
+        tagline           STRING,
+        details           STRING,
+        url               STRING,
+        appStoreURL       STRING,
+        status            STRING QUERYABLE,
+        submitterToken    STRING QUERYABLE,
+        reports           INT64,
+        screenshot        ASSET,
+        GRANT WRITE TO "_creator",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE PickCounter (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        clicks            INT64,
+        pick              REFERENCE,
+        GRANT WRITE TO "_icloud",
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_world"
+    );
+
+    RECORD TYPE PickClick (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        day               STRING,
+        pick              REFERENCE,
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );
+
+    RECORD TYPE PickReport (
+        "___createTime"   TIMESTAMP,
+        "___createdBy"    REFERENCE,
+        "___etag"         STRING,
+        "___modTime"      TIMESTAMP,
+        "___modifiedBy"   REFERENCE,
+        "___recordID"     REFERENCE QUERYABLE,
+        reason            STRING,
+        reporterToken     STRING,
+        pick              REFERENCE,
+        GRANT CREATE TO "_icloud",
+        GRANT READ TO "_creator"
+    );

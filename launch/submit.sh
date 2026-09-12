@@ -38,6 +38,25 @@ EXPORT_OPTIONS="launch/exportOptions.plist"
 
 cd "$(dirname "$0")/.."
 
+# --- Preflight: credentials ---
+# altool does NOT read $ASC_KEY_PATH. It looks for a file named
+# AuthKey_<KeyID>.p8 in ./private_keys, ~/private_keys, ~/.private_keys or
+# ~/.appstoreconnect/private_keys — or in $API_PRIVATE_KEYS_DIR. Derive that
+# from the key path we already have so the upload step can find the key
+# without anyone editing their shell profile.
+: "${ASC_KEY_ID:?set ASC_KEY_ID (App Store Connect → Users and Access → Integrations)}"
+: "${ASC_ISSUER_ID:?set ASC_ISSUER_ID (the Issuer ID at the top of that same page)}"
+: "${ASC_KEY_PATH:?set ASC_KEY_PATH (full path to your AuthKey_<KeyID>.p8)}"
+[ -f "$ASC_KEY_PATH" ] || { echo "✗ No key file at $ASC_KEY_PATH"; exit 1; }
+EXPECTED_KEY_NAME="AuthKey_${ASC_KEY_ID}.p8"
+if [ "$(basename "$ASC_KEY_PATH")" != "$EXPECTED_KEY_NAME" ]; then
+  echo "✗ altool requires the key file to be named $EXPECTED_KEY_NAME"
+  echo "  Rename it, or point ASC_KEY_PATH at a copy with that name."
+  exit 1
+fi
+export API_PRIVATE_KEYS_DIR="$(cd "$(dirname "$ASC_KEY_PATH")" && pwd)"
+echo "→ Using API key $ASC_KEY_ID from $API_PRIVATE_KEYS_DIR"
+
 # --- Bump build number ---
 # Build number lives in project.yml's CURRENT_PROJECT_VERSION setting
 # (Info.plist references it via $(CURRENT_PROJECT_VERSION) placeholder).

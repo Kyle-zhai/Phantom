@@ -1,160 +1,63 @@
 # Phantom Privacy Policy
 
-**Effective date: [DATE OF FIRST RELEASE]**
-**Last updated: [DATE]**
+**Effective: 2026-05-14 · Last updated: 2026-09-11** (added iCloud sync and Sign in with Apple; removed the Picks leaderboard, which was never released)
 
-> ⚠️ **Template — replace bracketed items before publishing.** Have a US-licensed attorney review before public release. Plaid and Apple App Review will read this carefully.
+Published at https://kyle-zhai.github.io/Phantom/privacy.html — `docs/privacy.html` is the canonical text; keep this file in sync.
 
-This Privacy Policy describes how **Yinan Zhai** ("**Phantom**", "**we**", "**us**", or "**our**") collects, uses, stores, and shares information when you use the **Phantom** iOS application and any related services (collectively, the "**Service**").
+This policy describes how **Phantom** (operated by **Yinan Zhai**, an independent developer) collects, uses, stores, and shares information when you use the Phantom iOS app.
 
-By using Phantom you agree to the data practices described here. If you do not agree, do not use Phantom.
+## 1. What we collect
 
----
+### 1.1 On your device and in your own iCloud
+Phantom has **no server of its own**. The following is stored in your device's local database and, if you sign in, synced to **your own iCloud account** (Apple's CloudKit private database) so it follows you to your other devices. We cannot read your iCloud data.
 
-## 1. Information we collect
+- Screenshots you import (used only momentarily for OCR, never persisted as images)
+- Extracted text: merchant name, amount, date of each charge
+- Subscriptions you add, ratings, notes, cancellation status, and the bundles you tell us you already own
+- Cancel proof you save (confirmation numbers, notes, an optional screenshot)
+- Dispute letters you generate and your notification preferences
 
-### 1.1 Information you give us
+Without an account, all of this stays on your iPhone only.
 
-- **Account information**: name, email address, password (stored as a salted hash).
-- **Subscription preferences**: which alerts you turn on, which subscriptions you've cancelled, your ratings of services.
-- **Disputes you generate**: the contents of any dispute letter you draft or send through Phantom.
+### 1.2 Apple-mediated information
+- App Store purchase records (Apple processes the payment; we receive only a verified flag that you're on Pro)
+- Anonymous crash diagnostics if you opt in at the iOS level
 
-### 1.2 Information collected via Plaid
+### 1.3 Account (Sign in with Apple)
+Signing in is optional. Apple gives Phantom an anonymous user identifier and, the first time only, the name and email you choose to share (Apple's private relay email works). Used to show who is signed in and pre-fill the dispute-letter signature. Stored on your device and in your iCloud Keychain, never on a Phantom server.
 
-We use **[Plaid Inc.](https://plaid.com)** as our bank-data provider. When you connect a bank account through Plaid Link:
+### 1.4 Recommendations
+Phantom suggests cheaper or free replacements for the services you pay for, and apps that fit the pattern of your subscriptions. This is worked out **entirely on your device** by comparing your own subscriptions against a catalog of prices and alternatives that Phantom downloads as a plain file. Your subscriptions, your spending and the recommendations you see are never uploaded, and nothing about you is sent when the catalog is downloaded.
 
-- Your bank credentials (username / password / MFA codes) **never touch our servers**. They are entered into Plaid's interface and authenticated by your bank directly.
-- Plaid returns an **access token** that we store, which lets us request read-only transaction data on your behalf.
-- For each transaction we receive: **merchant name, amount, date, and Plaid's category labels**. We do **not** receive your full card number, account number, account balance, or transfer authority.
+**No part of Phantom is public.** There is no profile, no feed, no leaderboard and no way for another person to see anything you have in the app.
 
-You can disconnect your bank at any time in the Phantom Settings → Account → "Disconnect bank" — this revokes the access token with Plaid and stops all future data pulls.
-
-Plaid's own privacy practices are described at https://plaid.com/legal/#consumers.
-
-### 1.3 Information collected automatically
-
-- **Device information**: iOS version, device model (used to debug crashes).
-- **Crash reports**: anonymous stack traces if Phantom crashes (via Apple's diagnostic system, opt-in at the OS level).
-- **Aggregated, non-identifying usage**: which screens are opened, which features are used — used to improve the app.
-
-We do **not** use third-party analytics SDKs that perform cross-app tracking. We do **not** use advertising identifiers. We are not, and will not be, members of the IDFA / Ad Network ecosystem.
-
-### 1.4 Information we do **not** collect
-
-- Your full credit card number or CVV.
-- Your bank account number or routing number.
-- Account balances or net worth.
-- Browsing or location history.
-- Contacts or photos.
-
----
+### 1.5 What we never collect
+Bank login or password · card number or CVV · balances or net worth · browsing history, location, contacts, or photo library beyond images you explicitly import · advertising identifiers (we never call ATTrackingManager).
 
 ## 2. How we use information
+Only to: detect recurring charges; compute Zombie Scores; notify you on-device about trial endings, price hikes and forgotten charges; generate dispute-letter templates; provide negotiation scripts; sync your data between your own devices via iCloud; compare your subscriptions against the price catalog, on your device, to show cheaper plans, bundles you already own and alternative apps.
 
-We use the information we collect only to:
+We do **not** sell your data, share it with advertisers, lenders, data brokers or marketers, or push loans or financial products.
 
-1. **Detect recurring charges** in your transactions so we can show them to you.
-2. **Compute Zombie Scores** indicating which subscriptions you're paying for but not using.
-3. **Notify you** about price hikes, trial endings, and forgotten subscriptions.
-4. **Generate dispute letters** at your request, using template language and your personal contact info.
-5. **Provide retention negotiation scripts**.
-6. **Operate, secure, and improve** the Service (debugging, fraud prevention, customer support).
+## 3. Third parties
+- **Apple** — App Store purchases, Sign in with Apple, and iCloud sync in your own private database via CloudKit. https://www.apple.com/legal/privacy/
+- **GitHub** — hosts this website and small public JSON catalogs of subscription prices and bundles (no user data passes through).
 
-We do **not** sell, rent, or share your information with advertisers, data brokers, or marketers for their commercial use.
+## 4. Security
+On-device data lives in iOS's sandboxed container behind your passcode and Secure Enclave. iCloud sync runs on Apple's CloudKit in your own private database; data in transit and at rest is encrypted by Apple. We do not run a backend server of our own.
 
-We do **not** push, recommend, or pre-qualify you for loans, credit cards, or any other financial products. This is a core promise of the Service.
-
----
-
-## 3. How we share information
-
-We share information only as listed below:
-
-### 3.1 With Plaid
-
-To pull your transaction history. Plaid is a data processor acting on our (and your) behalf under their published privacy policy.
-
-### 3.2 With Apple
-
-Anonymous crash reports and App Store-mediated purchase data (Apple, not Phantom, processes your payment for Phantom Pro).
-
-### 3.3 With hosting and infrastructure vendors
-
-Our backend runs on **[VERCEL / AWS / your provider]**, which stores transaction data in encrypted form on our behalf. They are contractually prohibited from using your data for any other purpose.
-
-### 3.4 With law enforcement
-
-We will respond to lawful subpoenas, court orders, or other legally binding requests, but only to the extent legally required, and we will notify you unless prohibited by law.
-
-### 3.5 With acquirers
-
-If Phantom is acquired or merged, your information will transfer with the company. The acquiring party will be bound by terms no less protective than this policy.
-
-We do **not** share information with any other category of recipient. In particular: **we do not share data with banks (other than your own), credit bureaus, lenders, insurers, or marketing platforms.**
-
----
-
-## 4. How we store and secure information
-
-- All data is encrypted in transit using TLS 1.3.
-- Plaid access tokens are stored in the iOS Keychain on your device with `kSecAttrAccessibleAfterFirstUnlock` protection.
-- Server-side databases are encrypted at rest using AES-256.
-- Access to production data is limited to a small number of named employees who have signed confidentiality agreements.
-- We perform routine vulnerability scanning and respond to disclosed security issues at **[yn.zhai0205@gmail.com]**.
-
----
-
-## 5. How long we keep information
-
-- Transaction data: 24 months from the most recent sync, then automatically deleted.
-- Account profile: until you delete your account, then immediately wiped.
-- Dispute letters you generate: stored only on your device unless you explicitly request server-side backup.
-- Anonymized usage stats: 24 months, then automatically aggregated.
-
-If you delete your account (Settings → Account → "Delete account"), we wipe everything within 30 days and request that Plaid revoke our access token to your bank.
-
----
+## 5. Retention & deletion
+- Uninstalling Phantom deletes everything on that device; a signed-in user's iCloud copy remains until deleted.
+- **Settings → Account → Delete account & data** erases everything on the device and in your iCloud (the deletion syncs to your other devices) and signs you out. **Sign out** alone never deletes anything.
 
 ## 6. Your rights
-
-You have the right to:
-
-1. **Access** the data we hold about you (email **[yn.zhai0205@gmail.com]**).
-2. **Correct** inaccurate data.
-3. **Delete** your account and all associated data at any time, directly in the app.
-4. **Export** your data in a machine-readable format on request.
-5. **Restrict or object** to certain processing.
-6. **Disconnect your bank** at any time without deleting your account.
-
-European, UK, and California users have additional rights under GDPR, UK-GDPR, and the CCPA respectively. To exercise these rights, email **[yn.zhai0205@gmail.com]**. We will respond within 30 days.
-
-We will not retaliate against you for exercising any of these rights.
-
----
+Everything Phantom holds about you is in the app and in your own iCloud, so access, portability and correction are in your hands directly; deletion is one tap in Settings. Questions or requests: yn.zhai0205@gmail.com — we respond within 30 days. California residents: we do not sell personal information.
 
 ## 7. Children
+Phantom is not directed at children under 13 (16 in the EU); we do not knowingly collect data from them.
 
-Phantom is not directed at children under 13 (or 16 in the EU). We do not knowingly collect data from anyone in that age group. If you believe a child has provided data to us, contact us and we will delete it.
+## 8. Changes
+Material changes update the "Last updated" date above and, where possible, are announced in-app.
 
----
-
-## 8. International transfers
-
-Phantom stores data on servers located in the **United States**. By using the Service from outside the US, you consent to your data being transferred there. We rely on **Standard Contractual Clauses** for transfers from the EEA and UK.
-
----
-
-## 9. Changes to this policy
-
-We may update this policy. If we make a material change, we will notify you in-app and by email at least 30 days before the change takes effect. Continued use after the change constitutes acceptance.
-
----
-
-## 10. Contact
-
-**Yinan Zhai**
-Address available on request — see email above.
-Email: **[yn.zhai0205@gmail.com]**
-Security: **[yn.zhai0205@gmail.com]**
-
-For California consumers — Do Not Sell My Personal Information: we **do not sell personal information** as defined by the CCPA. If you wish to opt out of any future change, email **[yn.zhai0205@gmail.com]**.
+## 9. Contact
+Yinan Zhai · yn.zhai0205@gmail.com

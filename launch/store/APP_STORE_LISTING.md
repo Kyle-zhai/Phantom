@@ -24,50 +24,39 @@ Copy and paste each field into App Store Connect at https://appstoreconnect.appl
 ## Description (max 4000 chars)
 
 ```
-Phantom finds the subscriptions you forgot you were paying for — and helps you cancel them in seconds.
+You're still paying for subscriptions you forgot you had. Phantom finds them without a bank login — then helps you cancel, keep the proof, and fight charges that should never have gone through. Your data stays on your iPhone and in your own iCloud, never on a Phantom server.
 
-The average American pays for 4.5 subscriptions they never use. That's about $50 per month silently disappearing from your bank account. Phantom stops the bleeding.
+GET YOUR MONEY BACK
 
-HOW IT WORKS
+1. Find the charges. Start from Apple subscriptions, screenshot a statement, or import a bank CSV. On-device OCR reads it. No account to connect. No password to hand over.
 
-1. Connect your bank securely via Plaid (the same provider Venmo and Coinbase use). We see merchant names and amounts — never your card number, never your account balance.
+2. See the zombies. Every recurring charge gets a Zombie Score from 0–100: overlapping services, what you rate it, and whether you're paying above market. The 80+ ones are the money quietly leaving.
 
-2. Subscription Radar scans your last 90 days of charges and automatically detects every recurring payment.
+3. Cancel with a checklist. Phantom opens the vendor's real cancel page and walks you through it. Save a confirmation number or screenshot in an on-device evidence locker — so you have proof if they bill you again.
 
-3. Each subscription gets a Zombie Score from 0 to 100 based on how often you actually use it. Scores ≥ 80 are flagged for cancellation.
+4. Fight the charge. Generate an EFTA/ROSCA-compliant dispute letter for silent auto-renewals, trial traps, and billing after you already cancelled. If the merchant won't refund, Phantom builds a chargeback packet with a Regulation E/Z script you can read to your bank.
 
-4. One tap generates an EFTA-compliant dispute letter for wrongful charges — auto-renewals you weren't notified about, trial-conversions, post-cancellation billing.
+5. Don't get surprised twice. Price-hike and trial-end alerts, plus a reminder to re-scan your next statement. For 47 services, keep the sub and call in a retention discount instead.
 
-5. Get a 7-day heads up before any price increase across 2,000+ services.
+PRIVATE BY DESIGN
 
-6. For services that hand out retention discounts (Hulu, SiriusXM, Audible, Adobe Creative Cloud, and more), Phantom gives you the exact script to use.
+Phantom has no servers of its own and no bank connection. Statements and cancel proof stay on your phone and, if you sign in with Apple, in your own iCloud. We never receive your data, so we can't sell it. Nothing in Phantom is public: no profile, no feed, no leaderboard.
 
-PRIVACY YOU CAN VERIFY
-
-- We never sell your data.
-- We never push loans, credit cards, or financial products.
-- We never store your card number or account number.
-- Disconnect your bank with one tap. Delete your account with one tap.
-
-These aren't promises in a privacy policy footnote. They're the entire business model.
-
-WHY NOT ROCKET MONEY?
-
-Rocket Money's parent company is a lender. Their goal is to qualify you for loans, and they sell anonymized data to do it. Phantom's only revenue is a $3.99/month subscription. We win when you save money. That's the entire alignment.
+• We never ask for your bank login.
+• We never sell your data.
+• We never push loans or credit cards.
 
 PRICING
 
-Free: 3 subscriptions scanned, basic detection
-Phantom Pro Monthly: $3.99/month — unlimited scans, alerts, disputes
-Phantom Pro Annual: $29.99/year — save 37% vs monthly
+Free — track up to 5 subscriptions and send 1 dispute letter a month.
+Phantom Pro — $3.99/month or $29.99/year (save 37%): unlimited subscriptions, unlimited dispute letters and chargeback packets, cancel checklists, the on-device evidence locker, every alert, and all 47 negotiation scripts.
 
-Average Pro user saves $47/month. Pro pays for itself in week one.
+Pro pays for itself the first time it catches a charge you would have missed.
 
-QUESTIONS
+Start free. Find what you're losing in about a minute.
 
-support@[yourdomain.com]
-Privacy policy: https://[yourdomain.com]/privacy
-Terms of service: https://[yourdomain.com]/terms
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://kyle-zhai.github.io/Phantom/privacy.html
 ```
 
 ---
@@ -75,7 +64,7 @@ Terms of service: https://[yourdomain.com]/terms
 ## Promotional text (max 170 chars, can update without re-review)
 
 ```
-Now monitoring 2,000+ services for price hikes. Get notified 7 days before any increase. The fastest way to stop paying for what you don't use.
+Cancel forgotten charges without a bank login. Keep proof on your iPhone. If they bill you anyway, get a dispute letter and a chargeback script.
 ```
 
 ---
@@ -91,19 +80,29 @@ subscription,manage,cancel,save,money,bank,plaid,refund,bill,track,budget,spendi
 ## Support URL
 
 ```
-https://[yourdomain.com]/support
+https://kyle-zhai.github.io/Phantom/
 ```
 
 ## Marketing URL (optional)
 
 ```
-https://[yourdomain.com]
+https://kyle-zhai.github.io/Phantom/
 ```
 
 ## Privacy Policy URL
 
+Required. App Store Connect → App Information.
+
 ```
-https://[yourdomain.com]/privacy
+https://kyle-zhai.github.io/Phantom/privacy.html
+```
+
+## License Agreement / EULA (Guideline 3.1.2)
+
+Keep **Apple's Standard EULA** selected (do not upload a custom one unless you paste `docs/terms.html` into the custom-EULA field). Then the **App Description must include this exact URL**, or review is blocked:
+
+```
+https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 ```
 
 ---
@@ -112,7 +111,7 @@ https://[yourdomain.com]/privacy
 
 | Field | Value |
 |---|---|
-| Sign-in required | ❌ No (offers "Skip — explore with demo data" path) |
+| Sign-in required | ❌ No — Sign in with Apple is optional (step 3 of onboarding has "Continue without an account"); demo data path available |
 | Demo account | N/A — reviewer uses Plaid sandbox: First Platypus Bank / user_good / pass_good |
 | Notes for reviewer | See below |
 
@@ -124,8 +123,14 @@ Thanks for reviewing Phantom.
 Phantom is a privacy-first subscription-management app. Users either
 upload screenshots of their bank/credit-card app (OCR runs entirely
 on-device via Apple Vision) or add subscriptions manually. The app
-never connects to a bank in production — no Plaid, no API keys, no
-server-side data.
+never connects to a bank — no Plaid, no API keys. There is no Phantom
+server: an optional Sign in with Apple syncs the user's data to their
+OWN iCloud (CloudKit private database). There is no user-generated
+content and no public surface of any kind: no profile, no feed, no
+leaderboard. The "For you" tab compares the user's own subscriptions,
+on-device, against a static catalog of prices and alternatives that
+the app downloads from GitHub Pages; nothing about the user is sent.
+Recommendations carry no affiliate links.
 
 TO REVIEW THE APP IN UNDER 2 MINUTES:
 
@@ -173,10 +178,13 @@ per month, 1 alert at a time). Pro unlocks unlimited everything.
 
 PRIVACY / DATA HANDLING:
 
-No server-side data of any kind. All transaction parsing happens
-on-device with Apple Vision OCR. No third-party SDK that performs
-tracking. No analytics SDK. Privacy Policy and Terms of Service
-linked above; full source: github.com/Kyle-zhai/Phantom
+No Phantom server. All transaction parsing happens on-device with
+Apple Vision OCR; sync (optional) uses the user's private iCloud
+database. Nothing is published or shared with other users. No
+third-party SDK that performs tracking. No analytics SDK. Account
+deletion (Settings → Account → Delete account & data) removes device
++ iCloud data (guideline 5.1.1(v)). Privacy Policy and Terms of Service linked
+above; full source: github.com/Kyle-zhai/Phantom
 
 Thanks!
 [Your name]
@@ -223,17 +231,39 @@ Create two **auto-renewable** subscriptions in App Store Connect → Features �
 
 ---
 
-## What's New in This Version (release notes, v1.0)
+## What's New in This Version (release notes, v1.2.0)
+
+Paste this into the **1.2.0** version in App Store Connect (not 1.1.1 — that train is closed).
 
 ```
-Welcome to Phantom 1.0.
+Cancel-and-clawback, without a bank login.
 
-Stop paying for subscriptions you don't use. Phantom scans your bank, scores every recurring charge for "zombie" behavior, generates EFTA-compliant dispute letters for wrongful charges, and warns you 7 days before any price hike.
+• Cancel with a checklist, then save the confirmation number or screenshot on your iPhone — never uploaded.
+• After a dispute letter, get a chargeback packet with a Regulation E/Z script and where to file if the merchant won't refund.
+• Import a bank CSV, or share a statement into Phantom from Files / Mail.
+• Get a reminder to re-scan your next statement so a cancelled charge doesn't sneak back.
+• Apple subscriptions still the fastest first import. Screenshots still work.
 
-We never sell your data. We never push loans. We never store your card number.
-
-Questions? support@[yourdomain.com]
+Nothing leaves your phone except into your own iCloud. We still never ask for your bank login.
 ```
+
+---
+
+## App Privacy (nutrition labels) — App Store Connect → App Privacy
+
+Answer the questionnaire exactly like this (re-check when features change):
+
+| Question | Answer |
+|---|---|
+| Do you or your third-party partners collect data from this app? | **Yes** |
+| **Data Linked to You** | |
+| Identifiers → User ID | Yes — the Sign in with Apple user identifier only. Purpose: **App Functionality**. Not used for tracking. |
+| User Content → Other User Content | No — Phantom publishes nothing and has no user-to-user content. |
+| Contact Info → Name, Email Address | **No** — name/email from Sign in with Apple stay on the device and in the user's iCloud Keychain; Phantom never receives them. |
+| Financial Info, Purchases, Usage Data, Diagnostics | **No** (IAP is handled by Apple; no analytics SDK) |
+| **Data Used to Track You** | **None** |
+
+Everything synced through the user's private iCloud database is not "collected" in Apple's sense (the developer cannot access it), so it is not declared.
 
 ---
 
