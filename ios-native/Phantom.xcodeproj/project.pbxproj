@@ -19,6 +19,7 @@
 		121BBAE895CD3B1BC457D4C0 /* att-missing.svg in Resources */ = {isa = PBXBuildFile; fileRef = D5082F74C758B87A4E36EFC3 /* att-missing.svg */; };
 		148420AEF17375E16691C038 /* MailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87298ADC05DDCC32A8E607A /* MailComposer.swift */; };
 		1637DACACD2BB44282D35AE6 /* adobe-photography.svg in Resources */ = {isa = PBXBuildFile; fileRef = 36219F8B9CFA70B3B4D02629 /* adobe-photography.svg */; };
+		172C652EE9CE26F4DDECC6B0 /* NegotiationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C45A2497C2AAFE538487D8 /* NegotiationTests.swift */; };
 		1A085DF0052B669DE7132EEE /* Overlaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC00ADE80335F27AFA1E904 /* Overlaps.swift */; };
 		1A8C049A4C0CA70B78F41C8E /* MerchantNormalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5A1FC61151654E4446DCF /* MerchantNormalizer.swift */; };
 		1B3192A53DFB99A9671BE1AC /* StatementCSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC32A2B17424C991CD409C9 /* StatementCSV.swift */; };
@@ -383,6 +384,7 @@
 		E18BD117CB25F72AA4921333 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		E6B10B8DCA840DD2AC8643AB /* OnboardingConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConnectView.swift; sourceTree = "<group>"; };
 		E76B1C8CCE18AAD96B30ED67 /* SubscriptionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDetailView.swift; sourceTree = "<group>"; };
+		E8C45A2497C2AAFE538487D8 /* NegotiationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegotiationTests.swift; sourceTree = "<group>"; };
 		E90DD51A355FCDE874358208 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EAF40175CC21AB322E836C11 /* replit.svg */ = {isa = PBXFileReference; path = replit.svg; sourceTree = "<group>"; };
 		EE020484680421AE9EBFD24A /* MerchantClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MerchantClassifier.mlmodel; sourceTree = "<group>"; };
@@ -739,6 +741,7 @@
 				7E696BF750558904A6D06081 /* CatalogCoverageTests.swift */,
 				8BEC1537F27B19288B0608A0 /* DetectionCorpusTests.swift */,
 				0AA645DBDE925BE19A9A82EB /* MerchantNormalizerTests.swift */,
+				E8C45A2497C2AAFE538487D8 /* NegotiationTests.swift */,
 				BD964B82C045B3188A8D86DE /* ParsingTests.swift */,
 				55517C8403BFB581111A9DCD /* PickTests.swift */,
 				412A075355A7643BEC73DE96 /* RecommenderTests.swift */,
@@ -968,6 +971,7 @@
 				FF19A3B161A4F0CDC893017B /* CatalogCoverageTests.swift in Sources */,
 				7FA75953D3C3E3EDB2D0C643 /* DetectionCorpusTests.swift in Sources */,
 				3DE6B7D2F6781CFA1A0334D0 /* MerchantNormalizerTests.swift in Sources */,
+				172C652EE9CE26F4DDECC6B0 /* NegotiationTests.swift in Sources */,
 				76188966436FD0B3B3DB15D9 /* ParsingTests.swift in Sources */,
 				633136D15207C6D12782D7CB /* PickTests.swift in Sources */,
 				7DB9FFD3648F36D945E72784 /* RecommenderTests.swift in Sources */,

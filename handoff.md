@@ -61,7 +61,7 @@ In addition to the 11 historical failures still listed below, this session added
   3. Run `./launch/submit.sh` from the repo root.
 - **Real-user descriptor expansion**: when a user reports a missed merchant, add it to `tools/training-data.json` and re-run `swift tools/train-merchant-classifier.swift`. The ML model regenerates `Resources/MerchantClassifier.mlmodelc` in ~30s.
 - **Brand SVG coverage** (third-party library reality): 51 brands have CC0 SVGs; 11 still render as letter avatars (Xfinity, T-Mobile, AT&T, Calm, Noom, WSJ, WaPo, SiriusXM, Planet Fitness, Equinox, MasterClass). These aren't in simple-icons (trademark restrictions of the CC0-only library). Wikipedia Commons HAS them but the licensing is fair-use → App Store rejection risk. Resolving requires a paid CC0/licensed icon service (Streamline, Iconfinder Premium) or commissioned design.
-- **First-party negotiation outcome data**: all 47 recipes now show estimates synthesised from public reports. Once Phantom has ≥50 first-party outcomes per vendor, replace the synthesised success rates with empirical Phantom-user-confirmed rates and drop the source citations from the tips.
+- **First-party negotiation outcome data**: all 64 recipes now show estimates synthesised from public reports. Once Phantom has ≥50 first-party outcomes per vendor, replace the synthesised success rates with empirical Phantom-user-confirmed rates and drop the source citations from the tips.
 
 ## How to run regressions
 
@@ -106,7 +106,7 @@ swift tools/train-merchant-classifier.swift
 **Residual gaps (require user action or external resources, agent cannot solve unilaterally):**
 - **App Store submission itself** — needs user's Apple Developer credentials (`ASC_KEY_ID` / `ASC_ISSUER_ID` / `ASC_KEY_PATH`). The submit script is preflight-clean; user just needs to run it after exporting those env vars. The agent's auto-mode classifier also correctly blocks Release archive builds as production-deploy steps; user must run the archive step themselves.
 - **Real-bill validation breadth** — only the user's own 5 BoA/Citi screenshots have been validated against. Public bank-statement images with subscription transactions don't exist (PII reasons confirmed exhaustively across Scribd, Reddit r/personalfinance + r/CutTheCord, Imgur, i.redd.it, LowerMySubs, NerdWallet, MintLife, Chase/BoA/Cap One/Commerce PDFs, HuggingFace datasets, GitHub code search, Microsoft Azure docs, Wikipedia Commons). Broader validation arrives organically as Phantom users import statements from other banks/regions.
-- **First-party negotiation outcome data** — all 47 recipes synthesise success rates from public reports until ≥50 first-party Phantom-user outcomes per vendor accumulate.
+- **First-party negotiation outcome data** — all 64 recipes synthesise success rates from public reports until ≥50 first-party Phantom-user outcomes per vendor accumulate.
 
 **To ship this to the App Store today,** the user runs ONE command:
 

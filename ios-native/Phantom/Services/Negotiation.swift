@@ -59,6 +59,28 @@ private let genericTips: [String] = [
 // dictionary literal full of trailing closures.
 private let recipes: [String: Recipe] = {
     var r: [String: Recipe] = [:]
+
+    func addCommunityRecipe(
+        _ id: String,
+        successRate: Int = 35,
+        expectedDiscount: String,
+        channel: NegotiationChannel = .web,
+        contact: String,
+        script: String,
+        savingForYear: @escaping (Subscription) -> Double,
+        tips: [String]
+    ) {
+        r[id] = Recipe(
+            successRate: successRate,
+            expectedDiscount: expectedDiscount,
+            channel: channel,
+            contact: contact,
+            script: script,
+            savingForYear: savingForYear,
+            tips: tips,
+            estimated: true
+        )
+    }
     r["netflix"] = Recipe(
         successRate: 12,
         expectedDiscount: "Downgrade to Standard with Ads ($7.99→$8.99)",
@@ -762,6 +784,51 @@ private let recipes: [String: Recipe] = {
         ],
         estimated: false
     )
+    r["hellofresh"] = Recipe(
+        successRate: 68,
+        expectedDiscount: "Cancel-flow offer or ~30% comeback discount",
+        channel: .web,
+        contact: "hellofresh.com/my-account-settings",
+        script: "I'm considering cancelling because the weekly cost no longer fits my budget. Before I finish cancelling, is there a discount for my next few boxes or a cheaper plan you can apply to this account?",
+        savingForYear: { sub in sub.monthlyAmount * 0.30 * 0.75 },
+        tips: [
+            "r/hellofresh users report that choosing a budget-related reason in the cancel flow can surface a save offer before the final confirmation. (reddit.com/r/hellofresh/comments/12yhwo4)",
+            "Multiple former customers report receiving roughly 30%-off comeback offers after fully cancelling; the offer is targeted, so do not promise it will appear. (reddit.com/r/hellofresh/comments/zbtgwx)",
+            "Another long-running community tactic is to alternate with EveryPlate and wait for a HelloFresh win-back offer instead of paying the undiscounted rate. (reddit.com/r/hellofresh/comments/wg8fv5)",
+            "Accepting a save or comeback offer keeps or reactivates recurring deliveries. Confirm the next box date and discounted boxes before accepting.",
+        ],
+        estimated: true
+    )
+    r["ring-home"] = Recipe(
+        successRate: 91,
+        expectedDiscount: "Ring Solo $4.99/mo for one device",
+        channel: .web,
+        contact: "ring.com/plans",
+        script: "I only need recording and smart alerts for one device. Please confirm whether I can move this location to Ring Solo at $4.99 per month or $49.99 per year, and tell me whether changing plans affects saved videos or warranty coverage.",
+        savingForYear: { sub in max(0, sub.monthlyAmount - 4.99) * 12 },
+        tips: [
+            "Ring's current US plans list Solo at $4.99/mo or $49.99/yr for one device and Multi at $9.99/mo for all devices at one location; match the plan to the number of cameras you actually use. (ring.com/plans)",
+            "r/Ring users report that Ring generally does not offer a conventional retention discount, so ask for the correct lower tier rather than inventing a loyalty percentage. (reddit.com/r/Ring/comments/ywp4vt)",
+            "Community reports warn that some legacy downgrades require cancelling first and that stored video history can be lost when coverage lapses. Download anything important before changing plans. (reddit.com/r/Ring/comments/1fodhxl)",
+            "If you cancel immediately instead of at renewal, users report a prorated refund; verify the amount shown before confirming. (reddit.com/r/Ring/comments/1am58ns)",
+        ],
+        estimated: true
+    )
+    r["tinder"] = Recipe(
+        successRate: 54,
+        expectedDiscount: "Targeted 50% off Gold for one month",
+        channel: .web,
+        contact: "tinder.com",
+        script: "I'm turning off Gold because the current price is too high for the results I'm getting. Before I let it expire, is there a lower renewal price or a targeted Gold offer available on this account?",
+        savingForYear: { sub in sub.monthlyAmount * 0.50 },
+        tips: [
+            "r/Tinder users report targeted 50%-off Gold offers after opening the Gold purchase page several times or letting a subscription lapse. Availability and price vary by account. (reddit.com/r/Tinder/comments/15sbxh8)",
+            "One user specifically reported cancelling halfway through a month and then receiving 50% off the next month. Treat this as an anecdotal offer, not a guarantee. (reddit.com/r/Tinder/comments/q7y2k8)",
+            "Check Tinder.com as well as the in-app price before renewing; community reports show platform-specific prices, but never create a new account or misstate your location to chase a rate.",
+            "Tinder's help center says downgrades may require cancelling, waiting for the current term to expire, and subscribing again. Cancelling does not remove the paid access you already have.",
+        ],
+        estimated: true
+    )
     r["midjourney"] = Recipe(
         successRate: 79,
         expectedDiscount: "Annual saves 20% + downgrade tier match",
@@ -792,13 +859,227 @@ private let recipes: [String: Recipe] = {
         ],
         estimated: false
     )
+
+    addCommunityRecipe(
+        "apple-tv",
+        expectedDiscount: "Targeted $5.99/mo for 2 months",
+        contact: "support.apple.com/118428",
+        script: "Apple TV+ is no longer worth the current monthly price for me. Before I confirm cancellation, please show any available continuation offer on this subscription.",
+        savingForYear: { sub in max(0, sub.monthlyAmount - 5.99) * 2 },
+        tips: [
+            "Reddit users reported a targeted $5.99/mo-for-two-months offer in Apple's final cancellation sheet after the 2025 price increase. It is account-specific, not guaranteed. (9to5mac.com/2025/08/24/apple-tv-plus-secret-discount-offer-when-cancel/)",
+            "Open Settings → Apple Account → Subscriptions → Apple TV+ and inspect the confirmation sheet before completing cancellation.",
+            "The normal price returns after two months, so record the renewal date before accepting.",
+        ]
+    )
+    addCommunityRecipe(
+        "amc-plus",
+        expectedDiscount: "Cancel-flow renewal offer or ~$2/mo comeback offer",
+        contact: "amcplus.com/account",
+        script: "I'm cancelling because I only watch AMC+ during a few show seasons. Is there a lower renewal price or comeback promotion available for this account?",
+        savingForYear: { sub in max(0, sub.monthlyAmount - 2) * 2 },
+        tips: [
+            "Community-tracked reports describe discounted renewal prompts in the cancellation flow and roughly $2/mo comeback emails after a lapse. (lowermysubs.com/lower/amc_plus)",
+            "If no offer appears, cancel and subscribe only during the seasons you actually watch; account history is retained.",
+            "Confirm where you are billed—AMC+, Prime Video, Apple TV, Roku, or a TV provider—because the offer and cancellation path belong to that biller.",
+        ]
+    )
+    addCommunityRecipe(
+        "sling",
+        expectedDiscount: "Targeted 50% off the first month back",
+        contact: "sling.com/account",
+        script: "I'm cancelling because the combined package costs more than the channels I use. Can you offer a return discount, or move me to only Orange or only Blue without losing my account?",
+        savingForYear: { sub in sub.monthlyAmount * 0.50 },
+        tips: [
+            "Community reports describe cancellation-page pause options and recurring 50%-off first-month return offers. (lowermysubs.com/lower/sling_tv)",
+            "If you do not need both channel sets, compare Orange-only and Blue-only before accepting a temporary discount.",
+            "Promotions revert automatically; save the full-price renewal date.",
+        ]
+    )
+    addCommunityRecipe(
+        "youtube-tv",
+        expectedDiscount: "Targeted $50/mo for 2 months or $10/mo for 6 months",
+        contact: "tv.youtube.com/settings/subscriptions",
+        script: "The current YouTube TV price is above my budget. Before I pause or cancel, please check whether this account has a base-plan retention offer and whether any unused add-ons can be removed.",
+        savingForYear: { sub in max(max(0, sub.monthlyAmount - 50) * 2, 60) },
+        tips: [
+            "Multiple Reddit users reported a web-only $50/mo-for-two-months offer; a separate cohort saw $10/mo off for six months. (tech.yahoo.com/streaming/deals/articles/youtube-tv-quietly-drops-66-051311737.html)",
+            "Check Membership → Base plan → Manage in a desktop browser; users reported the offer was not visible in the phone or TV apps.",
+            "Remove seasonal add-ons separately and compare Pause with Cancel before confirming.",
+        ]
+    )
+    addCommunityRecipe(
+        "tidal",
+        expectedDiscount: "Targeted 50% off for 3–6 months after cancellation",
+        contact: "account.tidal.com",
+        script: "I'm cancelling because the current price is too high compared with other lossless music plans. Is there a lower renewal rate or returning-member offer available?",
+        savingForYear: { sub in sub.monthlyAmount * 0.50 * 3 },
+        tips: [
+            "Community-tracked reports describe 50%-off or free-month win-back emails within roughly three weeks of cancellation. (lowermysubs.com/lower/tidal)",
+            "If no offer appears, allow the account to fall back to the free tier and watch the registered email for a targeted return offer.",
+            "Verify whether Apple or Google is the biller; third-party subscriptions must be cancelled there.",
+        ]
+    )
+    addCommunityRecipe(
+        "pandora",
+        expectedDiscount: "Targeted 50% off for 3 months after cancellation",
+        contact: "help.pandora.com",
+        script: "I'm considering returning to Pandora's free radio tier because Premium costs more than I use. Is there a lower plan or returning-member promotion on my account?",
+        savingForYear: { sub in sub.monthlyAmount * 0.50 * 3 },
+        tips: [
+            "Community-tracked reports describe 50%-off-for-three-month comeback emails after cancellation. (lowermysubs.com/lower/pandora)",
+            "Ask about Pandora Plus if ad-free radio is enough; it can be a better permanent reduction than a temporary Premium discount.",
+            "Treat every email offer as targeted and verify its full-price renewal date.",
+        ]
+    )
+    addCommunityRecipe(
+        "walmart-plus",
+        expectedDiscount: "Targeted $49 annual renewal",
+        contact: "walmart.com/plus/manage",
+        script: "I'm turning off Walmart+ renewal because I cannot justify the full annual price. Before I complete cancellation, is the $49 annual renewal offer available for this account?",
+        savingForYear: { sub in max(0, sub.monthlyAmount * 12 - 49) },
+        tips: [
+            "Users report a targeted $49 annual renewal popup after the first cancellation step. (doctorofcredit.com/ymmv-walmart-renewal-for-49/)",
+            "Do not complete the second cancellation confirmation if you intend to accept the offer; reports say the popup appears before that step.",
+            "The following year renews at the regular price, so record the renewal date.",
+        ]
+    )
+    addCommunityRecipe(
+        "kindle-unlimited",
+        expectedDiscount: "Targeted return offer, sometimes 3 months for $0.99",
+        contact: "amazon.com/kucentral",
+        script: "I'm cancelling Kindle Unlimited because I haven't borrowed enough books to justify the monthly price. Is there a lower returning-member offer available now or after this term expires?",
+        savingForYear: { sub in max(0, sub.monthlyAmount * 3 - 0.99) },
+        tips: [
+            "Crowdsourced Reddit reports are mixed: immediate cancellation offers are rare, but some lapsed members later see three months for $0.99. (offthefrontpage.com/many-subscriptions-quietly-offer-discounts-when-you-try-to-cancel/)",
+            "Do not promise an immediate offer. If none appears, complete cancellation and check Amazon's Kindle Unlimited page after a few months.",
+            "Finish or return borrowed books before the paid term ends if you need uninterrupted access.",
+        ]
+    )
+    addCommunityRecipe(
+        "grubhub-plus",
+        expectedDiscount: "Activate included Grubhub+ through Amazon Prime",
+        contact: "amazon.com/prime/offer/grubhub",
+        script: "I'm already an Amazon Prime member. Please help me link the included Grubhub+ benefit and stop the separate paid Grubhub+ renewal without creating a second membership.",
+        // Only a member who already pays for Prime replaces the whole paid
+        // membership, and Phantom cannot verify that, so the annual figure
+        // carries the same confidence discount as other conditional offers.
+        savingForYear: { sub in sub.monthlyAmount * 12 * 0.75 },
+        tips: [
+            "Community audits report no consistent cancellation discount; the reliable product-specific path is the included Grubhub+ benefit for Amazon Prime members. (lowermysubs.com/blog/grubhub-plus-retention-offer)",
+            "Link the free benefit first, verify it is active, then cancel only the separately billed membership.",
+            "Without Prime, compare annual pricing with actual order frequency instead of expecting a retention offer.",
+        ]
+    )
+    addCommunityRecipe(
+        "lovable",
+        expectedDiscount: "Hidden Lite plan in the downgrade flow",
+        contact: "lovable.dev/settings/plans",
+        script: "My live projects only need occasional edits, so the current credit allowance is more than I use. Please show the Lite downgrade that keeps custom domains and removes branding, if it is available on this workspace.",
+        // The Lite plan is unlisted and evidenced by a single public report, so
+        // this is scoped to a quarter like the other account-experiment offers.
+        savingForYear: { sub in sub.monthlyAmount * 0.50 * 3 },
+        tips: [
+            "A subscriber documented a hidden Lite option surfaced during downgrade, retaining custom domains and no-branding with a small daily credit allowance. (linkedin.com/posts/yaakov-carno_woah-i-just-went-to-cancel-my-lovable-subscription-activity-7421560847413547008-BrBE)",
+            "The plan is not publicly listed and may be an account experiment; inspect the downgrade flow rather than assuming availability.",
+            "Confirm every live project's domain and branding behavior before changing the workspace plan.",
+        ]
+    )
+    addCommunityRecipe(
+        "att",
+        expectedDiscount: "Account-specific Loyalty credit",
+        channel: .phone,
+        contact: "611 or 1-800-331-0500",
+        script: "Please transfer me to Loyalty. My current bill is $[amount], and [competitor] offers comparable service for $[amount]. I prefer to stay if you can apply a recurring credit or move me to a lower plan without changing the features I use.",
+        savingForYear: { sub in sub.monthlyAmount * 0.10 * 12 },
+        tips: [
+            "Forum users report saying 'cancel' in the phone menu routes to Loyalty; one reported a $45 monthly credit for 12 months. (dbstalk.com/answers/how-do-i-contact-at-t-loyalty-department/)",
+            "Bring a real local competitor quote with matching speed, lines, and device-payment assumptions.",
+            "Ask for the credit amount, duration, start date, and confirmation number before accepting any plan change.",
+        ]
+    )
+    addCommunityRecipe(
+        "verizon",
+        expectedDiscount: "Targeted $10–$20 per line or percentage Loyalty offer",
+        contact: "verizon.com/digital/nsa/secure/ui/acct/profile/security/portoutauth",
+        script: "I'm reviewing a switch because my current Verizon bill is too high. Before I move any lines, please check My Offers and the account for a recurring loyalty discount that does not remove my existing promotions.",
+        savingForYear: { sub in sub.monthlyAmount * 0.10 * 12 },
+        tips: [
+            "Reddit users report that checking My Offers or generating a Number Transfer PIN can trigger account-specific loyalty offers, often $10–$20 per line or 10–25%. (droid-life.com/2026/08/17/verizon-loyalty-discount-hits-25-off-how-to-get-it/)",
+            "Generating a PIN does not port a number, but do not submit it to another carrier unless you intend to switch; turn Number Lock back on afterward.",
+            "Ask whether the new offer replaces an existing discount—community reports show some credits do not stack.",
+        ]
+    )
+    addCommunityRecipe(
+        "proton",
+        expectedDiscount: "Support retention offer or downgrade to Proton Free",
+        channel: .chat,
+        contact: "account.proton.me",
+        script: "I want to downgrade because the paid bundle is more than I currently use. Before I move to Proton Free, is there a lower paid plan or a retention offer, and what storage or address changes must I make first?",
+        savingForYear: { sub in sub.monthlyAmount * 12 },
+        tips: [
+            "A Techlore community discussion reports support sometimes presents a special keep offer during refund requests; outcomes vary and credits may be offered instead of cash. (discuss.techlore.tech/t/cancelled-my-proton-unlimited-sub-they-still-charged-me/9267)",
+            "If no suitable offer exists, downgrade to Proton Free only after reducing storage, addresses, and other usage to the free limits.",
+            "Ask whether unused value becomes account credit or a payment-method refund and obtain the answer in writing.",
+        ]
+    )
+    addCommunityRecipe(
+        "runway",
+        expectedDiscount: "Downgrade to Free after using expiring plan credits",
+        contact: "app.runwayml.com/settings/billing",
+        script: "My usage no longer justifies this Runway plan. Before I downgrade, please confirm which monthly credits expire, which purchased credits remain, and whether a lower plan is available for this workspace.",
+        savingForYear: { sub in sub.monthlyAmount * 12 },
+        tips: [
+            "Cancellation guides based on user reports warn that monthly plan credits do not roll over, while separately purchased credits survive a downgrade. (recurdash.com/guides/how-to-cancel-runway)",
+            "Use remaining monthly credits before the term ends, then verify the Stripe confirmation and that billing shows an expiration date.",
+            "Deleting an account is not the same as cancelling each workspace subscription.",
+        ]
+    )
     return r
 }()
 
+/// Billing descriptors and renamed products that should share one researched
+/// playbook instead of silently falling through to a generic script.
+private let recipeAliases: [String: String] = [
+    "adobe": "adobe-cc",
+    "anthropic": "claude",
+    "openai": "chatgpt",
+    "paramount-plus": "paramount",
+    "proton-vpn": "proton",
+]
+
 enum Negotiation {
+    static func hasBrandSpecificRecipe(for id: String) -> Bool {
+        recipe(for: id) != nil
+    }
+
+    /// Every id that resolves to a researched playbook, alias keys included.
+    /// `check_recipe_coverage` and `NegotiationTests` assert that each one is
+    /// reachable from a real brand id, so a typo'd key cannot sit here unused.
+    static var brandSpecificRecipeIds: Set<String> {
+        Set(recipes.keys).union(recipeAliases.keys)
+    }
+
+    /// Branded ids we searched for a repeatable retention offer and found
+    /// none, so the generic script is the honest answer. Listed explicitly so
+    /// a missing recipe reads as a decision rather than an oversight —
+    /// `NegotiationTests` and `check_recipe_coverage` fail on any branded id
+    /// that is in neither this set nor `brandSpecificRecipeIds`. Search notes:
+    /// `launch/research/negotiation-recipes-2026-09-12.md`.
+    static let researchedGenericFallbackIds: Set<String> = [
+        // Generic billing descriptors: the underlying product cannot be inferred.
+        "amazon-digital", "apple-services", "google-play",
+        // No repeatable product-specific retention offer found in the sweep.
+        "amazon-music", "apple-arcade", "apple-fitness", "apple-news", "apple-one",
+        "apple-passwords", "bitwarden", "bolt", "cohere", "crunchyroll", "dashpass",
+        "deepseek", "espn-plus", "fubo", "gemini", "google-workspace", "huggingface",
+        "instacart-plus", "lyft-pink", "microsoft-365", "mister-car-wash", "mistral",
+        "philo", "prime-video", "starz", "suno", "uber-one", "v0", "youtube-music",
+    ]
+
     static func offer(for sub: Subscription) -> NegotiationOffer? {
         // 1. Brand-specific recipe (highest fidelity)
-        if let r = recipes[sub.id] {
+        if let r = recipe(for: sub.id) {
             let saving = (r.savingForYear(sub) * 100).rounded() / 100
             return NegotiationOffer(
                 id: sub.id,
@@ -853,4 +1134,10 @@ enum Negotiation {
 
     /// Default tip bank — used by NegotiateDetailView when offer.tips is empty.
     static let fallbackTips: [String] = genericTips
+
+    private static func recipe(for id: String) -> Recipe? {
+        if let direct = recipes[id] { return direct }
+        guard let canonicalId = recipeAliases[id] else { return nil }
+        return recipes[canonicalId]
+    }
 }

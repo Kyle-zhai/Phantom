@@ -64,7 +64,7 @@ Services/
   BrandRegistry.swift       Logos, brand colors, category inference
   ZombieScore.swift         0–100 score with adaptive weighting (PRD §3.2)
   DisputeLetter.swift       EFTA/ROSCA letter generator
-  Negotiation.swift         47 vendor retention scripts
+  Negotiation.swift         64 vendor retention scripts (69 ids incl. aliases)
   CancellationRegistry.swift Verified cancel URLs + Apple/phone/in-person paths
   PriceMonitor.swift        Fetch prices.json, detect hikes
   NotificationCenter.swift  Local notification scheduling (trial/hike/zombie/cancel-check/rate-nudge)
