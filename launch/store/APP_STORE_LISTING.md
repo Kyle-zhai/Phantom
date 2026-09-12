@@ -255,15 +255,19 @@ Answer the questionnaire exactly like this (re-check when features change):
 
 | Question | Answer |
 |---|---|
-| Do you or your third-party partners collect data from this app? | **Yes** |
-| **Data Linked to You** | |
-| Identifiers → User ID | Yes — the Sign in with Apple user identifier only. Purpose: **App Functionality**. Not used for tracking. |
-| User Content → Other User Content | No — Phantom publishes nothing and has no user-to-user content. |
+| Do you or your third-party partners collect data from this app? | **No — Data Not Collected** |
+| Identifiers → User ID | **No** — the Sign in with Apple identifier is written to the Keychain (`AccountService`) and is never transmitted anywhere. |
 | Contact Info → Name, Email Address | **No** — name/email from Sign in with Apple stay on the device and in the user's iCloud Keychain; Phantom never receives them. |
-| Financial Info, Purchases, Usage Data, Diagnostics | **No** (IAP is handled by Apple; no analytics SDK) |
+| Financial Info → Other Financial Info | **No** — charges are parsed on-device and live in the local store and the user's own private iCloud database. |
+| User Content → Other User Content | **No** — Phantom publishes nothing and has no user-to-user content. |
+| Purchases, Usage Data, Diagnostics | **No** — IAP is handled by Apple; there is no analytics or crash SDK. |
 | **Data Used to Track You** | **None** |
 
-Everything synced through the user's private iCloud database is not "collected" in Apple's sense (the developer cannot access it), so it is not declared.
+Why "Data Not Collected" is the accurate answer, and how to defend it if App Review asks:
+
+- The app makes exactly two kinds of network request, both in `AlternativesCatalog` and `PriceMonitor`: a plain GET of a static JSON catalog from GitHub Pages. No request body, no identifier, no user data.
+- Everything else is stored in the device's SwiftData store, which syncs to the **user's own** private CloudKit database. Apple's definition excludes data the developer cannot access, and Phantom has no server and no access to that database.
+- This table must stay identical to the one in `REVIEW_CHECKLIST.md`. If they ever disagree, fix them together before answering the questionnaire.
 
 ---
 

@@ -46,11 +46,13 @@ We do **not** make subscription cancellation decisions for you. We do **not** se
 
 ---
 
-## 4. Local data and optional iCloud sync
+## 4. Local data and iCloud sync
 
 Phantom does not connect to your bank and never asks for bank credentials. You add subscriptions manually or explicitly import screenshots, statement images, or CSV files. Image text recognition runs on-device with Apple Vision.
 
-Without Sign in with Apple, your data stays in Phantom's local app container. If you choose Sign in with Apple, Phantom syncs supported app data through your private CloudKit database so it is available on your devices. Phantom does not operate a backend that receives this data.
+Your data lives in the app's database on your iPhone. On App Store builds it also syncs to your own private CloudKit database whenever your device is signed in to iCloud, so it is available on your other Apple devices. Syncing follows your device's iCloud account, not your Phantom account: Sign in with Apple is optional and is not what turns syncing on or off. You can stop it by turning iCloud off for Phantom in iOS Settings, which leaves everything on your iPhone.
+
+Phantom does not operate a backend that receives any of this. We cannot read your private CloudKit database; only your Apple ID can.
 
 ---
 
@@ -140,7 +142,7 @@ You agree to indemnify and hold us harmless from any claim, loss, or expense ari
 
 ## 12. Termination
 
-You may terminate by deleting your account. We may terminate or suspend for cause with notice (or without notice if necessary to protect users, partners, or the Service). Sections 7-12 and 14 survive termination.
+You may terminate at any time using **Settings → Account → Delete account & data**, which erases the app's data on your device and the copy in your private iCloud database, then signs you out. We may terminate or suspend for cause with notice (or without notice if necessary to protect users, partners, or the Service). Sections 7-12 and 14 survive termination.
 
 ---
 
