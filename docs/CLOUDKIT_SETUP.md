@@ -94,12 +94,14 @@ reporter immediately, and users can hide every pick from one submitter.
    nothing in the App Store build — users lose their data when they change phones. The
    public schema is *not* needed (see section 4).
 3. **App Store privacy nutrition labels.** The answer sheet in
-   `launch/store/APP_STORE_LISTING.md` is authoritative; the short version:
-   - **Identifiers → User ID: Yes** — the Sign in with Apple user identifier only.
-     Purpose: App Functionality. Not used for tracking.
-   - **User Content: No** — Phantom publishes nothing and has no user-to-user content.
+   `launch/store/APP_STORE_LISTING.md` is authoritative and `launch/store/REVIEW_CHECKLIST.md`
+   must match it; the short version:
+   - **Data Not Collected** across every category. The Sign in with Apple identifier is
+     written to the Keychain by `AccountService` and transmitted nowhere; the only network
+     requests in the app are plain GETs of the static catalogs on GitHub Pages.
    - Private-database sync is the user's own iCloud, not a Phantom data collection.
    - Listing copy: "nothing leaves your iPhone" became "your data stays on your iPhone
      and in your own iCloud — never on a Phantom server."
 4. `launch/legal/PRIVACY_POLICY.md` and `docs/privacy.html` are already updated and
-   published; keep the two in step if either changes.
+   published; keep the two in step if either changes. Same for
+   `launch/legal/TERMS_OF_SERVICE.md` and `docs/terms.html`.
