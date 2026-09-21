@@ -1,0 +1,42 @@
+Copyright (c) 2026 Kyle Zhai. All rights reserved.
+
+PROPRIETARY SOFTWARE — SOURCE AVAILABLE FOR VIEWING ONLY
+
+This repository and everything in it — including, without limitation, the
+source code, data catalogs, retention and dispute templates, scoring logic,
+designs, graphics, icons and documentation (together, the "Software") — is
+the proprietary property of the copyright holder.
+
+The Software is made publicly visible solely so that it can be read and
+evaluated. Viewing the Software through GitHub's website, or forking it
+within GitHub as permitted by the GitHub Terms of Service, does not grant
+you any license to it.
+
+Without the prior written permission of the copyright holder, you may NOT:
+
+  1. copy, reproduce, or mirror the Software, in whole or in part, outside
+     of GitHub's own viewing and forking features;
+  2. modify, translate, adapt, or create derivative works of the Software;
+  3. distribute, sublicense, sell, rent, or otherwise make the Software or
+     any derivative work available to any third party;
+  4. compile, build, or publish the Software, or any application derived
+     from it, on the Apple App Store, Google Play, or any other storefront
+     or distribution channel;
+  5. extract the Software's data catalogs, templates, or scripts for use in
+     any other product or service; or
+  6. use the name "Phantom", the Phantom logo, screenshots, or other brand
+     assets in a way that suggests affiliation with or endorsement by the
+     copyright holder.
+
+Third-party names, trademarks and logos referenced by the Software belong to
+their respective owners. Third-party open-source components included by
+the Software remain subject to their own licenses.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+For licensing inquiries, contact the copyright holder through
+https://kyle-zhai.github.io/Phantom/.
